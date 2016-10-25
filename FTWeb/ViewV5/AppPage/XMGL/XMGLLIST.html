@@ -82,6 +82,9 @@
                     <td ms-repeat-im="ShowColumns" ms-class-1="lk:im.type=='link'" ms-click="View(el.ID,this)" ms-visible="im.IsSel">{{FnFormat(el[im.ColName],im)|html}}</td>
                     <td>
                         <span class=" btn-click">
+                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-if="el.CRUser==userName" ms-click="DELXMGL(el,$event)">
+                                <i class="iconfont icon-shanchu"></i>
+                            </a>
                             <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-if="el.CRUser==userName&&el.Status==0" ms-click="EditForm('XMGL',el.ID,'',$event)">
                                 <i class="iconfont icon-bianji"></i>
                             </a>
@@ -232,7 +235,22 @@
                     });
                 }
             })
-        }
+        }, DELXMGL: function (item, event) {
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            }
+            top.ComFunJS.winconfirm("确认要删除吗？", function () {
+                $.post('/API/VIEWAPI.ashx?Action=XMGL_DELXMGL', { "P2": item.ID }, function (result) {
+                    result = JSON.parse(result)
+                    if (result.ErrorMsg == "") {
+                        top.ComFunJS.winsuccess("删除成功");
+                        tempindex.tmpListData.remove(item);
+                    } else {
+                        top.ComFunJS.winwarning(result.ErrorMsg);
+                    }
+                })
+            })
+        },
     })
 </script>
 
