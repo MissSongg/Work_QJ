@@ -1,0 +1,612 @@
+﻿<!--<script src="/ViewV4/PLUG/webPrint/printer/jquery-ui.js"></script>-->
+    <!--<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>-->
+    <!--<link href="/ViewV4/PLUG/webPrint/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />-->
+    <!--<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">-->
+<script src="//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="//cdn.bootcss.com/jqueryui/1.11.0/jquery-ui.min.css">
+<style>
+    .object {
+        padding: 0.2em;
+        border: solid 1px;
+        cursor: move;
+        background-color: #fff;
+    }
+
+    .delBut {
+        cursor: pointer;
+    }
+
+    .controlBar {
+        border: solid 1px #D2D2D2;
+        padding: 2px;
+    }
+    .selected {
+        border: solid 2px #ff0000;
+    }
+    .icon-remove {
+        background-position: -312px 0;
+    }
+
+    [class^="icon-"], [class*=" icon-"] {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
+        vertical-align: text-top;
+        background-image: url("/images/glyphicons-halflings.png");
+        background-repeat: no-repeat;
+        margin-top: 4px;
+    }
+    .input-prepend .add-on, .input-append .add-on {
+        display: inline-block;
+        width: auto;
+        min-width: 16px;
+        height: 26px;
+        padding: 4px 5px;
+        font-weight: normal;
+        line-height: 18px;
+        text-align: center;
+        text-shadow: 0 1px 0 #ffffff;
+        vertical-align: middle;
+        background-color: #eeeeee;
+        border: 1px solid #ccc;
+    }
+</style>
+<div class="form-horizontal" ms-controller="KDPZ">
+    <div class="form-group">
+        <label class="col-xs-1 control-label">快递公司</label>
+        <div class="col-xs-3">
+            <input type="text" ms-duplex="modelData.KDName" class="form-control szhl_require" />
+        </div>
+        <label class="col-xs-1 control-label">全局字体</label>
+        <div class="col-xs-3">
+            <select ms-duplex="modelData.Font" class="form-control styleSelector" data_stylename='font-family' data_scope='all'>
+                <option value="宋体">宋体</option>
+                <option value="新宋体">新宋体</option>
+                <option value="黑体">黑体</option>
+                <option value="微软雅黑">微软雅黑</option>
+            </select>
+        </div>
+
+        <label class="col-xs-1 control-label">大小</label>
+        <div class="col-xs-3">
+            <select ms-duplex="modelData.FontSize" class="form-control styleSelector" data_stylename='font-size' data_scope='all' id="fontsize">
+                <option value="8px">8</option>
+                <option value="9px">9</option>
+                <option value="10px">10</option>
+                <option value="11px">11</option>
+                <option value="12px">12</option>
+                <option value="13px">13</option>
+                <option value="14px">14</option>
+                <option value="15px">15</option>
+                <option value="16px">16</option>
+                <option value="17px">17</option>
+                <option value="18px">18</option>
+                <option value="19px">19</option>
+                <option value="20px">20</option>
+                <option value="21px">21</option>
+                <option value="22px">22</option>
+                <option value="23px">23</option>
+                <option value="24px">24</option>
+                <option value="25px">25</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-xs-1 control-label">背景图</label>
+        <div class="col-xs-3">
+            <input type="file" class="form-control" name="upFile" id="upFile" accept=".jpg,.jpeg,.bmp,.png" ms-change="sctp()" />
+        </div>
+        <label class="col-xs-1 control-label">宽(mm)</label>
+        <div class="col-xs-3">
+            <input type="text" ms-duplex="modelData.imageWidth" class="form-control szhl_require" id="imgWidth" />
+        </div>
+        <label class="col-xs-1 control-label">高(mm)</label>
+        <div class="col-xs-3">
+            <input type="text" ms-duplex="modelData.imageHeight" class="form-control szhl_require" id="imgHeight" />
+        </div>
+        
+    </div>
+    <div class="form-group xx" ms-repeat-el="csData" >
+        <label class="col-xs-1 control-label" style="padding-right: 0;">{{el.groupName}}</label>
+        <div class="col-xs-11">
+            <span ms-repeat-item="el.groupParam" style=" margin-right: 10px;"><input class="infoCheck" type="checkbox" ms-attr-id="item.tag" ms-change="xzcs()" /><label ms-attr-for="item.tag" style="font-weight: normal;">{{item.name}}</label> </span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <!--<div class="col-xs-2 ">
+            <label class="control-label" style="margin-bottom:10px;"><input type="checkbox" id="isDefault" />设为默认快递单</label>
+            
+            <table class="table table-bordered" ms-repeat-el="csData">
+                <thead><tr><th>{{el.groupName}}</th></tr></thead>
+                <tbody><tr><td><p style="margin:0;" ms-repeat-item="el.groupParam"><input class="infoCheck" type="checkbox" ms-attr-id="item.tag" ms-change="xzcs()" />{{item.name}}</p></td></tr></tbody>
+            </table>
+        </div>-->
+        <div class="col-xs-12" id="content" style="overflow:auto;">
+            <div id="expressImg">
+                <img ms-visible="modelData.KDImg" ms-src="tplj(modelData.KDImg)" style="width:1100px;" />
+                <!--<img style="width:100%" src="/ViewV5/Base/DownFile.aspx?fileId=2283" />-->
+            </div>
+        </div>
+    </div>
+</div>
+<div id='objectSetting' style='display:none;position:absolute;'>
+    <span class="input-prepend aboutObject">
+        <span class="add-on"> 字体大小</span>
+        <select class='fontSizes styleSelector' style='width: 60px; height: 25px;' data_stylename='font-size'>
+            <option value="8px">8</option>
+            <option value="9px">9</option>
+            <option value="10px">10</option>
+            <option value="11px">11</option>
+            <option value="12px">12</option>
+            <option value="13px">13</option>
+            <option value="14px">14</option>
+            <option value="15px">15</option>
+            <option value="16px">16</option>
+            <option value="17px">17</option>
+            <option value="18px">18</option>
+            <option value="19px">19</option>
+            <option value="20px">20</option>
+            <option value="21px">21</option>
+            <option value="22px">22</option>
+            <option value="23px">23</option>
+            <option value="24px">24</option>
+            <option value="25px">25</option>
+        </select>
+        <span class="add-on"> 是否加粗</span>
+        <select class='styleSelector' data_stylename='font-weight' style='width: 100px; height: 25px;' data_stylename='font-weight'>
+            <option value='normal'>正常</option>
+            <option value='bold'>加粗</option>
+        </select>
+    </span>
+</div>
+
+<script>
+    var tempmodel = avalon.define({
+        $id: "KDPZ",
+        name: "快递单配置",
+        iswf: false,//是否属于流程表单
+        inittemp: function (strId) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=KDDY_GETCSINFO', { }, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempmodel.csData.pushArray(JSON.parse(resultData.Result));
+
+                    if (strId) {
+                        //编辑加载数据
+                        $.getJSON('/API/VIEWAPI.ashx?Action=KDDY_GETDYPZMODEL', { P1: strId }, function (resultData) {
+                            if (resultData.ErrorMsg == "") {
+                                tempmodel.modelData = resultData.Result;
+                                tempmodel.tpData = resultData.Result1;
+
+                                if (resultData.Result) {
+                                    initContent(resultData.Result);
+
+                                    initPageUi();
+                                }
+                            }
+                        })
+                    } else {
+                        //if (localStorage.getItem(pmodel.FormCode) && localStorage.getItem(pmodel.FormCode) != JSON.stringify(tempmodel.modelData.$model)) {//判断有没有未保存的表单
+                        //    var tempdata = localStorage.getItem(pmodel.FormCode);//缓存表单数据
+                        //    ComFunJS.winconfirm("系统检测到您未保存的数据,是否加载?", function () {
+                        //        tempmodel.modelData = $.parseJSON(tempdata);
+                        //        ComFunJS.initForm();
+                        //    }, function () {
+                        //        localStorage.removeItem(pmodel.FormCode);
+                        //        ComFunJS.initForm();
+                        //        initPageUi();
+                        //    })
+                        //} else {
+                        //    ComFunJS.initForm();
+                        //    initPageUi();
+                        //    $("#fontsize").trigger("change");
+                        //}
+                        //$(".btnSucc").text("送审");
+                        ComFunJS.initForm();
+                        initPageUi();
+                        $("#fontsize").trigger("change");
+                    }
+                }
+            })
+            
+        },//初始化
+        sctp: function () {
+            if (document.getElementById("upFile").files.length > 0) {
+                var formData = new FormData();
+                formData.append("upFile", document.getElementById("upFile").files[0]);
+                $.ajax({
+                    url: "/API/VIEWAPI.ashx?ACTION=XTGL_UPLOADFILE&r=" + Math.random(),
+                    type: "POST",
+                    data: formData,
+                    /**
+                    *必须false才会自动加上正确的Content-Type
+                    */
+                    contentType: false,
+                    /**
+                    * 必须false才会避开jQuery对 formdata 的默认处理
+                    * XMLHttpRequest会对 formdata 进行正确的处理
+                    */
+                    processData: false,
+                    success: function (result) {
+                        var r = $.parseJSON(result);
+                        if (r.ErrorMsg == "") {
+                            tempmodel.tpData.clear();
+                            tempmodel.tpData.pushArray(r.Result);
+                            tempmodel.modelData.KDImg = r.Result.ID;
+                            //setTimeout("tempmodel.wh()", 1000);
+                        }
+                        else {
+                            ComFunJS.winwarning("上传图片失败");
+                        }
+                    }
+                });
+            }
+        },
+        csData:[],//收发人信息
+        tpData:[],//图片数据
+        modelData: { "KDName": "", "IsDefault": "", "imageWidth": "", "imageHeight": "", "objects": "", "KDImg": "", "FontSize": "14px", "Font": "" },
+        SaveData: function (callback) {
+            //if ($('#isDefault').is(":checked")) {
+            //    tempmodel.modelData.IsDefault = true;
+            //}
+            //else {
+            //    tempmodel.modelData.IsDefault = false;
+            //}
+            tempmodel.modelData.objects = buildTemplate();
+            //快递配置保存
+            $.post("/API/VIEWAPI.ashx?ACTION=KDDY_ADDDYPZ", { P1: JSON.stringify(tempmodel.modelData.$model) }, function (result) {
+                return callback.call(this, $.parseJSON(result));
+            });
+        },
+        wh: function () {//根据图片大小换算宽高
+            if (!tempmodel.modelData.imageWidth) {
+                tempmodel.modelData.imageWidth = Math.round($('#expressImg').find('img').width() / 3.78);
+            }
+            else {
+                $('#expressImg').css('width', (tempmodel.modelData.imageWidth * 3.78) + 'px');
+                $('#expressImg').find('img').css('width', (tempmodel.modelData.imageWidth * 3.78) + 'px');
+            }
+            if (!tempmodel.modelData.imageHeight) {
+                tempmodel.modelData.imageHeight = Math.round($('#expressImg').find('img').height() / 3.78);
+            }
+            else {
+                $('#expressImg').css('height', (tempmodel.modelData.imageHeight * 3.78) + 'px');
+                $('#expressImg').find('img').css('height', (tempmodel.modelData.imageHeight * 3.78) + 'px');
+            }
+        },
+        xzcs: function () {//勾选收发人信息参数，新增参数对象
+            var a = $(this).is(':checked');
+            var id = $(this).attr('id');
+            var text = $(this).parent().text();
+            var cb = $(this);
+            if (a) {
+                var data = {};
+                //var contentTop = $('#content').offset().top;
+                //var contentLeft = $('#content').offset().left;
+                addPrintObjects(data, id, text);
+            }
+            else {
+                if (printObjects != null && printObjects.length > 0) {
+                    for (var i = 0; i < printObjects.length; i++) {
+                        if (printObjects[i].id == id) {
+                            var tempObj = printObjects[i];
+                            tempObj.remove();
+                            printObjects.splice(i, 1);
+                            tempObj = null;
+                            break;
+                        }
+                    }
+                }
+            }
+        },
+        tplj: function (str) {
+            str = str + '';
+            if (str.indexOf('office') > 0) {
+                return str ;
+            }
+            else {
+                return '/ViewV5/Base/DownFile.aspx?fileId=' + str ;
+            }
+        }
+    });
+    
+    //tempmodel.$watch("modelData.*", function (a, b) {
+    //    if (!tempmodel.modelData.ID) {
+    //        localStorage.setItem(pmodel.FormCode, JSON.stringify(tempmodel.modelData.$model));
+    //    }
+    //})
+
+    var printObjects = [];
+    var expressCompnany_datas = [];
+
+    ///初始化基本参数
+    function initPageUi() {
+        $('.aboutObject').hide();
+        ///选择字体样式事件
+        $('.styleSelector').change(function () {
+            var val = $(this).val();
+            var styleName = $(this).attr('data_styleName');
+            for (var i = 0; i < printObjects.length; i++) {
+                if ('all' == $(this).attr('data_scope') || printObjects[i].selected) {
+                    var data = {};
+                    data[styleName] = val;
+                    printObjects[i].setStyle(data);
+                }
+            }
+        })
+        ///修改宽度
+        $('#imgWidth').change(function () {
+            //var v = $(this).val();
+            //if (v != '' && isNaN(v) == false && $('#expressImg').length > 0) {
+            //    $('#expressImg').css('width', (v * 3.78) + 'px');
+            //    $('#expressImg').find('img').css('width', (v * 3.78) + 'px');
+            //}
+            changetp();
+        })
+        ///修改高度
+        $('#imgHeight').change(function () {
+            //var v = $(this).val();
+            //if (v != '' && isNaN(v) == false && $('#expressImg').length > 0) {
+            //    $('#expressImg').css('height', (v * 3.78) + 'px');
+            //    $('#expressImg').find('img').css('height', (v * 3.78) + 'px');
+            //}
+            changetp();
+        })
+        ///内容点击宽度
+        $('#content').click(function (e) {
+            $('#objectSetting').hide();
+        })
+    }
+    function changetp() {
+        var iw = $("#imgWidth").val();
+        var ih = $("#imgHeight").val();
+        if (iw != '' && isNaN(iw) == false && $('#expressImg').length > 0 && ih != '' && isNaN(ih) == false) {
+            var iha = Math.round((ih * 1.0 / iw * 1.0) * 1100);
+            $('#expressImg').find('img').css('height', iha + 'px');
+        }
+    }
+    ///给打印内容对象添加参数
+    function addPrintObjects(data, id, text) {
+        if (data.w == null) {
+            data.w = 'auto';
+        }
+        if (data.h == null) {
+            data.h = 'auto';
+        }
+        if (data.top == null) {
+            data.top = 0;
+        }
+        if (data.left == null) {
+            data.left = 0;
+        }
+        if (data.name == null) {
+            data.name = id;
+        }
+        if (data.text == null) {
+            data.text = text;
+        }
+        if (data.font_size == null) {
+            data.font_size = tempmodel.modelData.FontSize;
+        }
+        if (data.font_family == null) {
+            data.font_family = tempmodel.modelData.Font;
+        }
+        var object = new PrintObject(data, $('#content'));
+        printObjects.push(object);
+    }
+    //清除打印内容参数选中状态
+    function clearPrintObjectSelected() {
+        for (var i = 0; i < printObjects.length; i++) {
+            if (printObjects[i].selected) {
+                printObjects[i].unselected();
+            }
+        }
+    }
+    //加载快递公司配置开始
+    function initContent(templateData) {
+        if (templateData != null) {
+            if (templateData.objects && templateData.objects.length > 0) {
+                var objects = JSON.parse(templateData.objects);
+                if (objects != null && objects.length > 0) {
+                    for (var k = 0; k < objects.length; k++) {
+                        $('#' + objects[k].name).removeAttr("checked").click();
+                        if (printObjects != null && printObjects.length > 0) {
+                            for (var i = 0; i < printObjects.length; i++) {
+                                if (printObjects[i].id == objects[k].name) {
+                                    var tempObj = printObjects[i];
+                                    tempObj.remove();
+                                    printObjects.splice(i, 1);
+                                    tempObj = null;
+                                    break;
+                                }
+                            }
+                        }
+                        addPrintObjects(objects[k], objects[k].name, objects[k].text);
+                    }
+                }
+            }
+            //if (templateData.IsDefault == "True") {
+            //    $("#isDefault").removeAttr("checked");
+            //    $("#isDefault").click();
+            //}
+            //else {
+            //    $("#isDefault").removeAttr("checked");
+
+            //}
+            if ($('#expressImg').find('img').length > 0) {
+                //图片大小赋值
+                $('#expressImg').find('img').load(function () {
+                    //if (templateData != null && templateData.imageWidth != null && templateData.imageWidth != '' && isNaN(templateData.imageWidth) == false) {
+                    //    //$('#imgWidth').val(templateData.imageWidth);
+                    //    $('#expressImg').css('width', (templateData.imageWidth * 3.78) + 'px');
+                    //    $('#expressImg').find('img').css('width', (templateData.imageWidth * 3.78) + 'px');
+                    //} else {
+                    //    tempmodel.modelData.imageWidth = Math.round($('#expressImg').find('img').width() / 3.78);
+                    //}
+                    //if (templateData != null && templateData.imgHeight != null && templateData.imgHeight != '' && isNaN(templateData.imgHeight) == false) {
+                    //    //$('#imgHeight').val(templateData.imgHeight);
+                    //    $('#expressImg').css('height', (templateData.imgHeight * 3.78) + 'px');
+                    //    $('#expressImg').find('img').css('height', (templateData.imgHeight * 3.78) + 'px');
+                    //} else {
+                        
+                    //    tempmodel.modelData.imageHeight = Math.round($('#expressImg').find('img').height() / 3.78);
+                    //}
+                    if (templateData != null && templateData.imageWidth != null && templateData.imageWidth != '' && isNaN(templateData.imageWidth) == false
+                        && templateData.imageHeight != null && templateData.imageHeight != '' && isNaN(templateData.imageHeight) == false) {
+                        var ih = Math.round((templateData.imageHeight * 1.0 / templateData.imageWidth * 1.0) * 1100);
+                        $('#expressImg').find('img').css('height', ih + 'px');
+                    } 
+
+                    templateData = null;
+                })
+            } else {
+                templateData = null;
+            }
+
+        } else {
+            templateData = null;
+        }
+    }
+    //组合配置json
+    function buildTemplate() {
+        var str = "";        
+        var params = [];
+        var checkParam = $(".xx").find("input[type='checkbox']:checked");
+        for (var param = 0; param < checkParam.length; param++) {
+            var currentParam = $(checkParam[param]);
+            var id = currentParam.attr("id");
+            var text = currentParam.parent().text();
+            var paramObj = {};
+            paramObj.name = id;
+            paramObj.text = text;
+
+            var obj = $("#" + id + "_obj");
+            if (obj) {
+                paramObj.w = obj.css("width").replace('px', '');
+                paramObj.h = obj.css("height").replace('px', '');
+                paramObj.top = obj.css("top").replace('px', '');
+                paramObj.left = obj.css("left").replace('px', '');
+                paramObj.font_size = obj.css("font-size");
+                paramObj.font_weight = obj.css("font-weight");
+                paramObj.font_family = obj.css("font-family");
+            }
+            params[param] = paramObj;
+        }
+        if (params.length > 0)
+        {
+            str = JSON.stringify(params);
+        }
+        return str;
+    }
+    //参数对象
+    var PrintObject = function (data, container) {
+        //类方法
+        if (typeof PrintObject._initialized == "undefined") {
+            PrintObject.prototype.doselected = function () {
+                $('.aboutObject').hide();
+                if (this.selected && this.moveed == false) {
+                    this.unselected();
+                } else {
+                    clearPrintObjectSelected();
+                    this.el.addClass('selected');
+                    this.selected = true;
+                    $('.aboutObject').show();
+                    var thisObj = this;
+                    $('.styleSelector').each(function () {
+                        var styleName = $(this).attr('data_styleName');
+                        if (thisObj[styleName] != null) {
+                            $(this).val(thisObj[styleName]);
+                        }
+                    })
+                }
+            };
+            PrintObject.prototype.unselected = function () {
+                this.el.removeClass('selected');
+                this.selected = false;
+            };
+            PrintObject.prototype.setStyle = function (styleData) {
+                for (var key in styleData) {
+                    this[key] = styleData[key];
+                    this.el.css(key, styleData[key]);
+                }
+            };
+            PrintObject.prototype.html = function (useIdValue) {
+                var html = '<div id="' + this.id + '_obj" class="object" ' + (true != this.resized ? 'data-w="auto"' : '') +
+                           'style="' + (true != this.resized ? 'width:auto;height:auto' : 'width:' + this.w + ';height:' + this.h) + ';top:' + this.top + ';left:' + this.left + ';position:absolute;' +
+                           'font-size:' + this['font-size'] + ';font-weight:' + this['font-weight'] + ';font-family:' + this['font-family'] + ';text-align:left;">' +
+                           '<i class="delBut icon-remove" style="float:left;"></i>' + ((useIdValue && this.id.indexOf('custom') == -1) ? '{{>' + this.id.replace('Check', '') + '}}' : this.text) + '</div>';
+                //alert(html)
+                return html;
+            };
+            PrintObject.prototype.remove = function () {
+                this.el.remove();
+            };
+            PrintObject.prototype.toPx = function (val) {
+                val = val + "";
+                if (val != null && val.indexOf('px') == -1 && val != 'auto') {
+                    val = val + 'px';
+                }
+                return val;
+            }
+        }
+        PrintObject._initialized = true;
+        //类方法定义结束
+        var obj = this;
+        this.id = data.name;
+        this.text = data.text;
+        this.w = this.toPx(data.w);
+        this.h = this.toPx(data.h);
+        if (this.w != 'auto') {
+            this.resized = true;
+        }
+        this.top = this.toPx(data.top);
+        this.left = this.toPx(data.left);
+
+        this['font-size'] = data.font_size != null ? data.font_size : '12px';
+        this['font-weight'] = data.font_weight != null ? data.font_weight : 'normal';
+        this['font-family'] = data.font_family != null ? data.font_family : '新宋体';
+        if (container != null) {
+            this.parent = container;
+            this.el = $(this.html());
+            this.parent.append(this.el);
+            this.el.draggable({
+                drag: function () {
+                    $('#objectSetting').hide();
+                }
+            }).resizable({
+                minHeight: 10, minWidth: 50, stop: function () {
+                    obj.resized = true;
+                }
+            });
+            this.el.find('.delBut').click(function () {
+                $('#' + obj.id).click();
+            })
+            this.el.mousedown(function () {
+                obj.mousedowned = true;
+            })
+            this.el.mouseup(function () {
+                obj.doselected();
+                obj.mousedowned = false;
+                obj.moveed = false;
+                obj.top = ($(obj.el).offset().top - $(obj.parent).offset().top + $(obj.parent).scrollTop()) + 'px';
+                obj.left = ($(obj.el).offset().left - $(obj.parent).offset().left + $(obj.parent).scrollLeft()) + 'px';
+                obj.w = $(obj.el).width() + 'px';
+                obj.h = $(obj.el).height() + 'px';
+                setTimeout(function () {
+                    $('#objectSetting').show();
+                    $('#objectSetting').css('top', $(obj.el).offset().top - 30);
+                    $('#objectSetting').css('left', $(obj.el).offset().left);
+                }, 200)
+
+            })
+            this.el.mousemove(function () {
+                if (obj.mousedowned != null && obj.mousedowned) obj.moveed = true;
+            })
+
+        }
+
+        return obj;
+    }
+    //@ sourceURL=KDPZ.js;
+</script>

@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
+    <link href="/ViewV5/CSS/BaseClassV3.css" rel="stylesheet" />
+    <script type="text/javascript" src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/JS/avalon1.47.js"></script>
+    <script type="text/javascript">
+
+        var model = avalon.define({
+            $id: "APP_LCSP_SEL",
+            LCTypeData: [],
+            GetLCTypeData: function () {
+                //获取主要菜单
+                $.getJSON('/API/VIEWAPI.ashx?Action=LCSP_GETWFPDLIST', { P1: 1 }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        model.LCTypeData = resultData.Result;
+                    }
+                })
+            },
+            SelLCFun: function (item) {
+                window.location.href = "/ViewV5/AppPage/APP_ADD_WF.html?FormCode=LCSP&PDID=" + item.ID + "&lctype=" + item.ProcessType;
+            }
+        });
+        avalon.ready(function () {
+            model.GetLCTypeData();
+        })
+    </script>
+</head>
+<body>
+    <div class="container-fluid maindiv" style="margin: 20px" id="dvContent" ms-controller="APP_LCSP_SEL">
+        <div class="formtitle"><span>请先选择流程</span></div>
+        <div class="pCard" ms-repeat-el="LCTypeData" style="width: 80px;text-align: center;min-width: 110px;background-color: transparent;" ms-click="SelLCFun(el)">
+            <div style="height:90px"><i class="iconfont icon-biaodan" style="font-size:80px;color:#66c9f3"></i></div>
+            <div class="pName">{{el.ProcessName}}</div>
+        </div>
+
+    </div>
+</body>
+</html>

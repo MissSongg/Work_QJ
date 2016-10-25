@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>流程列表</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.5.8/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.5.8/css/sm-extend.min.css">
+    <style type="text/css">
+        /*.ui-header {background-color: #06c1ae;color: #fff;}
+        .ui-header h1{color:#fff;}
+        .bar .button-link{color:#fff;}*/
+
+        .ms-controller, [ms-controller] {
+            display: none;
+        }
+    </style>
+
+</head>
+<body ms-controller="list">
+    <div class="page page-current" id="pageindex1">
+
+        <div class="content infinite-scroll infinite-scroll-bottom" data-distance="50">
+            <div class="list-block" style="margin:0">
+                <ul>
+                    <li class="item-content item-link" ms-repeat-el="ctData" ms-on-tap="vieww(el)">
+                        <!--<div class="item-media" style="height:60px"><i class="icon icon-f7"></i></div>-->
+                        <div class="item-inner" style="height:60px">
+                            <div class="item-title">{{el.ProcessName}}</div>
+                            <!--<div class="item-after"></div>-->
+                        </div>
+                    </li>
+                    <li class="item-content" ms-if="issj=='0'">
+                        <div class="item-inner" style="height:60px">
+                            <div class="item-title">无流程</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm-extend.min.js' charset='utf-8'></script>
+    <script src="/View_Mobile/JS/avalon.mobile.min.js"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script>
+
+        var model = avalon.define({
+            $id: "list",
+            ctData: [],
+            issj: '',
+            vieww: function (el) {
+                //window.location = "UI_LCSP_LIST.html?ID=" + el.ID + "&r=" + Math.random();
+                window.location = "/View_Mobile/UI/BASE/APP_MOBIL_WF.html?FormCode=LCSP&PDID=" + el.ID + "&r=" + Math.random();
+            }
+        });
+        avalon.ready(function () {
+            $.showPreloader();
+            $.post("/API/WXAPI.ashx?Action=LCSP_GETWFPDLIST&r=" + Math.random(), { "P1": "1" }, function (data) {
+                $.hidePreloader();
+                var data = $.parseJSON(data);
+                if (data.ErrorMsg == "") {
+                    model.ctData = data.Result;
+                    if (data.Result.length == 0)
+                    {
+                        model.issj = '0';
+                    }
+                }
+                else {
+                    $.tips({
+                        content: "流程类型加载失败",
+                        stayTime: 2000,
+                        type: "warn"
+                    })
+                }
+
+            });
+        })
+        function back() {
+            window.history.back();
+        }
+    </script>
+</body>
+
+</html>

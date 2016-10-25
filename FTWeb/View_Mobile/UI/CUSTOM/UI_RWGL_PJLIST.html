@@ -1,0 +1,318 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>督办任务查看</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link href="/View_Mobile/Frozenui1.3/css/frozen.css" rel="stylesheet" />
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+    <script src="/View_Mobile/JS/zepto.min.js"></script>
+    <script src="/View_Mobile/JS/avalon.mobile.min.js"></script>
+    <script src="/View_Mobile/Frozenui1.3/js/frozen.js"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script src="/View_Mobile/JS/raty/jquery.raty.js?v=1.3"></script>
+    <script>
+
+        window.localStorage.removeItem("page");
+        window.localStorage.setItem("page", 1);
+
+        window.localStorage.removeItem("isjz");
+        window.localStorage.setItem("isjz", 0);
+
+        var model = avalon.define({
+            $id: "XXList",
+            ctData: [],
+            tjel: "",
+            ids: "",
+            gtitle: "任务信息查看",
+            nowuser: ComFunJS.getCookie("wxusername"),
+            type: ComFunJS.getQueryString("type"),
+            repshow: function () {
+                $(this).parent().siblings().removeClass("active");
+                $(this).parent().addClass("active");
+            },
+            addrw: function () {
+                window.location = "UI_RWGL_INPUT.html?r=" + Math.random();
+            },
+            addwc: function (wcel) {
+                var lg = $.loading({
+                    content: '保存中...',
+                })
+                $.post("/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLWCQK&r=" + Math.random(), { P1: wcel.RWWCQK, P2: wcel.ID }, function (data) {
+                    lg.hide();
+                    var data = $.parseJSON(data);
+                    if (data.ErrorMsg == "") {
+                        $.tips({
+                            content: "完成成功",
+                            stayTime: 2000,
+                            type: "warn"
+                        })
+                    } else {
+
+                        $.tips({
+                            content: "完成失败",
+                            stayTime: 2000,
+                            type: "warn"
+                        })
+                    }
+                })
+            },
+            addpj: function (pjel) {
+                var lg = $.loading({
+                    content: '保存中...',
+                })
+                $.getJSON('/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLPJWCQK_WX&r=' + Math.random(), { "P1": pjel.DBPJ, ID: pjel.ID }, function (resultData) {
+                    lg.hide();
+                    if (resultData.ErrorMsg == "") {
+                        $.tips({
+                            content: "评价成功",
+                            stayTime: 2000,
+                            type: "warn"
+                        })
+                    }
+                    else {
+                        $.tips({
+                            content: "评价失败",
+                            stayTime: 2000,
+                            type: "warn"
+                        })
+                    }
+                })
+            },
+            LoadScore: function (type) {
+                if (type == "add" && $(".raty").length > 0) {
+                    $(".raty").raty({
+                        //readOnly: true,
+                        //cancel: true,
+                        score: function () {
+                            return $(this).attr("score") * 1 / 20;
+                        },
+                        click: function (score, evt) {
+                            var obj = $(this);
+                            $.getJSON('/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLPFWCQK_WX&r=' + Math.random(), { "P1": score * 20, ID: $(this).attr("itemid") }, function (resultData) {
+                                if (resultData.ErrorMsg == "") {
+                                    if ($(obj).parent().parent().parent().find(".pftatus .ui-badge-muted").text() == "未评价") {
+                                        $(obj).parent().parent().parent().find(".pftatus .ui-badge-muted").text("已评价")
+                                    }
+
+
+                                    $.tips({
+                                        content: "评分成功",
+                                        stayTime: 2000,
+                                        type: "warn"
+                                    })
+                                }
+                                else {
+                                    $.tips({
+                                        content: "评分失败",
+                                        stayTime: 2000,
+                                        type: "warn"
+                                    })
+                                }
+                            })
+                        }
+                    });
+                }
+            }
+        })
+
+        var strId = ComFunJS.getQueryString("ID");
+
+        function loadMore() {
+            var lg = $.loading({
+                content: '加载中...',
+            })
+
+            $.getJSON("/API/WXAPI.ashx?Action=DBRW_GETCUS_SWRWGLPJLIST_WX&r=" + Math.random(), { "P1": strId }, function (r) {
+                lg.hide();
+                if (r.ErrorMsg == "") {
+                    if (r.Result.length > 0) {
+                        model.ctData.pushArray(r.Result);
+                        model.gtitle = r.Result[0].GroupTitle;
+
+                        $(".ui-container").css("border-top-width", $(".ui-header").height());
+                    }
+                    else {
+                        //window.location.replace("/View_Mobile/UI/UI_Error.html?msg=信息不存在或已删除");
+                    }
+                }
+            })
+        }
+
+        avalon.ready(function () {
+            loadMore();
+        })
+
+        function rwzt(strsp) {
+            if (strsp.Status == 0) {
+                return '<div class="ui-badge-muted" >新任务</div>';
+            }
+            else if (strsp.Status == 1) {
+                if (strsp.RWFS) {
+                    return '<div class="ui-badge-muted" style="background-color:blue;">已评价</div>';
+                } else {
+                    return '<div class="ui-badge-muted" style="background-color:blue;">未评价</div>';
+                }
+                
+            }
+            else if (strsp.Status == 2) {
+                return '<div class="ui-badge-muted" >已归档</div>';
+            }
+        }
+        function pf(str) {
+            if (str) {
+                var html = '<div></div>';
+                var html1 = $(html).raty({
+                    readOnly: true,
+                    score: str * 1 / 20
+                }).html();
+                return html1;
+            }
+            else {
+                return '';
+            }
+        }
+        function back() {
+            window.history.back();
+        }
+    </script>
+
+    <style>
+        .ui-border {
+            /*padding: 10px;*/
+        }
+
+        .ui-list > li {
+            margin: 3px;
+        }
+        .ui-form-item label{width:115px;}
+        .ui-form-item .wspan {
+            width: 100%;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            border: 0;
+            background: 0 0;
+            padding-left: 115px;
+        }
+
+        .ms-controller, [ms-controller] {
+            display: none;
+        }
+
+        .ui-form-item .span img {
+            height: auto !important;
+            width: auto\9 !important;
+            width: 100% !important;
+        }
+
+        .ui-form-item .span {
+            line-height: 1.5 !important;
+            padding-bottom: 10px;
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+        .ui-header{height:auto;line-height:25px;}
+        .ui-header h1{word-wrap: break-word;word-break:break-all;}
+    </style>
+
+</head>
+<body ms-controller="XXList">
+    <header class="ui-header ui-header-stable ui-border-b" >
+        <i class="ui-icon-return" onclick="back()" ms-if="type" ></i>
+        <h1>{{gtitle}}</h1>
+    </header>
+    <section class="ui-container" >
+         
+        <ul class="ui-list ui-list-pure" style="background-color: #f8f8f8;">
+            <!--<li class="ui-form-item ui-border-b">
+                <p>{{gtitle}}</p>
+            </li>-->
+            <li class="ui-border ui-label-list" data-repeat-rendered="LoadScore" ms-repeat-el="ctData" style="margin-bottom: 10px; background-color: white;">
+                <!--<div class="ui-form">
+                    <div class=" ui-border-b" style="height: auto;  padding: 10px; ">
+                        <span class="span">【{{el.TypeName}}】{{el.RWTitle}}</span>
+                    </div>
+                </div>-->
+                <div class="ui-form-item ui-border-b" style="height:auto;min-height:44px">
+                    <label>
+                        任务内容
+                    </label>
+                    <span class="wspan "></span>
+                    <p class="span" ms-if="el.RWContent" ms-html="el.RWContent"></p>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="ui-form-item ui-border-b">
+                    <label>
+                        督办人
+                    </label>
+                    <span class="wspan">{{ComFunJS.convuser(el.RWDBR)}}</span>
+                </div>
+                <div class="ui-form-item ui-border-b">
+                    <label>
+                        负责人
+                    </label>
+                    <span class="wspan">{{ComFunJS.convuser(el.RWUSER)}}</span>
+                </div>
+                <div class="ui-form-item ui-border-b">
+                    <label style="font-size:15px">
+                        要求完成时间
+                    </label>
+                    <span class="wspan">{{el.RWEDate|date("yyyy-MM-dd")}}</span>
+                </div>
+                <div class="ui-form-item ui-border-b ui-form-item-textarea" style="height:auto;min-height:44px">
+                    <label>
+                        完成情况
+                    </label>
+                    <div ms-if="el.RWUSER==nowuser&&el.Status==0">
+                        <textarea placeholder="请输入完成情况" ms-duplex="el.RWWCQK" style="height:80px;" class="chackTextarea-area"></textarea>
+                        <a id="wc" class="ui-btn-lg ui-btn-primary" ms-click="addwc(el)" style="float: right; width: auto; height: 30px; line-height: 30px;  margin-bottom:10px; margin-left: 5px;">完成</a>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div ms-if="el.RWUSER!=nowuser||el.Status!=0">
+                        <span class="wspan "></span>
+                        <p class="span" ms-if="el.RWWCQK" ms-html="el.RWWCQK"></p>
+                        <div style="clear: both"></div>
+                    </div>
+                </div>
+                <div class="ui-form-item ui-border-b" ms-if="el.Status>0">
+                    <label>
+                        评分
+                    </label>
+                    <span class="wspan" ms-if="el.SHUser!=nowuser||el.Status==2">
+                        {{pf(el.RWFS)|html}} {{el.RWFS}}
+                    </span>
+                    <span class="wspan" ms-if="el.SHUser==nowuser&&el.Status!=2">
+                        <!--{{szpf(el)|html}}-->
+                        <span class="raty" ms-attr-score="el.RWFS" ms-attr-itemid="{{el.ID}}">
+                        </span>
+                    </span>
+                </div>
+                <div class="ui-form-item ui-border-b ui-form-item-textarea" ms-if="el.Status>0" style="height:auto;min-height:44px">
+                    <label>
+                        评价
+                    </label>
+                    <div ms-if="el.SHUser==nowuser&&el.Status!=2">
+                        <textarea placeholder="请输入评价" ms-duplex="el.DBPJ" style="height:80px;" class="chackTextarea-area"></textarea>
+                        <a id="pj" class="ui-btn-lg ui-btn-primary" ms-click="addpj(el)" style="float: right; width: auto; height: 30px; line-height: 30px; margin-top: -10px; margin-bottom:10px; margin-left: 5px;">确认评价</a>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div ms-if="el.SHUser!=nowuser||el.Status==2">
+                        <span class="wspan " ms-html="el.DBPJ"></span>
+                    </div>
+                </div>
+                <div class="ui-form-item ui-border-b ui-form-item-checkbox">
+                    <label>
+                        任务状态
+                    </label>
+                    <span class="wspan pftatus" style="display:block;">
+                        {{rwzt(el)|html}}
+                    </span>
+                </div>
+            </li>
+        </ul>
+
+
+    </section>
+</body>
+</html>

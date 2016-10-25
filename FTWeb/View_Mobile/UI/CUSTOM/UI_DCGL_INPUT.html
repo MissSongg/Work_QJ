@@ -1,0 +1,413 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link href="/View_Mobile/Frozenui1.3/css/frozen.css" rel="stylesheet" />
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+    <script src="/View_Mobile/JS/zepto.min.js"></script>
+    <script src="/View_Mobile/Frozenui1.3/js/frozen.js"></script>
+    <script src="/View_Mobile/JS/avalon.mobile.min.js"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script>
+        //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        //    //隐藏右上角按钮
+        //    WeixinJSBridge.call('hideOptionMenu');
+        //});
+
+        var strId = ComFunJS.getQueryString("ID");
+
+        var model = avalon.define({
+            $id: "qjmodel",
+            code: "DCGL",
+            isbj: "",
+            wximg: "",
+            sctp: function () {
+                model.ctData.ImgUrl = "";
+            },
+            ctData: { "TypeID": "", "Name": "", "Price": "", "ImgUrl": "", "Remark": "","Status":"1","Count":"0"},
+            savedata: function () {
+                if (model.ctData.TypeID == "") {
+                    $.tips({
+                        content: "请选择类别",
+                        stayTime: 2000,
+                        type: "warn"
+                    })
+                    return;
+                }
+                if (model.ctData.Name == "") {
+                    $.tips({
+                        content: "请输入名称",
+                        stayTime: 2000,
+                        type: "warn"
+                    })
+                    return;
+                }
+
+                if (model.ctData.Price == "") {
+                    $.tips({
+                        content: "请输入价格",
+                        stayTime: 2000,
+                        type: "warn"
+                    })
+                    return;
+                }
+                if (isNaN(model.ctData.Price) || model.ctData.Price == 0) {
+                    $.tips({
+                        content: "价格输入错误",
+                        stayTime: 2000,
+                        type: "warn"
+                    })
+                    return;
+                }
+                if (model.ctData.Count == "") {
+                    //$.tips({
+                    //    content: "请输入数量",
+                    //    stayTime: 2000,
+                    //    type: "warn"
+                    //})
+                    //return;
+                } else {
+                    var reg = /^(0|[1-9]\d*)$/;
+                    if (!reg.test(model.ctData.Count)) {
+
+                        $.tips({
+                            content: "数量输入错误",
+                            stayTime: 2000,
+                            type: "warn"
+                        })
+                        return;
+                    }
+                }
+                
+                $("#imglist .tpli").each(function () {
+                    if ($(this).hasClass("wximg")) { //微信上传未处理的图片
+                        if (model.wximg) {
+                            model.wximg += ",";
+                        }
+                        model.wximg += $(this).attr("itemid");
+
+                    }
+                })
+
+                //if (model.ctData.ImgUrl == "" && model.wximg == "")
+                //{
+                //    $.tips({
+                //        content: "请上传图片",
+                //        stayTime: 2000,
+                //        type: "warn"
+                //    })
+                //    return;
+                //}
+                var lg = $.loading({
+                    content: '保存中...',
+                })
+                if ($("#issj").attr("checked")) {
+                    model.ctData.Status = "1";
+                }
+                else {
+                    model.ctData.Status = "0";
+                }
+                $.post("/API/WXAPI.ashx?Action=DCGL_ADDDCGL&r=" + Math.random(), { "P1": JSON.stringify(model.ctData.$model), P2: model.wximg }, function (data) {
+                    lg.hide();
+                    var data = $.parseJSON(data);
+                    if (data.ErrorMsg == "") {
+                        $("button").hide();
+                        var el = $.tips({
+                            content: "保存成功！",
+                            stayTime: 2000,
+                            type: "success"
+                        })
+                        el.on("tips:hide", function () {
+                            //if (model.isbj == "") {
+                            //    window.location.replace(location.href);
+                            //}
+                            //else {
+                            //    window.location.replace("UI_DCGL_LIST.html?r=" + Math.random());
+                            //}
+                            window.history.back();
+                        })
+                    }
+                    else {
+                        $.tips({
+                            content: "保存失败，原因：" + data.ErrorMsg,
+                            stayTime: 2000,
+                            type: "warn"
+                        })
+                    }
+                })
+
+            }
+        });
+
+
+        avalon.ready(function () {
+
+            var lg = $.loading({
+                content: '加载中...',
+            })
+            if (strId) {
+                model.isbj = "Y";
+                $("#save").text("保存菜品");
+                $("title").text("修改菜品");
+            }
+            $.post("/API/WXAPI.ashx?Action=XTGL_GETZIDIANLIST&r=" + Math.random(), { "P1": "3" }, function (data) {
+                if (!strId) {
+                    lg.hide();
+                }
+                var data = $.parseJSON(data);
+                if (data.ErrorMsg == "") {
+                    $("#leibie").empty();
+                    for (var i = 0; i < data.Result.length; i++) {
+                        $("#leibie").append('<option value="' + data.Result[i].ID + '">' + data.Result[i].TypeName + '</option>');
+                        if (i == 0) {
+                            model.ctData.TypeID = data.Result[i].ID;
+                        }
+                    }
+
+                    if (strId) {
+
+                        $.getJSON('/API/WXAPI.ashx?Action=DCGL_GETDCGLMODEL&r=' + Math.random(), { P1: strId }, function (resultData) {
+                            lg.hide();
+                            if (resultData.ErrorMsg == "") {
+                                model.ctData = resultData.Result;
+                            }
+                        })
+                    }
+                }
+                else {
+                    $.tips({
+                        content: "类别加载失败，原因：" + data.ErrorMsg,
+                        stayTime: 2000,
+                        type: "warn"
+                    })
+                }
+
+            })
+
+            $.getJSON("/API/WXAPI.ashx?action=JSSDK_GETSIGNAGURE&r=" + Math.random(), { "P1": window.location.href }, function (r) {
+                if (r.ErrorMsg == "") {
+
+                    wx.config({
+                        debug: false,
+                        appId: r.Result.appId,
+                        timestamp: r.Result.timestamp,
+                        nonceStr: r.Result.noncestr,
+                        signature: r.Result.signature,
+                        jsApiList: [
+                          'checkJsApi',
+                          'onMenuShareTimeline',
+                          'onMenuShareAppMessage',
+                          'onMenuShareQQ',
+                          'onMenuShareWeibo',
+                          'hideMenuItems',
+                          'showMenuItems',
+                          'hideAllNonBaseMenuItem',
+                          'showAllNonBaseMenuItem',
+                          'translateVoice',
+                          'startRecord',
+                          'stopRecord',
+                          'onRecordEnd',
+                          'playVoice',
+                          'pauseVoice',
+                          'stopVoice',
+                          'uploadVoice',
+                          'downloadVoice',
+                          'chooseImage',
+                          'previewImage',
+                          'uploadImage',
+                          'downloadImage',
+                          'getNetworkType',
+                          'openLocation',
+                          'getLocation',
+                          'hideOptionMenu',
+                          'showOptionMenu',
+                          'closeWindow',
+                          'scanQRCode',
+                          'chooseWXPay',
+                          'openProductSpecificView',
+                          'addCard',
+                          'chooseCard',
+                          'openCard'
+                        ]
+                    })
+
+
+                    $("#add_pit").click(function () {
+                        wx.chooseImage({
+                            count: 1,
+                            success: function (res) {
+                                $(res.localIds).each(function (index) {
+                                    wx.uploadImage({
+                                        localId: res.localIds[index], // 需要上传的图片的本地ID，由chooseImage接口获得
+                                        isShowProgressTips: 1,// 默认为1，显示进度提示
+                                        success: function (s_res) {
+                                            var serverId = s_res.serverId; // 返回图片的服务器端ID
+                                            $("#imglist").find(".wximg").remove();
+                                            var $html = $('<li id="img_' + index + '" itemid="" class="imgxl tpli wximg"><span style="background-image:url(' + res.localIds[index] + ');" class="tpxs"></span><i class="ui-icon-close-progress sctp"></i></li>');
+                                            $html.insertBefore($("#imglist .scli"));
+                                            $html.find(".sctp").bind("click", function () {
+                                                $html.remove();
+                                            })
+
+                                            $("#imglist").find("#img_" + index).attr("itemid", serverId);
+
+                                        }
+                                    });
+                                })
+                            }
+                        });
+                    })
+
+
+                } else {
+                    alert(r.ErrorMsg);
+                }
+
+            })
+        })
+        function back() {
+            //window.location.replace("UI_DCGL_LIST.html?r=" + Math.random());
+            window.history.back();
+        }
+    </script>
+    <style type="text/css">
+        .ui-select {
+            border: none;
+            border: 0;
+            background-color: #fff;
+            appearance: none;
+            -moz-appearance: none; /* Firefox */
+            -webkit-appearance: none; /* Safari 和 Chrome */
+        }
+
+        .ms-controller, [ms-controller] {
+            display: none;
+        }
+
+        .ui-form-item .wspan {
+            width: 100%;
+            display: -webkit-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            border: 0;
+            background: 0 0;
+            padding-left: 95px;
+        }
+
+            .ui-form-item .wspan img {
+                width: 50px;
+                height: 50px;
+                padding-right: 3px;
+            }
+
+        .sctp {
+            color: #18b4ed;
+            right: 4px;
+            top: -5px;
+            z-index: 9;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 13px;
+            line-height: 20px;
+            text-indent: -3px;
+            position: absolute;
+            font-size: 25px;
+        }
+
+        .imgxl {
+            position: relative;
+            float: left;
+            padding-top: 0;
+            height: 50px;
+            width: 50px;
+            padding-right: 10px;
+            margin-left: 0px;
+            margin-bottom: 5px;
+        }
+
+        .tpxs {
+            height: 50px;
+            width: 50px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background-repeat: no-repeat;
+            -webkit-background-size: cover;
+        }
+    </style>
+    <title>录入菜品</title>
+</head>
+<body ms-controller="qjmodel">
+    <div id="content">
+        <div class="ui-footer ui-footer-stable ui-btn-group ui-border-t">
+            <button class="ui-btn-lg" onclick="back()">
+                取消
+            </button>
+            <button class="ui-btn-lg ui-btn-primary" id="save" ms-click="savedata()">
+                新增菜品
+            </button>
+        </div>
+        <section class="ui-container">
+            <div class="ui-form ui-border-t">
+                <div class="ui-form-item ui-border-b">
+                    <label>
+                        类别
+                    </label>
+                    <div class="ui-select ui-border-b">
+                        <select ms-duplex="ctData.TypeID" id="leibie"></select>
+                    </div>
+                </div>
+                <div class="ui-form-item ui-border-b">
+                    <label>
+                        名称
+                    </label>
+                    <input type="text" placeholder="请输入名称" ms-duplex="ctData.Name" />
+
+                </div>
+
+                <div class="ui-form-item ui-border-b">
+                    <label>
+                        价格
+                    </label>
+                    <input type="tel" placeholder="请输入价格" ms-duplex="ctData.Price" />
+                </div>
+                <div class="ui-form-item ui-border-b">
+                    <label>
+                        数量
+                    </label>
+                    <input type="tel" placeholder="请输入数量" ms-duplex="ctData.Count" />
+                </div>
+                <div class="ui-form-item ui-form-item-switch ui-border-b">
+                    <label>
+                        是否上架
+                    </label>
+                    <div class="ui-switch" style="left: 105px;">
+                        <input type="checkbox" id="issj" ms-attr-checked="ctData.Status=='1'">
+                    </div>
+                </div>
+                <div class="ui-form-item ui-border-b" style="height:auto;min-height:44px">
+                    <label>
+                        上传图片
+                    </label>
+
+                    <div class="wspan" style="padding-top: 5px; height: auto;display:block">
+                        <ul id="imglist">
+                            <li class="imgxl tpli" ms-attr-itemid="ctData.ImgUrl" ms-if="ctData.ImgUrl">
+                                <span ms-css-background-image="url({{'/ViewV5/Base/DownFile.aspx?fileId='+ctData.ImgUrl}})" class="tpxs"></span>
+                                <i class="ui-icon-close-progress sctp" ms-click="sctp()"></i>
+                            </li>
+                            <li class="imgxl scli"><img id="add_pit" src="/View_Mobile/Images/icon-add.png" /></li>
+                        </ul>
+                        <div style="clear:both"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

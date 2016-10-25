@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <title>详细信息</title>
+    <link href="/View_Mobile/Frozenui1.3/css/frozen.css" rel="stylesheet" />
+    <link href="/View_Mobile/CSS/fs_gallery.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/ShowCss.css">
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+    <script src="/View_Mobile/JS/zepto.min.js"></script>
+    <script src="/View_Mobile/Frozenui1.3/js/frozen.js"></script>
+    <script src="/View_Mobile/JS/avalon.mobile.min.js"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script src="/View_Mobile/JS/watermark.js"></script>
+    <script src="/View_Mobile/JS/fs_gallery.js"></script>
+    <script>
+        //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        //    //隐藏右上角按钮
+        //    WeixinJSBridge.call('hideOptionMenu');
+        //});
+        var strId = ComFunJS.getQueryString("ID");
+        var fheight = 0;
+
+        var rwinfo = avalon.define({
+            $id: "xxinfo",
+            modelData: {},
+            ztData: {},
+            ydData: [],
+            ydcount: 0,
+            wydData: [],
+            wydcount: 0,
+            fjData: [],
+            fjcount: 0,
+            plData: [],
+            plcount: 0,
+            TypeName: "",
+            pl: function () {
+                $(".ui-list").toggle();
+                $(".ui-footer").toggle();
+            },
+            yy: function () {
+                if (rwinfo.ydData.size() > 0) {
+                    var html = '<div class=" ui-label-list" style="overflow-y: auto;margin-top:10px;max-height:' + (fheight - 150) + 'px">';
+                    $(rwinfo.ydData).each(function (index, ele) {
+                        html = html + '<label class="ui-label" style="position: relative; width: auto;padding: 0 5px;margin: 0 5px 5px 0;">' + ComFunJS.convuser(ele) + '</label>';
+                    })
+                    html = html + '</div>';
+
+                    $.dialog({
+                        title: '已阅人员',
+                        content: html,
+                        button: ["确认"]
+                    });
+                    $(".ui-dialog-ft").find("button").click(function () {
+                        $(".ui-dialog").remove();
+                    });
+                }
+            },
+            wy: function () {
+                if (rwinfo.wydData.size() > 0) {
+                    var html = '<div class=" ui-label-list" style="overflow-y: auto;margin-top:10px;max-height:' + (fheight - 150) + 'px">';
+                    $(rwinfo.wydData).each(function (index, ele) {
+                        html = html + '<label class="ui-label" style="position: relative; width: auto;padding: 0 5px;margin: 0 5px 5px 0;">' + ComFunJS.convuser(ele) + '</label>';
+                    })
+
+                    html = html + '</div>';
+                    
+                    $.dialog({
+                        title: '未阅人员',
+                        content: html,
+                        button: ["确认"]
+                    });
+                    $(".ui-dialog-ft").find("button").click(function () {
+                        $(".ui-dialog").remove();
+                    });
+                }
+            },
+            fdtp: function (obj) {
+                if (!$(".fs_gallery").html()) {
+                    $('.mall_pcp').fsgallery();
+                    $(obj).trigger("click");
+                }
+            },
+            viewwxx: function (el) {
+                if (el.YLUrl) {
+                    window.location = el.YLUrl;
+                }
+            }
+        });
+        avalon.ready(function () {
+            //获取页面高度
+
+            fheight = document.documentElement.clientHeight;
+
+            if (strId != null) {
+                var lg = $.loading({
+                    content: '加载中...',
+                })
+                $.getJSON('/API/WXAPI.ashx?Action=XXFB_UPDATEXXFBREADUSER&r=' + Math.random(), { P1: strId }, function (data) {
+                    if (data.ErrorMsg == "") {
+                        $.getJSON('/API/WXAPI.ashx?Action=XXFB_GETXXFBMODELWX&r=' + Math.random(), { P1: strId }, function (resultData) {
+                            lg.hide();
+                            if (resultData.ErrorMsg == "") {
+                                if (resultData.Result.ID) {
+                                    rwinfo.modelData = resultData.Result;
+                                    rwinfo.plData = resultData.Result1;
+                                    rwinfo.plcount = resultData.Result1.length;
+                                    rwinfo.fjData = resultData.Result2;
+                                    rwinfo.fjcount = resultData.Result2.length;
+                                    rwinfo.wydData = resultData.Result3;;
+                                    rwinfo.wydcount = resultData.Result3.length;
+                                    rwinfo.TypeName = resultData.Result.remark;
+                                    if (resultData.Result.ReadUser != null) {
+                                        var ReadUserList = resultData.Result.ReadUser.split(',');
+                                        rwinfo.ydData = ReadUserList;
+                                        rwinfo.ydcount = ReadUserList.length;
+                                    }
+                                    rwinfo.ztData = resultData.Result4;
+
+                                    setTimeout("setwatermark()", 300);
+                                }
+                                else {
+                                    window.location.replace("UI_Error.html?msg=信息不存在或已删除");
+                                }
+                            }
+                        })
+                    }
+                    else {
+                        window.location.replace("UI_Error.html?msg=没有权限!");
+                    }
+                })
+
+                $(".ui-btn").click(function () {
+                    if ($("#content").val() == null || $("#content").val() == "") {
+                        $.tips({
+                            content: "请输入评论内容",
+                            stayTime: 2000,
+                            type: "warn"
+                        })
+                        return;
+                    }
+                    var lg = $.loading({
+                        content: '评论中...',
+                    })
+
+                    $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": $("#content").val(), "MsgType": "XXFB", "MsgLYID": strId }, function (resultData) {
+                        lg.hide();
+                        if (resultData.ErrorMsg == "") {
+                            rwinfo.plData.push(resultData.Result);
+                            rwinfo.plcount = rwinfo.plcount + 1;
+                            var el = $.tips({
+                                content: "评论成功！！",
+                                stayTime: 2000,
+                                type: "success"
+                            })
+                            $("#content").val("");
+                        }
+                        else {
+                            var el = $.tips({
+                                content: "评论失败！！",
+                                stayTime: 2000,
+                                type: "warn"
+                            })
+                        }
+                    })
+
+                });
+            }
+
+        });
+
+        function setwatermark() {
+            var curuser = ComFunJS.convuser(ComFunJS.getCookie("wxusername"));
+            if (curuser && model.modelData.IsSecret.toLowerCase() == "true") {
+                watermark({ watermark_txt: curuser, watermark_y: $(".header").height() + 20, watermark_page_width: $("#details").width(), watermark_page_height: $("#details").height() });
+
+            }
+        }
+    </script>
+
+    <style>
+         #nickname {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 90%;
+        }
+
+        #activity-detail .page-content .text {
+            font-size: 16px;
+        }
+
+        .header {
+            margin-top: 10px;
+        }
+
+
+        #activity-name {
+            text-align: center;
+            color: #000;
+            font-size: 20px;
+            font-weight: 700;
+            white-space: pre-wrap;
+            word-wrap: normal;
+            word-break: normal;
+            padding-bottom: 10px;
+        }
+        .ms-controller, [ms-controller] {
+            display: none;
+        }
+        .ui-list > li {
+            margin: 3px;
+            padding-left: 15px;
+        }
+        .layermcont {
+            overflow-y: auto;
+            max-height: 100%;
+            position: relative;
+            
+        }
+        .ui-dialog-bd {
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body id="activity-detail" ms-controller="xxinfo">
+
+    <div id="page-content" class="page-content">
+        <div id="img-content">
+            <div class="header">
+                <h1 id="activity-name" style="border-bottom: 1px dotted #ccc; overflow: hidden; word-wrap: break-word; word-break: break-all; ">{{modelData.XXTitle}}</h1><p class="activity-info">
+                    <span>
+                    </span>
+                    <em id="post-date" class="activity-meta no-extra" style="font-style:normal">{{modelData.FBTime}}</em>
+                    <em class="activity-meta" style="font-style:normal">{{modelData.Author}}</em>
+                    <a href="javascript:viewProfile();" id="post-user" class="activity-meta"><span class="text-ellipsis"></span></a>
+                </p>
+            </div>
+            <div id="details" class="text" style="overflow: hidden; word-wrap: break-word; word-break: break-all; ">
+                {{modelData.XXContent|html}}
+            </div>
+            <ul class="ui-list">
+                <li class="ui-border-t" ms-repeat-el="fjData" style="padding: 5px; font-size: 14px; border: 1px solid #C8CACD;">
+
+                    <div style="padding-right:10px">
+                        <img ms-on-click="fdtp(this)" class="mall_pcp" style="height:40px;width:40px" ms-if="ComFunJS.xstp(el.FileExtendName)" ms-attr-src="'/ViewV5/Base/DownFile.aspx?fileId='+el.ID" />
+                        <img ms-on-tap="viewwxx(el)" style="height:40px;width:40px" ms-if="!ComFunJS.xstp(el.FileExtendName)" ms-attr-src="../Images/qywd/{{el.FileExtendName}}.png" onerror="javascript: this.src = '/View_Mobile/Images/qywd/file.png'" />
+                    </div>
+                    <div class="ui-list-info" ms-on-tap="viewwxx(el)" style="padding:0;">
+                        <h4 class="ui-nowrap">{{el.Name}}.{{el.FileExtendName}}</h4>
+                        <p class="ui-nowrap">{{Math.round(el.FileSize/1024)}}kb</p>
+                    </div>
+                    <div>
+                        <a ms-attr-href="'/ViewV5/Base/DownFile.aspx?MD5='+el.FileMD5" class="external">
+                            <img style="height: 20px; width: 20px; float: right; padding: 10px;" src="../Images/down.png" />
+                        </a>
+                    </div>
+
+                </li>
+            </ul>
+            <!--<div style="padding: 5px 0" ms-repeat-el="fjData">
+                <a ms-attr-href="'/ViewV5/Base/DownFile.aspx?MD5='+el.FileMD5">
+                    <div style="margin: 0px;font-size: 16px;background-color: #ffffff">
+                        <div style="font-size: 14px;border: 1px solid #C8CACD; ">
+                            <div style="margin: 5px;">
+                                <div style="height: 40px;width: 40px;float: left;">
+                                    <img ms-attr-src="'/ViewV5/Base/DownFile.aspx?fileId='+el.ID" width="40" height="40" ms-if="ComFunJS.xstp(el.FileExtendName)" />
+                                    <img ms-attr-src="'/View_Mobile/Images/qywd/'+el.FileExtendName+'.png'" width="40" height="40" ms-if="!ComFunJS.xstp(el.FileExtendName)" />
+                                </div>
+                                <div style="margin-left: 50px;line-height: 20px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 100%;">
+                                    <span style="text-decoration:none;color: #232528">{{el.Name}}.{{el.FileExtendName}}</span>
+                                </div>
+                                <div style="margin-left: 50px;color: #75777A;line-height: 20px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 100%;">{{Math.round(el.FileSize/1024)}}kb</div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>-->
+            <p class="page-toolbar" style="padding-bottom: 25px;">
+                <em class="activity-meta" style="font-style:normal;margin-left:0"><a ms-click="yy()">已阅({{ydcount}})</a></em> &nbsp;&nbsp;
+                <em class="activity-meta" style="font-style:normal;margin-left:0"><a ms-click="wy()">未阅({{wydcount}})</a></em>&nbsp;&nbsp;
+                <em class="activity-meta" style="font-style:normal;margin-left:0" ms-if="ztData.isPL=='1'"><a ms-click="pl()">评论({{plcount}})</a></em>
+            </p>
+        </div>
+    </div>
+    <div class="ui-form ui-border-t" style="padding-bottom: 44px; background: #f8f7f5;" >
+        <ul class="ui-list " style="display:none;" >
+            <li class=" ui-border " ms-repeat-el="plData" style="padding: 5px; height: auto;">
+                <div style="padding-right:10px">
+                    <img ms-attr-src="/ViewV5/Base/DownFile.aspx?type=TX&user={{el.CRUser}}" style='width: 40px;height:40px;' onerror="javascript: this.src = '/Upload/TX/def.jpg'">
+                </div>
+                <div class="ui-list-info" style="padding:0;">
+                    <div style="padding: 0; display: -webkit-box;">
+                        <div class="ui-list-info" style="padding:0;"><h4 class="ui-nowrap" style="font-size: 12px">{{ComFunJS.convuser(el.CRUser)}}</h4></div>
+                        <div style="margin-right: 10px; font-size: 12px;">{{el.CRDate|date("yyyy-MM-dd HH:mm")}}</div>
+                    </div>
+                    <p style="margin-bottom: 5px; font-size: 12px; overflow: hidden; word-wrap: break-word; word-break: break-all; " class="ui-txt-justify" ms-html="el.MSGContent"></p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="ui-footer ui-footer-stable ui-btn-group ui-border-t" style="display:none;z-index:10000;">
+        <section class="ui-input-wrap ui-border-t" style="width:100%">
+            <div class="ui-input ui-border-radius">
+                <input id="content" type="text" name="" value="" placeholder="我也说一句...">
+            </div>
+            <button class="ui-btn">评论</button>
+        </section>
+    </div>
+</body>
+
+</html>

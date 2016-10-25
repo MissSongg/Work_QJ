@@ -1,0 +1,536 @@
+﻿
+<!--<script src="//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="//cdn.bootcss.com/jqueryui/1.11.0/jquery-ui.min.css">-->
+<style>
+    .object {
+        padding: 0.2em;
+        border: solid 1px;
+        cursor: text;
+        background-color: #fff;
+    }
+
+    /*.delBut {
+        cursor: pointer;
+    }*/
+
+    .controlBar {
+        border: solid 1px #D2D2D2;
+        padding: 2px;
+    }
+    .ui-resizable-e {
+        display: none !important;
+    }
+    .ui-resizable-s {
+        display: none !important;
+    }
+    .move-kdd {
+        width: 120px;
+        height: 120px;
+        position: fixed;
+        /*bottom: 50px;
+        right: 150px;*/
+        z-index: 100;
+        /*top: 80px;
+        left: 440px;*/
+        /*top: 150px;
+        left: 540px;*/
+        top: 260px;
+        left: 850px;
+    }
+    .move-kdd img{width:100%;height:100%;position:absolute}
+    .move-kdd a{width:40px;height:40px;display:inline-block;z-index:120;position:absolute;cursor:pointer}
+    .move-kdd a span {
+            position: absolute;
+            
+            width: 20px;
+            height: 20px;
+            display: inline-block;display:none
+        }
+    
+    .up-key {
+        left: 40px;
+        top: 0;
+    }
+
+    .down-key {
+        left: 40px;
+        top: 80px;
+    }
+        
+         .left-key {
+            left: 0px;
+            top:40px;
+        }
+    .right-key {
+        left: 80px;
+        top: 40px;
+    }
+    .move-kdd .up-key span{
+        top:-20px;
+        left:10px;
+    }
+    .move-kdd .down-key span {
+        top: 40px;
+        left:10px;
+    }
+    .move-kdd .left-key span {
+        top: 10px;
+        left:-20px;
+    }
+    .move-kdd .right-key span {
+        top: 10px;
+        left: 40px;
+    }
+    .move-kdd a.dy-key {
+        width: 40px;
+        height: 40px;
+        background: #fff;
+        font-size: 14px;
+        border-radius: 100%;
+        top: 50%;
+        left: 50%;
+        line-height: 40px;
+        text-align: center;
+        margin-left:-20px;margin-top:-20px;font-weight:700;
+    }
+    .dy-btn {
+        position: fixed;
+        bottom: 100px;
+        right: 20px;
+    }
+
+        .dy-btn input {
+            width: 140px;
+            height: 35px;
+            border-radius: 0;
+            display: block;
+            margin-bottom: 20px;
+        }
+    #content {
+        display:none;
+    }
+</style>
+
+<script>
+    var tempindex = avalon.define({
+        $id: "W_KDDY",
+        name: "快递打印",
+        modelData: [],//快递配置数据
+        LeiXing: [],//所有配置信息
+        curKDType: "",//当前选中的快递
+        pzData: {},//当前选中的快递配置数据
+        dyJson: "",//打印记录的json
+        dyGS: "",//打印记录的快递
+        dyData:[],//最终打印的
+        lxrID: ComFunJS.getQueryString("lxrid"),//客户联系人id
+        lxrData: {},//客户联系人信息
+        cydzData: { "sendUser": "", "sendTel": "", "sendHomePhone": "", "sendCompany": "", "sendAddress": "", "sendProvince": "", "sendCity": "", "sendCounty": "" },
+        InitWigetData: function (strId) {
+            if (strId) {//从打印记录中打印
+                $.getJSON('/API/VIEWAPI.ashx?Action=KDDY_GETDYJLMODEL', { P1: strId }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        tempindex.dyJson = resultData.Result.Info;
+                        tempindex.dyGS = resultData.Result.GongSi;
+                        $.getJSON('/API/VIEWAPI.ashx?Action=KDDY_GETPZALL', function (Data) {
+                            if (resultData.ErrorMsg == "") {
+                                tempindex.LeiXing = Data.Result;
+                                tempindex.changeKD(tempindex.dyGS);
+                            }
+                        })
+                    }
+                })
+            }
+            else {
+                if (tempindex.lxrID) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETKHLXRMODEL', { P1: tempindex.lxrID }, function (result) {
+                        if (result.ErrorMsg == "") {
+                            tempindex.lxrData = result.Result;
+                            tempindex.lxrData.KHName = result.Result1;
+
+                            $.getJSON('/API/VIEWAPI.ashx?Action=KDDY_GETPZALL', function (resultData) {
+                                if (resultData.ErrorMsg == "") {
+                                    tempindex.LeiXing = resultData.Result;
+                                    if (tempindex.LeiXing.size() > 0) {
+                                        tempindex.changeKD(resultData.Result[0].ID);
+                                    }
+                                }
+                            })
+                        }
+                    })
+                }
+                else {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=KDDY_GETPZALL', function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            tempindex.LeiXing = resultData.Result;
+                            if (tempindex.LeiXing.size() > 0) {
+                                tempindex.changeKD(resultData.Result[0].ID);
+                            }
+                        }
+                    })
+                }
+            }
+            ComFunJS.initForm();
+        },//初始化
+        Add: function () {//编辑配置
+            top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=KDDY_KDPZ&ID=" + tempindex.curKDType, '添加表单', "1200", "");
+        },
+        AddNew: function () {//新增快递配置
+            top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=KDDY_KDPZ", '添加表单', "1200", "");
+        },
+        DELPZ: function () {
+            top.ComFunJS.winconfirm("确认要删除吗", function () {
+                $.post('/API/VIEWAPI.ashx?Action=KDDY_DELPZBYID', { "P1": tempindex.curKDType }, function (result) {
+                    result = JSON.parse(result)
+                    if (result.ErrorMsg == "") {
+                        top.ComFunJS.winsuccess("删除成功");
+                        tempindex.LeiXing.forEach(function (item) {
+                            if (item.ID == tempindex.curKDType) {//当前选中的快递
+                                tempindex.LeiXing.remove(item);
+                            }
+                        });
+                        if (tempindex.LeiXing.size() > 0) {
+                            tempindex.changeKD(tempindex.LeiXing[0].ID);
+                        }
+                    } else {
+                        top.ComFunJS.winwarning(result.ErrorMsg);
+                    }
+                })
+            }, function () { })
+        },
+        SaveData: function (callback) {
+            
+            if (tempindex.curKDType) {
+                var dys = buildTemplate();
+                //tempindex.LeiXing.forEach(function (item) {
+                //    if (item.ID == tempindex.curKDType) {//当前选中的快递
+                //        item.Vertical = tempindex.pzData.Vertical;
+                //        item.Horizontal = tempindex.pzData.Horizontal;
+                //    }
+                //})
+                tempindex.cydzData.sendUser = $("#sendUser").find(".vl").text();
+                tempindex.cydzData.sendTel = $("#sendTel").find(".vl").text();
+                tempindex.cydzData.sendHomePhone = $("#sendHomePhone").find(".vl").text();
+                tempindex.cydzData.sendCompany = $("#sendCompany").find(".vl").text();
+                tempindex.cydzData.sendAddress = $("#sendAddress").find(".vl").text();
+                tempindex.cydzData.sendProvince = $("#sendProvince").find(".vl").text();
+                tempindex.cydzData.sendCity = $("#sendCity").find(".vl").text();
+                tempindex.cydzData.sendCounty = $("#sendCounty").find(".vl").text();
+                //新增地址
+                $.post("/API/VIEWAPI.ashx?ACTION=KDDY_ADDCYDZ", { P1: JSON.stringify(tempindex.cydzData) }, function (result) {
+                    var jsonresult = $.parseJSON(result)
+                    if (jsonresult.ErrorMsg == "") {
+                    }
+                });
+                //新增打印记录
+                $.post("/API/VIEWAPI.ashx?ACTION=KDDY_ADDDYJL", {
+                    P1: dys, P2: tempindex.curKDType,
+                    Vertical: tempindex.pzData.Vertical, Horizontal: tempindex.pzData.Horizontal
+                }, function (result) {
+                    var jsonresult = $.parseJSON(result)
+                    if (jsonresult.ErrorMsg == "") {
+                        //tempindex.LeiXing.forEach(function (item) {
+                        //    if (item.ID == tempindex.curKDType) {
+                        //        item.objects = buildTemplatePZ();
+                        //    }
+                        //})
+                    }
+                });
+
+                //var headstr = "<html><head><title></title></head><body>";  
+                //var footstr = "</body>";  
+                //var newstr = document.getElementById("content").innerHTML;
+                //var oldstr = document.body.innerHTML;  
+                //document.body.innerHTML = headstr+newstr+footstr;  
+                //window.print();  
+                //document.body.innerHTML = oldstr;  
+                //return false;  
+
+                //打印
+                var cz = 0;
+                var sp = 0;
+                if (tempindex.pzData.Vertical * 1) {
+                    cz = tempindex.pzData.Vertical * 3.78;
+                }
+                if (tempindex.pzData.Horizontal * 1) {
+                    sp = tempindex.pzData.Horizontal * 3.78;
+                }
+                var oPop = window.open('', 'oPop');
+                var str = '<!DOCTYPE html>'
+                str += '<html>'
+                str += '<head>'
+                str += '<meta charset="utf-8">'
+                str += '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">'
+                str += '</head>'
+                str += '<body style="position: relative;top: ' + (cz-50) + 'px;left:'+(sp-60)+'px;">'
+                str += document.getElementById("content").innerHTML
+                str += '</body>'
+                str += '</html>'
+                //var str1 = '<!DOCTYPE html>'
+                //str1 += '<html>'
+                //str1 += '<head>'
+                //str1 += '<meta charset="utf-8">'
+                //str1 += '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">'
+                //str1 += '</head>'
+                //str1 += '<body >'
+                //str1 += document.getElementById("content").innerHTML
+                //str1 += '</body>'
+                //str1 += '</html>'
+                var str1 = '<body style="position: relative;">'
+                str1 += document.getElementById("content").innerHTML
+                str1 += '</body>'
+
+                oPop.document.write(str);
+                oPop.print();
+                oPop.document.body.outerHTML = str1;
+
+                //oPop.close();
+            }
+
+        },
+        changeKD: function (id) {
+
+            tempindex.curKDType = id;//当前选中的快递
+            tempindex.modelData = [];//清除快递配置数据
+
+            tempindex.LeiXing.forEach(function (item) {
+                if (item.ID == tempindex.curKDType) {//当前选中的快递
+                    tempindex.pzData = item;//当前选中的快递配置数据赋值
+
+                    if (tempindex.dyGS == item.ID) {//打印记录的json赋值给当前快递的配置json
+                        tempindex.modelData = JSON.parse(tempindex.dyJson);
+                    }
+                    else {
+                        //当前快递的配置json新增title并赋值
+                        var data = JSON.parse(item.objects);
+                        data.forEach(function (el) {
+                            el.title = el.text;
+                            el.text = "";
+                        })
+                        tempindex.modelData = data;
+                    }
+                    tempindex.modelData.forEach(function (i) {
+                        if (i.name.indexOf('receiver') != -1) {
+                            //tempindex.receiver.push(i);
+                            if (tempindex.lxrData.UserXM) {
+                                if (i.name == 'receiverUser') {
+                                    i.text = tempindex.lxrData.UserXM;
+                                }
+                                if (i.name == 'receiverTel') {
+                                    i.text = tempindex.lxrData.TelePhone;
+                                }
+                                if (i.name == 'receiverHomePhone') {
+                                    i.text = tempindex.lxrData.MobilePhone;
+                                }
+                                if (i.name == 'receiverAddress') {
+                                    i.text = tempindex.lxrData.Address;
+                                }
+                                if (i.name == 'receiverCompany') {
+                                    i.text = tempindex.lxrData.KHName;
+                                }
+                            }
+                        }
+                        //当前登录人员赋值给快递发送信息
+                        if (i.name.indexOf('send') != -1) {
+                            if (tempindex.dyGS != item.ID) {
+                                if (i.name == 'sendUser') {
+                                    i.text = top.model.UserData.UserRealName;
+                                }
+                                if (i.name == 'sendTel') {
+                                    i.text = top.model.UserData.mobphone;
+                                }
+                                if (i.name == 'sendAddress') {
+                                    i.text = top.model.CompanyData.Address;
+                                }
+                                if (i.name == 'sendCompany') {
+                                    i.text = top.model.CompanyData.QYName;
+                                }
+                            }
+                            //tempindex.send.push(i);
+                        }
+                    })
+                    tempindex.pzData.objects = JSON.stringify(tempindex.modelData);
+                    tempindex.dyData = tempindex.modelData;
+                }
+            });
+        },
+        xzcydz: function () {
+            top.ComFunJS.winbtnwin("/ViewV5/AppPage/KDDY/XZCYDZLIST.html", "选择寄件人", "1000", "600", {}, function (layero, index) {
+                var frameid = $("iframe", $(layero)).attr('id');
+                var getcydz = ComFunJS.isIE() ? window.frames[frameid].getcydz() : window.frames[frameid].contentWindow.getcydz();
+
+                if (getcydz) {
+                    $("#sendUser").find(".vl").text(getcydz.sendUser);
+                    $("#sendTel").find(".vl").text(getcydz.sendTel);
+                    $("#sendHomePhone").find(".vl").text(getcydz.sendHomePhone);
+                    $("#sendCompany").find(".vl").text(getcydz.sendCompany);
+                    $("#sendAddress").find(".vl").text(getcydz.sendAddress);
+                    $("#sendProvince").find(".vl").text(getcydz.sendProvince);
+                    $("#sendCity").find(".vl").text(getcydz.sendCity);
+                    $("#sendCounty").find(".vl").text(getcydz.sendCounty);
+
+                    top.layer.close(index);
+                }
+
+            });
+        },
+        xzlxr: function () {
+            top.ComFunJS.winbtnwin("/ViewV5/AppPage/CRM/XZLXRLIST.html", "选择联系人", "1000", "600", {}, function (layero, index) {
+                var frameid = $("iframe", $(layero)).attr('id');
+                var getlxr = ComFunJS.isIE() ? window.frames[frameid].getlxr() : window.frames[frameid].contentWindow.getlxr();
+
+                if (getlxr) {
+                    $("#receiverUser").find(".vl").text(getlxr.UserXM);
+                    $("#receiverTel").find(".vl").text(getlxr.TelePhone);
+                    $("#receiverHomePhone").find(".vl").text(getlxr.MobilePhone);
+                    $("#receiverAddress").find(".vl").text(getlxr.Address);
+                    $("#receiverCompany").find(".vl").text(getlxr.KHName);
+
+                    top.layer.close(index);
+                }
+
+            });
+        },
+        showyd: function (event) {
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            }
+            if ($(".move-kdd").is(":hidden")) {
+                $(".move-kdd").show();
+            }
+            else {
+                $(".move-kdd").hide();
+            }
+        },
+        move: function (type) {
+            if (!tempindex.pzData.Vertical) { tempindex.pzData.Vertical = '0'; }
+            if (!tempindex.pzData.Horizontal) { tempindex.pzData.Horizontal = '0'; }
+            switch (type) {
+                case 1: tempindex.pzData.Vertical = tempindex.pzData.Vertical * 1 - 1; $(".up-key").attr("title", tempindex.fxtitle('1')); $(".down-key").attr("title", tempindex.fxtitle('1')); break;
+                case 2: tempindex.pzData.Vertical = tempindex.pzData.Vertical * 1 + 1; $(".up-key").attr("title", tempindex.fxtitle('1')); $(".down-key").attr("title", tempindex.fxtitle('1')); break;
+                case 3: tempindex.pzData.Horizontal = tempindex.pzData.Horizontal * 1 - 1; $(".right-key").attr("title", tempindex.fxtitle('2')); $(".left-key").attr("title", tempindex.fxtitle('2')); break;
+                case 4: tempindex.pzData.Horizontal = tempindex.pzData.Horizontal * 1 + 1; $(".right-key").attr("title", tempindex.fxtitle('2')); $(".left-key").attr("title", tempindex.fxtitle('2')); break;
+            }
+
+            $(this).find('span').show();
+            $(this).find('span').addClass("animated");
+            setTimeout("$('.move-kdd').find('span').hide();", 500);
+        },
+        tplj: function (str) {
+            str = str + '';
+            if (str.indexOf('office') > 0) {
+                return 'url(' + str + ')';
+            }
+            else {
+                return 'url(/ViewV5/Base/DownFile.aspx?fileId=' + str + ')';
+            }
+        },
+        fxtitle: function (type) {
+            if (type == '1') {
+                return tempindex.pzData.Vertical * 1 == 0 ? '0' : ((tempindex.pzData.Vertical * 1 > 0 ? '下移' + tempindex.pzData.Vertical : '上移' + (-tempindex.pzData.Vertical * 1)) + 'mm')
+            }
+            else {
+                return tempindex.pzData.Horizontal * 1 == 0 ? '0' : ((tempindex.pzData.Horizontal * 1 > 0 ? '右移' + tempindex.pzData.Horizontal : '左移' + (-tempindex.pzData.Horizontal * 1)) + 'mm')
+            }
+        }
+    });
+    function buildTemplate() {
+        var str = "";
+        var params = [];
+        $("#xscontent .object").each(function () {
+            var obj = $(this);
+            var paramObj = {};
+            paramObj.name = obj.attr("id");
+            paramObj.title = obj.attr("title");
+            paramObj.text = obj.find(".vl").text();
+            paramObj.w = obj.css("width").replace('px', '');
+            paramObj.h = obj.css("height").replace('px', '');
+            paramObj.top = obj.css("top").replace('px', '');
+            paramObj.left = obj.css("left").replace('px', '');
+            paramObj.font_size = obj.css("font-size");
+            paramObj.font_weight = obj.css("font-weight");
+            paramObj.font_family = obj.css("font-family");
+
+            params.push(paramObj);
+            $("#content .object").each(function () {
+                var obj1 = $(this);
+                if (obj.attr("title") == obj1.attr("title")) {
+                    obj1.find(".vl").text(obj.find(".vl").text());
+                }
+            })
+        })
+
+        if (params.length > 0) {
+            str = JSON.stringify(params);
+        }
+        return str;
+    }
+
+    $(function () {
+        $(document).on("click", ".form-horizontal", function () {
+            $(".move-kdd").hide();
+        });
+        $(document).on("click", ".tab-filter-type", function () {
+            $(".move-kdd").hide();
+        });
+    })
+    //# sourceURL=KDDY.js;
+</script>
+
+<div ms-controller="W_KDDY" >
+    <div class="btn-add">
+        <button type="button" class="btn btn-info btn-lg" ms-click="AddNew()"><i class="iconfont icon-jiahao ft12 mr5"></i>添加快递</button>
+        <!--<button type="button" class="btn btn-info btn-lg" ms-click="Add()"><i class="iconfont icon-bianji ft12 mr5"></i>配置</button>
+        <button type="button" class="btn btn-danger btn-lg" ms-click="DELPZ()"><i class="iconfont icon-shanchu ft12 mr5"></i>删除</button>-->
+    </div>
+    <div class="tab-filter-type">
+        <div class="oh">
+            <h5 class="pull-left tr">快递：</h5>
+            <ul class="tab-type ft14">
+                <li ms-repeat-el="LeiXing"  ms-click="changeKD(el.ID)"><span ms-class-1="active:curKDType==el.ID">{{el.KDName}}</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group" style="margin:0px;">
+            <div class="col-xs-12" style="padding-left: 420px; margin-top: 10px;">
+                <div class="btn-group">
+                    <button class="btn btn-info " ms-click="Add()"><i class="iconfont icon-bianji ft12 mr5"></i>配置</button>
+                    <button class="btn btn-danger mr5" ms-click="DELPZ()"><i class="iconfont icon-shanchu ft12 mr5"></i>删除</button>
+                    <button class="btn btn-white" type="button" ms-click="showyd()">调整位置</button>
+                    <button class="btn btn-primary" type="button" ms-click="SaveData()">打印</button>
+                </div>
+            </div>
+            <div class="col-xs-12" id="xscontent" style="margin-top: 10px; overflow: auto;  ">
+                <div id="expressImg" style="width: 1100px; background-size: 1100px;" ms-css-height="Math.round((pzData.imageHeight * 1.0 / pzData.imageWidth * 1.0) * 1100)+'px'" ms-css-background-image="tplj(pzData.KDImg)">
+                    <div ms-repeat-item="modelData" ms-attr-id="item.name" ms-attr-title="item.title" ms-css-width="item.w+'px'" ms-css-height="item.h+'px'" class="object"
+                         ms-css-top="item.top+'px'" ms-css-left="item.left+'px'" ms-css-font-size="item.font_size" ms-css-font-weight="item.font_weight" ms-css-font-family="item.font_family"
+                         style="position: absolute; text-align: left; ">
+                        <div contenteditable="true" class="vl" style="width:100%;height:100%;">{{item.text}}</div>
+                        <div ms-if="item.name=='receiverUser' " style="position: absolute;cursor: pointer;right: -25px;  top: 5px;"><i class="iconfont icon-rencopy" ms-click="xzlxr()" style="color:blue;"></i></div>
+                        <div ms-if="item.name=='sendUser' " style="position: absolute;cursor: pointer;right: -25px;  top: 5px;"><i class="iconfont icon-rencopy" ms-click="xzcydz()" style="color:blue;"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12" id="content" >
+                <div ms-css-width="pzData.imageWidth* 3.78+'px'" ms-css-height="pzData.imageHeight* 3.78+'px'"
+                     ms-css-background-image="tplj(pzData.KDImg)">
+                    <div ms-repeat-item="dyData" ms-attr-id="item.name+'1'" ms-attr-title="item.title" ms-css-width="item.w+'px'" ms-css-height="item.h+'px'" class="object"
+                         ms-css-top="Math.round((pzData.imageWidth * 3.78 /1100 ) * item.top)+'px'" ms-css-left="Math.round((pzData.imageWidth * 3.78 /1100 ) * item.left)+'px'" ms-css-font-size="item.font_size" ms-css-font-weight="item.font_weight" ms-css-font-family="item.font_family"
+                         style="position: absolute; text-align: left;">
+                        <div contenteditable="true" class="vl" style="width:100%;height:100%;">{{item.text}}</div>
+                        <div ms-if="item.name=='receiverUser' " style="position: absolute;cursor: pointer;right: -25px;  top: 5px;"><i class="iconfont icon-rencopy" ms-click="xzlxr()" style="color:blue;"></i></div>
+                        <div ms-if="item.name=='sendUser' " style="position: absolute;cursor: pointer;right: -25px;  top: 5px;"><i class="iconfont icon-rencopy" ms-click="xzcydz()" style="color:blue;"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="move-kdd" style="display:none;">
+        <img src="/images/an.png" />
+        <a href="javascript:void(0);" ms-attr-title="fxtitle('1')" class="up-key" ms-click="move(1)"><span>+1</span></a>
+        <a href="javascript:void(0);" ms-attr-title="fxtitle('2')" class="right-key" ms-click="move(4)"><span>+1</span></a>
+        <a href="javascript:void(0);" ms-attr-title="fxtitle('1')" class="down-key" ms-click="move(2)"><span>+1</span></a>
+        <a href="javascript:void(0);" ms-attr-title="fxtitle('2')" class="left-key" ms-click="move(3)"><span>+1</span></a>
+    </div>
+</div>

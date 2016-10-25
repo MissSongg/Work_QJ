@@ -1,0 +1,125 @@
+﻿<div class="list-block" style="margin: 0;" ms-controller="MKDGL">
+    <ul ms-if="isHasDataQX=='Y'">
+        <!--编辑视图-->
+        <!-- Text inputs -->
+        <li>
+            <div class="item-content item-link">
+                <div class="item-inner">
+                    <div class="item-title label">接收人</div>
+                    <div class="item-input">
+                        <input type="text" id="conCHR" placeholder="请选择接收人" ms-duplex="modelData.JSUser" class="szhl szhl_getPeoples" />
+                    </div>
+                </div>
+            </div>
+        </li>
+        
+        <li class="align-top">
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">图片</div>
+                    <div class="item-input">
+                        <input type="text" ms-duplex="modelData.ImgUrl" class="wximgupload" style="display:none;" />
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">备注</div>
+                    <div class="item-input">
+                        <textarea ms-duplex="modelData.Remark" rows="2" placeholder="请输入备注"></textarea>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+
+
+    <ul ms-if="isHasDataQX=='N'">
+        <!--查看视图-->
+        <!-- Text inputs -->
+        <li>
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">接收人</div>
+                    <div class="item-input">
+                        <div style=" line-height: 1.4; ">{{ComFunJS.convusers(modelData.JSUser)}}</div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="align-top" ms-if="modelData.Files">
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">图片</div>
+                    <div class="item-input">
+                        <div class="viewimg">{{modelData.ImgUrl}}</div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">备注</div>
+                    <div class="item-input">
+                        <div style="overflow: hidden; word-wrap: break-word; word-break: break-all;   ">{{modelData.Remark|html}}</div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</div>
+<script>
+    var tempmodel = avalon.define({
+        $id: "MKDGL",
+        tpData: [],
+        name: "快递管理",
+        iswf: false,//是否属于流程表单
+        wximg: "",
+        typename:"",
+        inittemp: function (strId) {
+            $.showPreloader();
+
+            ComFunJS.uploadimgnew();
+            ComFunJS.initForm();
+            $.hidePreloader();
+
+        },//初始化
+        modelData: { "Title": "", "ImgUrl": "", "JSUser": "", "Remark": "" },
+        SaveData: function (callback) {
+            $.showPreloader();
+
+            tempmodel.modelData.ImgUrl = "";
+            $("#imglist .tpli").each(function () {
+                if ($(this).hasClass("wximg")) { //微信上传未处理的图片
+                    if (tempmodel.wximg) {
+                        tempmodel.wximg += ",";
+                    }
+                    tempmodel.wximg += $(this).attr("itemid");
+
+                } else {
+                    if (tempmodel.modelData.ImgUrl) {
+                        tempmodel.modelData.ImgUrl = tempmodel.modelData.ImgUrl + ',' + $(this).attr("itemid");
+                    }
+                    else {
+                        tempmodel.modelData.ImgUrl = $(this).attr("itemid");
+                    }
+                }
+
+            })
+
+            $.post("/API/VIEWAPI.ashx?ACTION=KDGL_ADDKDGL", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
+                $.hidePreloader();
+                return callback.call(this, $.parseJSON(result));
+            });
+        },
+        Complate: function () {
+            window.location.href = "/View_Mobile/UI/UI_KDGL_LIST.html?r=" + Math.random();
+        }
+    });//@ sourceURL=MKDGL.js;
+
+</script>

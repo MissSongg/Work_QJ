@@ -1,0 +1,280 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>任务查看</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link href="/View_Mobile/Frozenui1.3/css/frozen.css" rel="stylesheet" />
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+    <script src="/View_Mobile/JS/zepto.min.js"></script>
+    <script src="/View_Mobile/JS/avalon.mobile.min.js"></script>
+    <script src="/View_Mobile/Frozenui1.3/js/frozen.js"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script src="/View_Mobile/JS/raty/jquery.raty.js?v=1.3"></script>
+    <script>
+
+        window.localStorage.removeItem("page");
+        window.localStorage.setItem("page", 1);
+
+        window.localStorage.removeItem("isjz");
+        window.localStorage.setItem("isjz", 0);
+
+        var strId = ComFunJS.getQueryString("ID");
+
+        var model = avalon.define({
+            $id: "XXList",
+            ctData: [],
+            ModelData:{},
+            tjel: "",
+            ids: "",
+            nowuser: ComFunJS.getCookie("wxusername"),
+            repshow: function () {
+                $(this).parent().siblings().removeClass("active");
+                $(this).parent().addClass("active");
+            },
+            addrw: function () {
+                window.location = "UI_RWGL_INPUT.html?r=" + Math.random();
+            },
+            addwc: function () {
+                var lg = $.loading({
+                    content: '保存中...',
+                })
+                $.post("/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLWCQK&r=" + Math.random(), { P1: model.ModelData.RWWCQK, P2: strId }, function (data) {
+                    lg.hide();
+                    var data = $.parseJSON(data);
+                    if (data.ErrorMsg == "") {
+                        $.tips({
+                            content: "完成成功",
+                            stayTime: 2000,
+                            type: "warn"
+                        })
+                    } else {
+
+                        $.tips({
+                            content: "完成失败",
+                            stayTime: 2000,
+                            type: "warn"
+                        })
+                    }
+                })
+            },
+            addpj: function () {
+                var lg = $.loading({
+                    content: '保存中...',
+                })
+                $.getJSON('/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLPJWCQK_WX&r=' + Math.random(), { "P1": model.ModelData.DBPJ, ID: strId }, function (resultData) {
+                    lg.hide();
+                    if (resultData.ErrorMsg == "") {
+                        $.tips({
+                            content: "评价成功",
+                            stayTime: 2000,
+                            type: "warn"
+                        })
+                    }
+                    else {
+                        $.tips({
+                            content: "评价失败",
+                            stayTime: 2000,
+                            type: "warn"
+                        })
+                    }
+                })
+            }
+        })
+
+       
+
+        function loadMore() {
+            var lg = $.loading({
+                content: '加载中...',
+            })
+
+            $.getJSON("/API/WXAPI.ashx?Action=DBRW_GETCUS_SWRWGLDBLIST_WX&r=" + Math.random(), { "P1": strId }, function (r) {
+                lg.hide();
+                if (r.ErrorMsg == "") {
+                    if (r.Result.length > 0) {
+                        model.ModelData = r.Result[0];
+                        $(".raty").raty({
+                            //readOnly: true,
+                            //cancel: true,
+                            score: function () {
+                                return $(this).attr("score") * 1 / 20;
+                            },
+                            click: function (score, evt) {
+                                $.getJSON('/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLPFWCQK_WX&r=' + Math.random(), { "P1": score * 20, ID: strId }, function (resultData) {
+                                    if (resultData.ErrorMsg == "") {
+                                        $.tips({
+                                            content: "评分成功",
+                                            stayTime: 2000,
+                                            type: "warn"
+                                        })
+                                    }
+                                    else {
+                                        $.tips({
+                                            content: "评分失败",
+                                            stayTime: 2000,
+                                            type: "warn"
+                                        })
+                                    }
+                                })
+                            }
+                        });
+                    }
+                    else {
+                        window.location.replace("/View_Mobile/UI/UI_Error.html?msg=信息不存在或已删除");
+                    }
+                } 
+            })
+        }
+
+        avalon.ready(function () {
+            loadMore();
+        })
+
+        function rwzt(strsp) {
+            if (strsp == 0) {
+                return '<div class="ui-badge-muted" >新任务</div>';
+            }
+            else if (strsp == 1) {
+                return '<div class="ui-badge-muted" style="background-color:blue;">已送审</div>';
+            }
+            else if (strsp == 2) {
+                return '<div class="ui-badge-muted" >已归档</div>';
+            }
+        }
+        function pf(str) {
+            if (str) {
+                var html = '<div></div>';
+                var html1 = $(html).raty({
+                    readOnly: true,
+                    score: str * 1 / 20
+                }).html();
+                return html1;
+            }
+            else {
+                return '';
+            }
+        }
+    </script>
+
+    <style>
+         .ui-form-item label{width:105px;}
+        .ui-form-item .wspan {
+            width: 100%;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            border: 0;
+            background: 0 0;
+            padding-left: 105px;
+        }
+
+        .ms-controller, [ms-controller] {
+            display: none;
+        }
+
+        .ui-form-item .span img {
+            height: auto !important;
+            width: auto\9 !important;
+            width: 100% !important;
+        }
+
+        .ui-form-item .span {
+            line-height: 1.5 !important;
+            padding-bottom: 10px;
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+    </style>
+
+</head>
+<body ms-controller="XXList">
+    <header class="ui-header ui-header-stable ui-border-b">
+        <h1>任务信息查看</h1>
+    </header>
+    <section class="ui-container" style="background-color:white;">
+
+        <div class="ui-form ui-border-t">
+            <div class=" ui-border-b" style="height: auto;  padding: 10px; ">
+                <span class="span">【{{ModelData.TypeName}}】{{ModelData.RWTitle}}</span>
+            </div>
+        </div>
+        <div class="ui-form-item ui-border-b" style="height:auto;min-height:44px">
+            <label>
+                任务内容
+            </label>
+            <span class="wspan "></span>
+            <p class="span" ms-if="ModelData.RWContent" ms-html="ModelData.RWContent"></p>
+            <div style="clear: both"></div>
+        </div>
+        <div class="ui-form-item ui-border-b">
+            <label>
+                督办人
+            </label>
+            <span class="wspan">{{ComFunJS.convuser(ModelData.RWDBR)}}</span>
+        </div>
+        <div class="ui-form-item ui-border-b">
+            <label>
+                负责人
+            </label>
+            <span class="wspan">{{ComFunJS.convuser(ModelData.RWUSER)}}</span>
+        </div>
+        <div class="ui-form-item ui-border-b">
+            <label style="font-size:15px">
+                要求完成时间
+            </label>
+            <span class="wspan">{{ModelData.RWEDate|date("yyyy-MM-dd")}}</span>
+        </div>
+        <div class="ui-form-item ui-border-b ui-form-item-textarea" style="height:auto;min-height:44px">
+            <label>
+                完成情况
+            </label>
+            <div ms-if="ModelData.RWUSER==nowuser&&ModelData.Status==0">
+                <textarea placeholder="请输入完成情况" ms-duplex="ModelData.RWWCQK" style="height:80px;" class="chackTextarea-area"></textarea>
+                <a id="wc" class="ui-btn-lg ui-btn-primary" ms-click="addwc()" style="float: right; width: auto; height: 30px; line-height: 30px;  margin-bottom:10px; margin-left: 5px;">完成</a>
+                <div style="clear: both"></div>
+            </div>
+            <div ms-if="ModelData.RWUSER!=nowuser||ModelData.Status!=0">
+                <span class="wspan "></span>
+                <p class="span" ms-if="ModelData.RWWCQK" ms-html="ModelData.RWWCQK"></p>
+                <div style="clear: both"></div>
+            </div>
+        </div>
+        <div class="ui-form-item ui-border-b" ms-if="ModelData.Status>0">
+            <label>
+                评分
+            </label>
+            <span class="wspan" ms-if="ModelData.SHUser!=nowuser||ModelData.Status==2">
+                {{pf(ModelData.RWFS)|html}} {{ModelData.RWFS}}
+            </span>
+            <span class="wspan" ms-if="ModelData.SHUser==nowuser&&ModelData.Status!=2">
+                <!--{{szpf(el)|html}}-->
+                <span class="raty" ms-attr-score="ModelData.RWFS">
+                </span>
+            </span>
+        </div>
+        <div class="ui-form-item ui-border-b ui-form-item-textarea" ms-if="ModelData.Status>0" style="height:auto;min-height:44px">
+            <label>
+                评价
+            </label>
+            <div ms-if="ModelData.SHUser==nowuser&&ModelData.Status!=2">
+                <textarea placeholder="请输入评价" ms-duplex="ModelData.DBPJ" style="height:80px;" class="chackTextarea-area"></textarea>
+                <a id="pj" class="ui-btn-lg ui-btn-primary" ms-click="addpj()" style="float: right; width: auto; height: 30px; line-height: 30px; margin-top: -10px; margin-bottom:10px; margin-left: 5px;">评价</a>
+                <div style="clear: both"></div>
+            </div>
+            <div ms-if="ModelData.SHUser!=nowuser||ModelData.Status==2">
+                <span class="wspan " ms-html="ModelData.DBPJ"></span>
+            </div>
+        </div>
+        <div class="ui-form-item ui-border-b ui-form-item-checkbox">
+            <label>
+                任务状态
+            </label>
+            <span class="wspan" style="display:block;">
+                {{rwzt(ModelData.Status)|html}}
+            </span>
+        </div>
+
+    </section>
+</body>
+</html>

@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>预订列表</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="/View_Mobile/Frozenui1.3/css/frozen.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.5.8/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.5.8/css/sm-extend.min.css">
+
+    <style type="text/css">
+        /*.ui-header {background-color: #06c1ae;color: #fff;}
+        .ui-header h1{color:#fff;}
+        .bar .button-link{color:#fff;}*/
+
+        .ms-controller, [ms-controller] {
+            display: none;
+        }
+
+        .item-subtitle p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .ititle {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 6px;
+            background-color: black;
+            opacity: .7;
+            width: 100%;
+            z-index: 2;
+            overflow: hidden;
+            white-space: nowrap;
+            color: white;
+        }
+
+        .card-cover {
+            max-height: 500px;
+            position: relative;
+            z-index: 1;
+        }
+        .card-header p {
+            margin: 0;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body ms-controller="model">
+    <div class="page page-current" id="pageindex1">
+
+        <div class="content infinite-scroll infinite-scroll-bottom" data-distance="50" ms-css-margin-bottom="isjd?'0px':'48px'">
+
+            <div class="list-container">
+                <div class="card" ms-repeat-el="ctData" style="margin-bottom: 20px;">
+                    <div class="card-header" style=" border-bottom: solid 1px #e1e1e1;">
+                        <p>{{ComFunJS.convuser(el.CRUser)}}</p>
+                        <p>{{el.CRDate|date("yyyy-MM-dd HH:mm")}}</p>
+                        <p style="text-align: right; ">合计：<span style="color: #FF5151;">¥{{el.TTPrice.toFixed(2)}}</span></p>
+                    </div>
+                    <div class="card-content">
+                        <div class="list-block media-list">
+                            <ul ms-repeat-item="el.Item">
+                                <li class="item-content">
+                                    <div class="item-media">
+                                        <img ms-attr-src="'/ViewV5/Base/DownFile.aspx?fileId='+item.ImgUrl" style="width:80px;height:60px;">
+                                    </div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div class="item-title">{{item.Name}}</div>
+                                        </div>
+                                        <div class="item-subtitle">
+                                            <span style="color: #FF5151;"> ¥<span class="price">{{item.Price.toFixed(2)}}</span>/份</span>
+                                            <span style="float: right;">{{item.Qty}}份</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card-footer" style="height: 1rem; line-height:1rem; " ms-if="el.Status=='1'">
+                        <p style="margin: 0;">已接单：{{ComFunJS.convuser(el.QRUser)}}</p>
+                        <p style="text-align: right; margin: 0;">{{el.QRDate|date("yyyy-MM-dd HH:mm")}}</p>
+                    </div>
+                    <div class="card-footer" style="min-height: 1rem; line-height:1rem; " ms-if="el.Status=='1' && el.Remark">
+                        <p style="margin: 0;">备注：{{el.Remark}}</p>
+                    </div>
+                    <div class="card-footer" style="height: 1rem; line-height:1rem; " ms-if="el.Status=='0' && isjd">
+                        <div style="text-align: right; margin: 0; width: 100%;"><a class="button button-fill button-success" style=" width: 76px; position: relative; float: right;" ms-on-tap="dd(el)">接单</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="infinite-scroll-preloader">
+                <div class="preloader"></div>
+            </div>
+        </div>
+        <nav class="bar bar-tab" ms-if="!isjd">
+            <div class="content-block" style="margin:0px;">
+                <div class="row">
+                    <div ms-class-1="col-50:isadd" ms-class-2="col-100:!isadd"><a href="javascript:void(0);" style="top:0px;" ms-click="adddc(1)" class="button button-big button-fill button-success external">点餐</a></div>
+                    <div class="col-50" ms-if="isadd"><a href="javascript:void(0);" style="top:0px;" ms-click="adddc(2)" class="button button-big button-fill button-success external">查看菜品</a></div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm-extend.min.js' charset='utf-8'></script>
+    <script src="/View_Mobile/JS/avalon.mobile.min.js"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script>
+
+        window.localStorage.removeItem("page");
+        window.localStorage.setItem("page", 1);
+
+        window.localStorage.removeItem("isjz");
+        window.localStorage.setItem("isjz", 0);
+
+      
+        var strId = ComFunJS.getQueryString("id");
+        if (!strId) { strId = "0" }
+        var model = avalon.define({
+            $id: "model",
+            ctData: [],
+            isadd: "",
+            isjd:"",
+            adddc: function (str) {
+                window.location = "UI_DCGL_LIST.html?type=" + str + "&r=" + Math.random();
+            },
+            dd: function (el) {
+                ComFunJS.showBJK("200", "", "备注", function (nr) {
+                    $.showIndicator();
+                    $.getJSON("/API/WXAPI.ashx?Action=DCGL_QRSDDD&r=" + Math.random(), { "P1": el.ID, "P2": nr }, function (r) {
+                        $.hideIndicator()
+                        if (r.ErrorMsg == "") {
+                            el.Status = r.Result.Status;
+                            el.QRUser = r.Result.QRUser;
+                            el.QRDate = r.Result.QRDate;
+                            el.Remark = r.Result.Remark;
+
+                            $.toast("确认成功");
+                        }
+                        else {
+                            $.toast("确认失败");
+                        }
+                    })
+                },"N")
+            }
+        })
+
+        function loadMore() {
+            var isjz = window.localStorage.getItem("isjz");
+            if (isjz == 0) {
+                window.localStorage.setItem("isjz", 1);
+                var page = window.localStorage.getItem("page");
+
+                if (page != "0") {
+                    $.getJSON("/API/WXAPI.ashx?Action=DCGL_GETDCGLHEADERLIST_PAGE&r=" + Math.random(), { "p": page, P1: model.isjd }, function (r) {
+
+                        if (r.ErrorMsg == "") {
+                            if (r.Result.length > 0) {
+                                model.ctData.pushArray(r.Result);
+                                if (r.Result.length < 8) {
+                                    window.localStorage.setItem("page", 0);
+
+                                    // 加载完毕，则注销无限加载事件，以防不必要的加载
+                                    $.detachInfiniteScroll($('.infinite-scroll'));
+                                    // 删除加载提示符
+                                    $('.infinite-scroll-preloader').remove();
+                                }
+                                else {
+                                    var page = window.localStorage.getItem("page");
+                                    window.localStorage.setItem("page", parseInt(page) + 1);
+                                }
+                            } else {
+                                var page = window.localStorage.getItem("page");
+                                if (page == "1") {
+                                    // 加载完毕，则注销无限加载事件，以防不必要的加载
+                                    $.detachInfiniteScroll($('.infinite-scroll'));
+                                    // 删除加载提示符
+                                    $('.infinite-scroll-preloader').remove();
+                                }
+                                else {
+                                    window.localStorage.setItem("page", 0);
+
+                                    // 加载完毕，则注销无限加载事件，以防不必要的加载
+                                    $.detachInfiniteScroll($('.infinite-scroll'));
+                                    // 删除加载提示符
+                                    $('.infinite-scroll-preloader').remove();
+                                }
+                            }
+                            $.refreshScroller();
+                        } else {
+
+                        }
+                        window.localStorage.setItem("isjz", 0);
+                    })
+                }
+            }
+        }
+
+        avalon.ready(function () {
+            $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETCPROLE&r=" + Math.random(), {}, function (r) {
+                if (r.ErrorMsg == "") {
+                    if (r.Result == "Y")
+                    {
+                        $("#add").text("查看菜品");
+                        model.isadd="Y";
+                    }
+                    if (r.Result1 == "Y") {
+                        model.isjd = "Y";
+                    }
+                }
+                // 注册'infinite'事件处理函数
+                $(document).on('infinite', '.infinite-scroll-bottom', function () {
+                    loadMore();
+                });
+
+                $.init();
+                loadMore();
+            })
+            
+
+        })
+
+    </script>
+
+</body>
+
+
+
+</html>

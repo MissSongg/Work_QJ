@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>快递列表</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.5.8/css/sm.min.css">
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.5.8/css/sm-extend.min.css">
+    <link href="/View_Mobile/CSS/fs_gallery.css" rel="stylesheet" />
+    <style type="text/css">
+        .ms-controller, [ms-controller] {
+            display: none;
+        }
+
+        .card-header p {
+            margin: 0;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body ms-controller="KDList">
+    <div class="page page-current" id="pageindex1" style="z-index:99;">
+
+        <div class="content infinite-scroll infinite-scroll-bottom" data-distance="50"  ms-css-margin-bottom="islr?'48px':''">
+
+            <div class="list-container">
+                <div class="card" ms-repeat-el="ctData">
+                    <div class="card-header">
+                        <p>{{sjzt(el.Status)|html}} 收件人：{{ComFunJS.convuser(el.JSUser)}}</p>
+                        <a class="button button-fill button-success" ms-on-tap="sj(el)" ms-if="el.Status=='0'">确认收件</a>
+
+                    </div>
+                    <div style="padding: .5rem .75rem;">
+                        <span ms-repeat-fl="el.ImgUrl.split(',')">
+                            <img ms-on-click="fdtp(this)" class="mall_pcp" ms-attr-src="'/ViewV5/Base/DownFile.aspx?fileId='+fl" style="width: 60px; height: 60px; margin-right: 5px; border: solid 1px #e1e1e1" />
+                        </span>
+                    </div>
+                    <div style="padding: .5rem .75rem;" ms-if="el.CRDate">
+                        <span>
+                            创建时间：{{el.CRDate|date("yyyy-MM-dd HH:mm")}}
+                        </span>
+                    </div>
+                    <div style="padding: .5rem .75rem;" ms-if="el.Remark">
+                        <span >
+                            备注：{{el.Remark}}
+                        </span>
+                    </div>
+                    <div class="card-footer" style="height: 1rem; line-height:1rem; " ms-if="el.Status=='1'">
+                        <p style="margin: 0;">确认接收人：{{ComFunJS.convuser(el.QRUser)}}</p>
+                        <p style="text-align: right; margin: 0;">{{el.QRDate|date("yyyy-MM-dd HH:mm")}}</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="infinite-scroll-preloader">
+                <div class="preloader"></div>
+            </div>
+        </div>
+
+        <nav class="bar bar-tab" ms-if="islr">
+            <div class="content-block" style="margin:0px;">
+                <div class="row">
+                    <div class="col-100"><a href="javascript:void(0);" style="top:0px;" ms-click="addKD()" class="button button-big button-fill button-success external">录入快递</a></div>
+                </div>
+            </div>
+        </nav>
+
+    </div>
+    
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm-extend.min.js' charset='utf-8'></script>
+    <script src="/View_Mobile/JS/avalon.mobile.min.js"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script>
+
+        window.localStorage.removeItem("page");
+        window.localStorage.setItem("page", 1);
+
+        window.localStorage.removeItem("isjz");
+        window.localStorage.setItem("isjz", 0);
+
+      
+        var myPhotoBrowserCaptions;
+        var model = avalon.define({
+            $id: "KDList",
+            ctData: [],
+            urlData: [],
+            islr:"",
+            fdtp: function (obj) {
+                var str = $(obj).attr("urlid");
+                if (!str) {
+
+                    $(".mall_pcp").each(function (index, ele) {
+                        if ($(ele).attr("src")) {
+                            $(ele).attr("urlid", model.urlData.length);
+                            model.urlData.push($(ele).attr("src"));
+                        }
+                    });
+                    myPhotoBrowserCaptions = $.photoBrowser({
+                        photos: model.urlData,
+                        theme: 'dark'
+                    });
+                }
+
+                myPhotoBrowserCaptions.open($(obj).attr("urlid") * 1);
+            },
+            addKD: function (el) {
+                window.location = "UI_KDGL_INPUT.html?r=" + Math.random();
+            },
+            sj: function (el) {
+                $.confirm('您确认收件吗?',
+                    function () {
+                        $.getJSON("/API/WXAPI.ashx?Action=KDGL_QRSDKD&r=" + Math.random(), { "P1": el.ID }, function (r) {
+                            if (r.ErrorMsg == "") {
+
+                                el.Status = r.Result.Status;
+                                el.QRUser = r.Result.QRUser;
+                                el.QRDate = r.Result.QRDate;
+                                if (r.Result1)
+                                { $.toast("此单已经被确认收货了！"); }
+                                else {
+                                    $.toast("收件成功");
+                                }
+                            }
+                            else {
+                                $.toast("收件失败");
+                            }
+                        })
+                    },
+                    function () {
+                        
+                    }
+                  )
+            },
+            loadMore: function () {
+                var isjz = window.localStorage.getItem("isjz");
+                if (isjz == 0) {
+                    window.localStorage.setItem("isjz", 1);
+                    var page = window.localStorage.getItem("page");
+
+                    if (page != "0") {
+                        $.getJSON("/API/WXAPI.ashx?Action=KDGL_GETMYKDGLLIST_PAGE&r=" + Math.random() + "&p=" + page, { P2: model.islr }, function (r) {
+
+                            if (r.ErrorMsg == "") {
+                                if (r.Result.length > 0) {
+                                    model.ctData.pushArray(r.Result);
+                                    if (r.Result.length < 8) {
+                                        window.localStorage.setItem("page", 0);
+
+                                        // 加载完毕，则注销无限加载事件，以防不必要的加载
+                                        $.detachInfiniteScroll($('.infinite-scroll'));
+                                        // 删除加载提示符
+                                        $('.infinite-scroll-preloader').hide();
+                                    }
+                                    else {
+                                        var page = window.localStorage.getItem("page");
+                                        window.localStorage.setItem("page", parseInt(page) + 1);
+                                    }
+                                } else {
+                                    var page = window.localStorage.getItem("page");
+                                    if (page == "1") {
+                                        // 加载完毕，则注销无限加载事件，以防不必要的加载
+                                        $.detachInfiniteScroll($('.infinite-scroll'));
+                                        // 删除加载提示符
+                                        $('.infinite-scroll-preloader').hide();
+                                    }
+                                    else {
+                                        window.localStorage.setItem("page", 0);
+
+                                        // 加载完毕，则注销无限加载事件，以防不必要的加载
+                                        $.detachInfiniteScroll($('.infinite-scroll'));
+                                        // 删除加载提示符
+                                        $('.infinite-scroll-preloader').hide();
+                                    }
+                                }
+                                $.refreshScroller();
+                            } else {
+
+                            }
+                            window.localStorage.setItem("isjz", 0);
+                        })
+                    }
+                }
+            }
+        })
+
+        function sjzt(str) {
+            if (str == "0") {
+                return '<span class="badge">未收件</span>';
+            }
+            else if (str == "1") {
+                return '<span class="badge" style="background-color:blue;color: white;">已收件</span>';
+            }
+        }
+
+        avalon.ready(function () {
+            $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETKDROLE&r=" + Math.random(), {}, function (r) {
+                if (r.ErrorMsg == "") {
+                    if (r.Result == "Y") {
+                        model.islr = "Y";
+                    }
+                }
+
+                // 注册'infinite'事件处理函数
+                $(document).on('infinite', '.infinite-scroll-bottom', function () {
+                    model.loadMore();
+                });
+
+                $.init();
+                model.loadMore();
+
+            })
+
+           
+
+        })
+    </script>
+
+</body>
+
+</html>

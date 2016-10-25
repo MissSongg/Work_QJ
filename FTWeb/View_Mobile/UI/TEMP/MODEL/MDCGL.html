@@ -1,0 +1,167 @@
+﻿<div class="list-block" style="margin: 0;" ms-controller="MDCGL">
+    <ul ms-if="isHasDataQX=='Y'">
+        <!--编辑视图-->
+        <!-- Text inputs -->
+        <li>
+            <div class="item-content item-link">
+                <div class="item-inner">
+                    <div class="item-title label">类别</div>
+                    <div class="item-input">
+                        <select name="conType" id="conType" ms-duplex="modelData.TypeID" >
+                            <option ms-repeat-item="ColumnData" ms-attr-value="item.ID" ms-attr-selected="item.ID==modelData.TypeID?'selected':''">{{item.TypeName}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">名称</div>
+                    <div class="item-input">
+                        <input type="text" placeholder="请输入名称" ms-duplex="modelData.Name" class="szhl szhl_require" />
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">价格</div>
+                    <div class="item-input">
+                        <input type="text" placeholder="请输入价格" ms-duplex="modelData.Price" class="szhl szhl_require szhl_Float" />
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">数量</div>
+                    <div class="item-input">
+                        <input type="tel" ms-duplex="modelData.Count" class="szhl szhl_Int" min="1" placeholder="请输入数量" />
+                    </div>
+                </div>
+            </div>
+        </li>
+        <!-- Date -->
+        <li>
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">是否上架</div>
+                    <div class="item-input">
+                        <label class="label-switch">
+                            <input type="checkbox" ms-attr-checked="modelData.Status=='1'" id="issj">
+                            <div class="checkbox"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="align-top">
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title label">图片</div>
+                    <div class="item-input">
+                        <input type="text" ms-duplex="modelData.ImgUrl" class="wximgupload" style="display:none;" />
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</div>
+<script>
+    var tempmodel = avalon.define({
+        $id: "MDCGL",
+        ColumnData: [],
+        tpData: [],
+        name: "订餐管理",
+        iswf: false,//是否属于流程表单
+        wximg: "",
+        typename:"",
+        inittemp: function (strId) {
+            $.showPreloader();
+
+            $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 3 }, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempmodel.ColumnData = resultData.Result;
+                    if (!tempmodel.modelData.TypeID) {
+                        tempmodel.modelData.TypeID = resultData.Result[0].ID
+                    };
+                }
+            })
+
+            if (strId) {
+             
+
+                $.getJSON('/API/VIEWAPI.ashx?Action=DCGL_GETDCGLMODEL', { P1: strId }, function (resultData) {
+                    $.hidePreloader();
+                    if (resultData.ErrorMsg == "") {
+                        tempmodel.modelData = resultData.Result;
+                        tempmodel.typename = resultData.Result1;
+                        tempmodel.tpData = resultData.Result2;
+                        ComFunJS.uploadimgnew(tempmodel.tpData);
+                        ComFunJS.viewimg(tempmodel.tpData);
+
+                        setTimeout("ComFunJS.initForm()", 500)
+
+                    }
+                })
+            } else {
+                ComFunJS.uploadimgnew();
+                ComFunJS.initForm();
+                //$(".btnSucc").text("送审");
+                $.hidePreloader();
+            }
+        },//初始化
+        modelData: { "TypeID": "", "Name": "", "Price": "", "ImgUrl": "", "Remark": "", "Status": "1", "Count": "" },
+        SaveData: function (callback) {
+
+            if ($("#issj").attr("checked")) {
+                tempmodel.modelData.Status = "1";
+            }
+            else {
+                tempmodel.modelData.Status = "0";
+            }
+
+            
+            //var n = 0;
+            tempmodel.modelData.ImgUrl = "";
+            $("#imglist .tpli").each(function () {
+                if ($(this).hasClass("wximg")) { //微信上传未处理的图片
+                    if (tempmodel.wximg) {
+                        tempmodel.wximg += ",";
+                    }
+                    tempmodel.wximg += $(this).attr("itemid");
+                    //n = n + 1;
+
+                } else {
+                    //n = n + 1;
+                    if (tempmodel.modelData.ImgUrl) {
+                        tempmodel.modelData.ImgUrl = tempmodel.modelData.ImgUrl + ',' + $(this).attr("itemid");
+                    }
+                    else {
+                        tempmodel.modelData.ImgUrl = $(this).attr("itemid");
+                    }
+                }
+            })
+            
+            //if (n > 1)
+            //{
+            //    top.ComFunJS.winwarning("只能上传一张图片");
+            //    $("table").show();
+            //    return;
+            //}
+            $.showPreloader();
+            $.post("/API/VIEWAPI.ashx?ACTION=DCGL_ADDDCGL", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
+                $.hidePreloader();
+                return callback.call(this, $.parseJSON(result));
+            });
+        },
+        Complate: function () {
+            window.location.href = "/View_Mobile/UI/UI_DCGL_LIST.html?r=" + Math.random();
+        }
+    });//@ sourceURL=MCCXJ.js;
+
+</script>
