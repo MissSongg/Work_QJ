@@ -1,9 +1,0 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="QJY.API.Properties" GeneratedClassName="Settings">
-  <Profiles />
-  <Settings>
-    <Setting Name="QJY_API_SmsService1_LinkWS" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://www.106818.com:8080/ws/LinkWS.asmx</Value>
-    </Setting>
-  </Settings>
-</SettingsFile>
