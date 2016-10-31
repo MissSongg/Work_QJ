@@ -92,8 +92,7 @@ namespace QJY.API
         public void DELBRANCH(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
 
-            try
-            {
+           
                 int deptCode = int.Parse(P1);
                 JH_Auth_Branch branch = new JH_Auth_BranchB().GetEntity(d => d.DeptCode == deptCode);
                 if (branch != null)
@@ -120,12 +119,7 @@ namespace QJY.API
                         return;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                new JH_Auth_LogB().InsertLog("DELBRANCH", ex.Message.ToString(), "", UserInfo.User.UserName, UserInfo.QYinfo.ComId);
-
-            }
+         
 
         }
         /// <summary>
@@ -264,9 +258,6 @@ namespace QJY.API
         public void ADDUSER(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
 
-            try
-            {
-
                 JH_Auth_User user = new JH_Auth_User();
                 user = JsonConvert.DeserializeObject<JH_Auth_User>(P1);
                 if (string.IsNullOrEmpty(user.UserName))
@@ -354,12 +345,7 @@ namespace QJY.API
                     }
                 }
                 msg.Result = user;
-            }
-            catch (Exception ex)
-            {
-                new JH_Auth_LogB().InsertLog("ADDUSER", ex.Message.ToString(), "", UserInfo.User.UserName, UserInfo.QYinfo.ComId);
-                msg.ErrorMsg = "操作失败";
-            }
+         
 
         }
         //批量设置部门
@@ -390,8 +376,7 @@ namespace QJY.API
         /// <param name="strUserName"></param>
         public void DELUSER(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            try
-            {
+           
                 if (UserInfo.QYinfo.IsUseWX == "Y")
                 {
                     WXHelp bm = new WXHelp(UserInfo.QYinfo);
@@ -401,12 +386,7 @@ namespace QJY.API
                 {
                     msg.ErrorMsg = "删除失败";
                 }
-            }
-            catch (Exception ex)
-            {
-                new JH_Auth_LogB().InsertLog("DELUSER", ex.Message.ToString(), "", UserInfo.User.UserName, UserInfo.QYinfo.ComId);
-
-            }
+         
 
         }
         /// <summary>
@@ -419,8 +399,7 @@ namespace QJY.API
         /// <param name="strUserName"></param>
         public void UPDATEUSERISUSE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            try
-            {
+           
                 JH_Auth_User UPUser = new JH_Auth_UserB().GetUserByUserName(UserInfo.QYinfo.ComId, P1);
                 UPUser.IsUse = P2;
 
@@ -433,11 +412,7 @@ namespace QJY.API
                 {
                     msg.ErrorMsg = "更新失败";
                 }
-            }
-            catch (Exception ex)
-            {
-                new JH_Auth_LogB().InsertLog("UPDATEUSERISUSE", ex.Message.ToString(), "", UserInfo.User.UserName, UserInfo.QYinfo.ComId);
-            }
+          
         }
 
         public void SETISSHOWYD(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)

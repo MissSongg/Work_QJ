@@ -46,48 +46,25 @@ namespace QJY.API
         {
             string password = context.Request["password"];
             string username = context.Request["UserName"];
-            string ComCode = context.Request["ComId"] ?? "";
             JH_Auth_QY qyModel = new JH_Auth_QY();
-            int intComID = 0;
-            int.TryParse(ComCode, out intComID);
+
             password = CommonHelp.GetMD5(password);
             JH_Auth_User userInfo = new JH_Auth_User();
-            if (intComID == 0)
-            {
-                List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => (d.UserName == username || d.mobphone == username) && d.UserPass == password && d.IsUse == "Y").ToList();
-                if (userList.Count() == 0)
-                {
-                    msg.ErrorMsg = "用户名或密码不正确";
-                    return;
-                }
-                else if (userList.Count() > 1)
-                {
-                    msg.ErrorMsg = "-1";//用户名密码获取用户不止一个时，提示输入域名
-                    return;
-                }
-                else
-                    userInfo = userList[0];
-            }
-            else
-            {
-                List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => (d.UserName == username || d.mobphone == username) && d.UserPass == password && d.IsUse == "Y" && d.ComId == intComID).ToList();
-                if (userList.Count() == 0)
-                {
-                    msg.ErrorMsg = "用户名或密码不正确";
-                    return;
-                }
-                else
-                {
-                    userInfo = userList[0];
-                }
-            }
-            if (userInfo == null)
+
+            List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => (d.UserName == username || d.mobphone == username) && d.UserPass == password).ToList();
+            if (userList.Count() == 0)
             {
                 msg.ErrorMsg = "用户名或密码不正确";
+                return;
             }
             else
             {
-
+                userInfo = userList[0];
+                if (userInfo.IsUse != "Y")
+                {
+                    msg.ErrorMsg = "用户被禁用,请联系管理员";
+                    return;
+                }
                 if (string.IsNullOrEmpty(userInfo.pccode))
                 {
                     userInfo.pccode = CommonHelp.CreatePCCode(userInfo);
@@ -96,28 +73,9 @@ namespace QJY.API
                 new JH_Auth_UserB().Update(userInfo);
                 msg.Result = userInfo.pccode;
                 msg.Result1 = userInfo.UserName;
-
-                //LOG异步
-                try
-                {
-                    Task.Factory.StartNew<string>(() =>
-                    {
-                        new JH_Auth_LogB().Insert(new JH_Auth_Log()
-                        {
-                            ComId = userInfo.ComId.Value.ToString(),
-                            LogType = "PCLOGIN",
-                            LogContent = "用户" + userInfo.UserRealName + "登录，登录时间:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " 登录地点:" + CommonHelp.getIpAddr(),
-                            CRUser = userInfo.UserName,
-                            CRDate = DateTime.Now
-                        });
-                        return "";
-                    });
-
-
-                }
-                catch { }
-
             }
+
+
         }
 
         /// <summary>

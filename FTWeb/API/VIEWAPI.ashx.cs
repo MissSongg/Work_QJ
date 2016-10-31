@@ -30,6 +30,8 @@ namespace QjySaaSWeb.APP
             string P1 = context.Request["P1"] ?? "";
             string P2 = context.Request["P2"] ?? "";
             string P3 = context.Request["P3"] ?? "";
+            string UserName = context.Request["UserName"] ?? "";
+
             Msg_Result Model = new Msg_Result() { Action = strAction.ToUpper(), ErrorMsg = "" };
             if (!string.IsNullOrEmpty(strAction))
             {
@@ -49,6 +51,8 @@ namespace QjySaaSWeb.APP
                             var container = ServiceContainerV.Current().Resolve<IWsService>(acs[0].ToUpper());
                             Model.Action = acs[1];
                             container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), new JH_Auth_UserB.UserInfo());
+                            new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserName, 0);
+
                         }
                     }
                     if (bl)
@@ -61,12 +65,12 @@ namespace QjySaaSWeb.APP
                             JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB().GetUserInfo(strSZHLCode);
                             if (UserInfo != null)
                             {
-                                if (strAction != "CHAT_GETNOREADMSG")
-                                {
-                                   new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserInfo.User.UserName, UserInfo.QYinfo.ComId);
-                                }
                                 Model.Action = Model.Action.Substring(acs[0].Length + 1);
                                 container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), UserInfo);
+                                if (strAction != "CHAT_GETNOREADMSG")
+                                {
+                                    new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserInfo.User.UserName, UserInfo.QYinfo.ComId);
+                                }
                             }
                             else
                             {
@@ -84,15 +88,13 @@ namespace QjySaaSWeb.APP
                 }
                 catch (Exception ex)
                 {
-                    Model.ErrorMsg = "操作异常，请重试" + strAction;
-
+                    Model.ErrorMsg = strAction + "接口调用失败,请检查日志";
                     Model.Result = ex.Message;
-                    new JH_Auth_LogB().InsertLog(strAction, ex.Message.ToString(), "", "", 0);
+                    new JH_Auth_LogB().InsertLog(strAction,Model.ErrorMsg, ex.Message.ToString(), UserName, 0);
 
                 }
             }
             string jsonpcallback = context.Request["jsonpcallback"] ?? "";
-
             IsoDateTimeConverter timeConverter = new IsoDateTimeConverter();
             timeConverter.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             string Result = JsonConvert.SerializeObject(Model, Formatting.Indented, timeConverter).Replace("null", "\"\"");
@@ -101,8 +103,6 @@ namespace QjySaaSWeb.APP
                 Result = jsonpcallback + "(" + Result + ")";//支持跨域
             }
             context.Response.Write(Result);
-            Debug.WriteLine("END" + DateTime.Now);
-
         }
 
         public bool IsReusable

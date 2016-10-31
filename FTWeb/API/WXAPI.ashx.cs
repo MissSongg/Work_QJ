@@ -380,19 +380,6 @@ namespace QjySaaSWeb.APP
                             new JH_Auth_UserB().Update(jau);
                             Model.Result = jau.pccode;
                             Model.Result1 = jau.UserName;
-
-                            try
-                            {
-                                new JH_Auth_LogB().Insert(new JH_Auth_Log()
-                                {
-                                    ComId = jaq.ComId.ToString(),
-                                    LogType = "PCLOGIN",
-                                    LogContent = "用户" + jau.UserRealName + "登录，登录时间:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " 登录地点:" + CommonHelp.getIpAddr(),
-                                    CRUser = jau.UserName,
-                                    CRDate = DateTime.Now
-                                });
-                            }
-                            catch { }
                         }
                     }
                     catch (Exception ex)

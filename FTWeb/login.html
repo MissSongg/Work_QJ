@@ -251,7 +251,7 @@
                                 <p class="login-end" style="margin-top:30px;">
                                     <a class="uppercase">登录</a>
                                 </p>
-                                <div class="alert alert-danger msgcom  display-hide" style="margin-top:10px;margin-bottom:0;padding:5px">
+                                <div class="alert alert-danger msgcom" style="margin-top:10px;margin-bottom:0;padding:5px;display:none">
                                     <button class="close" data-close="alert"></button>
                                     <span id="m_info">请输入企业域名</span>
                                 </div>
@@ -305,15 +305,15 @@
                                 ComFunJS.setCookie('zt', "1", 20000);
                             }
 
-                            $(".msgcom").addClass("display-hide");
+                            $(".msgcom").hide();
                         } else if (resultData.ErrorMsg == "-1") {
-                            $(".msgcom").removeClass("display-hide");
+                            $(".msgcom").show();
                             $(".msgcom #m_info").text("请输入企业域名");
                             $(".uppercase").text("登录")
                             $("#qywz").show();
 
                         } else {
-                            $(".msgcom").removeClass("display-hide");
+                            $(".msgcom").show();
                             $(".msgcom #m_info").text(resultData.ErrorMsg);
                             $(".uppercase").text("登录")
                         }

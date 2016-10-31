@@ -396,8 +396,7 @@ namespace QJY.API
 
         public void AddBranch(JH_Auth_UserB.UserInfo UserInfo, JH_Auth_Branch branch, Msg_Result msg)
         {
-            try
-            {
+          
                 if (branch.DeptCode == 0)//DeptCode==0为添加部门
                 {
                     //获取要添加的部门名称是否存在，存在提示用户，不存在添加
@@ -448,11 +447,7 @@ namespace QJY.API
                         return;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                new JH_Auth_LogB().InsertLog("ADDBRANCH", ex.Message.ToString(), "", UserInfo.User.UserName, UserInfo.QYinfo.ComId);
-            }
+      
         }
 
         public JH_Auth_Branch GetBMByDeptCode(int ComID, int DeptCode)
