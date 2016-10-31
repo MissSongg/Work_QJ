@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">报销日期</label></div>
+                <div class="weui_cell_hd"><label class="weui_label label">发起日期</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input type="text" placeholder="请选择报销日期" id="BXDate" ms-duplex="modelData.BXDate" class="weui_input szhl szhl_require" />
                 </div>
@@ -38,13 +38,13 @@
                     </div>
                 </div>
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">金额</label></div>
+                    <div class="weui_cell_hd"><label class="weui_label label">金额(元)</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         <input type="number" placeholder="请输入金额" ms-duplex="item.BXJE" class="weui_input szhl szhl_require" ms-keyup="heji(item)" />
                     </div>
                 </div>
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">时间</label></div>
+                    <div class="weui_cell_hd"><label class="weui_label label">日期</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         <input type="text" placeholder="请输入时间" ms-duplex="item.BXDate" class="weui_input szhl szhl_require mxtime" />
                     </div>
@@ -210,6 +210,7 @@
                 $(".mxtime").calendar({
                     value: [ComFunJS.getnowdate("yyyy-mm-dd")]
                 });
+
 
                 ComFunJS.uploadimgnew();
 

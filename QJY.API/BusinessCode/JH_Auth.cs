@@ -396,58 +396,58 @@ namespace QJY.API
 
         public void AddBranch(JH_Auth_UserB.UserInfo UserInfo, JH_Auth_Branch branch, Msg_Result msg)
         {
-          
-                if (branch.DeptCode == 0)//DeptCode==0为添加部门
+
+            if (branch.DeptCode == 0)//DeptCode==0为添加部门
+            {
+                //获取要添加的部门名称是否存在，存在提示用户，不存在添加
+                JH_Auth_Branch branch1 = new JH_Auth_BranchB().GetEntity(d => d.DeptName == branch.DeptName && d.ComId == UserInfo.User.ComId);
+                if (branch1 != null)
                 {
-                    //获取要添加的部门名称是否存在，存在提示用户，不存在添加
-                    JH_Auth_Branch branch1 = new JH_Auth_BranchB().GetEntity(d => d.DeptName == branch.DeptName && d.ComId == UserInfo.User.ComId);
-                    if (branch1 != null)
-                    {
-                        msg.ErrorMsg = "部门已存在";
-                        return;
-                    }
-                    //获取上下级的Path，用于上级查找下级所有部门或用户
+                    msg.ErrorMsg = "部门已存在";
+                    return;
+                }
+                //获取上下级的Path，用于上级查找下级所有部门或用户
+                branch.Remark1 = new JH_Auth_BranchB().GetBranchNo(UserInfo.User.ComId.Value, branch.DeptRoot);
+                branch.ComId = UserInfo.User.ComId;
+                branch.CRUser = UserInfo.User.UserName;
+                branch.CRDate = DateTime.Now;
+                //添加部门，失败提示用户，成功赋值微信部门Code并更新
+                if (!new JH_Auth_BranchB().Insert(branch))
+                {
+                    msg.ErrorMsg = "添加部门失败";
+                    return;
+                }
+                else
+                {
+                    branch.WXBMCode = branch.DeptCode;
+                    new JH_Auth_BranchB().Update(branch);
+                }
+                //判断是否启用微信后，启用部门需要同步添加微信部门
+                if (UserInfo.QYinfo.IsUseWX == "Y")
+                {
+                    WXHelp bm = new WXHelp(UserInfo.QYinfo);
+                    bm.WX_CreateBranch(branch);
+                }
+                msg.Result = branch;
+            }
+            else//DeptCode不等于0时为修改部门
+            {
+                if (branch.DeptRoot != -1)
+                {
                     branch.Remark1 = new JH_Auth_BranchB().GetBranchNo(UserInfo.User.ComId.Value, branch.DeptRoot);
-                    branch.ComId = UserInfo.User.ComId;
-                    branch.CRUser = UserInfo.User.UserName;
-                    branch.CRDate = DateTime.Now;
-                    //添加部门，失败提示用户，成功赋值微信部门Code并更新
-                    if (!new JH_Auth_BranchB().Insert(branch))
-                    {
-                        msg.ErrorMsg = "添加部门失败";
-                        return;
-                    }
-                    else
-                    {
-                        branch.WXBMCode = branch.DeptCode;
-                        new JH_Auth_BranchB().Update(branch);
-                    }
-                    //判断是否启用微信后，启用部门需要同步添加微信部门
-                    if (UserInfo.QYinfo.IsUseWX == "Y")
-                    {
-                        WXHelp bm = new WXHelp(UserInfo.QYinfo);
-                        bm.WX_CreateBranch(branch);
-                    }
-                    msg.Result = branch;
                 }
-                else//DeptCode不等于0时为修改部门
+                if (UserInfo.QYinfo.IsUseWX == "Y")
                 {
-                    if (branch.DeptRoot != -1)
-                    {
-                        branch.Remark1 = new JH_Auth_BranchB().GetBranchNo(UserInfo.User.ComId.Value, branch.DeptRoot);
-                    }
-                    if (UserInfo.QYinfo.IsUseWX == "Y")
-                    {
-                        WXHelp bm = new WXHelp(UserInfo.QYinfo);
-                        bm.WX_UpdateBranch(branch);
-                    }
-                    if (!new JH_Auth_BranchB().Update(branch))
-                    {
-                        msg.ErrorMsg = "修改部门失败";
-                        return;
-                    }
+                    WXHelp bm = new WXHelp(UserInfo.QYinfo);
+                    bm.WX_UpdateBranch(branch);
                 }
-      
+                if (!new JH_Auth_BranchB().Update(branch))
+                {
+                    msg.ErrorMsg = "修改部门失败";
+                    return;
+                }
+            }
+
         }
 
         public JH_Auth_Branch GetBMByDeptCode(int ComID, int DeptCode)
@@ -1612,6 +1612,16 @@ namespace QJY.API
             {
                 return "";
             }
+        }
+        public int GetFormIDbyPID(string strModeCode, int PID)
+        {
+            int intFormID = 0;
+
+            JH_Auth_Model QYModel = new JH_Auth_ModelB().GetEntity(d => d.ModelCode == strModeCode);
+            string strSQL = string.Format("SELECT ID FROM " + QYModel.RelTable + " WHERE  intProcessStanceid='{0}'", PID);
+            intFormID = int.Parse(new Yan_WF_PDB().ExsSclarSql(strSQL).ToString());
+
+            return intFormID;
         }
     }
 
