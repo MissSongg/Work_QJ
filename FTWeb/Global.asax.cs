@@ -45,13 +45,11 @@ namespace QjySaaSWeb
         }
         protected void Session_Start(object sender, EventArgs e)
         {
-            string s = "1";
 
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            string s = "1";
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

@@ -2344,10 +2344,10 @@ namespace QJY.API
             }
             catch (Exception ex)
             {
+                return "";
 
             }
 
-            return "";
         }
 
         //设置手机APP首页显示应用

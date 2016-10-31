@@ -1439,22 +1439,6 @@ namespace QJY.API
         }
 
 
-        public int GetFormIDbyPID(string strModeCode, int PID)
-        {
-            int intFormID = 0;
-            try
-            {
-                JH_Auth_Model QYModel = new JH_Auth_ModelB().GetEntity(d => d.ModelCode == strModeCode);
-                string strSQL = string.Format("SELECT ID FROM " + QYModel.RelTable + " WHERE  intProcessStanceid='{0}'", PID);
-                intFormID = int.Parse(new Yan_WF_PDB().ExsSclarSql(strSQL).ToString());
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return intFormID;
-        }
-
 
         /// <summary>
         /// 判断当前用户当前流程是否可以审批

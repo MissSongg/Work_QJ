@@ -140,10 +140,9 @@ public class UploaderV5
         }
         catch (Exception ex)
         {
-           
+            return "";
         }
          
-        return "";
     }
     /**
  * 上传涂鸦的主处理方法

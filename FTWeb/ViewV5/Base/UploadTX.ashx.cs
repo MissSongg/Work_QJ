@@ -185,9 +185,8 @@ using System.Net;
             }
             catch (Exception ex)
             {
-
+                return "";
             }
-            return "";
         }
         private string GetFileType(string extname)
         {
