@@ -728,7 +728,34 @@ namespace QJY.API
             }
             return identifycode;
         }
+        /// <summary>
+        /// 登录验证码
+        /// </summary>
+        /// <param name="codenum"></param>
+        /// <returns></returns>
+        public static string yzmcode(int codenum)
+        {
+            string Vchar = "0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,W,X,Y,Z";
+            string[] VcArray = Vchar.Split(',');
+            string[] stray = new string[codenum];
+            Random random = new Random();
+            for (int i = 0; i < codenum; i++)
+            {
+                int iNum = 0;
+                while ((iNum = Convert.ToInt32(VcArray.Length * random.NextDouble())) == VcArray.Length)
+                {
+                    iNum = Convert.ToInt32(VcArray.Length * random.NextDouble());
+                }
+                stray[i] = VcArray[iNum];
+            }
 
+            string identifycode = string.Empty;
+            foreach (string s in stray)
+            {
+                identifycode += s;
+            }
+            return identifycode;
+        }
         public static string getIPAddress()
         {
             string result = "";

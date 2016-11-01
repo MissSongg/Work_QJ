@@ -9,9 +9,17 @@
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">发起日期</label></div>
+                <div class="weui_cell_hd"><label class="weui_label label">报销日期</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input type="text" placeholder="请选择报销日期" id="BXDate" ms-duplex="modelData.BXDate" class="weui_input szhl szhl_require" />
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label label">关联项目</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <select class="weui-select" ms-duplex="modelData.XMID">
+                        <option ms-repeat-item="XMData" ms-value="item.ID" ms-attr-selected="modelData.XMID==item.ID">{{item.XMMC}}</option>
+                    </select>
                 </div>
             </div>
             <div class="weui_cell">
@@ -22,7 +30,7 @@
             </div>
         </div>
 
-        <div ms-repeat-item="JFBXJLLIST">
+        <div ms-repeat-item="JFBXJLLIST" data-repeat-rendered="LoadDate">
             <div class="weui_cells_title">
                 消费记录{{$index+1}}
                 <a ms-if="$index!=0" href="javascript:void(0)" external ms-click="RemoveJL(item)" style="float:right;">删除</a>
@@ -38,15 +46,24 @@
                     </div>
                 </div>
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">金额(元)</label></div>
+                    <div class="weui_cell_hd"><label class="weui_label label">金额</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         <input type="number" placeholder="请输入金额" ms-duplex="item.BXJE" class="weui_input szhl szhl_require" ms-keyup="heji(item)" />
                     </div>
                 </div>
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">日期</label></div>
+                    <div class="weui_cell_hd"><label class="weui_label label">时间</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input type="text" placeholder="请输入时间" ms-duplex="item.BXDate" class="weui_input szhl szhl_require mxtime" />
+                        <input type="text" placeholder="请输入时间" ms-duplex="item.BXDate" ms-attr-id="mxtime{{$index}}" class="weui_input szhl szhl_require " />
+                    </div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label label">是否有票</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <label class="label-checkbox item-content" ms-click="SETIsHasFP(item)">
+                            <input type="checkbox" name="ishasfp" id="ishasfp">
+                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        </label>
                     </div>
                 </div>
                 <div class="weui_cell">
@@ -101,6 +118,12 @@
                 </div>
             </div>
             <div class="weui_cell">
+                <div class="weui_cell_hd"><label class="weui_label label">关联项目</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    {{modelData.XMMC}}
+                </div>
+            </div>
+            <div class="weui_cell">
                 <div class="weui_cell_hd"><label class="weui_label label">标题</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.JFBXTitle}}
@@ -135,6 +158,12 @@
                     <div class="weui_cell_hd"><label class="weui_label label">时间</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         {{item.BXDate|date('yyyy-MM-dd')}}
+                    </div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label label">是否有票</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        {{item.IsHasFP==1?"是":"否"}}
                     </div>
                 </div>
                 <div class="weui_cell">
@@ -173,6 +202,7 @@
         iswf: true,//是否属于流程表单
         wximg: "",
         typename: "",
+        XMData: [],
         inittemp: function (strId) {
             $.showPreloader();
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 23 }, function (resultData) {
@@ -181,9 +211,17 @@
 
                 }
             })
+            $.getJSON('/API/VIEWAPI.ashx?Action=XMGL_GETXMLIST', function (resultData) {
+                if (resultData.ErrorMsg == "" && resultData.Result.length > 0) {
+                    tempmodel.XMData = resultData.Result;
+                }
+            })
             if (strId) {
                 $.getJSON('/API/VIEWAPI.ashx?Action=JFBX_GETJFBXMODEL', { P1: strId }, function (resultData) {
                     if (resultData.ErrorMsg == "") {
+                        if (resultData.Result3) {
+                            resultData.Result.XMMC = resultData.Result3.XMMC;
+                        }
                         tempmodel.modelData = resultData.Result;
                         if (tempmodel.modelData.BXDate && tempmodel.modelData.BXDate.length > 10) {
                             tempmodel.modelData.BXDate = tempmodel.modelData.BXDate.substring(0, 10);
@@ -207,9 +245,6 @@
                 });
                 tempmodel.modelData.BXDate = ComFunJS.getnowdate("yyyy-mm-dd");
 
-                $(".mxtime").calendar({
-                    value: [ComFunJS.getnowdate("yyyy-mm-dd")]
-                });
 
 
                 ComFunJS.uploadimgnew();
@@ -220,16 +255,26 @@
 
 
 
-        },//初始化
-        modelData: { "ShenQingRen": ComFunJS.convertuser(ComFunJS.getnowuser()), "BranchName": "", "BXDate": "", "BXZJE": 0, "BXContent": "", "Files": "", "JFBXTitle": "" },
-        JFBXJL: { "ShenQingRen": ComFunJS.convertuser(ComFunJS.getnowuser()), "LeiBie": "", "TypeName": "", "BXDate": "", "BXContent": "", "BXJE": 0, "BXDNum": "" },
-        JFBXJLLIST: [{ "ShenQingRen": ComFunJS.convertuser(ComFunJS.getnowuser()), "LeiBie": "", "TypeName": "", "BXDate": "", "BXContent": "", "BXJE": "", "BXDNum": "" }],
+        }, flag: false,//初始化
+        LoadDate: function () {
+            if (!tempmodel.flag) {
+                $("#mxtime" + (tempmodel.JFBXJLLIST.size() - 1)).calendar({
+                    value: [ComFunJS.getnowdate("yyyy-mm-dd")]
+                });
+                tempmodel.flag = true;
+            }
+        },
+        modelData: { "ShenQingRen": ComFunJS.convertuser(ComFunJS.getnowuser()), "BranchName": "", "BXDate": "", "BXZJE": 0, "BXContent": "", "Files": "", "JFBXTitle": "", XMID: "" },
+        JFBXJL: { "ShenQingRen": ComFunJS.convertuser(ComFunJS.getnowuser()), "LeiBie": "", "TypeName": "", "BXDate": "", "BXContent": "", "BXJE": 0, "BXDNum": "", "IsHasFP": 0 },
+        JFBXJLLIST: [{ "ShenQingRen": ComFunJS.convertuser(ComFunJS.getnowuser()), "LeiBie": "", "TypeName": "", "BXDate": "", "BXContent": "", "BXJE": "", "BXDNum": "", "IsHasFP": 0 }],
         ChangeFL: function (item) {
             tempmodel.ColumnData.forEach(function (el) {
                 if (item.LeiBie == el.ID) {
                     item.TypeName = el.TypeName;
                 }
             })
+        }, SETIsHasFP: function (item) {
+            item.IsHasFP = $("#ishasfp").attr("checked") ? 1 : 0;
         },
         AddJFBXJL: function () {
             var isk = "";
@@ -242,9 +287,8 @@
                 ComFunJS.winwarning("类型不能为空");
                 return;
             }
-            tempmodel.JFBXJLLIST.push({ "ShenQingRen": ComFunJS.convertuser(ComFunJS.getnowuser()), "LeiBie": "", "TypeName": "", "BXDate": "", "BXContent": "", "BXJE": "", "BXDNum": "" });
-
-            $(".mxtime").calendar({
+            tempmodel.JFBXJLLIST.push({ "ShenQingRen": ComFunJS.convertuser(ComFunJS.getnowuser()), "LeiBie": "", "TypeName": "", "BXDate": "", "BXContent": "", "BXJE": "", "BXDNum": "", "IsHasFP": 0 });
+            $("#mxtime" + (tempmodel.JFBXJLLIST.size() - 1)).calendar({
                 value: [ComFunJS.getnowdate("yyyy-mm-dd")]
             });
         },
@@ -261,7 +305,7 @@
             tempmodel.heji();
         },
         SaveData: function (callback) {
-            
+
 
             var isk = "";
             tempmodel.JFBXJLLIST.forEach(function (item) {

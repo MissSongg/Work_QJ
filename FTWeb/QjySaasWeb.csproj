@@ -271,6 +271,7 @@
     <Content Include="ViewV5\Base\Success.html" />
     <Content Include="ViewV5\Base\UserSelect.html" />
     <Content Include="ViewV5\Base\xls.html" />
+    <Content Include="ViewV5\Base\YZMCode.aspx" />
     <Content Include="ViewV5\Base\ZDCRMLIST.html" />
     <Content Include="ViewV5\Chat\chat.js" />
     <Content Include="ViewV5\Chat\chat.html" />
@@ -1481,6 +1482,13 @@
     </Compile>
     <Compile Include="ViewV5\Base\UploadTX.ashx.cs">
       <DependentUpon>UploadTX.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewV5\Base\YZMCode.aspx.cs">
+      <DependentUpon>YZMCode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewV5\Base\YZMCode.aspx.designer.cs">
+      <DependentUpon>YZMCode.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewV5\JS\umeditor122\net\Uploader.cs" />
   </ItemGroup>

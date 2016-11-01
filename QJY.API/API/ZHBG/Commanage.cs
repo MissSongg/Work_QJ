@@ -20,10 +20,11 @@ using Senparc.Weixin.QY.AdvancedAPIs.OAuth2;
 using System.Xml;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Converters;
+using System.Web.SessionState;
 
 namespace QJY.API
 {
-    public class Commanage : IWsService
+    public class Commanage : IWsService, IRequiresSessionState
     {
         public void ProcessRequest(HttpContext context, ref Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
@@ -44,10 +45,26 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void LOGIN(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            string password = context.Request["password"];
-            string username = context.Request["UserName"];
-            JH_Auth_QY qyModel = new JH_Auth_QY();
+            string password = context.Request["password"] ?? "";
+            string username = context.Request["UserName"] ?? "";
+            string chkcode = context.Request["chkcode"] ?? "";
+            msg.ErrorMsg = "";
+            if (context.Session["chkcode"] != null)
+            {
+                if (!chkcode.ToUpper().Equals(context.Session["chkcode"].ToString()))
+                {
+                    msg.ErrorMsg = "验证码不正确";
+                    return;
+                }
+            }
+            else
+            {
+                msg.ErrorMsg = "验证码已过期";
+                return;
+            }
 
+
+            JH_Auth_QY qyModel = new JH_Auth_QY();
             password = CommonHelp.GetMD5(password);
             JH_Auth_User userInfo = new JH_Auth_User();
 
