@@ -516,5 +516,47 @@ namespace QJY.API
     public class SZHL_GZGL_JCSZB : BaseEFDao<SZHL_GZGL_JCSZ> { }
     public class SZHL_GZGL_FLB : BaseEFDao<SZHL_GZGL_FL> { }
     public class SZHL_GZGL_WXYJB : BaseEFDao<SZHL_GZGL_WXYJ> { }
-    
+    public class SZHL_KS_KSAPB : BaseEFDao<SZHL_KS_KSAP>
+    {
+    }
+    public class SZHL_KS_SJB : BaseEFDao<SZHL_KS_SJ>
+    {
+    }
+    public class SZHL_KS_SJSTB : BaseEFDao<SZHL_KS_SJST>
+    {
+    }
+    public class SZHL_KS_STB : BaseEFDao<SZHL_KS_ST>
+    {
+    }
+    public class SZHL_KS_STItemB : BaseEFDao<SZHL_KS_STItem>
+    {
+        public void SaveQuestionItem(int questionId, string itemName, string itemDec, int ComId)
+        {
+
+            SZHL_KS_STItem questionItem = new SZHL_KS_STItem();
+            questionItem.STID = questionId;
+            questionItem.ItemName = itemName;
+            questionItem.ItemDesc = itemDec.Trim();
+            questionItem.ComId = ComId;
+            new SZHL_KS_STItemB().Insert(questionItem);
+        }
+    }
+    public class SZHL_KS_SJSTGLB : BaseEFDao<SZHL_KS_SJSTGL>
+    {
+    }
+    public class SZHL_KS_SJSTGLItemB : BaseEFDao<SZHL_KS_SJSTGLItem>
+    {
+    }
+    public class SZHL_KS_TKB : BaseEFDao<SZHL_KS_TK>
+    {
+    }
+    public class SZHL_KS_TKFLB : BaseEFDao<SZHL_KS_TKFL>
+    {
+    } 
+    public class SZHL_KS_USERKSB : BaseEFDao<SZHL_KS_USERKS>
+    {
+    }
+    public class SZHL_KS_USERKSItemB : BaseEFDao<SZHL_KS_USERKSItem>
+    {
+    }
 }

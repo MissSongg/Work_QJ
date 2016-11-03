@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aspose.Words">
+      <HintPath>..\FTWeb\bin\Aspose.Words.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
@@ -125,6 +128,7 @@
     <Compile Include="API\GZBG\GZBGManage.cs" />
     <Compile Include="API\HELP\HELPManage.cs" />
     <Compile Include="API\HYGL\HYGLManage.cs" />
+    <Compile Include="API\KSGL\KSGLManage.cs" />
     <Compile Include="BusinessCode\BLL.cs" />
     <Compile Include="BusinessCode\JH_Auth.cs" />
     <Compile Include="CommonCode\CommonHelp.cs" />
