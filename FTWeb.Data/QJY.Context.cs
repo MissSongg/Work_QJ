@@ -133,5 +133,16 @@ namespace QJY.Data
         public virtual DbSet<Yan_WF_PI> Yan_WF_PI { get; set; }
         public virtual DbSet<Yan_WF_TD> Yan_WF_TD { get; set; }
         public virtual DbSet<Yan_WF_TI> Yan_WF_TI { get; set; }
+        public virtual DbSet<SZHL_KS_KSAP> SZHL_KS_KSAP { get; set; }
+        public virtual DbSet<SZHL_KS_SJ> SZHL_KS_SJ { get; set; }
+        public virtual DbSet<SZHL_KS_SJST> SZHL_KS_SJST { get; set; }
+        public virtual DbSet<SZHL_KS_SJSTGL> SZHL_KS_SJSTGL { get; set; }
+        public virtual DbSet<SZHL_KS_SJSTGLItem> SZHL_KS_SJSTGLItem { get; set; }
+        public virtual DbSet<SZHL_KS_ST> SZHL_KS_ST { get; set; }
+        public virtual DbSet<SZHL_KS_STItem> SZHL_KS_STItem { get; set; }
+        public virtual DbSet<SZHL_KS_TK> SZHL_KS_TK { get; set; }
+        public virtual DbSet<SZHL_KS_TKFL> SZHL_KS_TKFL { get; set; }
+        public virtual DbSet<SZHL_KS_USERKS> SZHL_KS_USERKS { get; set; }
+        public virtual DbSet<SZHL_KS_USERKSItem> SZHL_KS_USERKSItem { get; set; }
     }
 }

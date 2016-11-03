@@ -1463,6 +1463,173 @@
           <Property Name="Latitude" Type="varchar" MaxLength="500" />
           <Property Name="Position" Type="varchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="SZHL_KS_KSAP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KSName" Type="varchar" MaxLength="200" />
+          <Property Name="SJID" Type="int" />
+          <Property Name="KSSC" Type="int" />
+          <Property Name="YCSY" Type="int" />
+          <Property Name="KSDate" Type="datetime" />
+          <Property Name="KSUser" Type="varchar(max)" />
+          <Property Name="Remark" Type="varchar(max)" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="Status" Type="int" />
+          <Property Name="Address" Type="varchar" MaxLength="1000" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="YJTeacher" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_SJ">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SJName" Type="varchar" MaxLength="255" />
+          <Property Name="SJType" Type="varchar" MaxLength="255" />
+          <Property Name="ZJType" Type="varchar" MaxLength="255" />
+          <Property Name="TotalRecord" Type="int" />
+          <Property Name="SJDescribe" Type="varchar" MaxLength="255" />
+          <Property Name="PassRecord" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="int" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="KSSC" Type="int" />
+          <Property Name="kcId" Type="int" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_SJST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SJID" Type="int" />
+          <Property Name="STID" Type="int" />
+          <Property Name="Record" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="STType" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_SJSTGL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SJID" Type="int" />
+          <Property Name="KnowLedge" Type="varchar" MaxLength="500" />
+          <Property Name="STType" Type="varchar" MaxLength="50" />
+          <Property Name="Level" Type="int" />
+          <Property Name="QContent" Type="varchar(max)" />
+          <Property Name="QAnswer" Type="varchar(max)" />
+          <Property Name="QAnalyze" Type="text" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="Remark" Type="text" />
+          <Property Name="Status" Type="int" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="STID" Type="int" />
+          <Property Name="Record" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_SJSTGLItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemName" Type="varchar" MaxLength="50" />
+          <Property Name="ItemDesc" Type="text" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="STID" Type="int" />
+          <Property Name="SJID" Type="int" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_ST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TKID" Type="int" />
+          <Property Name="KnowLedge" Type="varchar" MaxLength="500" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
+          <Property Name="Level" Type="int" />
+          <Property Name="QContent" Type="varchar(max)" />
+          <Property Name="QAnswer" Type="text" />
+          <Property Name="QAnalyze" Type="text" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="Remark" Type="text" />
+          <Property Name="Status" Type="int" />
+          <Property Name="ComId" Type="int" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_STItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="STID" Type="int" />
+          <Property Name="ItemName" Type="varchar" MaxLength="50" />
+          <Property Name="ItemDesc" Type="text" />
+          <Property Name="ComId" Type="int" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_TK">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TKName" Type="varchar" MaxLength="200" />
+          <Property Name="TKTypeId" Type="int" />
+          <Property Name="TKDescribe" Type="text" />
+          <Property Name="Status" Type="int" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="KCID" Type="int" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_TKFL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TKFLName" Type="varchar" MaxLength="255" />
+          <Property Name="PID" Type="int" />
+          <Property Name="Remark" Type="varchar" MaxLength="255" />
+          <Property Name="CRUser" Type="varchar" MaxLength="255" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="ISDel" Type="int" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="TypePath" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_USERKS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KSAPID" Type="int" />
+          <Property Name="SJID" Type="int" />
+          <Property Name="YJTeacher" Type="varchar" MaxLength="50" />
+          <Property Name="Record" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="Answer" Type="text" />
+          <Property Name="ISJJ" Type="int" />
+          <Property Name="KSType" Type="int" />
+          <Property Name="ComId" Type="int" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_USERKSItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserKSID" Type="int" />
+          <Property Name="STID" Type="int" />
+          <Property Name="Answer" Type="varchar(max)" />
+          <Property Name="Record" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SJID" Type="int" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="ComId" Type="int" />
+        </EntityType>
         <EntityType Name="SZHL_LCSP">
           <Key>
             <PropertyRef Name="ID" />
@@ -2217,6 +2384,17 @@
           <EntitySet Name="SZHL_KDGL" EntityType="Self.SZHL_KDGL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_KQBC" EntityType="Self.SZHL_KQBC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_KQJL" EntityType="Self.SZHL_KQJL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_KS_KSAP" EntityType="Self.SZHL_KS_KSAP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_KS_SJ" EntityType="Self.SZHL_KS_SJ" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_KS_SJST" EntityType="Self.SZHL_KS_SJST" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_KS_SJSTGL" EntityType="Self.SZHL_KS_SJSTGL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_KS_SJSTGLItem" EntityType="Self.SZHL_KS_SJSTGLItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_KS_ST" EntityType="Self.SZHL_KS_ST" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_KS_STItem" EntityType="Self.SZHL_KS_STItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_KS_TK" EntityType="Self.SZHL_KS_TK" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_KS_TKFL" EntityType="Self.SZHL_KS_TKFL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_KS_USERKS" EntityType="Self.SZHL_KS_USERKS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_KS_USERKSItem" EntityType="Self.SZHL_KS_USERKSItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_LCSP" EntityType="Self.SZHL_LCSP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_NOTE" EntityType="Self.SZHL_NOTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_QYHD" EntityType="Self.SZHL_QYHD" Schema="dbo" store:Type="Tables" />
@@ -2363,6 +2541,17 @@
           <EntitySet Name="Yan_WF_PI" EntityType="QJY_SaaSModel.Yan_WF_PI" />
           <EntitySet Name="Yan_WF_TD" EntityType="QJY_SaaSModel.Yan_WF_TD" />
           <EntitySet Name="Yan_WF_TI" EntityType="QJY_SaaSModel.Yan_WF_TI" />
+          <EntitySet Name="SZHL_KS_KSAP" EntityType="QJY_SaaSModel.SZHL_KS_KSAP" />
+          <EntitySet Name="SZHL_KS_SJ" EntityType="QJY_SaaSModel.SZHL_KS_SJ" />
+          <EntitySet Name="SZHL_KS_SJST" EntityType="QJY_SaaSModel.SZHL_KS_SJST" />
+          <EntitySet Name="SZHL_KS_SJSTGL" EntityType="QJY_SaaSModel.SZHL_KS_SJSTGL" />
+          <EntitySet Name="SZHL_KS_SJSTGLItem" EntityType="QJY_SaaSModel.SZHL_KS_SJSTGLItem" />
+          <EntitySet Name="SZHL_KS_ST" EntityType="QJY_SaaSModel.SZHL_KS_ST" />
+          <EntitySet Name="SZHL_KS_STItem" EntityType="QJY_SaaSModel.SZHL_KS_STItem" />
+          <EntitySet Name="SZHL_KS_TK" EntityType="QJY_SaaSModel.SZHL_KS_TK" />
+          <EntitySet Name="SZHL_KS_TKFL" EntityType="QJY_SaaSModel.SZHL_KS_TKFL" />
+          <EntitySet Name="SZHL_KS_USERKS" EntityType="QJY_SaaSModel.SZHL_KS_USERKS" />
+          <EntitySet Name="SZHL_KS_USERKSItem" EntityType="QJY_SaaSModel.SZHL_KS_USERKSItem" />
         </EntityContainer>
         <EntityType Name="FT_File">
           <Key>
@@ -4498,6 +4687,173 @@
           <Property Name="CRDate" Type="DateTime" Precision="3" />
           <Property Name="TaskName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="TaskRole" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_KSAP">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KSName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="SJID" Type="Int32" />
+          <Property Name="KSSC" Type="Int32" />
+          <Property Name="YCSY" Type="Int32" />
+          <Property Name="KSDate" Type="DateTime" Precision="3" />
+          <Property Name="KSUser" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="YJTeacher" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_SJ">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SJName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SJType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ZJType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TotalRecord" Type="Int32" />
+          <Property Name="SJDescribe" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PassRecord" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="KSSC" Type="Int32" />
+          <Property Name="kcId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_SJST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SJID" Type="Int32" />
+          <Property Name="STID" Type="Int32" />
+          <Property Name="Record" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="STType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_SJSTGL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SJID" Type="Int32" />
+          <Property Name="KnowLedge" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="STType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Level" Type="Int32" />
+          <Property Name="QContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="QAnswer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="QAnalyze" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="STID" Type="Int32" />
+          <Property Name="Record" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_SJSTGLItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ItemDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="STID" Type="Int32" />
+          <Property Name="SJID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_ST">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TKID" Type="Int32" />
+          <Property Name="KnowLedge" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Level" Type="Int32" />
+          <Property Name="QContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="QAnswer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="QAnalyze" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="ComId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_STItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="STID" Type="Int32" />
+          <Property Name="ItemName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ItemDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ComId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_TK">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TKName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="TKTypeId" Type="Int32" />
+          <Property Name="TKDescribe" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="KCID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_TKFL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TKFLName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PID" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="ISDel" Type="Int32" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="TypePath" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_USERKS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KSAPID" Type="Int32" />
+          <Property Name="SJID" Type="Int32" />
+          <Property Name="YJTeacher" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Record" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ISJJ" Type="Int32" />
+          <Property Name="KSType" Type="Int32" />
+          <Property Name="ComId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SZHL_KS_USERKSItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserKSID" Type="Int32" />
+          <Property Name="STID" Type="Int32" />
+          <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Record" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SJID" Type="Int32" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="ComId" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -6745,6 +7101,184 @@
                 <ScalarProperty Name="TDCODE" ColumnName="TDCODE" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ComId" ColumnName="ComId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_KS_KSAP">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_KSAP">
+              <MappingFragment StoreEntitySet="SZHL_KS_KSAP">
+                <ScalarProperty Name="YJTeacher" ColumnName="YJTeacher" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="KSUser" ColumnName="KSUser" />
+                <ScalarProperty Name="KSDate" ColumnName="KSDate" />
+                <ScalarProperty Name="YCSY" ColumnName="YCSY" />
+                <ScalarProperty Name="KSSC" ColumnName="KSSC" />
+                <ScalarProperty Name="SJID" ColumnName="SJID" />
+                <ScalarProperty Name="KSName" ColumnName="KSName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_KS_SJ">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_SJ">
+              <MappingFragment StoreEntitySet="SZHL_KS_SJ">
+                <ScalarProperty Name="kcId" ColumnName="kcId" />
+                <ScalarProperty Name="KSSC" ColumnName="KSSC" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PassRecord" ColumnName="PassRecord" />
+                <ScalarProperty Name="SJDescribe" ColumnName="SJDescribe" />
+                <ScalarProperty Name="TotalRecord" ColumnName="TotalRecord" />
+                <ScalarProperty Name="ZJType" ColumnName="ZJType" />
+                <ScalarProperty Name="SJType" ColumnName="SJType" />
+                <ScalarProperty Name="SJName" ColumnName="SJName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_KS_SJST">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_SJST">
+              <MappingFragment StoreEntitySet="SZHL_KS_SJST">
+                <ScalarProperty Name="STType" ColumnName="STType" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="Record" ColumnName="Record" />
+                <ScalarProperty Name="STID" ColumnName="STID" />
+                <ScalarProperty Name="SJID" ColumnName="SJID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_KS_SJSTGL">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_SJSTGL">
+              <MappingFragment StoreEntitySet="SZHL_KS_SJSTGL">
+                <ScalarProperty Name="Record" ColumnName="Record" />
+                <ScalarProperty Name="STID" ColumnName="STID" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="QAnalyze" ColumnName="QAnalyze" />
+                <ScalarProperty Name="QAnswer" ColumnName="QAnswer" />
+                <ScalarProperty Name="QContent" ColumnName="QContent" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="STType" ColumnName="STType" />
+                <ScalarProperty Name="KnowLedge" ColumnName="KnowLedge" />
+                <ScalarProperty Name="SJID" ColumnName="SJID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_KS_SJSTGLItem">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_SJSTGLItem">
+              <MappingFragment StoreEntitySet="SZHL_KS_SJSTGLItem">
+                <ScalarProperty Name="SJID" ColumnName="SJID" />
+                <ScalarProperty Name="STID" ColumnName="STID" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="ItemDesc" ColumnName="ItemDesc" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_KS_ST">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_ST">
+              <MappingFragment StoreEntitySet="SZHL_KS_ST">
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="QAnalyze" ColumnName="QAnalyze" />
+                <ScalarProperty Name="QAnswer" ColumnName="QAnswer" />
+                <ScalarProperty Name="QContent" ColumnName="QContent" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="KnowLedge" ColumnName="KnowLedge" />
+                <ScalarProperty Name="TKID" ColumnName="TKID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_KS_STItem">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_STItem">
+              <MappingFragment StoreEntitySet="SZHL_KS_STItem">
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="ItemDesc" ColumnName="ItemDesc" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="STID" ColumnName="STID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_KS_TK">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_TK">
+              <MappingFragment StoreEntitySet="SZHL_KS_TK">
+                <ScalarProperty Name="KCID" ColumnName="KCID" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="TKDescribe" ColumnName="TKDescribe" />
+                <ScalarProperty Name="TKTypeId" ColumnName="TKTypeId" />
+                <ScalarProperty Name="TKName" ColumnName="TKName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_KS_TKFL">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_TKFL">
+              <MappingFragment StoreEntitySet="SZHL_KS_TKFL">
+                <ScalarProperty Name="TypePath" ColumnName="TypePath" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="ISDel" ColumnName="ISDel" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="PID" ColumnName="PID" />
+                <ScalarProperty Name="TKFLName" ColumnName="TKFLName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_KS_USERKS">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_USERKS">
+              <MappingFragment StoreEntitySet="SZHL_KS_USERKS">
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="KSType" ColumnName="KSType" />
+                <ScalarProperty Name="ISJJ" ColumnName="ISJJ" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="Record" ColumnName="Record" />
+                <ScalarProperty Name="YJTeacher" ColumnName="YJTeacher" />
+                <ScalarProperty Name="SJID" ColumnName="SJID" />
+                <ScalarProperty Name="KSAPID" ColumnName="KSAPID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_KS_USERKSItem">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_USERKSItem">
+              <MappingFragment StoreEntitySet="SZHL_KS_USERKSItem">
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="SJID" ColumnName="SJID" />
+                <ScalarProperty Name="Record" ColumnName="Record" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="STID" ColumnName="STID" />
+                <ScalarProperty Name="UserKSID" ColumnName="UserKSID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
