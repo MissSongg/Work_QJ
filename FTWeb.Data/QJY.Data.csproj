@@ -219,6 +219,9 @@
     <Compile Include="SZHL_CRM_KHGL.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
+    <Compile Include="SZHL_DBGL.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
     <Compile Include="SZHL_DCGL.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
