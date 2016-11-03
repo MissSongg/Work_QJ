@@ -11,11 +11,10 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 using Aspose.Words.Saving;
-using System.Net;
-using QJY.API;
+using System.Net; 
 
 
-namespace QjySaaSWeb.API
+namespace QJY.API
 {
     public class KSGLManage : IWsService
     {
@@ -36,16 +35,21 @@ namespace QjySaaSWeb.API
         /// <param name="UserInfo"></param>
         public void GETTKFLLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            string strSql = string.Format("SELECT  Id,PID pId,TKFLName name,Remark from SZHL_KS_TKFL where comId='{0}' and isDel!=1", UserInfo.User.ComId);
-            DataTable dt = new SZHL_KS_TKFLB().GetDTByCommand(strSql);
+            int page = 0;
+            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
+            page = page == 0 ? 1 : page;
+            int recordCount = 0;
+            DataTable dt = new SZHL_GZBGB().GetDataPager("  SZHL_KS_TKFL ", " ID,TKFLName,Remark,CRUser,CRDate  ", 8, page, "CRDate desc", string.Format(" comId='{0}' and isDel!=1", UserInfo.User.ComId), ref recordCount);
             msg.Result = dt;
+            msg.Result1 = recordCount;
+            
         }
         public void ADDTKFL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             SZHL_KS_TKFL type = JsonConvert.DeserializeObject<SZHL_KS_TKFL>(P1);
             if (type != null)
             {
-                if (new SZHL_KS_TKFLB().GetEntities(d => d.TKFLName == type.TKFLName && d.ComId == UserInfo.User.ComId && d.PID == type.PID).Count() > 0)
+                if (new SZHL_KS_TKFLB().GetEntities(d => d.TKFLName == type.TKFLName && d.ComId == UserInfo.User.ComId&&d.ID!=type.ID ).Count() > 0)
                 {
                     msg.ErrorMsg = "分类已存在";
                     return;

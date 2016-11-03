@@ -136,6 +136,7 @@ namespace QJY.API
             container.RegisterType<IWsService, CHATManage>("CHAT".ToUpper());//及时聊天
 
             container.RegisterType<IWsService, DBGLManage>("DBGL".ToUpper());//及时聊天
+            container.RegisterType<IWsService, KSGLManage>("KSGL".ToUpper());//及时聊天
 
             return container;
         }
