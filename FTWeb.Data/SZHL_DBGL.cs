@@ -15,38 +15,22 @@ namespace QJY.Data
 using System;
     using System.Collections.Generic;
     
-public partial class SZHL_CRM_GJJL
+public partial class SZHL_DBGL
 {
 
     public Nullable<int> ComId { get; set; }
 
     public int ID { get; set; }
 
-    public Nullable<int> KHID { get; set; }
+    public string Name { get; set; }
 
-    public Nullable<int> Status { get; set; }
-
-    public Nullable<System.DateTime> Date { get; set; }
-
-    public string Details { get; set; }
-
-    public string Type { get; set; }
-
-    public string IsTX { get; set; }
-
-    public Nullable<System.DateTime> TXDate { get; set; }
+    public string Size { get; set; }
 
     public string Remark { get; set; }
-
-    public string CYUser { get; set; }
-
-    public string Files { get; set; }
 
     public string CRUser { get; set; }
 
     public Nullable<System.DateTime> CRDate { get; set; }
-
-    public string TypeCode { get; set; }
 
 }
 

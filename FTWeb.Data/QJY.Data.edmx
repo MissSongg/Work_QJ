@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="QJY_SaaSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QJY_SaaSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="FT_File">
           <Key>
             <PropertyRef Name="ID" />
@@ -1004,6 +1004,18 @@
           <Property Name="Files" Type="varchar(max)" />
           <Property Name="Attach1" Type="varchar(max)" />
           <Property Name="Attach2" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="SZHL_DBGL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ComId" Type="int" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Size" Type="varchar" MaxLength="50" />
+          <Property Name="Remark" Type="varchar(max)" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="CRDate" Type="datetime" />
         </EntityType>
         <EntityType Name="SZHL_DCGL">
           <Key>
@@ -2359,6 +2371,7 @@
           <EntitySet Name="SZHL_CRM_HTGL" EntityType="Self.SZHL_CRM_HTGL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_CRM_KD" EntityType="Self.SZHL_CRM_KD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_CRM_KHGL" EntityType="Self.SZHL_CRM_KHGL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_DBGL" EntityType="Self.SZHL_DBGL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_DCGL" EntityType="Self.SZHL_DCGL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_DCGL_HEADER" EntityType="Self.SZHL_DCGL_HEADER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_DCGL_ITEM" EntityType="Self.SZHL_DCGL_ITEM" Schema="dbo" store:Type="Tables" />
@@ -2552,6 +2565,7 @@
           <EntitySet Name="SZHL_KS_TKFL" EntityType="QJY_SaaSModel.SZHL_KS_TKFL" />
           <EntitySet Name="SZHL_KS_USERKS" EntityType="QJY_SaaSModel.SZHL_KS_USERKS" />
           <EntitySet Name="SZHL_KS_USERKSItem" EntityType="QJY_SaaSModel.SZHL_KS_USERKSItem" />
+          <EntitySet Name="SZHL_DBGL" EntityType="QJY_SaaSModel.SZHL_DBGL" />
         </EntityContainer>
         <EntityType Name="FT_File">
           <Key>
@@ -4854,6 +4868,18 @@
           <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CRDate" Type="DateTime" Precision="3" />
           <Property Name="ComId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SZHL_DBGL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Size" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7279,6 +7305,19 @@
                 <ScalarProperty Name="STID" ColumnName="STID" />
                 <ScalarProperty Name="UserKSID" ColumnName="UserKSID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_DBGL">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_DBGL">
+              <MappingFragment StoreEntitySet="SZHL_DBGL">
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
