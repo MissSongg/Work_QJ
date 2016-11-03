@@ -17,7 +17,7 @@ namespace QJY.API
     {
         public void ProcessRequest(HttpContext context, ref Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            MethodInfo methodInfo = typeof(DCGLManage).GetMethod(msg.Action.ToUpper());
+            MethodInfo methodInfo = typeof(DBGLManage).GetMethod(msg.Action.ToUpper());
             DBGLManage model = new DBGLManage();
             methodInfo.FastInvoke(model, new object[] { context, msg, P1, P2, UserInfo });
         }
