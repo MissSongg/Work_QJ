@@ -114,14 +114,14 @@ namespace QJY.API
                 sd.Type = "1";
                 sd.Name = fi.Name + ".bak";
                 sd.Path = path;
-                sd.Size = (fi.Length / 1024.00).ToString("F2") + " KB"; ;
+                sd.Size = (fi.Length / 1024.00).ToString("F2") ;
                 sd.CRUser = UserInfo.User.UserName;
                 sd.CRDate = DateTime.Now;
                 new SZHL_DBGLB().Insert(sd);
             }
             catch (Exception ex)
             {
-                msg.ErrorMsg = "备份失败!";
+                msg.ErrorMsg = "备份失败";
                 new JH_Auth_LogB().Insert(new JH_Auth_Log()
                 {
                     ComId=UserInfo.QYinfo.ComId.ToString(),
@@ -169,12 +169,12 @@ namespace QJY.API
                 }
                 else
                 {
-                    msg.ErrorMsg = "下载失败!";
+                    msg.ErrorMsg = "下载失败";
                 }
             }
             catch (Exception ex)
             {
-                msg.ErrorMsg = "下载失败!";
+                msg.ErrorMsg = "下载失败";
                 new JH_Auth_LogB().Insert(new JH_Auth_Log()
                 {
                     ComId = UserInfo.QYinfo.ComId.ToString(),
@@ -273,7 +273,7 @@ namespace QJY.API
                 sd.Type = "2";
                 sd.Name = fi.Name + "." + fi.Extension;
                 sd.Path = P1;
-                sd.Size = (fi.Length / 1024.00).ToString("F2") + " KB"; ;
+                sd.Size = (fi.Length / 1024.00).ToString("F2") ;
                 sd.CRUser = UserInfo.User.UserName;
                 sd.CRDate = DateTime.Now;
                 new SZHL_DBGLB().Insert(sd);
@@ -281,7 +281,7 @@ namespace QJY.API
             }
             catch (Exception ex)
             {
-                msg.ErrorMsg = "还原失败!";
+                msg.ErrorMsg = "还原失败";
                 new JH_Auth_LogB().Insert(new JH_Auth_Log()
                 {
                     ComId = UserInfo.QYinfo.ComId.ToString(),
