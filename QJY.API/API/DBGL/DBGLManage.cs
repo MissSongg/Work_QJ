@@ -270,34 +270,46 @@ namespace QJY.API
                 SqlConnection conn = new SqlConnection();
                 conn.ConnectionString = CommonHelp.GetConfig("master");
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("use master; select distinct spid FROM sysprocesses ,sysdatabases Where sysprocesses.dbid=sysdatabases.dbid AND sysdatabases.Name='QJY_XNY'", conn);
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
+                try
                 {
-                    list.Add(dr.GetInt16(0));
-                }
-                dr.Close();
+                    SqlCommand cmd = new SqlCommand("use master; select distinct spid FROM sysprocesses ,sysdatabases Where sysprocesses.dbid=sysdatabases.dbid AND sysdatabases.Name='QJY_XNY'", conn);
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        list.Add(dr.GetInt16(0));
+                    }
+                    dr.Close();
 
-                conn.Close();
+                    conn.Close();
 
-                for (int i = 0; i < list.Count; i++)
-                {
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        conn.Open();
+                        SqlCommand cmd1 = new SqlCommand(string.Format("KILL {0}", list[i].ToString()), conn);
+                        cmd1.ExecuteNonQuery();
+                        conn.Close();
+                    }
+
                     conn.Open();
-                    SqlCommand cmd1 = new SqlCommand(string.Format("KILL {0}", list[i].ToString()), conn);
-                    cmd1.ExecuteNonQuery();
+                    SqlCommand cmd2 = new SqlCommand("restore database QJY_XNY from disk='" + P1 + "';", conn);
+                    cmd2.ExecuteNonQuery();
+                    conn.Close();
+
+                    FileInfo fi = new FileInfo(P1);
+                    SZHL_DBGL sd = new SZHL_DBGL();
+                    sd.ComId = UserInfo.QYinfo.ComId;
+                    sd.Type = "2";
+                    sd.Name = fi.Name;
+                    sd.Path = fi.FullName;
+                    sd.Size = (fi.Length / 1024.00).ToString("F2");
+                    sd.CRUser = UserInfo.User.UserName;
+                    sd.CRDate = DateTime.Now;
+                    new SZHL_DBGLB().Insert(sd);
+                }
+                catch { }
+                finally {
                     conn.Close();
                 }
-
-                FileInfo fi = new FileInfo(P1);
-                SZHL_DBGL sd = new SZHL_DBGL();
-                sd.ComId = UserInfo.QYinfo.ComId;
-                sd.Type = "2";
-                sd.Name = fi.Name;
-                sd.Path = fi.FullName;
-                sd.Size = (fi.Length / 1024.00).ToString("F2");
-                sd.CRUser = UserInfo.User.UserName;
-                sd.CRDate = DateTime.Now;
-                new SZHL_DBGLB().Insert(sd);
 
             }
             catch (Exception ex)
