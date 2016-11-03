@@ -1011,6 +1011,7 @@
           </Key>
           <Property Name="ComId" Type="int" />
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="50" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="Size" Type="varchar" MaxLength="50" />
           <Property Name="Path" Type="varchar" MaxLength="500" />
@@ -4882,6 +4883,7 @@
           <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CRDate" Type="DateTime" Precision="3" />
           <Property Name="Path" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7313,6 +7315,7 @@
           <EntitySetMapping Name="SZHL_DBGL">
             <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_DBGL">
               <MappingFragment StoreEntitySet="SZHL_DBGL">
+                <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Path" ColumnName="Path" />
                 <ScalarProperty Name="CRDate" ColumnName="CRDate" />
                 <ScalarProperty Name="CRUser" ColumnName="CRUser" />

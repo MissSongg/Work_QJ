@@ -34,6 +34,8 @@ public partial class SZHL_DBGL
 
     public string Path { get; set; }
 
+    public string Type { get; set; }
+
 }
 
 }
