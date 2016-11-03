@@ -92,21 +92,9 @@ namespace QJY.API
             msg.Result = new SZHL_KS_TKFLB().GetEntity(d => d.ID == Id);
         }
         //获取题库分类的子项
-        public void GETTKFLCHILDREN(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        public void GETTKFLSEL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            List<SZHL_KS_TKFL> allTypeList = new SZHL_KS_TKFLB().GetEntities(d => d.ComId == UserInfo.User.ComId && d.ISDel == 0).ToList();
-            if (allTypeList.Count > 0)
-            {
-                string pIds = allTypeList.Select(d => d.PID.Value).Distinct().ToList().ListTOString(',');
-                string strSql = string.Format("SELECT * from SZHL_KS_TKFL where Id not in ({1}) and ComId={2} and isDel=0 order by  PID", UserInfo.User.UserName, pIds, UserInfo.User.ComId);
-                DataTable dtType = new SZHL_KS_TKFLB().GetDTByCommand(strSql);
-                foreach (DataRow row in dtType.Rows)
-                {
-                    string parentTypeName = allTypeList.Where(d => row["TypePath"].ToString().Split('-').Contains(d.ID.ToString()) && d.ComId == UserInfo.User.ComId).OrderBy(d => d.ID).Select(d => d.TKFLName).ToList<string>().ListTOString('-');
-                    row["TKFLName"] = parentTypeName + "-" + row["TKFLName"];
-                }
-                msg.Result = dtType;
-            }
+            msg.Result = new SZHL_KS_TKFLB().GetEntities(d => d.ISDel == 0);
 
         }
 
@@ -156,6 +144,13 @@ namespace QJY.API
             DataTable dt = new SZHL_GZBGB().GetDataPager("  SZHL_KS_TK tk inner join  SZHL_KS_TKFL tkfl on tk.TKTypeId=tkfl.ID ", " tk.*,tkfl.TKFLName   ", 8, page, "tk.CRDate desc", strWhere, ref recordCount);
             msg.Result = dt;
             msg.Result1 = recordCount;
+        }
+        public void DELETETKGL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int tkId = 0;
+            int.TryParse(P1, out tkId);
+            new SZHL_KS_TKB().Delete(d => d.ComId == UserInfo.User.ComId && d.ID == tkId);
+            new SZHL_KS_STB().Delete(d => d.ComId == UserInfo.User.ComId && d.TKID == tkId);
         }
         //查询已发布的题库列表，切换题库
         public void GETTKGLLISTBYFL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
