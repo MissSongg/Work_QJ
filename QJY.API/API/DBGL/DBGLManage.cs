@@ -44,6 +44,12 @@ namespace QJY.API
                 string strsql = "use master;declare @name varchar(max);SELECT @name= DB_NAME(dbid) FROM master.dbo.sysprocesses WHERE status='runnable';backup database @name to disk='" + path + "';";
 
                 new JH_Auth_QYB().ExsSql(strsql);
+
+                SZHL_DBGL sd = new SZHL_DBGL();
+                sd.ComId = UserInfo.QYinfo.ComId;
+                sd.CRUser = UserInfo.User.UserName;
+                sd.CRDate = DateTime.Now;
+                new SZHL_DBGLB().Insert(sd);
             }
             catch (Exception ex)
             {

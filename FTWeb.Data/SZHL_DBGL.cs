@@ -32,6 +32,8 @@ public partial class SZHL_DBGL
 
     public Nullable<System.DateTime> CRDate { get; set; }
 
+    public string Path { get; set; }
+
 }
 
 }
