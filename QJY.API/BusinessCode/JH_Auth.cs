@@ -1726,7 +1726,7 @@ namespace QJY.API
                                             INNER join JH_Auth_Model model on fun.ModelID=model.ID AND (model.ComId={0} or model.ComId=0)
                                             inner join JH_Auth_QY_Model qy on model.ID=qy.ModelID and qy.ComId={0}
                                             LEFT join  JH_Auth_UserCustomData custom on model.ModelCode=custom.DataContent and custom.DataType='{1}' and custom.DataContent1='Y' and custom.UserName='{2}'and custom.ComId={0}
-                                            LEFT JOIN  Yan_WF_PD pd on qy.PDID=pd.ID where qy.Status=1 and rf.RoleCode in ({3}) {4}", UserInfo.User.ComId, modelType, UserInfo.User.UserName, UserInfo.UserRoleCode, modelType == "APPINDEX" ? "and  WXUrl is not NULL  and  WXUrl!=''" : "");
+                                            LEFT JOIN  Yan_WF_PD pd on qy.PDID=pd.ID where qy.Status=1 and model.ModelStatus=0 and rf.RoleCode in ({3}) {4}", UserInfo.User.ComId, modelType, UserInfo.User.UserName, UserInfo.UserRoleCode, modelType == "APPINDEX" ? "and  WXUrl is not NULL  and  WXUrl!=''" : "");
                 strSql = strSql + " ORDER by model.ORDERID ";
                 return new JH_Auth_QY_ModelB().GetDTByCommand(strSql);
             }
