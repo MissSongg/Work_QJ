@@ -122,6 +122,7 @@
     <Compile Include="API\CCXJ\CCXJManage.cs" />
     <Compile Include="API\CHAT\ChatManage.cs" />
     <Compile Include="API\CRM\CRMManage.cs" />
+    <Compile Include="API\DBGL\DBGLManage.cs" />
     <Compile Include="API\DCGL\DCGLManage.cs" />
     <Compile Include="API\DDGL\DDGLManage.cs" />
     <Compile Include="API\DXGL\DXGLManage.cs" />
