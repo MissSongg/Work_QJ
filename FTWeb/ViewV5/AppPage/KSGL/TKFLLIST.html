@@ -1,10 +1,125 @@
-﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
-</head>
-<body>
+﻿<div ms-controller="TKFLLIST">
+    <!-- 添加按钮 -->
+    <div class="btn-add">
+        <button type="button" class="btn btn-info btn-lg" ms-click="AddView('KSGL_TKFL')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加题库分类</button>
+    </div>
+    <!-- 按条件选择 -->
+    <!-- 表格 -->
+    <div class="default-tab ft14 pt20 hover-btn">
+        <table class="table table-striped table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th class="tc">
+                        序号
+                    </th>
+                    <th>分类名称</th>
+                    <th>分类描述</th>
+                    <th>添加人</th>
+                    <th>添加时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ms-repeat-el="ListData">
+                    <td class="tc">
+                        {{$index+1+page.pagecount*(page.pageindex-1)}}
+                    </td>
+                    <td>{{el.TKFLName}}</td>
+                    <td>{{el.Remark}}</td>
+                    <td>{{ComFunJS.convertuser(el.CRUser) }}</td>
+                    <td>{{el.CRDate|date('yyyy-MM-dd')}}</td>
+                    <td>
+                        <span class="btn-click">
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-if="el.CRUser==userName" ms-click="AddView('KSGL_TKFL','题库分类编辑',el.ID,$event)">
+                                <i class="iconfont icon-bianji"></i>
+                            </a>
+                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-if="el.CRUser==userName" ms-click="DELTKFL(el,$event)">
+                                <i class="iconfont icon-shanchu"></i>
+                            </a>
+                        </span>
+                    </td>
+                </tr>
 
-</body>
-</html>
+            </tbody>
+            <tfoot>
+                <tr ms-if="isnull"><td class="tc"></td><td>暂无数据</td></tr>
+            </tfoot>
+        </table>
+        <div class="ui-datatable-page ft14 pl20">
+
+            <div id="pageDiv" ms-visible="model.page.total>model.pageNum[0].num" class="pull-right"></div>
+            <div class="pull-right" ms-visible="ListData.size()!=0">
+                <span>共{{model.page.total}}条记录</span>
+                <span ms-visible="model.page.total>model.pageNum[0].num">
+                    选择每页条数
+                    <select style="height: 25px; width: 50px;" ms-change="selNum(this.value)" ms-duplex="model.page.pagecount">
+                        <option ms-repeat-pg="pageNum" ms-attr-value="pg.num" ms-attr-selected="pg.num==model.page.pagecount?'selected':''">{{pg.num}}</option>
+                    </select>
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+
+    var tempindex = avalon.define({
+        $id: "TKFLLIST", 
+        SelectType: function (type) {
+            model.search.seartype = type;
+            tempindex.GetLIST();
+        }, 
+        selNum: function (item) {    //选择显示的条数
+            model.page.pagecount = item;
+            tempindex.GetLIST();
+        },
+        InitWigetData: function () {
+            tempindex.GetLIST();
+        },
+        addTKFL: function () {
+            top.ComFunJS.winviewform("/ViewV5/Base/APP_TKFL_SEL.html?r=" + Math.random(), "题库分类", "1000", "");
+        },
+        GetLIST: function () {
+            model.page.pageindex = 1;
+            model.ListData.clear();
+            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKFLLIST', { p: 1, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    model.ListData = resultData.Result;
+                    if (model.ListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
+                    model.page.total = resultData.Result1;
+                    laypage({
+                        cont: 'pageDiv', //容器。值支持id名、原生dom对象，jquery对象。
+                        pages: Math.ceil(parseInt(resultData.Result1) * 1.0 / model.page.pagecount), //通过后台拿到的总页数
+                        curr: 1, //初始化当前页
+                        skin: 'molv',
+                        jump: function (e) { //触发分页后的回调
+                            if (e.curr != model.page.pageindex) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKFLLIST', { p: e.curr, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
+                                    if (resultData.ErrorMsg == "") {
+                                        model.ListData = resultData.Result;
+                                    }
+                                })
+                                model.page.pageindex = e.curr;
+                            }
+                        }
+                    });
+                }
+            })
+        }, DELTKFL: function (el, event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            ComFunJS.winconfirm("确认要删除吗？", function () {
+                $.getJSON("/API/VIEWAPI.ashx?Action=KSGL_DELTKFL", { P1: el.ID }, function (r) {
+                    if (r.ErrorMsg == "") {
+                        model.ListData.remove(el);
+                        ComFunJS.winsuccess("操作成功");
+                    }
+                })
+            }, function () { })
+
+        }
+    })
+</script>
