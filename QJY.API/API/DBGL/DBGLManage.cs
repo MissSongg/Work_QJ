@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using Senparc.Weixin.QY.Entities;
 using System.IO;
 using System.Text;
+using System.Data.SqlClient;
+using System.Collections;
 
 namespace QJY.API
 {
@@ -77,7 +79,7 @@ namespace QJY.API
                         }
                         break;
                 }
-                dt = new SZHL_CRM_KHGLB().GetDataPager(" SZHL_DBGL ", " * ", pagecount, page, "  CRDate desc", strWhere, ref total);
+                dt = new SZHL_CRM_KHGLB().GetDataPager(" SZHL_DBGL ", " *,case Type when '1' then '备份' when '2' then '还原' end as TypeName ", pagecount, page, "  CRDate desc", strWhere, ref total);
 
                 msg.Result = dt;
                 msg.Result1 = total;
@@ -104,7 +106,8 @@ namespace QJY.API
                     Directory.CreateDirectory(path + "/dbbackup/");
                 }
                 path = path + "/dbbackup/db_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".bak";
-                string strsql = "use master;declare @name varchar(max);SELECT @name= DB_NAME(dbid) FROM master.dbo.sysprocesses WHERE status='runnable';backup database @name to disk='" + path + "';";
+                //string strsql = "use master;declare @name varchar(max);SELECT @name= DB_NAME(dbid) FROM master.dbo.sysprocesses WHERE status='runnable';backup database @name to disk='" + path + "';";
+                string strsql = "backup database QJY_XNY to disk='" + path + "';";
 
                 new JH_Auth_QYB().ExsSql(strsql);
 
@@ -112,8 +115,8 @@ namespace QJY.API
                 SZHL_DBGL sd = new SZHL_DBGL();
                 sd.ComId = UserInfo.QYinfo.ComId;
                 sd.Type = "1";
-                sd.Name = fi.Name + ".bak";
-                sd.Path = path;
+                sd.Name = fi.Name ;
+                sd.Path = fi.FullName;
                 sd.Size = (fi.Length / 1024.00).ToString("F2") ;
                 sd.CRUser = UserInfo.User.UserName;
                 sd.CRDate = DateTime.Now;
@@ -262,18 +265,36 @@ namespace QJY.API
         {
             try
             {
+                ArrayList list = new ArrayList();
 
-                string strsql = "use master;declare @name varchar(max);SELECT @name= DB_NAME(dbid) FROM master.dbo.sysprocesses WHERE status='runnable';restore database @name to disk='" + P1 + "';";
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = CommonHelp.GetConfig("master");
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("use master; select distinct spid FROM sysprocesses ,sysdatabases Where sysprocesses.dbid=sysdatabases.dbid AND sysdatabases.Name='QJY_XNY'", conn);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    list.Add(dr.GetInt16(0));
+                }
+                dr.Close();
 
-                new JH_Auth_QYB().ExsSql(strsql);
+                conn.Close();
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    conn.Open();
+                    SqlCommand cmd1 = new SqlCommand(string.Format("KILL {0}", list[i].ToString()), conn);
+                    cmd1.ExecuteNonQuery();
+                    conn.Close();
+                }
 
                 FileInfo fi = new FileInfo(P1);
                 SZHL_DBGL sd = new SZHL_DBGL();
                 sd.ComId = UserInfo.QYinfo.ComId;
                 sd.Type = "2";
-                sd.Name = fi.Name + "." + fi.Extension;
-                sd.Path = P1;
-                sd.Size = (fi.Length / 1024.00).ToString("F2") ;
+                sd.Name = fi.Name;
+                sd.Path = fi.FullName;
+                sd.Size = (fi.Length / 1024.00).ToString("F2");
                 sd.CRUser = UserInfo.User.UserName;
                 sd.CRDate = DateTime.Now;
                 new SZHL_DBGLB().Insert(sd);

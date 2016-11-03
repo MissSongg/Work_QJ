@@ -3,7 +3,7 @@
     <div class="btn-add">
         <button type="button" class="btn btn-info btn-lg" ms-click="DBBF()"><i class="iconfont icon-jiahao ft12 mr5"></i>数据库备份</button>
         <button type="button" class="btn btn-info btn-lg" ms-click="djsc()"><i class="iconfont icon-jiahao ft12 mr5"></i>数据库还原</button>
-        <input type="file" name="upFile" id="upFile" class="form-control" ms-change="DBHY()" accept=".xls,.xlsx" style="display: none;">
+        <input type="file" name="upFile" id="upFile" class="form-control" ms-change="DBHY()" accept=".bak" style="display: none;">
     </div>
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
@@ -81,8 +81,8 @@
             //显示的列名
             model.ShowColumns.clear();
             model.ShowColumns.pushArray([
-                { "ColName": "Type", "ColText": "类型", "IsSel": true, "format": "text" },
-                { "ColName": "Name", "ColText": "文件名称", "IsSel": true, "format": "username", "type": "link" },
+                { "ColName": "TypeName", "ColText": "类型", "IsSel": true, "format": "text" },
+                { "ColName": "Name", "ColText": "文件名称", "IsSel": true, "format": "text" },
                 { "ColName": "Size", "ColText": "文件大小(kb)", "IsSel": true, "format": "text" },
                 { "ColName": "CRDate", "ColText": "时间", "IsSel": true, "format": "text" }
             ]);
@@ -186,9 +186,8 @@
             }, function () { })
         },
         XZDB: function (id) {
-            top.ComFunJS.winconfirm("确认要下载数据库文件吗", function () {
-                $(this).attr("href", '/API/VIEWAPI.ashx?Action=DBGL_DBDOWNLOAD&P1=' + id );
-            }, function () { })
+            $(this).attr("href", '/API/VIEWAPI.ashx?Action=DBGL_DBDOWNLOAD&P1=' + id);
         }
     })
+    //# sourceURL=DBGLLIST
 </script>
