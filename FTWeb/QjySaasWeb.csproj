@@ -182,6 +182,7 @@
     <Content Include="ViewV5\AppPage\KSGL\TKGL.html" />
     <Content Include="ViewV5\AppPage\KSGL\TKLIST.html" />
     <Content Include="ViewV5\AppPage\KSGL\TKST.html" />
+    <Content Include="ViewV5\AppPage\KSGL\TKSTExport.html" />
     <Content Include="ViewV5\AppPage\KSGL\TKSTLIST.html" />
     <Content Include="ViewV5\AppPage\KSGL\USERCJLIST.html" />
     <Content Include="ViewV5\AppPage\LCSP\LCSP.html" />
@@ -394,6 +395,8 @@
     <Content Include="ViewV5\CSS\Office\Doc.css" />
     <Content Include="ViewV5\CSS\Office\ppt.css" />
     <Content Include="ViewV5\CSS\Office\xls.css" />
+    <Content Include="ViewV5\CSS\saved_resource%282%29.css" />
+    <Content Include="ViewV5\CSS\saved_resource.css" />
     <Content Include="ViewV5\CSS\ShowCss.css" />
     <Content Include="ViewV5\CSS\style.css" />
     <Content Include="ViewV5\CSS\weixin\images\1.png" />
@@ -418,6 +421,7 @@
     <Content Include="ViewV5\CSS\WX.css" />
     <Content Include="ViewV5\images\DJ\sethd.png" />
     <Content Include="ViewV5\images\qrcode.jpg" />
+    <Content Include="ViewV5\images\tk_exam.png" />
     <Content Include="ViewV5\images\TX.png" />
     <Content Include="ViewV5\images\head.jpg" />
     <Content Include="ViewV5\images\icon\CCXJ.png" />

@@ -1,10 +1,84 @@
-﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
-</head>
-<body>
+﻿
+<div class="form-horizontal" ms-controller="TKGL">
+    <div style="margin: 0 80px;">
+        <div>
+            <ul class="clearfix" style="display: block;padding:0">
+                <li class="add-item add-widthall">
+                    <label class="add-item-label"><i>*</i>题库所属分类</label>
+                    <div class="add-ic">
+                        <select class="form-control szhl_require" ms-duplex="modelData.TKTypeId">
+                            <option ms-repeat-el="TypeData" ms-attr-selected="modelData.TKTypeId==el.ID?'selected':''" ms-attr-value="el.ID">{{el.TKFLName}}</option>
+                        </select>
+                    </div>
+                </li>
+                <li class="add-item add-widthall">
+                    <label class="add-item-label"><i>*</i>题库名称</label>
+                    <div class="add-ic">
+                        <input type="text" class="form-control szhl_require" ms-duplex="modelData.TKName" />
+                    </div>
+                </li>
+                <li class="add-item add-widthall">
+                    <label class="add-item-label"><i>*</i>是否发布</label>
+                    <div class="add-ic">
+                        <select class="form-control" ms-duplex="modelData.Status">
+                            <option value="1" ms-attr-selected="modelData.Status==1?'selected':''">是</option>
+                            <option value="0" ms-attr-selected="modelData.Status==0?'selected':''">否</option>
+                        </select>
+                    </div>
+                </li>
+              
+                <li class="add-item add-widthall">
+                    <label class="add-item-label"><i>*</i>题库描述</label>
+                    <div class="add-ic">
+                        <textarea ms-duplex="modelData.TKDescribe" rows="4" id="tkgl" class="form-control szhl_UEEDIT szhl_require"></textarea>
+                    </div>
+                </li>
 
-</body>
-</html>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    var tempmodel = avalon.define({
+        $id: "TKGL",
+        name: "题库管理",
+        iswf: true,//是否属于流程表单
+        ColumnData: [],
+        TypeData: [],
+        inittemp: function (strId) { 
+            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKFLSEL', function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempmodel.TypeData = resultData.Result;
+                    if (tempmodel.TypeData.size() > 0 && !tempmodel.modelData.TKTypeId) {
+                        tempmodel.modelData.TKTypeId = resultData.Result[0].ID;
+                    }
+                }
+            })
+            if (strId) {
+                //编辑加载数据
+                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKGLMODEL', { P1: strId }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        tempmodel.modelData = resultData.Result; 
+                        setTimeout(" ComFunJS.initForm()", 500);
+                    }
+                })
+            } else {
+                ComFunJS.initForm();
+            }
+        },//初始化
+        modelData: { "TKName": "", "TKTypeId": "", "TKDescribe": "", Status: 1 },
+        SaveData: function (callback) { 
+            $.post("/API/VIEWAPI.ashx?ACTION=KSGL_ADDTKGL", { P1: JSON.stringify(tempmodel.modelData.$model) }, function (result) {
+                return callback.call(this, $.parseJSON(result));
+            });
+        }  
+
+    });
+
+    tempmodel.$watch("modelData.*", function (a, b) {
+        if (!tempmodel.modelData.ID) {
+            localStorage.setItem(pmodel.FormCode, JSON.stringify(tempmodel.modelData.$model));
+        }
+    })
+
+</script>

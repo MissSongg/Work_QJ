@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="/CSSV4/bootstrap3.3.5/css/bootstrap.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-1.11.2.min.js"></script>
+    <script src="/CSSV4/bootstrap3.3.5/js/bootstrap.js"></script>
+    <script src="/Scripts/avalon.js"></script>
+    <script src="/Scripts/SZHLCommon.js"></script>
+    <script>
+        model = avalon.define({
+            $id: "TKSTExport",
+            KnowLedge: [],
+            curKnowLedge: "",
+            curLevel: 3,
+            tkid: ComFunJS.getQueryString("tkid", 0),
+            GetKnowLedge: function () {
+                $.getJSON('/API/VIEWAPI.ashx?ACTION=KSGL_GETKNOWLEDGE', { P1: model.tkid }, function (result) {
+                    if (result.ErrorMsg == "") {
+                        result.Result.forEach(function (item) {
+                            model.KnowLedge.push(item.KnowLedge);
+                        })
+                        $('#ddlknow').typeahead({
+                            source: function (query, process) {
+                                return model.KnowLedge.$model;
+                            }
+                        })
+
+                    }
+                })
+            }, ImportST: function (dom) {
+                if (!model.curKnowLedge) {
+                    top.ComFunJS.winwarning("请填写知识点");
+                    return;
+                }
+                if (!model.curLevel) {
+                    top.ComFunJS.winwarning("请选择难易程度");
+                    return;
+                }
+                if (document.getElementById("upFile").files.length > 0) {
+                    $(dom).text("正在导入，请稍后");
+                    $(dom).attr("disabled", true);
+                    var formData = new FormData();
+                    formData.append("upFile", document.getElementById("upFile").files[0]);
+                    formData.append("P1", model.curKnowLedge);
+                    formData.append("P2", model.curLevel);
+                    formData.append("tkid", model.tkid);
+                    $.ajax({
+                        url: "/API/VIEWAPI.ashx?ACTION=KSGL_IMPORTTKST&r=" + Math.random(),
+                        type: "POST",
+                        data: formData,
+                        /**
+                        *必须false才会自动加上正确的Content-Type
+                        */
+                        contentType: false,
+                        /**
+                        * 必须false才会避开jQuery对 formdata 的默认处理
+                        * XMLHttpRequest会对 formdata 进行正确的处理
+                        */
+                        processData: false,
+                        success: function (result) {
+                            var r = $.parseJSON(result);
+                            if (r.ErrorMsg == "") {
+                                top.ComFunJS.winsuccess("导入成功");
+                                $(dom).text("导入");
+                                $(dom).attr("disabled", false);
+                            }
+                            else {
+                                $(dom).text("导入");
+                                $(dom).attr("disabled", false);
+                                top.ComFunJS.winwarning(r.ErrorMsg);
+                            }
+                        }
+                    });
+                }
+                else {
+                    top.ComFunJS.winwarning("请上传文件");
+                }
+            }
+        })
+        avalon.ready(function () {
+            model.GetKnowLedge();
+        })
+    </script>
+</head>
+<body>
+    <div class="form-horizontal" style="margin-top: 40px;" ms-controller="TKSTExport">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-2">
+                    知识点
+                </div>
+                <div class="col-xs-7">
+                    <input type="text" class="form-control" ms-duplex="curKnowLedge" id="ddlknow" placeholder="请输入知识点" />
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-2">
+                    难易程度
+                </div>
+                <div class="col-xs-7">
+                    <select class="form-control szhl_require" ms-duplex="curLevel">
+                        <option ms-attr-selected="model.curLevel==1?'selected':''" value="1">容易</option>
+                        <option ms-attr-selected="model.curLevel==2?'selected':''" value="2">较易</option>
+                        <option ms-attr-selected="model.curLevel==3?'selected':''" value="3">一般</option>
+                        <option ms-attr-selected="model.curLevel==4?'selected':''" value="4">较难</option>
+                        <option ms-attr-selected="model.curLevel==5?'selected':''" value="5">难</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-2">
+                    导入文件
+                </div>
+                <div class="col-xs-7">
+                    <input type="file" class="form-control" id="upFile" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-4"></div>
+                <div class="col-xs-8">
+                    <a class="btn btn-large btn-success" ms-click="ImportST(this)">导入</a>
+                    <a href="/View/Base/网络培训系统题库导入模版文件（2015）.doc" class="btn btn-info  " target="_blank">下载试题模版</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

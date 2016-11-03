@@ -66,25 +66,18 @@
 <script>
 
     var tempindex = avalon.define({
-        $id: "TKFLLIST", 
-        SelectType: function (type) {
-            model.search.seartype = type;
-            tempindex.GetLIST();
-        }, 
+        $id: "TKFLLIST",  
         selNum: function (item) {    //选择显示的条数
             model.page.pagecount = item;
             tempindex.GetLIST();
         },
         InitWigetData: function () {
             tempindex.GetLIST();
-        },
-        addTKFL: function () {
-            top.ComFunJS.winviewform("/ViewV5/Base/APP_TKFL_SEL.html?r=" + Math.random(), "题库分类", "1000", "");
-        },
+        }, 
         GetLIST: function () {
             model.page.pageindex = 1;
             model.ListData.clear();
-            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKFLLIST', { p: 1, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKFLLIST', { p: 1, pagecount: model.page.pagecount }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     model.ListData = resultData.Result;
                     if (model.ListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
@@ -96,7 +89,7 @@
                         skin: 'molv',
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKFLLIST', { p: e.curr, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKFLLIST', { p: e.curr, pagecount: model.page.pagecount }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
                                         model.ListData = resultData.Result;
                                     }
