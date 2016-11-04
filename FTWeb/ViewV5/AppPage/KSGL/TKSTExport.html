@@ -3,11 +3,11 @@
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
-    <link href="/CSSV4/bootstrap3.3.5/css/bootstrap.css" rel="stylesheet" />
-    <script src="/Scripts/jquery-1.11.2.min.js"></script>
-    <script src="/CSSV4/bootstrap3.3.5/js/bootstrap.js"></script>
-    <script src="/Scripts/avalon.js"></script>
-    <script src="/Scripts/SZHLCommon.js"></script>
+    <link href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css" rel="stylesheet" />  
+    <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
+    <script src="/ViewV5/JS/avalon.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js"></script>
     <script>
         model = avalon.define({
             $id: "TKSTExport",
@@ -29,11 +29,7 @@
 
                     }
                 })
-            }, ImportST: function (dom) {
-                if (!model.curKnowLedge) {
-                    top.ComFunJS.winwarning("请填写知识点");
-                    return;
-                }
+            }, ImportST: function (dom) { 
                 if (!model.curLevel) {
                     top.ComFunJS.winwarning("请选择难易程度");
                     return;

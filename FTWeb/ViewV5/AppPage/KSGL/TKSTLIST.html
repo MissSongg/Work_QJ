@@ -31,7 +31,7 @@
             },  ImportTKST: function () {
                 top.ComFunJS.winviewform('/ViewV5/AppPage/KSGL/TKSTExport.html?tkid=' + tempindex.tkID, "试题导入", "750", "300");
             }, Total: 0, GetTKST: function () {
-                $.getJSON("/API/VIEWAPI.ashx?Action=KSGL_GETTKSTLIST", { p: 1, ParamData: tempindex.curKnowLedge, P2: tempindex.curType, level: tempindex.curLevel, tkid: tempindex.tkID,count:model.page.pagecount }, function (result) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=KSGL_GETTKSTLIST", { p: 1, P1: tempindex.curKnowLedge, P2: tempindex.curType, level: tempindex.curLevel, tkid: tempindex.tkID,count:model.page.pagecount }, function (result) {
                     if (result.ErrorMsg == "") {
                         tempindex.TKSTData = result.Result;
                         tempindex.Total = result.Result2;
@@ -43,7 +43,7 @@
                             skin: 'molv',
                             jump: function (e) { //触发分页后的回调
                                 if (e.curr != page) {
-                                    $.getJSON("/API/VIEWAPI.ashx?Action=KSGL_GETTKSTLIST", { p: e.curr, ParamData: tempindex.curKnowLedge, P2: tempindex.curType, level: tempindex.curLevel, tkid: tempindex.tkID, count: model.page.pagecount }, function (result) {
+                                    $.getJSON("/API/VIEWAPI.ashx?Action=KSGL_GETTKSTLIST", { p: e.curr, P1: tempindex.curKnowLedge, P2: tempindex.curType, level: tempindex.curLevel, tkid: tempindex.tkID, count: model.page.pagecount }, function (result) {
                                         if (result.ErrorMsg == "") {
                                             tempindex.TKSTData = result.Result;
                                         }
@@ -56,7 +56,7 @@
                 })
             }, selKnowLedge: function (item) {
                 if (item) {
-                    tempindex.curKnowLedge = item.ID;
+                    tempindex.curKnowLedge = item.KnowLedge;
                 } else {
                     tempindex.curKnowLedge = "";
                 }
