@@ -291,7 +291,7 @@ namespace QJY.API
                     }
 
                     conn.Open();
-                    SqlCommand cmd2 = new SqlCommand("restore database QJY_XNY from disk='" + P1 + "';", conn);
+                    SqlCommand cmd2 = new SqlCommand("restore database QJY_XNY from disk='" + P1 + "' with replace ;", conn);
                     cmd2.ExecuteNonQuery();
                     conn.Close();
 
