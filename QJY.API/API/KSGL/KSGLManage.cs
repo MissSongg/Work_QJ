@@ -367,7 +367,7 @@ namespace QJY.API
                 string UTFSpace = Encoding.GetEncoding("UTF-8").GetString(space);
                 //替换原有WORD内部的特殊字符
                 string fileName = _upfile.FileName;
-                _upfile.SaveAs(HttpContext.Current.Request.MapPath("~/upload/" + fileName));
+                _upfile.SaveAs(HttpContext.Current.Request.MapPath("~/ViewV5/upload/" + fileName));
 
                 string URL = UserInfo.QYinfo.FileServerUrl + "fileupload?qycode=" + UserInfo.QYinfo.QYCode;
                 string result = WortToHtml(DocSave(fileName, URL, UserInfo));
@@ -539,10 +539,10 @@ namespace QJY.API
             {
 
                 HtmlSaveOptions saveOptions = new HtmlSaveOptions();
-                saveOptions.ImagesFolder = HttpContext.Current.Request.MapPath("~/upload/");
-                saveOptions.ImagesFolderAlias = "/upload";
+                saveOptions.ImagesFolder = HttpContext.Current.Request.MapPath("~/ViewV5/upload/");
+                saveOptions.ImagesFolderAlias = "/ViewV5/upload";
                 saveOptions.ExportHeadersFootersMode = ExportHeadersFootersMode.None;
-                Aspose.Words.Document doc = new Aspose.Words.Document(HttpContext.Current.Request.MapPath("~/upload/" + fileName));
+                Aspose.Words.Document doc = new Aspose.Words.Document(HttpContext.Current.Request.MapPath("~/ViewV5/upload/" + fileName));
 
                 doc.Save(ms, saveOptions);
                 Htmlstring = Encoding.UTF8.GetString(ms.ToArray());
