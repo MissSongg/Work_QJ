@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="all">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>试题列表</title>
+    <link href="/ViewV5/CSS/saved_resource.css" rel="stylesheet" />
+    <link href="/ViewV5/CSS/saved_resource(2).css" rel="stylesheet" /> 
+    <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/JS/avalon.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js"></script>
+    <style>
+        .btn-ks {
+            padding: 4px 15px;
+            background: #f06000;
+            border: none;
+            border: 1px solid #d95700;
+            color: #fff;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        .content {
+            width: 1000px;
+            margin: 0 auto;
+            font-family: "Microsoft YaHei", "SimSun", "u5b8bu4f5353";
+            padding-bottom: 30px;
+            margin-top: 20px;
+            min-height: 600px;
+        }
+    </style>
+    <script>
+       var model = avalon.define({
+            $id: "SJGLVIEW",
+            sjID: ComFunJS.getQueryString("sjid"),
+            SJModelInfo: {},
+            numberData: ["一", "二", "三", "四", "五", "六", "七", "八"],
+            GetSJGLInfo: function () {
+                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETSJGLMODELVIEW', { P1: model.sjID }, function (result) {
+                    if (result.ErrorMsg == "") {
+                        var i = 1;
+                        result.Result[0].TXType.forEach(function (item) {
+                            item.STList.forEach(function (el) {
+                                el.Order = i;
+                                i++;
+                            })
+                        })
+                        model.SJModelInfo = result.Result[0];
+                    }
+                })
+            } 
+        })
+        avalon.ready(function () { 
+            model.GetSJGLInfo(); 
+        })
+    </script>
+</head>
+<body ms-controller="SJGLVIEW">
+
+    <div class="content ">
+        <div class="container bg-default maindiv" style="min-width: 1000px">
+            <div class="content">
+                <!-- 内容 部分 -->
+                <div class="exam-report  page_container">
+                    <div class="m-examHead f-bg ">
+                        <!--试卷头信息-->
+                        <h1 class="h1"> {{SJModelInfo.SJName}} </h1>
+                        <div class="info">
+                            <p>◇ 本卷共分为 {{SJModelInfo.DTCount}}大题 {{SJModelInfo.XTCount}}小题，作答时间为 {{SJModelInfo.KSSC}}分钟，总分 {{SJModelInfo.TotalRecord}} 分，{{SJModelInfo.PassRecord}} 分及格。</p>
+                            <div class="attention">
+                                {{SJModelInfo.SJDescribe|html}}
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- 试题部分 -->
+                    <div class="exam-report-cont-blk f-f14" id="page-body" oncontextmenu="document.all?(window.event.returnValue=false):(event.preventDefault())" oncopy="return false" oncut="return false">
+                        <div id="page-rules-1701454" ms-repeat-item="SJModelInfo.TXType">
+                            <div class="m-secpart" id="page-rules-head-1701454">
+                                {{numberData[$index]}}、{{item.STType}}(共{{item.totalCount}}题<lable ms-if="item.STType=='单选题'">，每题1分。每题的备选项中，只有一个最符合题意</lable>)
+                            </div>
+                            <div>
+                                <div class="m-question question-item " ms-repeat-el="item.STList" ms-attr-id="question-{{el.Order}}">
+                                    <div class="m-question-title">
+                                        <span class="number">{{el.Order}}<i></i></span>
+                                        <div class="f-title">
+                                            {{el.QContent|html}}
+                                        </div>
+                                    </div>
+                                    <div class="m-question-list-html" ms-if="item.STType!='单选题'&&item.STType!='多选题'&&item.STType!='判断题'">
+                                        <div class="m-choicebox">
+                                            <textarea style="height: 50px; width: 654px; max-width: 654px;" ms-duplex="el.Answer"></textarea>
+                                            <!--<div><input type="button" value="保存" class="btn-ks" ms-click="Completion(el)" /></div>-->
+                                        </div>
+                                    </div>
+                                    <div class="m-question-list-html" ms-if="item.STType=='单选题'||item.STType=='多选题'||item.STType=='判断题'">
+                                        <div class="m-choicebox">
+                                            <ul class="single">
+                                                <li class="question-option-list" ms-repeat-qitem="el.QItem" ms-attr-value="qitem.ItemName"><span>{{qitem.ItemName}}</span><div class="option-content">{{qitem.ItemDesc|html}}</div></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="m-question-html " style="min-height:67px;" ms-if="el.QItem.size()>0">
+                                        <div class=" m-questiontoolbar">
+                                            <div class="m-checkBox single">
+                                                <a class="question-option-list " ms-repeat-qaitem="el.QItem" ms-class-1="u-selected:qaitem.isselect" href="javascript:void(0)" ms-attr-value="qaitem.ItemName" ms-click="ADDKS(qaitem,el)">{{qaitem.ItemName}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="answer clearfix question-answer-bar" style="margin-top: 0px;display:none">
+                                        <div class="answer-tool" style="padding: 15px 0px 15px 0px;">
+                                            <div class="f-fl"><span class="txt">参考答案：</span><span class="option right" ms-if="item.QAnswer==''">暂未提供参考答案</span><span class="txt f-dn page-shuffle-answer" ms-if="item.QAnswer==''">我的答案：</span><span class="option right" ms-if="item.QAnswer!=''" ms-html="item.QAnswer"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 试题部分 END -->
+                    <!-- // END -->
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

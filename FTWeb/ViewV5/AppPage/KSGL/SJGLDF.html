@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="all">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>试题打分</title>
+    <link href="/ViewV5/CSS/saved_resource.css" rel="stylesheet" />
+    <link href="/ViewV5/CSS/saved_resource(2).css" rel="stylesheet" />
+    <link href="/ViewV5/CSS/zj.css" rel="stylesheet" />
+    <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/JS/avalon.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js"></script>
+
+    <script>
+        model = avalon.define({
+            $id: "SJGLDF",
+            sjID: ComFunJS.getQueryString("sjid"),
+            sjType: ComFunJS.getQueryString("sjtype"),
+            YL: ComFunJS.getQueryString("yl"),
+            SJSTData: [],
+            GetSJSTInfo: function () {
+                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETSJGLDFVIEW', { P1: model.sjID, P2: model.sjType }, function (result) {
+                    if (result.ErrorMsg == "") {
+                        model.SJSTData = result.Result;
+                    }
+                })
+            }
+        })
+        avalon.ready(function () {
+            model.GetSJSTInfo();
+        })
+        function GetSTRecordData() {
+            return model.SJSTData;
+        }
+    </script>
+</head>
+<body ms-controller="SJGLDF">
+
+    <div>
+        <div class="container bg-default maindiv" style="min-width: 1000px">
+            <div class="content">
+                <!-- 内容 部分 -->
+                <div class="exam-report  page_container">
+                    <!-- 试题部分 -->
+                    <div class="exam-report-cont-blk f-f14" style="float: none;" id="page-body" oncontextmenu="document.all?(window.event.returnValue=false):(event.preventDefault())" oncopy="return false" oncut="return false">
+                        <div>
+
+                            <div>
+                                <div class="m-question question-item " ms-repeat-item="SJSTData">
+                                    <div class="m-question-title">
+                                        <span class="number">{{$index+1}}<i></i></span>
+                                        <div class="f-title" ms-html="item.QContent">
+                                        </div>
+                                        <div class="button-xt" style="padding-right:20px;" ms-visible="YL!=1">
+                                            <input type="text" class="input-t" ms-duplex="item.Record" placeholder="分数">
+                                        </div>
+
+                                    </div>
+                                    <div class="m-question-list-html" ms-if="item.QItem.size()>0">
+                                        <div class="m-choicebox">
+                                            <ul class="single">
+                                                <li class="question-option-list" ms-repeat-el="item.QItem" ms-attr-value="el.ItemName"><span>{{el.ItemName}}</span><div class="option-content">{{el.ItemDesc|html}}</div></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="answer clearfix question-answer-bar" style="margin-top: 0px;">
+                                        <div class="answer-tool" style="padding: 15px 0px 15px 0px;">
+                                            <div class="f-fl"><span class="txt">参考答案：</span><span class="option right" ms-if="item.QAnswer==''">暂未提供参考答案</span><span class="txt f-dn page-shuffle-answer" ms-if="item.QAnswer==''">我的答案：</span><span class="option right" ms-if="item.QAnswer!=''" ms-html="item.QAnswer"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- 试题部分 END -->
+                    <!-- // END -->
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

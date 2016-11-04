@@ -174,9 +174,11 @@
     <Content Include="ViewV5\AppPage\KQGL\KQTJ.html" />
     <Content Include="ViewV5\AppPage\KSGL\KSAP.html" />
     <Content Include="ViewV5\AppPage\KSGL\KSAPLIST.html" />
-    <Content Include="ViewV5\AppPage\KSGL\KSYJLIST.html" />
+    <Content Include="ViewV5\AppPage\KSGL\SELSTLIST.html" />
     <Content Include="ViewV5\AppPage\KSGL\SJGL.html" />
+    <Content Include="ViewV5\AppPage\KSGL\SJGLDF.html" />
     <Content Include="ViewV5\AppPage\KSGL\SJGLLIST.html" />
+    <Content Include="ViewV5\AppPage\KSGL\SJGLVIEW.html" />
     <Content Include="ViewV5\AppPage\KSGL\TKFL.html" />
     <Content Include="ViewV5\AppPage\KSGL\TKFLLIST.html" />
     <Content Include="ViewV5\AppPage\KSGL\TKGL.html" />
@@ -185,6 +187,7 @@
     <Content Include="ViewV5\AppPage\KSGL\TKSTExport.html" />
     <Content Include="ViewV5\AppPage\KSGL\TKSTLIST.html" />
     <Content Include="ViewV5\AppPage\KSGL\USERCJLIST.html" />
+    <Content Include="ViewV5\AppPage\KSGL\USERKSDA.html" />
     <Content Include="ViewV5\AppPage\LCSP\LCSP.html" />
     <Content Include="ViewV5\AppPage\LCSP\LCSPLIST.html" />
     <Content Include="ViewV5\AppPage\LCSP\LCSPTJ.html" />
@@ -419,6 +422,7 @@
     <Content Include="ViewV5\CSS\weixin\index.html" />
     <Content Include="ViewV5\CSS\weixin\index1.html" />
     <Content Include="ViewV5\CSS\WX.css" />
+    <Content Include="ViewV5\CSS\zj.css" />
     <Content Include="ViewV5\images\DJ\sethd.png" />
     <Content Include="ViewV5\images\qrcode.jpg" />
     <Content Include="ViewV5\images\tk_exam.png" />

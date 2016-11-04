@@ -11,7 +11,7 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 using Aspose.Words.Saving;
-using System.Net; 
+using System.Net;
 
 
 namespace QJY.API
@@ -39,17 +39,20 @@ namespace QJY.API
             int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
             page = page == 0 ? 1 : page;
             int recordCount = 0;
-            DataTable dt = new SZHL_GZBGB().GetDataPager("  SZHL_KS_TKFL ", " ID,TKFLName,Remark,CRUser,CRDate  ", 8, page, "CRDate desc", string.Format(" comId='{0}' and isDel!=1", UserInfo.User.ComId), ref recordCount);
+            int pagecount = 0;
+            int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
+            pagecount = pagecount == 0 ? 10 : pagecount;
+            DataTable dt = new SZHL_GZBGB().GetDataPager("  SZHL_KS_TKFL ", " ID,TKFLName,Remark,CRUser,CRDate  ",pagecount, page, "CRDate desc", string.Format(" comId='{0}' and isDel!=1", UserInfo.User.ComId), ref recordCount);
             msg.Result = dt;
             msg.Result1 = recordCount;
-            
+
         }
         public void ADDTKFL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             SZHL_KS_TKFL type = JsonConvert.DeserializeObject<SZHL_KS_TKFL>(P1);
             if (type != null)
             {
-                if (new SZHL_KS_TKFLB().GetEntities(d => d.TKFLName == type.TKFLName && d.ComId == UserInfo.User.ComId&&d.ID!=type.ID ).Count() > 0)
+                if (new SZHL_KS_TKFLB().GetEntities(d => d.TKFLName == type.TKFLName && d.ComId == UserInfo.User.ComId && d.ID != type.ID).Count() > 0)
                 {
                     msg.ErrorMsg = "分类已存在";
                     return;
@@ -141,7 +144,10 @@ namespace QJY.API
             {
                 strWhere += string.Format(" and tk.TKName like '%{0}%'", content);
             }
-            DataTable dt = new SZHL_GZBGB().GetDataPager("  SZHL_KS_TK tk inner join  SZHL_KS_TKFL tkfl on tk.TKTypeId=tkfl.ID ", " tk.*,tkfl.TKFLName   ", 8, page, "tk.CRDate desc", strWhere, ref recordCount);
+            int pagecount = 0;
+            int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
+            pagecount = pagecount == 0 ? 10 : pagecount;
+            DataTable dt = new SZHL_GZBGB().GetDataPager("  SZHL_KS_TK tk inner join  SZHL_KS_TKFL tkfl on tk.TKTypeId=tkfl.ID ", " tk.*,tkfl.TKFLName   ", pagecount, page, "tk.CRDate desc", strWhere, ref recordCount);
             msg.Result = dt;
             msg.Result1 = recordCount;
         }
@@ -216,7 +222,7 @@ namespace QJY.API
             {
                 strWhere = "and tk.TKTypeId=" + P2;
             }
-            string strSql = string.Format("SELECT  DISTINCT KnowLedge FROM SZHL_KS_ST st  inner JOIN SZHL_KS_TK tk on st.TKID=tk.ID Where st.ComId={0} {1}", UserInfo.User.ComId, strWhere);
+            string strSql = string.Format("SELECT  DISTINCT KnowLedge FROM SZHL_KS_ST st  inner JOIN SZHL_KS_TK tk on st.TKID=tk.ID Where st.ComId={0} {1} and st.KnowLedge is not null and st.KnowLedge!=''", UserInfo.User.ComId, strWhere);
             msg.Result = new SZHL_KS_STB().GetDTByCommand(strSql);
         }
         #endregion
@@ -785,7 +791,10 @@ WHEN DATEADD(
 END AS kszt
 FROM
 SZHL_KS_KSAP where " + strWhere + ") AS newksap";
-            DataTable dt = new SZHL_KS_KSAPB().GetDataPager(sql, " * ", 8, page, orderby, sqlWhere, ref recordCount);
+            int pagecount = 0;
+            int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
+            pagecount = pagecount == 0 ? 10 : pagecount;
+            DataTable dt = new SZHL_KS_KSAPB().GetDataPager(sql, " * ", pagecount, page, orderby, sqlWhere, ref recordCount);
             dt.Columns.Add("ISCY", Type.GetType("System.String"));
             dt.Columns.Add("ISKS", Type.GetType("System.String"));
             dt.Columns.Add("ISLSYJ", Type.GetType("System.String"));
@@ -1087,7 +1096,10 @@ SZHL_KS_KSAP where " + strWhere + ") AS newksap";
             {
                 strWhere += string.Format(" and Status ={0} ", sjzt);
             }
-            DataTable dt = new SZHL_KS_SJB().GetDataPager("  SZHL_KS_SJ ", " *  ", 8, page, "CRDate desc", strWhere, ref recordCount);
+            int pagecount = 0;
+            int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
+            pagecount = pagecount == 0 ? 10 : pagecount;
+            DataTable dt = new SZHL_KS_SJB().GetDataPager("  SZHL_KS_SJ ", " *  ", pagecount, page, "CRDate desc", strWhere, ref recordCount);
             msg.Result = dt;
             msg.Result1 = recordCount;
         }
@@ -1096,7 +1108,15 @@ SZHL_KS_KSAP where " + strWhere + ") AS newksap";
             try
             {
                 int ID = int.Parse(P1);
-                new SZHL_KS_SJB().Delete(d => d.ComId == UserInfo.User.ComId && d.ID == ID);
+                SZHL_KS_SJ sj = new SZHL_KS_SJB().GetEntity(d => d.ID == ID);
+                if (sj != null && sj.Status == 1)
+                {
+                    msg.ErrorMsg = "此试卷已经发布，不能删除";
+                }
+                else
+                {
+                    new SZHL_KS_SJB().Delete(d => d.ComId == UserInfo.User.ComId && d.ID == ID);
+                }
             }
             catch (Exception ex)
             {
@@ -1251,7 +1271,7 @@ END AS kszt,dateadd(minute,ISNULL(KSSC,0),KSDate) AS ksEND from SZHL_KS_KSAP " +
         public void DELKSITEM(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             SZHL_KS_USERKSItem userKSItem = JsonConvert.DeserializeObject<SZHL_KS_USERKSItem>(P1);
-            if (new SZHL_KS_USERKSItemB().GetEntities(d => d.SJID == userKSItem.SJID && d.ComId == UserInfo.User.ComId && d.CRUser == UserInfo.User.UserName && d.STID == userKSItem.STID&&d.UserKSID==userKSItem.UserKSID).Count() > 0)
+            if (new SZHL_KS_USERKSItemB().GetEntities(d => d.SJID == userKSItem.SJID && d.ComId == UserInfo.User.ComId && d.CRUser == UserInfo.User.UserName && d.STID == userKSItem.STID && d.UserKSID == userKSItem.UserKSID).Count() > 0)
             {
                 new SZHL_KS_USERKSItemB().Delete(d => d.CRUser == UserInfo.User.UserName && d.SJID == userKSItem.SJID && d.STID == userKSItem.STID && d.Answer == userKSItem.Answer && d.UserKSID == userKSItem.UserKSID);
             }
@@ -1567,7 +1587,7 @@ AND CRUser = '{2}';", userKs.ID, userKs.SJID, UserInfo.User.UserName);
                     string strItemSql = string.Format(@"SELECT item.*,ksitem.ID isselect from SZHL_KS_STItem item inner join SZHL_KS_SJST sjst on item.STID=sjst.STID LEFT join SZHL_KS_USERKSItem ksitem on item.STID=ksitem.STID and ksitem.SJID=" + sjID + "  AND item.ItemName=CAST( ksitem.Answer as VARCHAR(50)) and ksitem.CRUser='{0}' where item.STID in ({1}) and sjst.SJID={2}", P1, rowType["stIds"], sjID);
                     strItemSql = string.Format(@"SELECT item.*,ksitem.ID isselect from SZHL_KS_SJSTGLItem item inner join SZHL_KS_SJSTGL sjst 
                                             on item.STID=sjst.STID and item.SJID=sjst.SJID LEFT join SZHL_KS_USERKSItem ksitem on item.STID=ksitem.STID and item.SJID=ksitem.SJID and ksitem.SJID={2}  and ksitem.UserKSID={3}
-                                            AND item.ItemName=CAST( ksitem.Answer as VARCHAR(50)) and ksitem.CRUser='{0}' where item.STID in ({1}) and item.SJID={2} ", P1, rowType["stIds"], sjID,ksId);
+                                            AND item.ItemName=CAST( ksitem.Answer as VARCHAR(50)) and ksitem.CRUser='{0}' where item.STID in ({1}) and item.SJID={2} ", P1, rowType["stIds"], sjID, ksId);
                     string sql = string.Format("SELECT STID,CAST( isnull(Record,0) as INT) Record,Answer FROM SZHL_KS_USERKSItem WHERE CRUser='{0}' AND STID in ({1}) AND SJID={2} and UserKSID={3}", P1, rowType["stIds"], sjID, ksId);
                     DataTable questionItem = new SZHL_KS_STItemB().GetDTByCommand(strItemSql);
                     DataTable dtuser = new SZHL_KS_USERKSItemB().GetDTByCommand(sql);
