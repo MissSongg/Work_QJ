@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>选题</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="all">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css" rel="stylesheet" /> 
+    <link href="/ViewV5/CSS/saved_resource.css" rel="stylesheet" />
+    <link href="/ViewV5/CSS/saved_resource(2).css" rel="stylesheet" />
+    <link href="/ViewV5/CSS/zj.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_1465716475_3314524.css" />
+    <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
+    <script src="/ViewV5/JS/laypage/laypage.js"></script>
+    <script src="/ViewV5/JS/avalon.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js"></script>
+    <script type="text/javascript">
+        model = avalon.define({
+            $id: "SELSTLIST",
+            SElData: [],
+            TKTypeData: [],
+            TKType: "",
+            TKData: [],
+            TKModelID: "",
+            KnowLedgeData: [],
+            KnowId: "",
+            curLevel: "",
+            searContent: "",
+            ZJType: 0,
+            stType: ComFunJS.getQueryString("type"),
+            GetTKType: function () {
+                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKFLSEL', function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        model.TKTypeData = resultData.Result;
+                    }
+                })
+            }, GetTKData: function () {
+                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETSELTKGLLISTBYFL', { P1: model.TKType }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        model.TKData = resultData.Result;
+
+                    }
+                })
+            },
+            SelTKType: function (Id) {
+                model.TKType = Id;
+                model.GetTKData();
+                model.GetKnowledge();
+                model.GETSTLIST();
+
+            },
+            SelTK: function (Id) {
+                model.TKModelID = Id;
+                model.GetKnowledge();
+                model.GETSTLIST();
+
+            }, GetKnowledge: function () {
+                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GetKNOWLEDGE', { P1: model.TKModelID, P2: model.TKType }, function (result) {
+                    if (result.ErrorMsg == "") {
+                        model.KnowLedgeData = result.Result;
+                    }
+                })
+            }, SelKnowLedge: function (type) {
+                model.KnowId = type; 
+                model.GETSTLIST();
+            }, selLevel: function (type) {
+                model.curLevel = type; 
+                model.GETSTLIST();
+            }, STData: [], sjcount: "",
+            Total: 0,
+            GETSTLIST: function () {
+                if (model.sjcount) {
+                    if (!/^[0-9]*$/.test(model.sjcount)) {
+                        top, ComFunJS.winwarning("随机题数必须是数字");
+                        return;
+                    }
+                }
+                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKSTLIST', { p: 1, tktypeid: model.TKType, tkid: model.TKModelID, P1: model.KnowId, P2: model.stType, level: model.curLevel, contnet: model.searContent, zjType: model.ZJType, sjCount: model.sjcount, sjID: ComFunJS.getQueryString("sjID") }, function (result) {
+                    if (result.ErrorMsg == "") {
+                        if (model.SELSTData.length == 0) {
+                            model.SELSTData = result.Result1;
+                        }
+                        result.Result.forEach(function (item) {
+                            if (ComFunJS.FindItem(model.SELSTData, function (e) {
+                     return e.ID == item.ID;
+                            }).length > 0) {
+                                item.issel = true;
+                            } else {
+                                item.issel = false;
+                            }
+                        })
+                        model.STData = result.Result;
+                        model.Total = result.Result2;
+
+                        if (model.sjcount) {
+                            top.ComFunJS.winAlert("选择成功");
+                        }
+
+
+                        var page = 1;
+                        laypage({
+                            cont: 'pageDiv', //容器。值支持id名、原生dom对象，jquery对象。
+                            pages: Math.ceil(parseInt(result.Result2) * 1.0 / 10), //通过后台拿到的总页数
+                            curr: 1, //初始化当前页
+                            skin: 'molv',
+                            jump: function (e) { //触发分页后的回调
+                                if (e.curr != page) {
+                                    $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKSTLIST', { p: e.curr, tktypeid: model.TKType, tkid: model.TKModelID, P1: model.KnowId, P2: model.stType, level: model.curLevel, contnet: model.searContent, zjType: model.ZJType, sjCount: model.sjcount, sjID: ComFunJS.getQueryString("sjID") }, function (result) {
+                                        if (result.ErrorMsg == "") {
+                                            if (model.SELSTData.length == 0) {
+                                                model.SELSTData = result.Result1;
+                                            }
+                                            $(".check-all").prop("checked", false);
+                                            result.Result.forEach(function (item) {
+                                                if (ComFunJS.FindItem(model.SELSTData, function (e) {
+                                         return e.ID == item.ID;
+                                                }).length > 0) {
+                                                    item.issel = true;
+                                                } else {
+                                                    item.issel = false;
+                                                }
+                                            })
+                                            model.STData = result.Result;
+                                        }
+                                    })
+                                    page = e.curr;
+                                }
+                            }
+                        });
+                    }
+                })
+
+            }, SELSTData: [], CheckALL: function (dom) {
+                // model.SELSTData.clear();
+                model.STData.forEach(function (item) {
+                    item.issel = $(dom).prop("checked");
+                    if ($(dom).prop("checked")) {
+                        if (ComFunJS.FindItem(model.SELSTData, function (e) {
+                    return e.ID == item.ID;
+                        }).length == 0) {
+                            model.SELSTData.push(item);
+                        }
+
+                    } else {
+                        if (ComFunJS.FindItem(model.SELSTData, function (e) {
+                  return e.ID == item.ID;
+                        }).length > 0) {
+                            model.SELSTData.remove(item);
+                        }
+                    }
+                })
+            }, CheckST: function (item, dom) {
+                item.issel = $(dom).prop("checked");
+                if ($(dom).prop("checked")) {
+                    if (!avalon.contains(model.SELSTData, item)) {
+                        model.SELSTData.push(item);
+                    }
+                } else {
+                    model.SELSTData.remove(item);
+                }
+            }, ShowFlag: false,
+            ShowSelData: function () {
+                if (model.SELSTData.size() == 0) {
+                    return;
+                }
+                model.ShowFlag = true;
+            },
+            HidSelData: function () {
+                model.ShowFlag = false;
+            }, DELST: function (item) {
+                model.SELSTData.remove(item);
+                model.STData.forEach(function (el) {
+                    if (item.ID == el.ID) {
+                        el.issel = false;
+                    }
+                })
+            }, SelZJType: function (type) {
+                model.ZJType = type;
+            }
+
+        })
+        avalon.ready(function () {
+            model.GetTKType();
+            model.GetTKData();
+            model.GetKnowledge();
+            model.GETSTLIST();
+        })
+        function GetSelSTData() {
+            return model.SELSTData.$model;
+        }
+        //# sourceURL=selstlist.js;
+    </script>
+</head>
+<body ms-controller="SELSTLIST">
+    <div style="margin:5px;" ms-if="!ShowFlag">
+        <div class="set-box2 color-666 content">
+
+            <div class="ui-progress f-shadow conditions">
+                <div class="navBox" style="width:100%;">
+                    <span class="list-title-check">选题：</span>
+                    <div class="clearfix list-item-check">
+                        <a class="btn" ms-class-1="ui-check:ZJType==0" ms-click="SelZJType(0)">手动选题</a>
+                        <a class="btn " ms-class-1="ui-check:ZJType==1" ms-click="SelZJType(1)">自动选题</a>
+                        <div class="input-group" style="width:20%" ms-if="ZJType==1">
+                            <input type="search" class="form-control" ms-duplex="sjcount" placeholder="输入随机题数">
+                            <span class="input-group-addon" ms-click="GETSTLIST()" style="cursor: pointer;">选题</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-progress f-shadow conditions">
+                <div class="navBox" style="width:100%;">
+                    <span class="list-title-check">题库分类：</span>
+                    <div class="clearfix list-item-check">
+                        <a class="btn" ms-class-1="ui-check:TKType==''" ms-click="SelTKType('')">全部</a>
+                        <a ms-repeat-item="TKTypeData" class="btn" ms-class-1="ui-check:TKType==item.ID" ms-click="SelTKType(item.ID)">{{item.TKFLName}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-progress f-shadow conditions">
+                <div class="navBox" style="width:100%;">
+                    <span class="list-title-check">题库：</span>
+                    <div class="clearfix list-item-check">
+                        <a class="btn" ms-class-1="ui-check:TKModelID==''" ms-click="SelTK('')">全部</a>
+                        <a ms-repeat-item="TKData" ms-class-1="ui-check:TKModelID==item.ID" class="btn" ms-click="SelTK(item.ID)">{{item.TKName}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-progress f-shadow conditions">
+                <div class="navBox" style="width:100%;">
+                    <span class="list-title-check">知识点：</span>
+                    <div class="clearfix list-item-check">
+                        <a href="javascript:void(0)" class="btn" ms-class-1="ui-check:KnowId==''" ms-click="SelKnowLedge('')">全部知识点</a>
+                        <a href="javascript:void(0)" class="btn" ms-repeat-item="KnowLedgeData" ms-class-1="ui-check:KnowId==item.KnowLedge" ms-click="SelKnowLedge(item.KnowLedge)">{{item.KnowLedge}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-progress f-shadow conditions">
+                <div class="navBox" style="width:100%;">
+                    <span class="list-title-check">难易度：</span>
+                    <div class="clearfix list-item-check">
+                        <a href="javascript:void(0)" class="btn" ms-class-1="ui-check:curLevel==''" ms-click="selLevel('')">全部</a>
+                        <a href="javascript:void(0)" class="btn" ms-class-1="ui-check:curLevel==1" ms-click="selLevel(1)">容易</a>
+                        <a href="javascript:void(0)" class="btn" ms-class-1="ui-check:curLevel==2" ms-click="selLevel(2)">较易</a>
+                        <a href="javascript:void(0)" class="btn" ms-class-1="ui-check:curLevel==3" ms-click="selLevel(3)">一般</a>
+                        <a href="javascript:void(0)" class="btn" ms-class-1="ui-check:curLevel==4" ms-click="selLevel(4)">较难</a>
+                        <a href="javascript:void(0)" class="btn" ms-class-1="ui-check:curLevel==5" ms-click="selLevel(5)">难</a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="ui-progress f-shadow conditions">
+                <div class="navBox" style="width:100%;">
+                    <span class="list-title-check">查找试题：</span>
+                    <div class="clearfix list-item-check">
+                        <div class="input-group" style="width:60%">
+                            <input type="search" class="form-control" ms-duplex="searContent" placeholder="请输入您要查找的题目">
+                            <span class="input-group-addon" ms-click="GETSTLIST()"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="m-secpart f-f14">
+            一、{{stType}}（共{{Total?Total:STData.size()}}题，已加入{{SELSTData.size()}}题）
+            <div class="button-xt">
+                <span ms-click="ShowSelData()">已选（{{SELSTData.size()}}）题</span>
+                <a><span>全选</span><input type="checkbox" class="check-all" ms-click="CheckALL(this)"></a>
+
+            </div>
+        </div>
+        <div class="f-f14">
+            <div class="m-question question-item w100" style="width:100%;" ms-repeat-item="STData">
+                <div class="m-question-title">
+                    <span class="number">{{$index+1}}<i></i></span>
+                    <div class="f-title" style="float:left" ms-html="item.QContent">
+                    </div>
+                    <div class="button-xt" style="padding-right:20px;">
+                        <a><span>选择</span><input type="checkbox" class="check-all" ms-attr-checked="item.issel" ms-click="CheckST(item,this)"></a>
+                    </div>
+
+
+                </div>
+                <div class="m-question-list-html" ms-if="item.QItem.size()>0">
+                    <div class="m-choicebox">
+                        <ul class="single">
+                            <li class="question-option-list" ms-repeat-el="item.QItem" ms-attr-value="el.ItemName"><span>{{el.ItemName}}</span><div class="option-content">{{el.ItemDesc|html}}</div></li>
+                        </ul>
+                    </div>
+                    <div class="answer clearfix question-answer-bar" style="margin-top: 0px;">
+                        <div class="answer-tool" style="padding: 15px 0px 15px 0px;">
+                            <div class="f-fl">
+                                <span class="txt">参考答案：</span>
+                                <span class="option right" ms-if="item.QAnswer!=''" ms-html="item.QAnswer"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pageBox fix" id="pageDiv" ms-if="Total>0">
+            </div>
+        </div>
+    </div>
+    <div ms-if="ShowFlag" style="margin:5px;">
+        <div class="m-secpart f-f14">
+            <a ms-click="HidSelData()" class="btn btn-info">返回</a>
+        </div>
+        <div class="f-f14">
+            <div class="m-question question-item w100" style="width:100%;" ms-repeat-item="SELSTData">
+                <div class="m-question-title">
+                    <span class="number">{{$index+1}}<i></i></span>
+                    <div class="f-title" style="float:left" ms-html="item.QContent">
+                    </div>
+                    <div class="button-xt" style="padding-right:20px;">
+                        <a ms-click="DELST(item)" class="text-warning">删除</a>
+                    </div>
+                </div>
+                <div class="m-question-list-html" ms-if="item.QItem.size()>0">
+                    <div class="m-choicebox">
+                        <ul class="single">
+                            <li class="question-option-list" ms-repeat-el="item.QItem" ms-attr-value="el.ItemName"><span>{{el.ItemName}}</span><div class="option-content">{{el.ItemDesc|html}}</div></li>
+                        </ul>
+                    </div>
+                    <div class="answer clearfix question-answer-bar" style="margin-top: 0px;">
+                        <div class="answer-tool" style="padding: 15px 0px 15px 0px;">
+                            <div class="f-fl">
+                                <span class="txt">参考答案：</span>
+                                <span class="option right" ms-if="item.QAnswer!=''" ms-html="item.QAnswer"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

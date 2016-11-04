@@ -144,7 +144,7 @@
 
 
 .m-question img,.m-material img{ max-width:650px;overflow:hidden;}
-.m-secpart{ border:#e8e8e8 solid 1px; background-color:#fffee9; padding:15px 20px; margin-top:10px;     overflow: hidden;}
+.m-secpart{ border:#e8e8e8 solid 1px; background-color:#fffee9; padding:15px 20px; margin-top:10px;}
 .m-question{  border:#e3e3e3 solid 1px; background-color:#fff; margin-top:10px; position:relative;word-break: break-all;    overflow: hidden;}
 .m-question-title{ width:100%; border-top:#FFF solid 1px; background-color:#f9f9f9; padding:15px 0;}
 .m-question-title .number{ width:55px; display:block; color:#f06000; text-align:center;font-family:"Microsoft Yahei";font-size:25px; line-height:25px; float:left; position:relative; margin-top:-3px}
@@ -179,7 +179,7 @@
 .m-choicebox li p{ width:605px; float:right; color:#555}
 .m-questionToolbar{width:700px; padding:0 10px;padding-bottom:20px;}
 .m-checkBox{ padding-left:40px; }
-.m-checkBox a{margin-top:10px; display:block;float:left; width:90px; height:37px;padding-left:50px;  line-height:37px; font-size:14px;  background-image:url(/ViewV5/Images/tk_exam.png); background-repeat:no-repeat; margin-right:20px; display:inline;font-family:"Microsoft Yahei"; }
+.m-checkBox a{box-sizing: initial;margin-top:10px;float:left; width:40px; height:37px;padding-left:50px;  line-height:37px; font-size:14px;  background-image:url(/ViewV5/Images/tk_exam.png); background-repeat:no-repeat; margin-right:20px; display:inline;font-family:"Microsoft Yahei"; }
 .m-checkBox a:hover{ color:#FFF}
 .m-checkBox.single a{ background-position:0 -84px;}
 .m-checkBox.single a:hover{ background-position: -94px -84px}
