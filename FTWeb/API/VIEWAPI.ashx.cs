@@ -31,6 +31,7 @@ namespace QjySaaSWeb.APP
             string P2 = context.Request["P2"] ?? "";
             string P3 = context.Request["P3"] ?? "";
             string UserName = context.Request["UserName"] ?? "";
+            string strIP = CommonHelp.getIP(context);
 
             Msg_Result Model = new Msg_Result() { Action = strAction.ToUpper(), ErrorMsg = "" };
             if (!string.IsNullOrEmpty(strAction))
@@ -51,7 +52,15 @@ namespace QjySaaSWeb.APP
                             var container = ServiceContainerV.Current().Resolve<IWsService>(acs[0].ToUpper());
                             Model.Action = acs[1];
                             container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), new JH_Auth_UserB.UserInfo());
-                            new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserName, 0);
+                            int cid = 0;
+                            string un=string.Empty;
+                            if (Model.Result4 != null )
+                            {
+                                JH_Auth_User UserInfo = Model.Result4;
+                                cid = UserInfo.ComId.Value;
+                                un = UserInfo.UserRealName;
+                            }
+                            new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserName, un, cid, strIP);
 
                         }
                     }
@@ -69,7 +78,7 @@ namespace QjySaaSWeb.APP
                                 container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), UserInfo);
                                 if (strAction != "CHAT_GETNOREADMSG")
                                 {
-                                    new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserInfo.User.UserName, UserInfo.QYinfo.ComId);
+                                    new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserInfo.User.UserName, UserInfo.User.UserRealName, UserInfo.QYinfo.ComId, strIP);
                                 }
                             }
                             else
@@ -89,8 +98,8 @@ namespace QjySaaSWeb.APP
                 catch (Exception ex)
                 {
                     Model.ErrorMsg = strAction + "接口调用失败,请检查日志";
-                    Model.Result = ex.Message;
-                    new JH_Auth_LogB().InsertLog(strAction,Model.ErrorMsg, ex.Message.ToString(), UserName, 0);
+                    Model.Result = ex.ToString();
+                    new JH_Auth_LogB().InsertLog(strAction, Model.ErrorMsg, ex.ToString(), UserName,"", 0, strIP);
 
                 }
             }

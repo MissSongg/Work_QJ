@@ -334,6 +334,8 @@
           <Property Name="Remark" Type="varchar" MaxLength="500" />
           <Property Name="CRUser" Type="varchar" MaxLength="50" />
           <Property Name="CRDate" Type="datetime" />
+          <Property Name="IP" Type="varchar" MaxLength="50" />
+          <Property Name="Remark1" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="JH_Auth_Menu">
           <Key>
@@ -2898,6 +2900,8 @@
           <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="IP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remark1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="JH_Auth_Menu">
           <Key>
@@ -5230,6 +5234,8 @@
           <EntitySetMapping Name="JH_Auth_Log">
             <EntityTypeMapping TypeName="QJY_SaaSModel.JH_Auth_Log">
               <MappingFragment StoreEntitySet="JH_Auth_Log">
+                <ScalarProperty Name="Remark1" ColumnName="Remark1" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
                 <ScalarProperty Name="CRDate" ColumnName="CRDate" />
                 <ScalarProperty Name="CRUser" ColumnName="CRUser" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />

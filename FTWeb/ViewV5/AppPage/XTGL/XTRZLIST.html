@@ -1,10 +1,18 @@
 ﻿<div ms-controller="XTRZLIST">    
     <!-- 按条件选择 -->
     <div class="tab-filter-type">  
+        <div class="oh">
+            <h5 class="pull-left tr">类型：</h5>
+            <ul class="tab-type ft14">
+                <!--<li><span class="active" ms-click="SelectType('0')">全部</span></li>-->
+                <li ms-click="SelectType('1')"><span class="active">登录</span></li>
+                <li ms-click="SelectType('2')"><span>操作</span></li>
+            </ul>
+        </div>
         <!-- 搜索 -->
         <div class="oh">
             <div class="input-group ml15" style="width:295px;">
-                <input type="search" class="form-control" placeholder="搜索日志记录" ms-duplex="search.searchcontent">
+                <input type="search" class="form-control" placeholder="搜索用户、日志记录、IP" ms-duplex="search.searchcontent">
                 <span class="input-group-addon" ms-click="GetLIST()">搜索</span>
             </div>
         </div>
@@ -58,19 +66,8 @@
 
     var tempindex = avalon.define({
         $id: "XTRZLIST",
-        listType: "",
-        curRWType: "",
-        type: "PCLOGIN,PCADMINLOGIN",
-        ChangeType: function (type) {
-            tempindex.listType = type;
-            tempindex.GetLIST();
-        },
         SelectType: function (type) {
             model.search.seartype = type;
-            tempindex.GetLIST();
-        },
-        SelectRWType: function (type) {
-            tempindex.curRWType = type;
             tempindex.GetLIST();
         },
         selNum: function (item) {    //选择显示的条数
@@ -78,12 +75,14 @@
             tempindex.GetLIST();
         },
         InitWigetData: function () {
-            model.search.seartype = "0";
+            model.search.seartype = "1";
             //显示的列名
             model.ShowColumns.clear();
             model.ShowColumns.pushArray([                     
                      { "ColName": "CRDate", "ColText": "时间", "IsSel": true, "format": "dateformat" },
-                     { "ColName": "LogContent", "ColText": "日志记录", "IsSel": true }
+                     { "ColName": "LogContent", "ColText": "日志记录", "IsSel": true },
+                     { "ColName": "IP", "ColText": "IP", "IsSel": true },
+                     { "ColName": "CRUser", "ColText": "操作人", "IsSel": true, "format": "username" }
             ]);
             //类型数据
             tempindex.GetLIST();
@@ -92,7 +91,7 @@
         GetLIST: function () {
             model.page.pageindex = 1;
             model.ListData.clear();
-            $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GEXTRZ', { P1: model.search.searchcontent, p: 1, P2: tempindex.type, Content: model.search.searchcontent, pagecount: model.page.pagecount, lb: tempindex.curRWType }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETXTRZ', { P1: model.search.seartype, p: 1, Content: model.search.searchcontent, pagecount: model.page.pagecount}, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     model.ListData = resultData.Result;
                     if (model.ListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
@@ -104,7 +103,7 @@
                         skin: 'molv',
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GEXTRZ', { p: e.curr, P1: model.search.searchcontent, P2: tempindex.type, Content: model.search.searchcontent, pagecount: model.page.pagecount, lb: tempindex.curRWType }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETXTRZ', { p: e.curr, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
                                         model.ListData = resultData.Result;
                                     }
@@ -122,7 +121,7 @@
                 event.stopPropagation();
             }
             ComFunJS.winconfirm("确认要删除吗？", function () {
-                $.getJSON("/API/VIEWAPI.ashx?Action=RWGL_DELRWGLMODEL", { P1: el.ID }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_DELXTRZ", { P1: el.ID }, function (r) {
                     if (r.ErrorMsg == "") {
                         model.ListData.remove(el);
                         ComFunJS.winsuccess("操作成功");
@@ -132,5 +131,5 @@
 
         }
     })
-    //@ sourceURL=RWGLTEMP.js;
+    //@ sourceURL=XTRZLIST.js;
 </script>

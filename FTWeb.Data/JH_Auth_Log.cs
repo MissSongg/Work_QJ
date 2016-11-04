@@ -32,6 +32,10 @@ public partial class JH_Auth_Log
 
     public Nullable<System.DateTime> CRDate { get; set; }
 
+    public string IP { get; set; }
+
+    public string Remark1 { get; set; }
+
 }
 
 }

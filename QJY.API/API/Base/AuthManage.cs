@@ -1976,16 +1976,23 @@ namespace QJY.API
         #endregion
 
         #region 系统日志
-        public void GEXTRZ(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        public void GETXTRZ(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            string strWhere = string.Format(" ComId={0} ", UserInfo.User.ComId);
+            string strWhere = string.Format("( ComId={0} or ComId=0 )", UserInfo.User.ComId);
+            string strContent = context.Request["Content"] ?? "";
+            strContent = strContent.TrimEnd();
+            if (strContent != "")
+            {
+                strWhere += string.Format(" and (LogContent like  '%{0}%' or Remark1 like  '%{0}%' or IP like  '%{0}%')", strContent);
+            }
             if (P1 != "")
             {
-                strWhere += string.Format(" and LogContent like  '%{0}%'", P1);
-            }
-            if (P2 != "")
-            {
-                strWhere += string.Format(" and LogType IN ('{0}')", P2.Replace(",", "','"));  //多个类型逗号隔开传过来
+                //strWhere += string.Format(" and LogType IN ('{0}')", P2.Replace(",", "','"));  //多个类型逗号隔开传过来
+                switch (P1)
+                {
+                    case "1": strWhere += " and LogType ='LOGIN'"; break;
+                    case "2": strWhere += " and LogType !='LOGIN'"; break;
+                }
             }
             int page = 0;
             int pagecount = 8;
@@ -1997,6 +2004,21 @@ namespace QJY.API
             msg.Result = dt;
             msg.Result1 = total;
 
+        }
+        public void DELXTRZ(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            try
+            {
+
+                if (new JH_Auth_LogB().Delete(d => d.ID.ToString() == P1))
+                {
+                    msg.ErrorMsg = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                msg.ErrorMsg = ex.Message;
+            }
         }
         #endregion
 

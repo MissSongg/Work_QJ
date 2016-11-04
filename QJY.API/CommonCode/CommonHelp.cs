@@ -1072,6 +1072,29 @@ namespace QJY.API
             }
         }
 
+        public static string getIP(HttpContext context)
+        {
+            string ipAddr = "";
+            try
+            {
+                HttpRequest Request = context.Request;   
+                // 如果使用代理，获取真实IP  
+                if (Request.ServerVariables["HTTP_X_FORWARDED_FOR"] != "")
+                    ipAddr = Request.ServerVariables["REMOTE_ADDR"];
+                else
+                    ipAddr = Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                if (ipAddr == null || ipAddr == "")
+                    ipAddr = Request.UserHostAddress;
+                return ipAddr;  
+
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+            return ipAddr;
+        }
+
     }
 
 
