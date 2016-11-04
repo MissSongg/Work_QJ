@@ -1083,7 +1083,7 @@ namespace QJY.API
     public class JH_Auth_LogB : BaseEFDao<JH_Auth_Log>
     {
 
-        public void InsertLog(string Action, string LogContent, string ReMark, string strUser, int ComID)
+        public void InsertLog(string Action, string LogContent, string ReMark, string strUser, string strUserName, int ComID, string strIP)
         {
             Task<string> TaskCover = Task.Factory.StartNew<string>(() =>
             {
@@ -1093,6 +1093,8 @@ namespace QJY.API
                     LogType = Action,
                     LogContent = LogContent,
                     Remark = ReMark,
+                    IP=strIP,
+                    Remark1=strUserName,
                     CRUser = strUser,
                     CRDate = DateTime.Now
                 });

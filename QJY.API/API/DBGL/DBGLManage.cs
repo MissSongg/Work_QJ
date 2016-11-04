@@ -13,6 +13,7 @@ using System.IO;
 using System.Text;
 using System.Data.SqlClient;
 using System.Collections;
+using System.Diagnostics;
 
 namespace QJY.API
 {
@@ -128,7 +129,7 @@ namespace QJY.API
                 new JH_Auth_LogB().Insert(new JH_Auth_Log()
                 {
                     ComId=UserInfo.QYinfo.ComId.ToString(),
-                    LogType = "DBGL",
+                    LogType = "DBGL_DBBACKUP",
                     LogContent = ex.ToString(),
                     CRUser=UserInfo.User.UserName,
                     CRDate = DateTime.Now
@@ -181,7 +182,7 @@ namespace QJY.API
                 new JH_Auth_LogB().Insert(new JH_Auth_Log()
                 {
                     ComId = UserInfo.QYinfo.ComId.ToString(),
-                    LogType = "DBGL",
+                    LogType = "DBGL_DBDOWNLOAD",
                     LogContent = ex.ToString(),
                     CRUser = UserInfo.User.UserName,
                     CRDate = DateTime.Now
@@ -243,7 +244,7 @@ namespace QJY.API
                 new JH_Auth_LogB().Insert(new JH_Auth_Log()
                 {
                     ComId = UserInfo.QYinfo.ComId.ToString(),
-                    LogType = "DBGL",
+                    LogType = "DBGL_DBUPLOAD",
                     LogContent = ex.ToString(),
                     CRUser = UserInfo.User.UserName,
                     CRDate = DateTime.Now
@@ -318,7 +319,48 @@ namespace QJY.API
                 new JH_Auth_LogB().Insert(new JH_Auth_Log()
                 {
                     ComId = UserInfo.QYinfo.ComId.ToString(),
-                    LogType = "DBGL",
+                    LogType = "DBGL_DBRESTORE",
+                    LogContent = ex.ToString(),
+                    CRUser = UserInfo.User.UserName,
+                    CRDate = DateTime.Now
+                });
+            }
+        }
+        #endregion
+
+        #region 服务器状况
+        /// <summary>
+        /// 服务器状况
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void SERVERSTATUS(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            try
+            {
+                PerformanceCounter cpuCounter = new PerformanceCounter();
+
+                cpuCounter.CategoryName = "Processor";
+                cpuCounter.CounterName = "% Processor Time";
+                cpuCounter.InstanceName = "_Total";
+
+                PerformanceCounter ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+
+                msg.Result = cpuCounter.NextValue() + "%";
+
+                msg.Result1 = ramCounter.NextValue() + "MB";
+
+            }
+            catch (Exception ex)
+            {
+                msg.ErrorMsg = "查询失败";
+                new JH_Auth_LogB().Insert(new JH_Auth_Log()
+                {
+                    ComId = UserInfo.QYinfo.ComId.ToString(),
+                    LogType = "DBGL_SERVERSTATUS",
                     LogContent = ex.ToString(),
                     CRUser = UserInfo.User.UserName,
                     CRDate = DateTime.Now

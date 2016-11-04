@@ -90,6 +90,7 @@ namespace QJY.API
                 new JH_Auth_UserB().Update(userInfo);
                 msg.Result = userInfo.pccode;
                 msg.Result1 = userInfo.UserName;
+                msg.Result4 = userInfo;
             }
 
 

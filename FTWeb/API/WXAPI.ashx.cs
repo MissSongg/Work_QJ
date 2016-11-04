@@ -31,6 +31,8 @@ namespace QjySaaSWeb.APP
             context.Response.AddHeader("cache-control", "");
             context.Response.CacheControl = "no-cache";
             string strAction = context.Request["Action"] ?? "";
+            string UserName = context.Request["UserName"] ?? "";
+            string strIP = CommonHelp.getIP(context);
 
             Msg_Result Model = new Msg_Result() { Action = strAction.ToUpper(), ErrorMsg = "" };
 
@@ -809,7 +811,6 @@ namespace QjySaaSWeb.APP
                 #region 获取唯一code
                 else if (strAction.ToUpper() == "GetUserCodeByCode".ToUpper())
                 {
-
                     #region 获取Code
                     Model.ErrorMsg = "获取Code错误，请重试";
 
@@ -941,32 +942,43 @@ namespace QjySaaSWeb.APP
                 #region 必须登录执行接口
                 else
                 {
-                    string P1 = context.Request["P1"] ?? "";
-                    string P2 = context.Request["P2"] ?? "";
-
-                    var acs = Model.Action.Split('_');
-
-                    string strUserName = string.Empty;
-
-                    if (context.Request.Cookies["szhlcode"] != null)
+                    
+                    try
                     {
-                        //通过Cookies获取Code
-                        //string szhlcode = "5ab470be-4988-4bb3-9658-050481b98fca"; 
-                        string szhlcode = context.Request.Cookies["szhlcode"].Value.ToString();
-                        //通过Code获取用户名，然后执行接口方法
-                        var jau = new JH_Auth_UserB().GetUserByPCCode(szhlcode);
-                        if (jau != null)
-                        {
-                            var container = ServiceContainerV.Current().Resolve<IWsService>(acs[0].ToUpper());
-                            JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB().GetUserInfo(szhlcode);
+                        string P1 = context.Request["P1"] ?? "";
+                        string P2 = context.Request["P2"] ?? "";
 
-                            Model.Action = Model.Action.Substring(acs[0].Length + 1);
-                            container.ProcessRequest(context, ref Model, P1, P2, UserInfo);
+                        var acs = Model.Action.Split('_');
+
+                        string strUserName = string.Empty;
+
+                        if (context.Request.Cookies["szhlcode"] != null)
+                        {
+                            //通过Cookies获取Code
+                            //string szhlcode = "5ab470be-4988-4bb3-9658-050481b98fca"; 
+                            string szhlcode = context.Request.Cookies["szhlcode"].Value.ToString();
+                            //通过Code获取用户名，然后执行接口方法
+                            var jau = new JH_Auth_UserB().GetUserByPCCode(szhlcode);
+                            if (jau != null)
+                            {
+                                var container = ServiceContainerV.Current().Resolve<IWsService>(acs[0].ToUpper());
+                                JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB().GetUserInfo(szhlcode);
+
+                                Model.Action = Model.Action.Substring(acs[0].Length + 1);
+                                container.ProcessRequest(context, ref Model, P1, P2, UserInfo);
+                                new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserInfo.User.UserName, UserInfo.User.UserRealName, UserInfo.QYinfo.ComId, strIP);
+                            }
+                        }
+                        else
+                        {
+                            Model.ErrorMsg = "您未登录!";
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        Model.ErrorMsg = "您未登录!";
+                        Model.ErrorMsg = strAction + "接口调用失败,请检查日志";
+                        Model.Result = ex.Message;
+                        new JH_Auth_LogB().InsertLog(strAction, Model.ErrorMsg, ex.Message.ToString(), UserName,"", 0, strIP);
                     }
                 }
                 #endregion
