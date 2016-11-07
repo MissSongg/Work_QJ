@@ -307,7 +307,7 @@
         wximg: "",
         dataid: "",
         inittemp: function (strId) {
-            $.showPreloader();
+
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 15 }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempmodel.ColumnData = resultData.Result;
@@ -327,7 +327,6 @@
 
                         ComFunJS.uploadimgnew(tempmodel.tpData);
                         ComFunJS.viewimg(tempmodel.tpData);
-                        $.hidePreloader();
                         setTimeout(" ComFunJS.initForm()", 500)
                     }
                 })
@@ -335,8 +334,6 @@
 
                 ComFunJS.uploadimgnew();
                 ComFunJS.initForm();
-
-                $.hidePreloader();
             }
         },//初始化
         modelData: { "PContent": "", "Name": "", "BianHao": "", "Price": "", "DanWei": "", "ChengBen": "", "LeiBie": "", "Files": "" },
@@ -360,9 +357,8 @@
                 }
 
             })
-            $.showPreloader();
+
             $.post("/API/VIEWAPI.ashx?ACTION=CRM_ADDCP", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                $.hidePreloader();
                 return callback.call(this, $.parseJSON(result));
             });
         },

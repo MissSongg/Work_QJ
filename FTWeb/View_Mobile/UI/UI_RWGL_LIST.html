@@ -400,9 +400,8 @@
             },
             DELRWGL: function (item) {
                 $.confirm('确认要删除吗？', function () {
-                    $.showPreloader("删除中");
+
                     $.getJSON("/API/WXAPI.ashx?Action=RWGL_DELRWGLMODEL&r=" + Math.random(), { P1: item.ID }, function (r) {
-                        $.hidePreloader();
                         if (r.ErrorMsg == "") {
                             model.ctData.remove(item);
                             top.ComFunJS.winsuccess("删除成功！！");
@@ -410,10 +409,6 @@
                                 model.loadtip = '没有找到数据哦'
                             }
                         }
-                        else {
-                            top.ComFunJS.winwarning("删除失败！！");
-                        }
-
                     });
                 });
             },
@@ -445,13 +440,10 @@
                 window.location = "/View_Mobile/UI/UI_RWGL_LIST.html?r=" + Math.random();
             }, scpl: function (item,el) {//删除跟进
                 $.confirm("确认要删除吗", function () {
-                    $.post('/API/VIEWAPI.ashx?Action=XTGL_DELCOMENT', { "P1": el.ID }, function (result) {
-                        result = JSON.parse(result)
+                    $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_DELCOMENT', { "P1": el.ID }, function (result) {
                         if (result.ErrorMsg == "") {
                             ComFunJS.winsuccess("删除成功");
                             item.PLList.remove(el);
-                        } else {
-                            ComFunJS.winwarning(result.ErrorMsg);
                         }
                     })
                 }, function () { })

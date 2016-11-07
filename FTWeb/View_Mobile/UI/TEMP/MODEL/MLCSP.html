@@ -53,7 +53,7 @@
         tcontent: "",
         iswf: true,//是否属于流程表单
         inittemp: function (strId) {
-            $.showPreloader();
+
             tempmodel.modelData.LeiBie = tempmodel.pdid;
             tempmodel.modelData.ShenQingRen = ComFunJS.convertuser(ComFunJS.getnowuser());
 
@@ -66,8 +66,6 @@
 
                         ComFunJS.uploadimgnew();
                         ComFunJS.initForm();
-                        //$(".btnSucc").text("送审");
-                        $.hidePreloader();
 
                     }
                     else {
@@ -108,15 +106,12 @@
                         ComFunJS.uploadimgnew(tempmodel.tpData);
                         ComFunJS.viewimg(tempmodel.tpData);
                         ComFunJS.initForm();
-
-                        $.hidePreloader();
                     }
                 }
             })
         },//初始化
         modelData: { "LeiBie": "", "Content": "", "ShenQingRen": "", "Files": "", "Tempcontent": "" },
         SaveData: function (callback) {
-            $.showPreloader();
 
             tempmodel.modelData.Files = "";
             $("#imglist .tpli").each(function () {
@@ -152,7 +147,7 @@
             //srdata.Tempcontent = tempmodel.tcontent;
 
             $.post("/API/VIEWAPI.ashx?ACTION=LCSP_ADDLCSP", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                $.hidePreloader();
+
                 return callback.call(this, $.parseJSON(result));
             });
         },

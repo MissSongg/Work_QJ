@@ -310,15 +310,12 @@
             },//文件查看方法
             pl: function (el) {
                 ComFunJS.showCommentNew(function (result) {
-                    $.showPreloader("保存中");
+
                     $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "XMGL", "MsgLYID": el.ID }, function (resultData) {
-                        $.hidePreloader();
+
                         if (resultData.ErrorMsg == "") {
                             el.PLList.push(resultData.Result);
-                            $.toast("评论成功");
-                        }
-                        else {
-                            $.toast("评论失败");
+                            ComFunJS.winsuccess("评论成功");
                         }
                     })
 
@@ -375,16 +372,13 @@
             },
             DELXMGL: function (item) {
                 $.confirm('确认要删除吗？', function () {
-                    $.post('/API/WXAPI.ashx?Action=XMGL_DELXMGL', { "P2": item.ID }, function (result) {
-                        result = JSON.parse(result)
+                    $.getJSON('/API/WXAPI.ashx?Action=XMGL_DELXMGL', { "P2": item.ID }, function (result) {
                         if (result.ErrorMsg == "") {
                             ComFunJS.winsuccess("删除成功");
                             model.ctData.remove(item);
                             if (model.ctData.size() == 0) {
                                 model.loadtip = '没有找到数据哦'
                             }
-                        } else {
-                            ComFunJS.winwarning(result.ErrorMsg);
                         }
                     })
                 })
@@ -426,7 +420,7 @@
             }
             model.getdata(model.type);
             //初始化微信配置
-            ComFunJS.initwxConfig();
+            //ComFunJS.initwxConfig();
         })
     </script>
 </body>

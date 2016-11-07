@@ -139,15 +139,12 @@
             nowuser: ComFunJS.getnowuser(),
             pl: function () {
                 ComFunJS.showCommentNew(function (result) {
-                    $.showPreloader("保存中");
+
                     $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "TSSQ", "MsgLYID": model.modelData.ID }, function (resultData) {
-                        $.hidePreloader();
+
                         if (resultData.ErrorMsg == "") {
                             model.modelData.PLList.push(resultData.Result);
-                            $.toast("评论成功");
-                        }
-                        else {
-                            $.toast("评论失败");
+                            ComFunJS.winsuccess("评论成功");
                         }
                     })
 
@@ -170,9 +167,6 @@
                             })
                             model.modelData.IsZan = "N";
                         }
-                        else {
-                            ComFunJS.winwarning(result.ErrorMsg);
-                        }
                     }
                 })
 
@@ -188,7 +182,6 @@
                 }
             },
             getModelData: function (strId) {
-                $.showPreloader("加载中");
 
                 $.getJSON('/API/WXAPI.ashx?Action=TSSQ_GETHTLIST&r=' + Math.random(), { P1: "all", ID: strId }, function (resultData) {
                     $.hidePreloader();

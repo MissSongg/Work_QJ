@@ -2007,17 +2007,25 @@ namespace QJY.API
         }
         public void DELXTRZ(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            try
+            string strWhere = string.Format("( ComId={0} or ComId=0 )", UserInfo.User.ComId);
+            if (P1 != "" && P2 != "")
             {
-
-                if (new JH_Auth_LogB().Delete(d => d.ID.ToString() == P1))
+                switch (P1)
                 {
-                    msg.ErrorMsg = "";
+                    case "1": strWhere += " and ID ='" + P2 + "'"; break;
+                    case "2": strWhere += " and ID in(" + P2 + ")"; break;
+                }
+                try
+                {
+                    new JH_Auth_LogB().ExsSql(" delete JH_Auth_Log where " + strWhere);
+                }
+                catch (Exception ex)
+                {
+                    msg.ErrorMsg = ex.Message;
                 }
             }
-            catch (Exception ex)
-            {
-                msg.ErrorMsg = ex.Message;
+            else {
+                msg.ErrorMsg = "删除失败";
             }
         }
         #endregion

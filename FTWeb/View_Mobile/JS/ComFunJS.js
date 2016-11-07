@@ -789,10 +789,7 @@ var ComFunJS = {
                 }
 
 
-            } else {
-                alert(r.ErrorMsg);
-            }
-
+            } 
         })
     },//上传图片（神皖）
     uploadimgnew: function (tpdata) {
@@ -1555,7 +1552,39 @@ var ComFunJS = {
             return size.toFixed(2) + " " + rankchar;
         }
 
-    }
-
+    },
+    initsetajax: function (isload) { /// 配置AJAX
+        $(document).on('ajaxStart', function () {
+            if (!isload) {
+                $.showPreloader();
+            }
+        })
+        $(document).on('ajaxSuccess', function (e, jqXHR, s, data) {
+            try {
+                if (s.type == "POST") {
+                    data = $.parseJSON(data);
+                }
+                if (s.type == "GET") {
+                    data = data;
+                }
+                if (data.ErrorMsg == "NOSESSIONCODE") {
+                    ComFunJS.winwarning("未登录或登录已过期");
+                }
+                else if (data.ErrorMsg != "") {
+                    ComFunJS.winwarning(data.ErrorMsg);
+                }
+            } catch (e) {
+                $.hidePreloader();
+            }
+        })
+        $(document).on('ajaxStop', function () {
+            $.hidePreloader();
+        })
+        $(document).on('ajaxError', function (event, xhr, options, exc) {
+            ComFunJS.winwarning("请求失败！")
+        })
+    },
 }
+
+ComFunJS.initsetajax();
 

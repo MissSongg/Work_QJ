@@ -419,7 +419,6 @@
         CarID: ComFunJS.getQueryString("rid"),
         modelData: { "CarID": "", "XCType": "", "StartTime": "", "EndTime": "", "StartAddress": "", "EndAddress": "", "SPUser": "", "Remark": "", "JSR": "", "SYUser": ComFunJS.getnowuser(), "SYRS": "" },
         inittemp: function (strId) {
-            $.showPreloader();
 
             $.getJSON('/API/VIEWAPI.ashx?Action=YCGL_GETKYCLLIST', { P1: "all" }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
@@ -474,8 +473,6 @@
                                 value: [ss1[0], ss1[1], ss1[2], hh, ss2[1]]
                             });
                         }
-
-                        $.hidePreloader();
                         setTimeout("ComFunJS.initForm()", 500)
                     }
                 })
@@ -493,9 +490,6 @@
 
                 ComFunJS.uploadimgnew();
                 ComFunJS.initForm();
-                //$(".btnSucc").text("送审");
-
-                $.hidePreloader();
             }
 
 
@@ -519,9 +513,9 @@
                 }
 
             })
-            $.showPreloader();
+
             $.post("/API/VIEWAPI.ashx?ACTION=YCGL_ADDYCGL&r=" + Math.random(), { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                $.hidePreloader();
+
                 return callback.call(this, $.parseJSON(result));
             });
         },

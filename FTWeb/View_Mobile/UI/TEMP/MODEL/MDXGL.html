@@ -90,7 +90,6 @@
         name: "出差休假",
         iswf: true,//是否属于流程表单
         inittemp: function (strId) {
-            $.showPreloader();
 
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 1 }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
@@ -105,7 +104,7 @@
                 //编辑加载数据
                 tempmodel.temptype = pmodel.pageType;
                 $.getJSON('/API/VIEWAPI.ashx?Action=CCXJ_GETCCXJMODEL', { P1: strId }, function (resultData) {
-                    $.hidePreloader();
+
                     if (resultData.ErrorMsg == "") {
                         tempmodel.modelData = resultData.Result;
                         tempmodel.tpData = resultData.Result2;
@@ -139,7 +138,6 @@
                 ComFunJS.uploadimgnew();
                 ComFunJS.initForm();
                 $(".btnSucc").text("送审");
-                $.hidePreloader();
             }
         },//初始化
         modelData: { "ShenQingRen": "", "StarTime": "", "EndTime": "", "Daycount": "1", "LeiBie": "", "SPUser": "", "ChaoSongRen": "", "ZhuYaoShiYou": "", "Files": "" },

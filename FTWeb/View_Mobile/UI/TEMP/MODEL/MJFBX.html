@@ -204,7 +204,6 @@
         typename: "",
         XMData: [],
         inittemp: function (strId) {
-            $.showPreloader();
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 23 }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempmodel.ColumnData = resultData.Result;
@@ -250,7 +249,6 @@
                 ComFunJS.uploadimgnew();
 
                 ComFunJS.initForm();
-                $.hidePreloader();
             }
 
 
@@ -317,7 +315,6 @@
                 ComFunJS.winwarning("类型不能为空");
                 return;
             }
-            $.showPreloader();
             tempmodel.modelData.Files = "";
             $("#imglist .tpli").each(function () {
                 if ($(this).hasClass("wximg")) { //微信上传未处理的图片
@@ -336,7 +333,6 @@
                 }
             })
             $.post("/API/VIEWAPI.ashx?ACTION=JFBX_ADDJFBX", { P1: JSON.stringify(tempmodel.modelData.$model), P2: JSON.stringify(tempmodel.JFBXJLLIST.$model), wximg: tempmodel.wximg }, function (result) {
-                $.hidePreloader();
                 return callback.call(this, $.parseJSON(result));
             });
         },
