@@ -276,29 +276,23 @@
             },
             delMP: function (el) {
                 ComFunJS.confirm("确认要删除吗", function () {
-                    $.post('/API/WXAPI.ashx?Action=CRM_DELKHMP', { "P1": el.ID }, function (result) {
-                        result = JSON.parse(result)
+                    $.getJSON('/API/WXAPI.ashx?Action=CRM_DELKHMP', { "P1": el.ID }, function (result) {
                         if (result.ErrorMsg == "") {
                             ComFunJS.winsuccess("删除成功");
                             model.ctData.remove(el);
                             if (model.ctData.size() == 0) {
                                 model.loadtip = '没有找到数据哦'
                             }
-                        } else {
-                            ComFunJS.winwarning(result.ErrorMsg);
-                        }
+                        } 
                     })
                 })
             },
             saveMP: function (el) {
                 ComFunJS.confirm("确认要保存为联系人吗？", function () {
-                    $.post('/API/WXAPI.ashx?Action=CRM_MPDRLXR', { "P1": el.ID }, function (result) {
-                        result = JSON.parse(result)
+                    $.getJSON('/API/WXAPI.ashx?Action=CRM_MPDRLXR', { "P1": el.ID }, function (result) {
                         if (result.ErrorMsg == "") {
                             el.Status = '1';
                             ComFunJS.winsuccess("保存成功");
-                        } else {
-                            ComFunJS.winwarning(result.ErrorMsg);
                         }
                     })
                 })

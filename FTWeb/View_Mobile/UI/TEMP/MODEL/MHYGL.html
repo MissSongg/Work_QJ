@@ -523,7 +523,6 @@
             //tempmodel.isDeploy == 0 ? 1 : 0;
         },
         inittemp: function (strId) {
-            $.showPreloader();
             $.getJSON('/API/VIEWAPI.ashx?Action=HYGL_GETKYHYSLIST', {}, function (resultData) {
                 if (resultData.ErrorMsg == "" && resultData.Result.length > 0) {
                     tempmodel.ColumnData = resultData.Result;
@@ -586,8 +585,6 @@
                             });
                         }
 
-                        $.hidePreloader();
-
                         setTimeout(" ComFunJS.initForm()", 500)
                     }
                 })
@@ -605,9 +602,6 @@
 
                 ComFunJS.uploadimgnew();
                 ComFunJS.initForm();
-                //$(".btnSucc").text("送审");
-
-                $.hidePreloader();
             }
         },//初始化
         modelData: { "RoomID": "", "Title": "", "Details": "", "StartTime": "", "EndTime": "", "CYUser": "", "FQUser": ComFunJS.getnowuser(), "TXSJ": "-1", "HYJL": "", "Remark": "", "JLFiles": "", "Files": "", "JLUser": "", "ZCUser": "", "SXUser": "", "HYFW": "" },
@@ -631,9 +625,7 @@
                 }
 
             })
-            $.showPreloader();
             $.post("/API/VIEWAPI.ashx?ACTION=HYGL_ADDHYGL", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                $.hidePreloader();
                 return callback.call(this, $.parseJSON(result));
             });
         },

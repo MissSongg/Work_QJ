@@ -120,8 +120,6 @@
             if (type) {
                 tempmodel.temptype = type;
             }
-            $.showPreloader();
-
             if (strId) {
                 tempmodel.dataid = strId;
                 $.getJSON('/API/VIEWAPI.ashx?Action=TXSX_GETTXSXMODEL', { P1: strId }, function (resultData) {
@@ -159,7 +157,6 @@
                     ComFunJS.initForm();
                 }
 
-                $.hidePreloader();
             }
         },//初始化
         modelData: { "Type": "2", "TXUser": "", "TXContent": "", "TXType": "1", "Days": "01", "Date": "", "Hour": "08", "Minute": "00", "CFType": "1", "CFCount": "", "CFJZDate": "" },
@@ -175,9 +172,8 @@
                 tempmodel.modelData.Minute = hh.split(':')[1];
             }
 
-            $.showPreloader();
             $.post("/API/VIEWAPI.ashx?ACTION=TXSX_ADDTXSX", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                $.hidePreloader();
+
                 return callback.call(this, $.parseJSON(result));
             });
 

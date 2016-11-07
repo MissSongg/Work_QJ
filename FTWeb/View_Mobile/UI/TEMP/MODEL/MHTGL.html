@@ -295,7 +295,6 @@
             //tempmodel.isDeploy == 0 ? 1 : 0;
         },
         inittemp: function (strId) {
-            $.showPreloader();
             if (tempmodel.khid) {
                 tempmodel.modelData.KHID = tempmodel.khid;
                 $("#conKH").val(tempmodel.khid);
@@ -383,7 +382,6 @@
                         tempmodel.tpData = resultData.Result1;
                         ComFunJS.uploadimgnew(tempmodel.tpData);
                         ComFunJS.viewimg(tempmodel.tpData);
-                        $.hidePreloader();
                         setTimeout(" ComFunJS.initForm()", 500)
                     }
                 })
@@ -404,7 +402,6 @@
                 });
                 ComFunJS.uploadimgnew();
                 setTimeout(" ComFunJS.initForm()", 500)
-                $.hidePreloader();
             }
         },//初始化
         HTStateData: [{ "ID": "0", "TypeName": "未开始" }, { "ID": "1", "TypeName": "执行中" },
@@ -451,9 +448,7 @@
                 }
 
             })
-            $.showPreloader();
             $.post("/API/VIEWAPI.ashx?ACTION=CRM_ADDHT", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                $.hidePreloader();
                 return callback.call(this, $.parseJSON(result));
             });
         },

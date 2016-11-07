@@ -359,10 +359,7 @@
                         $.hidePreloader();
                         if (resultData.ErrorMsg == "") {
                             el.PLList.push(resultData.Result);
-                            $.toast("评论成功");
-                        }
-                        else {
-                            $.toast("评论失败");
+                            ComFunJS.winsuccess("评论成功");
                         }
                     })
 
@@ -392,17 +389,14 @@
             },
             DELGZBG: function (item) {
                 $.confirm('确认要删除吗？', function () {
-                    $.post('/API/WXAPI.ashx?Action=GZBG_DELGZBGBYID', { "P1": item.ID }, function (result) {
-                        result = JSON.parse(result)
+                    $.getJSON('/API/WXAPI.ashx?Action=GZBG_DELGZBGBYID', { "P1": item.ID }, function (result) {
                         if (result.ErrorMsg == "") {
                             ComFunJS.winsuccess("删除成功");
                             model.ctData.remove(item);
                             if (model.ctData.size() == 0) {
                                 model.loadtip = '没有找到数据哦'
                             }
-                        } else {
-                            ComFunJS.winwarning(result.ErrorMsg);
-                        }
+                        } 
                     })
                 })
             },

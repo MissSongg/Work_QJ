@@ -282,7 +282,7 @@
         wximg: "",
         typename: "",
         inittemp: function (strId) {
-            $.showPreloader();
+            
 
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 1 }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
@@ -346,13 +346,11 @@
                 }
 
                 //$(".btnSucc").text("送审");
-                $.hidePreloader();
+                
             }
         },//初始化
         modelData: { "ShenQingRen": "", "StarTime": "", "EndTime": "", "Daycount": "1", "LeiBie": "", "SPUser": "", "ChaoSongRen": "", "ZhuYaoShiYou": "", "Files": "" },
         SaveData: function (callback) {
-            $.showPreloader();
-
             tempmodel.modelData.Files = "";
             $("#imglist .tpli").each(function () {
                 if ($(this).hasClass("wximg")) { //微信上传未处理的图片
@@ -373,7 +371,6 @@
             })
 
             $.post("/API/VIEWAPI.ashx?ACTION=CCXJ_ADDCCXJ", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                $.hidePreloader();
                 return callback.call(this, $.parseJSON(result));
             });
         },

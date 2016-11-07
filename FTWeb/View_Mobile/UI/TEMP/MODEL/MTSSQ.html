@@ -208,8 +208,6 @@
         lbid: ComFunJS.getQueryString("lbid"),
         modelData: { "Title": "", "HTNR": "", "LeiBie": "", "CYR": "", "Files": "", "URL": "" },
         inittemp: function (strId) {
-            $.showPreloader();
-
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 19 }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempmodel.ColumnData = resultData.Result;
@@ -228,7 +226,7 @@
                 tempmodel.dataid = strId;
                 //编辑加载数据
                 $.getJSON('/API/VIEWAPI.ashx?Action=TSSQ_GETHTMODEL', { P1: strId }, function (resultData) {
-                    $.hidePreloader();
+
                     if (resultData.ErrorMsg == "") {
                         tempmodel.modelData = resultData.Result;
                         tempmodel.tpData = resultData.Result2;
@@ -241,7 +239,6 @@
                 })
             } else if (tempmodel.linkid) {
                 $.getJSON('/API/VIEWAPI.ashx?Action=TSSQ_GETFXLJMODEL', { P1: tempmodel.linkid }, function (resultData) {
-                    $.hidePreloader();
                     if (resultData.ErrorMsg == "") {
                         //tempmodel.modelData.Title = resultData.Result.Title;
                         tempmodel.modelData.HTNR = resultData.Result.Title + resultData.Result.Description;
@@ -270,8 +267,6 @@
                 } else {
                     ComFunJS.initForm();
                 }
-
-                $.hidePreloader();
             }
 
         },//初始化
@@ -303,9 +298,7 @@
                 }
 
             })
-            $.showPreloader();
             $.post("/API/VIEWAPI.ashx?ACTION=TSSQ_ADDHT&r=" + Math.random(), { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                $.hidePreloader();
                 return callback.call(this, $.parseJSON(result));
             });
         },

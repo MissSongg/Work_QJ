@@ -99,42 +99,28 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void DBBACKUP(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            try
+            string path = context.Server.MapPath("/");
+            if (!Directory.Exists(path + "/dbbackup/"))
             {
-                string path = context.Server.MapPath("/");
-                if (!Directory.Exists(path + "/dbbackup/"))
-                {
-                    Directory.CreateDirectory(path + "/dbbackup/");
-                }
-                path = path + "/dbbackup/db_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".bak";
-                //string strsql = "use master;declare @name varchar(max);SELECT @name= DB_NAME(dbid) FROM master.dbo.sysprocesses WHERE status='runnable';backup database @name to disk='" + path + "';";
-                string strsql = "backup database QJY_XNY to disk='" + path + "';";
-
-                new JH_Auth_QYB().ExsSql(strsql);
-
-                FileInfo fi = new FileInfo(path);
-                SZHL_DBGL sd = new SZHL_DBGL();
-                sd.ComId = UserInfo.QYinfo.ComId;
-                sd.Type = "1";
-                sd.Name = fi.Name ;
-                sd.Path = fi.FullName;
-                sd.Size = (fi.Length / 1024.00).ToString("F2") ;
-                sd.CRUser = UserInfo.User.UserName;
-                sd.CRDate = DateTime.Now;
-                new SZHL_DBGLB().Insert(sd);
+                Directory.CreateDirectory(path + "/dbbackup/");
             }
-            catch (Exception ex)
-            {
-                msg.ErrorMsg = "备份失败";
-                new JH_Auth_LogB().Insert(new JH_Auth_Log()
-                {
-                    ComId=UserInfo.QYinfo.ComId.ToString(),
-                    LogType = "DBGL_DBBACKUP",
-                    LogContent = ex.ToString(),
-                    CRUser=UserInfo.User.UserName,
-                    CRDate = DateTime.Now
-                });
-            }
+            path = path + "/dbbackup/db_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".bak";
+            //string strsql = "use master;declare @name varchar(max);SELECT @name= DB_NAME(dbid) FROM master.dbo.sysprocesses WHERE status='runnable';backup database @name to disk='" + path + "';";
+            string strsql = "backup database QJY_XNY to disk='" + path + "';";
+
+            new JH_Auth_QYB().ExsSql(strsql);
+
+            FileInfo fi = new FileInfo(path);
+            SZHL_DBGL sd = new SZHL_DBGL();
+            sd.ComId = UserInfo.QYinfo.ComId;
+            sd.Type = "1";
+            sd.Name = fi.Name;
+            sd.Path = fi.FullName;
+            sd.Size = (fi.Length / 1024.00).ToString("F2");
+            sd.CRUser = UserInfo.User.UserName;
+            sd.CRDate = DateTime.Now;
+            new SZHL_DBGLB().Insert(sd);
+
         }
         #endregion
 
@@ -149,45 +135,31 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void DBDOWNLOAD(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            try
+            int id = Int32.Parse(P1);
+            var sd = new SZHL_DBGLB().GetEntity(p => p.ID == id);
+            if (sd != null)
             {
-                int id = Int32.Parse(P1);
-                var sd = new SZHL_DBGLB().GetEntity(p => p.ID == id);
-                if (sd != null)
-                {
-                    FileInfo fi = new FileInfo(sd.Path);
+                FileInfo fi = new FileInfo(sd.Path);
 
-                    // 设置编码和附件格式
-                    context.Response.Clear();
-                    context.Response.ClearHeaders();
-                    context.Response.Buffer = false;
-                    context.Response.ContentType = "application/octet-stream";
-                    context.Response.ContentEncoding = Encoding.UTF8;
-                    context.Response.Charset = "";
-                    context.Response.AppendHeader("Content-Disposition",
-                        "attachment;filename=" + HttpUtility.UrlEncode(sd.Name, Encoding.UTF8));
+                // 设置编码和附件格式
+                context.Response.Clear();
+                context.Response.ClearHeaders();
+                context.Response.Buffer = false;
+                context.Response.ContentType = "application/octet-stream";
+                context.Response.ContentEncoding = Encoding.UTF8;
+                context.Response.Charset = "";
+                context.Response.AppendHeader("Content-Disposition",
+                    "attachment;filename=" + HttpUtility.UrlEncode(sd.Name, Encoding.UTF8));
 
-                    context.Response.AppendHeader("Content-Length", fi.Length.ToString());
-                    context.Response.WriteFile(fi.FullName);
-                    context.Response.End();
-                }
-                else
-                {
-                    msg.ErrorMsg = "下载失败";
-                }
+                context.Response.AppendHeader("Content-Length", fi.Length.ToString());
+                context.Response.WriteFile(fi.FullName);
+                context.Response.End();
             }
-            catch (Exception ex)
+            else
             {
                 msg.ErrorMsg = "下载失败";
-                new JH_Auth_LogB().Insert(new JH_Auth_Log()
-                {
-                    ComId = UserInfo.QYinfo.ComId.ToString(),
-                    LogType = "DBGL_DBDOWNLOAD",
-                    LogContent = ex.ToString(),
-                    CRUser = UserInfo.User.UserName,
-                    CRDate = DateTime.Now
-                });
             }
+
         }
         #endregion
 
@@ -202,53 +174,38 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void DBUPLOAD(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            try
+            HttpPostedFile _upfile = context.Request.Files["upFile"];
+            if (_upfile == null)
             {
-                HttpPostedFile _upfile = context.Request.Files["upFile"];
-                if (_upfile == null)
+                msg.ErrorMsg = "请选择要上传的文件 ";
+            }
+            else
+            {
+                string path = context.Server.MapPath("/");
+
+                string fileName = _upfile.FileName;/*获取文件名： C:\Documents and Settings\Administrator\桌面\123.jpg*/
+                string suffix = fileName.Substring(fileName.LastIndexOf(".") + 1).ToLower();/*获取后缀名并转为小写： jpg*/
+
+                if (suffix == "bak")
                 {
-                    msg.ErrorMsg = "请选择要上传的文件 ";
+                    byte[] buffer = new Byte[(int)_upfile.InputStream.Length]; //声明文件长度的二进制类型
+                    _upfile.InputStream.Read(buffer, 0, buffer.Length); //将文件转成二进制
+
+                    if (!Directory.Exists(path + "/dbupload/"))
+                    {
+                        Directory.CreateDirectory(path + "/dbupload/");
+                    }
+                    path = path + "/dbupload/db_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".bak";
+                    FileStream fos = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                    fos.Write(buffer, 0, buffer.Length);
+                    fos.Close();
+
+                    DBRESTORE(context, msg, path, P2, UserInfo);
                 }
                 else
                 {
-                    string path = context.Server.MapPath("/");
-
-                    string fileName = _upfile.FileName;/*获取文件名： C:\Documents and Settings\Administrator\桌面\123.jpg*/
-                    string suffix = fileName.Substring(fileName.LastIndexOf(".") + 1).ToLower();/*获取后缀名并转为小写： jpg*/
-
-                    if (suffix == "bak")
-                    {
-                        byte[] buffer = new Byte[(int)_upfile.InputStream.Length]; //声明文件长度的二进制类型
-                        _upfile.InputStream.Read(buffer, 0, buffer.Length); //将文件转成二进制
-
-                        if (!Directory.Exists(path + "/dbupload/"))
-                        {
-                            Directory.CreateDirectory(path + "/dbupload/");
-                        }
-                        path = path + "/dbupload/db_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".bak";
-                        FileStream fos = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                        fos.Write(buffer, 0, buffer.Length);
-                        fos.Close();
-
-                        DBRESTORE(context, msg, path, P2, UserInfo);
-                    }
-                    else
-                    {
-                        msg.ErrorMsg = "请选择.bak文件 ";
-                    }
+                    msg.ErrorMsg = "请选择.bak文件 ";
                 }
-            }
-            catch (Exception ex)
-            {
-                msg.ErrorMsg = "还原失败!";
-                new JH_Auth_LogB().Insert(new JH_Auth_Log()
-                {
-                    ComId = UserInfo.QYinfo.ComId.ToString(),
-                    LogType = "DBGL_DBUPLOAD",
-                    LogContent = ex.ToString(),
-                    CRUser = UserInfo.User.UserName,
-                    CRDate = DateTime.Now
-                });
             }
         }
         #endregion
@@ -264,66 +221,51 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void DBRESTORE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
+            ArrayList list = new ArrayList();
+
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = CommonHelp.GetConfig("master");
+            conn.Open();
             try
             {
-                ArrayList list = new ArrayList();
-
-                SqlConnection conn = new SqlConnection();
-                conn.ConnectionString = CommonHelp.GetConfig("master");
-                conn.Open();
-                try
+                SqlCommand cmd = new SqlCommand("use master; select distinct spid FROM sysprocesses ,sysdatabases Where sysprocesses.dbid=sysdatabases.dbid AND sysdatabases.Name='QJY_XNY'", conn);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
                 {
-                    SqlCommand cmd = new SqlCommand("use master; select distinct spid FROM sysprocesses ,sysdatabases Where sysprocesses.dbid=sysdatabases.dbid AND sysdatabases.Name='QJY_XNY'", conn);
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    while (dr.Read())
-                    {
-                        list.Add(dr.GetInt16(0));
-                    }
-                    dr.Close();
+                    list.Add(dr.GetInt16(0));
+                }
+                dr.Close();
 
-                    conn.Close();
+                conn.Close();
 
-                    for (int i = 0; i < list.Count; i++)
-                    {
-                        conn.Open();
-                        SqlCommand cmd1 = new SqlCommand(string.Format("KILL {0}", list[i].ToString()), conn);
-                        cmd1.ExecuteNonQuery();
-                        conn.Close();
-                    }
-
+                for (int i = 0; i < list.Count; i++)
+                {
                     conn.Open();
-                    SqlCommand cmd2 = new SqlCommand("restore database QJY_XNY from disk='" + P1 + "' with replace ;", conn);
-                    cmd2.ExecuteNonQuery();
-                    conn.Close();
-
-                    FileInfo fi = new FileInfo(P1);
-                    SZHL_DBGL sd = new SZHL_DBGL();
-                    sd.ComId = UserInfo.QYinfo.ComId;
-                    sd.Type = "2";
-                    sd.Name = fi.Name;
-                    sd.Path = fi.FullName;
-                    sd.Size = (fi.Length / 1024.00).ToString("F2");
-                    sd.CRUser = UserInfo.User.UserName;
-                    sd.CRDate = DateTime.Now;
-                    new SZHL_DBGLB().Insert(sd);
-                }
-                catch { }
-                finally {
+                    SqlCommand cmd1 = new SqlCommand(string.Format("KILL {0}", list[i].ToString()), conn);
+                    cmd1.ExecuteNonQuery();
                     conn.Close();
                 }
 
+                conn.Open();
+                SqlCommand cmd2 = new SqlCommand("restore database QJY_XNY from disk='" + P1 + "' with replace ;", conn);
+                cmd2.ExecuteNonQuery();
+                conn.Close();
+
+                FileInfo fi = new FileInfo(P1);
+                SZHL_DBGL sd = new SZHL_DBGL();
+                sd.ComId = UserInfo.QYinfo.ComId;
+                sd.Type = "2";
+                sd.Name = fi.Name;
+                sd.Path = fi.FullName;
+                sd.Size = (fi.Length / 1024.00).ToString("F2");
+                sd.CRUser = UserInfo.User.UserName;
+                sd.CRDate = DateTime.Now;
+                new SZHL_DBGLB().Insert(sd);
             }
-            catch (Exception ex)
+            catch { msg.ErrorMsg = "还原失败"; }
+            finally
             {
-                msg.ErrorMsg = "还原失败";
-                new JH_Auth_LogB().Insert(new JH_Auth_Log()
-                {
-                    ComId = UserInfo.QYinfo.ComId.ToString(),
-                    LogType = "DBGL_DBRESTORE",
-                    LogContent = ex.ToString(),
-                    CRUser = UserInfo.User.UserName,
-                    CRDate = DateTime.Now
-                });
+                conn.Close();
             }
         }
         #endregion
@@ -339,33 +281,17 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void SERVERSTATUS(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            try
-            {
-                PerformanceCounter cpuCounter = new PerformanceCounter();
+            PerformanceCounter cpuCounter = new PerformanceCounter();
 
-                cpuCounter.CategoryName = "Processor";
-                cpuCounter.CounterName = "% Processor Time";
-                cpuCounter.InstanceName = "_Total";
+            cpuCounter.CategoryName = "Processor";
+            cpuCounter.CounterName = "% Processor Time";
+            cpuCounter.InstanceName = "_Total";
 
-                PerformanceCounter ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+            PerformanceCounter ramCounter = new PerformanceCounter("Memory", "Available MBytes");
 
-                msg.Result = cpuCounter.NextValue() + "%";
+            msg.Result = cpuCounter.NextValue() + "%";
 
-                msg.Result1 = ramCounter.NextValue() + "MB";
-
-            }
-            catch (Exception ex)
-            {
-                msg.ErrorMsg = "查询失败";
-                new JH_Auth_LogB().Insert(new JH_Auth_Log()
-                {
-                    ComId = UserInfo.QYinfo.ComId.ToString(),
-                    LogType = "DBGL_SERVERSTATUS",
-                    LogContent = ex.ToString(),
-                    CRUser = UserInfo.User.UserName,
-                    CRDate = DateTime.Now
-                });
-            }
+            msg.Result1 = ramCounter.NextValue() + "MB";
         }
         #endregion
     }

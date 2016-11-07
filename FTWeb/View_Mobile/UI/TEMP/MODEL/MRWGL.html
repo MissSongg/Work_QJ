@@ -321,7 +321,6 @@
             if (type) {
                 tempmodel.temptype = type;
             }
-            $.showPreloader();
 
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 7 }, function (resultData) {
                 if (resultData.ErrorMsg == "" && resultData.Result.length > 0) {
@@ -334,7 +333,7 @@
             if (strId) {
                 tempmodel.dataid = strId;
                 $.getJSON('/API/VIEWAPI.ashx?Action=RWGL_GETRWGLMODEL', { P1: strId }, function (resultData) {
-                    $.hidePreloader();
+
                     if (resultData.ErrorMsg == "") {
                         tempmodel.modelData = resultData.Result[0];
                         tempmodel.tpData = resultData.Result2;
@@ -372,8 +371,6 @@
                 } else {
                     ComFunJS.initForm();
                 }
-
-                $.hidePreloader();
             }
         },//初始化
         modelData: { "RWStatus": "0", "LeiBie": "", "RWTitle": "","RWContent":"", "RWJZDate": "", "RWFZR": ComFunJS.getnowuser(), "RWCYR": "", "TopID": "", "Files": "", "IsTX": false, "KHFXRS": "" },
@@ -415,10 +412,8 @@
             //    tempmodel.modelData.IsTX = false;
             //}
 
-            $.showPreloader();
-
             $.post("/API/VIEWAPI.ashx?ACTION=RWGL_ADDRWGL", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                $.hidePreloader();
+
                 return callback.call(this, $.parseJSON(result));
             });
 
@@ -426,9 +421,9 @@
         pl: function () {
 
             ComFunJS.showCommentNew(function (result) {
-                $.showPreloader("保存中");
+
                 $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "MsgType": "RWGL", "MsgLYID": tempmodel.dataid }, function (resultData) {
-                    $.hidePreloader();
+
                     if (resultData.ErrorMsg == "") {
                         tempmodel.plData.push(resultData.Result);
                         $.toast("评论成功");

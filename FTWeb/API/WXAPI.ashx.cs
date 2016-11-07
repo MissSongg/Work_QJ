@@ -971,7 +971,7 @@ namespace QjySaaSWeb.APP
                         }
                         else
                         {
-                            Model.ErrorMsg = "您未登录!";
+                            Model.ErrorMsg = "NOSESSIONCODE";
                         }
                     }
                     catch (Exception ex)

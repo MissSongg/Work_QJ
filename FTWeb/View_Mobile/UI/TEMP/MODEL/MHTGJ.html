@@ -119,7 +119,7 @@
         },
         inittemp: function (strId) {
             tempmodel.ColumnData1 = [{ "ID": "0", "TypeName": "未开始" }, { "ID": "1", "TypeName": "执行中" }, { "ID": "2", "TypeName": "成功结束" }, { "ID": "3", "TypeName": "意外终止" }];
-            $.showPreloader();
+
 
             $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETHTMODEL', { P1: tempmodel.htid }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
@@ -143,8 +143,6 @@
                         ComFunJS.uploadimgnew(tempmodel.tpData);
                         ComFunJS.viewimg(tempmodel.tpData);
 
-                        $.hidePreloader();
-
                         setTimeout(" ComFunJS.initForm()", 500)
                     }
                 })
@@ -155,8 +153,6 @@
 
                 ComFunJS.uploadimgnew();
                 ComFunJS.initForm();
-
-                $.hidePreloader();
             }
         },//初始化
         modelData: { "KHID": "", "Status": "", "Date": "", "Details": "", "Type": "", "IsTX": "N", "TXDate": "", "Remark": "", "CYUser": "", "Files": "" },
@@ -184,9 +180,7 @@
             tempmodel.modelData.Status = tempmodel.htmodel.HTStatus;
             tempmodel.modelData.Remark = tempmodel.htmodel.KHID;
 
-            $.showPreloader();
             $.post("/API/VIEWAPI.ashx?ACTION=CRM_ADDGJJL", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg, "gjtype": "HTGL" }, function (result) {
-                $.hidePreloader();
                 return callback.call(this, $.parseJSON(result));
             });
         },

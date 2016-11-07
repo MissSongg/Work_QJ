@@ -504,13 +504,10 @@
                 return num;
             }, DELForm: function (item) {
                 $.confirm('确认要撤销吗？', function () {
-                    $.post("/API/VIEWAPI.ashx?ACTION=QYHD_DELMODEL", { P1: item.ID }, function (result) {
-                        var jsonresult = $.parseJSON(result)
-                        if ($.trim(jsonresult.ErrorMsg) == "") {
+                    $.getJSON("/API/VIEWAPI.ashx?ACTION=QYHD_DELMODEL", { P1: item.ID }, function (result) {
+                        if ($.trim(result.ErrorMsg) == "") {
                             model.ctData.remove(item);
                             ComFunJS.winsuccess("操作成功");
-                        } else {
-                            ComFunJS.winwarning(result.ErrorMsg);
                         }
                     });
                 })
@@ -584,9 +581,6 @@
                                     el.BMList.push(resultData.Result);
                                     top.ComFunJS.winsuccess("活动报名成功！");
                                 }
-                                else {
-                                    top.ComFunJS.winwarning("保存失败。" + resultData.ErrorMsg);
-                                }
 
                             })
                         }, no: function () {
@@ -630,9 +624,6 @@
                                 }
                             })
 
-                        }
-                        else {
-                            top.ComFunJS.winwarning(resultData.ErrorMsg);
                         }
                     })
                 }

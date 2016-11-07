@@ -989,18 +989,16 @@
             }, DelSC: function () {
                 if (!model.operIds)
                 {
-                    $.toast("请选择要删除的文件");
+                    ComFunJS.winwarning("请选择要删除的文件");
                     return;
                 }
                 $.confirm('确认要删除吗？', function () {
                     $.post('/API/VIEWAPI.ashx?Action=QYWD_DELSC', { "P1": model.operIds }, function (result) {
                         result = JSON.parse(result)
                         if (result.ErrorMsg == "") {
-                            $.toast("删除成功");
+                            ComFunJS.winsuccess("删除成功");
                             location.reload();
-                        } else {
-                            $.toast(result.ErrorMsg); 
-                        }
+                        } 
                     })
                 }, function () { })
             }

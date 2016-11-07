@@ -746,7 +746,6 @@
             //tempmodel.isDeploy == 0 ? 1 : 0;
         },
         inittemp: function (strId) {
-            $.showPreloader();
             //$.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETALLKH', {}, function (resultData) {
             //    if (resultData.ErrorMsg == "") {
             //        tempmodel.ColumnData = resultData.Result;
@@ -825,8 +824,6 @@
                         ComFunJS.uploadimgnew(tempmodel.tpData);
                         ComFunJS.viewimg(tempmodel.tpData);
 
-                        $.hidePreloader();
-
                         setTimeout(" ComFunJS.initForm()", 500);
                     }
                 })
@@ -837,7 +834,6 @@
 
                 ComFunJS.uploadimgnew();
                 setTimeout(" ComFunJS.initForm()", 500)
-                $.hidePreloader();
             }
         },//初始化
         modelData: { "KHID": "0", "UserXM": "", "UserSex": "", "TelePhone": "", "Department": "", "Position": "", "EMail": "", "QQ": "", "Weixin": "", "Address": "", "Remark": "", "Files": "", "WebSite": "", "PostCode": "", "Birthday": "", "Extension": "", "FixNo": "", "Education": "", "Company": "", "Mailbox": "", "Others": "" },
@@ -863,9 +859,8 @@
                 }
 
             })
-            $.showPreloader();
             $.post("/API/VIEWAPI.ashx?ACTION=CRM_ADDKHLXR&mpid=" + tempmodel.mpid + "&r=" + Math.random(), { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                $.hidePreloader();
+
                 return callback.call(this, $.parseJSON(result));
             });
         },
@@ -883,8 +878,6 @@
                         }
                         ComFunJS.winsuccess("新增成功");
                     } else {
-                        ComFunJS.winwarning(result.ErrorMsg);
-
                         if (result.Result) {
                             tempmodel.modelData.KHID = result.Result.ID;
                         }

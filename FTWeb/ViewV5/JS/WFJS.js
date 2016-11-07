@@ -182,7 +182,6 @@
                         $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
                     }
                     if (!pmodel.isPC) {
-                        top.ComFunJS.winwarning(result1.ErrorMsg);
                         $("table").show();
                     }
                 }
