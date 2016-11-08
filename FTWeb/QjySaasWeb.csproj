@@ -162,6 +162,8 @@
     <Content Include="ViewV5\AppPage\JFBX\JFBXTJ.html" />
     <Content Include="ViewV5\AppPage\JFBX\JFBXLIST.html" />
     <Content Include="ViewV5\AppPage\JFBX\JFBXVIEW.html" />
+    <Content Include="ViewV5\AppPage\KCGL\KCGL.html" />
+    <Content Include="ViewV5\AppPage\KCGL\KCGLLIST.html" />
     <Content Include="ViewV5\AppPage\KDDY\KDDY.html" />
     <Content Include="ViewV5\AppPage\KDDY\KDDYLIST.html" />
     <Content Include="ViewV5\AppPage\KDDY\KDDYYL.html" />

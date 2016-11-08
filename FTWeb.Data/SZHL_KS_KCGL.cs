@@ -12,16 +12,23 @@ namespace QJY.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class SZHL_DDGL_ITEM
+    public partial class SZHL_KS_KCGL
     {
         public int ID { get; set; }
-        public Nullable<int> ComId { get; set; }
-        public string SerialID { get; set; }
-        public Nullable<decimal> Change { get; set; }
-        public Nullable<decimal> Balance { get; set; }
-        public string Memo { get; set; }
-        public string Status { get; set; }
+        public string KCName { get; set; }
+        public Nullable<int> KCTypeID { get; set; }
+        public string KCZJR { get; set; }
+        public string KCZJRZC { get; set; }
+        public string KSS { get; set; }
+        public string KCPXZQ { get; set; }
+        public string Remark { get; set; }
+        public string SQType { get; set; }
         public string CRUser { get; set; }
         public Nullable<System.DateTime> CRDate { get; set; }
+        public string CHUser { get; set; }
+        public Nullable<System.DateTime> CHDate { get; set; }
+        public Nullable<int> ComId { get; set; }
+        public string KJID { get; set; }
+        public string KCFM { get; set; }
     }
 }

@@ -297,6 +297,9 @@
     <Compile Include="SZHL_KQJL.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
+    <Compile Include="SZHL_KS_KCGL.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
     <Compile Include="SZHL_KS_KSAP.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>

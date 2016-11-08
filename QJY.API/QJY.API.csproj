@@ -129,6 +129,7 @@
     <Compile Include="API\GZBG\GZBGManage.cs" />
     <Compile Include="API\HELP\HELPManage.cs" />
     <Compile Include="API\HYGL\HYGLManage.cs" />
+    <Compile Include="API\KCGL\KCGLManage.cs" />
     <Compile Include="API\KSGL\KSGLManage.cs" />
     <Compile Include="BusinessCode\BLL.cs" />
     <Compile Include="BusinessCode\JH_Auth.cs" />

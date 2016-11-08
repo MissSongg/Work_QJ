@@ -90,14 +90,15 @@
                 }
             })
         }, InitWigetData: function (data) {
-           
-            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETSJGLMODEL', { P1: data.sjId, P2:data.kcId}, function (result) {
-                if (result.ErrorMsg == "") {
-                    if (result.Result) {
-                        tempindex.modelData = result.Result;
+            if (data.sjId) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETSJGLMODEL', { P1: data.sjId, P2: data.kcId }, function (result) {
+                    if (result.ErrorMsg == "") {
+                        if (result.Result) {
+                            tempindex.modelData = result.Result;
+                        }
                     }
-                }
-            })
+                })
+            }
         }, YLSTLSIT: function () {
             top.ComFunJS.winviewform("/ViewV5/AppPage/KSGL/SJGLView.html?sjid=" + tempindex.modelData.ID, "试卷预览", "1000", "");
         }, DFView: function (item) {
