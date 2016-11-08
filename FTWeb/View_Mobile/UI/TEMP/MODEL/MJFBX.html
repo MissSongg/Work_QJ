@@ -231,8 +231,6 @@
                         ComFunJS.uploadimgnew(tempmodel.tpData);
                         ComFunJS.viewimg(tempmodel.tpData);
 
-
-                        $.hidePreloader();
                         setTimeout("ComFunJS.initForm()", 500)
 
                     }
@@ -243,8 +241,6 @@
                     value: [ComFunJS.getnowdate("yyyy-mm-dd")]
                 });
                 tempmodel.modelData.BXDate = ComFunJS.getnowdate("yyyy-mm-dd");
-
-
 
                 ComFunJS.uploadimgnew();
 

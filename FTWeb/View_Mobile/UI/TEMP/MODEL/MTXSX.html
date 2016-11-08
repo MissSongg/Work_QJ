@@ -123,7 +123,7 @@
             if (strId) {
                 tempmodel.dataid = strId;
                 $.getJSON('/API/VIEWAPI.ashx?Action=TXSX_GETTXSXMODEL', { P1: strId }, function (resultData) {
-                    $.hidePreloader();
+
                     if (resultData.ErrorMsg == "") {
                         tempmodel.modelData = resultData.Result;
 

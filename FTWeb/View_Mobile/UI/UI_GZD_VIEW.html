@@ -195,35 +195,6 @@
                     return;
                 }
             },
-            pl: function (el) {
-                ComFunJS.showCommentNew(function (result) {
-                    $.showPreloader("保存中");
-                    $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "GZBG", "MsgLYID": el.ID }, function (resultData) {
-                        $.hidePreloader();
-                        if (resultData.ErrorMsg == "") {
-                            el.PLList.push(resultData.Result);
-                            $.toast("评论成功");
-                        }
-                        else {
-                            $.toast("评论失败");
-                        }
-                    })
-
-                }, true);
-            },
-            pf: function (str) {
-                if (str) {
-                    var html = '<div></div>';
-                    var html1 = $(html).raty({
-                        readOnly: true,
-                        score: str * 1 / 20
-                    }).html();
-                    return html1;
-                }
-                else {
-                    return '';
-                }
-            },
             getdata: function (type) {
                 $.attachInfiniteScroll($('.infinite-scroll'))
                 model.loadtip = "";

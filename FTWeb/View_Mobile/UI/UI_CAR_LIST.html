@@ -89,9 +89,7 @@
         })
 
         avalon.ready(function () {
-            $.showPreloader();
             $.getJSON('/API/WXAPI.ashx?Action=YCGL_GETKYCLLIST&r=' + Math.random(), {}, function (resultData) {
-                $.hidePreloader();
                 if (resultData.ErrorMsg == "") {
                     model.ctData = resultData.Result;
                 }

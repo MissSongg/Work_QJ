@@ -141,9 +141,9 @@
             },
             jd: function (el) {
                 ComFunJS.showCommentNew(function (result) {
-                    $.showPreloader("保存中");
+
                     $.post("/API/WXAPI.ashx?Action=DCGL_QRSDDD&r=" + Math.random(), { "P1": el.ID, "P2": result.comment }, function (data) {
-                        $.hidePreloader();
+
                         var r = $.parseJSON(data);
                         if (data.ErrorMsg == "") {
                             el.Status = r.Result.Status;
@@ -152,9 +152,6 @@
                             el.Remark = r.Result.Remark;
                             top.ComFunJS.winsuccess("接单成功！！");
 
-                        }
-                        else {
-                            top.ComFunJS.winwarning("接单失败！！");
                         }
                     })
 

@@ -212,15 +212,12 @@
             },
             delTXSX: function (el) {
                 $.confirm('确定要删除此提醒吗？', function () {
-                    $.showPreloader("删除中");
+
                     $.getJSON("/API/WXAPI.ashx?Action=TXSX_DELTXSX&r=" + Math.random(), { P1: el.ID }, function (r) {
-                        $.hidePreloader();
+
                         if (r.ErrorMsg == "") {
                             model.ctData.remove(el);
                             top.ComFunJS.winsuccess("删除成功！！");
-                        }
-                        else {
-                            top.ComFunJS.winwarning("删除失败！！");
                         }
 
                     });

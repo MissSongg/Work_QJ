@@ -254,10 +254,6 @@
                             modeltxl.selecttype(2);
                         }
                         initsort();
-
-                        setTimeout(function () {
-                            $.hidePreloader();
-                        }, 1000);
                     }
                 })
             },
@@ -326,8 +322,6 @@
             }
         })
         avalon.ready(function () {
-            $.showPreloader();
-
             modeltxl.GetWXUser();
             //if (modeltxl.zuijin.size() >0) {
             //   modeltxl.selecttype(1);
