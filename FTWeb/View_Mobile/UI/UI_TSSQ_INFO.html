@@ -184,7 +184,7 @@
             getModelData: function (strId) {
 
                 $.getJSON('/API/WXAPI.ashx?Action=TSSQ_GETHTLIST&r=' + Math.random(), { P1: "all", ID: strId }, function (resultData) {
-                    $.hidePreloader();
+
                     if (resultData.ErrorMsg == "") {
                         if (resultData.Result.length > 0) {
                             model.modelData = resultData.Result[0];

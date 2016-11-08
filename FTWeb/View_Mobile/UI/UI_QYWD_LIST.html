@@ -180,10 +180,8 @@
         });
 
         function loadMore() {
-            $.showPreloader();
-
             $.getJSON("/API/WXAPI.ashx?Action=QYWD_GETLISTDATA&r=" + Math.random(), { P1: strId == "0" ? "" : strId, itemtype: strType }, function (r) {
-                $.hidePreloader();
+
                 if (r.ErrorMsg == "") {
                     model.wjjData.pushArray(r.Result);
                     model.wjData.pushArray(r.Result1);
@@ -255,20 +253,19 @@
         }
         function scwj() {
             if (strId == "0") {
-                $.toast("我的收藏不能上传文件！");
+                ComFunJS.winwarning("我的收藏不能上传文件！");
             }
             else if (model.type == '2' || (model.type == '1' && model.isadd == 'true')) {
                 $("#file").trigger("click");
                 $("#file").trigger("click");
             }
             else {
-                $.toast("您没有上传权限！");
+                ComFunJS.winwarning("您没有上传权限！");
             }
         }
         function UploadLoad() {
             var str = strId;
             if (document.getElementById("file").files.length > 0) {
-                $.showPreloader("上传中");
                 var formData = new FormData();
                 formData.append("upFile", document.getElementById("file").files[0]);
                 $.ajax({
@@ -285,7 +282,6 @@
                     */
                     processData: false,
                     success: function (result) {
-                        $.hidePreloader();
                         var r = $.parseJSON(result);
                         if (r.ErrorMsg == "") {
                             document.getElementById("file").outerHTML = document.getElementById("file").outerHTML;
@@ -295,10 +291,7 @@
                             if (r.Result1.length == 0) {
                                 model.wjData.push(r.Result[0]);
                             }
-                            $.toast("上传成功！");
-                        }
-                        else {
-                            $.toast("上传失败！");
+                            ComFunJS.winsuccess("上传成功！");
                         }
                     }
                 });

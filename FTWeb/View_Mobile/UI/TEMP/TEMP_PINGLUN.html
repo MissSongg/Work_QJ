@@ -54,9 +54,8 @@
         SavePL: function () {
 
             ComFunJS.showCommentNew(function (result) {
-                $.showPreloader("保存中");
                 $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "MsgType": tempmodelPL.type, "MsgLYID": tempmodelPL.dataid }, function (resultData) {
-                    $.hidePreloader();
+;
                     if (resultData.ErrorMsg == "") {
                         tempmodelPL.plData.push(resultData.Result);
                         $.toast("评论成功");

@@ -836,10 +836,9 @@ namespace QjySaaSWeb.APP
                                     var jau = new JH_Auth_UserB().GetUserByUserName(qy.ComId, username);
                                     if (jau != null)
                                     {
-                                        //根据用户名更新Code和时间
-                                        string strGuid = CommonHelp.CreatePCCode(jau);
                                         if (string.IsNullOrEmpty(jau.pccode))
                                         {
+                                            string strGuid = CommonHelp.CreatePCCode(jau);
                                             jau.pccode = strGuid;
                                             new JH_Auth_UserB().Update(jau);
                                         }

@@ -469,15 +469,11 @@
             },
             pl: function (el) {
                 ComFunJS.showCommentNew(function (result) {
-                    $.showPreloader("保存中");
                     $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "MsgType": "QYHD", "MsgLYID": el.ID }, function (resultData) {
-                        $.hidePreloader();
+
                         if (resultData.ErrorMsg == "") {
                             el.PLList.push(resultData.Result);
                             top.ComFunJS.winsuccess("评论成功！！");
-                        }
-                        else {
-                            top.ComFunJS.winwarning("评论失败！！");
                         }
                     })
 

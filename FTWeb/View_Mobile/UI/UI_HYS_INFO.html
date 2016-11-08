@@ -171,9 +171,7 @@
         });
         avalon.ready(function () {
             if (strId != null) {
-                $.showPreloader();
                 $.getJSON('/API/WXAPI.ashx?Action=HYGL_GETHYSMODEL&r=' + Math.random(), { P1: strId }, function (resultData) {
-                    $.hidePreloader();
                     if (resultData.ErrorMsg == "") {
                         model.modelData = resultData.Result;
                         model.ctData = resultData.Result1;

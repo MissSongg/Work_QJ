@@ -82,17 +82,12 @@
         wximg: "",
         typename:"",
         inittemp: function (strId) {
-            $.showPreloader();
-
             ComFunJS.uploadimgnew();
             ComFunJS.initForm();
-            $.hidePreloader();
 
         },//初始化
         modelData: { "Title": "", "ImgUrl": "", "JSUser": "", "Remark": "" },
         SaveData: function (callback) {
-            $.showPreloader();
-
             tempmodel.modelData.ImgUrl = "";
             $("#imglist .tpli").each(function () {
                 if ($(this).hasClass("wximg")) { //微信上传未处理的图片
@@ -113,7 +108,6 @@
             })
 
             $.post("/API/VIEWAPI.ashx?ACTION=KDGL_ADDKDGL", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                $.hidePreloader();
                 return callback.call(this, $.parseJSON(result));
             });
         },

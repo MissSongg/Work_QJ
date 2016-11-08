@@ -309,7 +309,6 @@
         var strType = ComFunJS.getQueryString("type");
 
         avalon.ready(function () {
-            $.showPreloader("加载中");
             $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETCPROLE&r=" + Math.random(), {}, function (r) {
                 if (r.ErrorMsg == "") {
                     if (r.Result == "Y") {
@@ -320,7 +319,7 @@
                 }
             })
             $.post("/API/WXAPI.ashx?Action=DCGL_GETDCGLLIST_PAGE&r=" + Math.random(), {}, function (data) {
-                $.hidePreloader();
+
                 var data = $.parseJSON(data);
                 if (data.ErrorMsg == "") {
                     model.ctData = data.Result;

@@ -297,7 +297,7 @@
 
 
                 $.getJSON('/API/VIEWAPI.ashx?Action=CCXJ_GETCCXJMODEL', { P1: strId }, function (resultData) {
-                    $.hidePreloader();
+
                     if (resultData.ErrorMsg == "") {
                         tempmodel.modelData = resultData.Result;
                         tempmodel.typename = resultData.Result1;
