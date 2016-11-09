@@ -168,7 +168,6 @@
                 { "ColName": "BankName", "ColText": "银行名称", "IsSel": false, "format": "text" },
             ]);
             tempindex.GetBranch();
-            tempindex.GetUserList();
             ComFunJS.initForm();
         }, GetUserList: function () {
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETUSERBYCODENEW_PAGE', { "P1": tempindex.SelDeptItem.DeptCode, P2: tempindex.searchContent, pagecount: model.page.pagecount, p: 1 }, function (resultData) {
