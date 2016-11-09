@@ -4,7 +4,7 @@
         <button type="button" class="btn btn-info btn-lg" ms-if="type==0" ms-click="AddView('KSGL_KSAP')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加考试安排</button>
     </div>
     <!-- 按条件选择 -->
-    <div class="tab-filter-type"> 
+    <div class="tab-filter-type">
         <!-- 搜索 -->
         <div class="oh">
             <div class="input-group ml15" style="width:295px;">
@@ -24,6 +24,9 @@
             <thead>
                 <tr>
                     <th class="tc">
+                        序号
+                    </th>
+                    <th class="tc">
                         考试安排名称
                     </th>
                     <th>考试时长</th>
@@ -31,10 +34,14 @@
                     <th>考试安排描述</th>
                     <th>创建人</th>
                     <th>创建时间</th>
+                    <th>操作</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ms-repeat-el="ListData"> 
+                <tr ms-repeat-el="ListData" ms-click="ViewForm('KSGL_KSAP',el.ID,'',$event)">
+                    <td class="tc">
+                        {{$index+1+page.pagecount*(page.pageindex-1)}}
+                    </td>
                     <td>{{el.KSName}}</td>
                     <td>{{el.KSSC}}</td>
                     <td>{{el.YCSY}}</td>
@@ -46,20 +53,20 @@
                             <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="AddView('KSGL_KSAP','题库编辑',el.ID,$event)" ms-if="el.kszt==2">
                                 <i class="iconfont icon-bianji"></i>
                             </a>
-                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELKJZZ(el,event)" ms-if="el.kszt==2">
+                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELKJZZ(el,$event)" ms-if="el.kszt==2">
                                 <i class="iconfont icon-shanchu"></i>
                             </a>
                         </span>
                         <span class="btn-click" ms-visible="type=='2'">
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="查看成绩列表" ms-click="View(el.ID,1)" ms-if="el.Status==1">
-                                <i class="iconfont icon-look"></i>
-                            </a> 
-                        </span>
-                        <span class="btn-click" ms-visible="type=='1'">
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="阅卷" ms-click="View(el.ID,0)" ms-if="el.kszt==3&&el.Status!=1&&el.YJTeacher==userName">
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="查看成绩列表" ms-click="View(el.ID,1,$event)" ms-if="el.Status==1">
                                 <i class="iconfont icon-look"></i>
                             </a>
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="阅卷结束" ms-click="EndView(el)" ms-if="el.kszt==3&&el.Status!=1&&el.YJTeacher==userName">
+                        </span>
+                        <span class="btn-click" ms-visible="type=='1'">
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="阅卷" ms-click="View(el.ID,0,$event)" ms-if="el.kszt==3&&el.Status!=1&&el.YJTeacher==userName">
+                                <i class="iconfont icon-look"></i>
+                            </a>
+                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="阅卷结束" ms-click="EndView(el,$event)" ms-if="el.kszt==3&&el.Status!=1&&el.YJTeacher==userName">
                                 <i class="iconfont icon-look"></i>
                             </a>
                         </span>
@@ -99,7 +106,7 @@
             tempindex.type = str;
             tempindex.GetLIST();
         },
-        GetLIST: function () { 
+        GetLIST: function () {
             $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKSAPLIST', { p: 1, pagecount: model.page.pagecount, Content: model.search.SearchContent, P1: tempindex.type }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     model.ListData = resultData.Result;
@@ -124,9 +131,12 @@
                 }
             })
         },
-        View: function (ID, status) {
-            model.initobj = { Id: ID ,stu:status};
-            model.PageCodeRdm = "/ViewV5/AppPage/KSGL/USERCJLIST.html?r=" + model.rdm; 
+        View: function (ID, status, event) {
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            }
+            model.initobj = { Id: ID, stu: status };
+            model.PageCodeRdm = "/ViewV5/AppPage/KSGL/USERCJLIST.html?r=" + model.rdm;
         },
         EndView: function (item) {
 
@@ -142,13 +152,13 @@
             })
         },
         EditView: function (ID, event) {
-            if (event) {
+            if (event.stopPropagation) {
                 event.stopPropagation();
             }
             top.ComFunJS.winviewform("/ViewV4/AppPage/APP_ADD_WF.html?FormCode=" + model.PathCode + "_" + model.FormCode + "&ID=" + ID, "修改表单", "1000", "");
         },
         DELKJZZ: function (item, event) {
-            if (event) {
+            if (event.stopPropagation) {
                 event.stopPropagation();
             }
             top.ComFunJS.winconfirm("确认要删除此考试安排吗？", function () {

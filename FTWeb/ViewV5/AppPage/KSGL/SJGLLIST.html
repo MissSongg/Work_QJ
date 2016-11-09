@@ -32,6 +32,9 @@
             <thead>
                 <tr>
                     <th class="tc">
+                        序号
+                    </th>
+                    <th class="tc">
                         试卷名称
                     </th>
                     <th>总分数</th>
@@ -39,6 +42,7 @@
                     <th>试卷状态</th>
                     <th>创建人</th>
                     <th>创建时间</th>
+                    <th>操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -54,10 +58,10 @@
                     <td>{{el.CRDate|date('yyyy-MM-dd')}}</td>
                     <td>
                         <span class="btn-click">
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-if="el.CRUser==userName" ms-click="EditSJGL(el.ID)">
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑"  ms-click="EditSJGL(el.ID)">
                                 <i class="iconfont icon-bianji"></i>
                             </a>
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="发布" ms-if="el.CRUser==userName" ms-click="KSRELEASE(el)">
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="发布"  ms-click="KSRELEASE(el)">
                                 <i class="iconfont icon-fabu"></i>
                             </a>
                             <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-if="el.CRUser==userName&&el.Status!=1" ms-click="DeleteView(el,$event)">

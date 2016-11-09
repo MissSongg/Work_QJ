@@ -454,6 +454,23 @@
                                 }
                             }
                             break;
+                        case "ksapstatus":
+
+                            switch (str) {
+                                case "0":
+                                    str = "未开始";
+                                    break;
+                                case "1":
+                                    str = "进行中";
+                                    break;
+                                case "2":
+                                    str = "考试已结束";
+                                    break;
+                                case "3":
+                                    str = "阅卷已结束";
+                                    break;
+                            }
+                            break
                         default: {
 
                         }
