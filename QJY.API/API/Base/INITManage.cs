@@ -1101,7 +1101,7 @@ namespace QJY.API
                 #endregion
                 #region 同步用户关注状态
                 WXHelp wx = new WXHelp(UserInfo.QYinfo);
-                Senparc.Weixin.QY.AdvancedAPIs.MailList.GetDepartmentMemberInfoResult yg = wx.WX_GetDepartmentMemberInfo(1);
+                GetDepartmentMemberInfoResult yg = wx.WX_GetDepartmentMemberInfo(1);
 
                 if (yg != null && yg.userlist != null)
                 {
