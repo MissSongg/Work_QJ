@@ -47,7 +47,7 @@
                     <td>{{el.YCSY}}</td>
                     <td>{{ComFunJS.convstr(el.Remark)}}</td>
                     <td>{{ComFunJS.convertuser(el.CRUser) }}</td>
-                    <td>{{el.CRDate|date('yyyy-MM-dd')}}</td>
+                    <td>{{el.CRDate|date('yyyy-MM-dd')}}{{el.kszt}}</td>
                     <td>
                         <span class="btn-click" ms-visible="type=='0'">
                             <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="AddView('KSGL_KSAP','题库编辑',el.ID,$event)" ms-if="el.kszt==2">
@@ -136,7 +136,7 @@
                 event.stopPropagation();
             }
             model.initobj = { Id: ID, stu: status };
-            model.PageCodeRdm = "/ViewV5/AppPage/KSGL/USERCJLIST.html?r=" + model.rdm;
+            model.PageCodeRdm = "AppPage/KSGL/USERCJLIST.html?r=" + model.rdm;
         },
         EndView: function (item) {
 

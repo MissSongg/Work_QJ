@@ -1472,7 +1472,10 @@ AND CRUser = '{2}';", userKs.ID, userKs.SJID, UserInfo.User.UserName);
                 int ksapid = 0;
                 int.TryParse(P1, out ksapid);
                 strWhere += string.Format(" and ku.KSAPID ={0} ", P1);
-                DataTable dt = new SZHL_KS_SJB().GetDataPager("  SZHL_KS_USERKS ku LEFT JOIN SZHL_KS_SJ ksj ON ku.SJID=ksj.ID ", " ku.*,ksj.TotalRecord,ksj.PassRecord ", 8, page, " ku.CRDate ", strWhere, ref recordCount);
+                int pagecount = 0;
+                int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
+                pagecount = pagecount == 0 ? 10 : pagecount;
+                DataTable dt = new SZHL_KS_SJB().GetDataPager("  SZHL_KS_USERKS ku LEFT JOIN SZHL_KS_SJ ksj ON ku.SJID=ksj.ID ", " ku.*,ksj.TotalRecord,ksj.PassRecord ", pagecount, page, " ku.CRDate ", strWhere, ref recordCount);
                 msg.Result = dt;
                 msg.Result1 = recordCount;
             }
