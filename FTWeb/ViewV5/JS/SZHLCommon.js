@@ -638,6 +638,29 @@
             }
         }
         layer.open(optionwin);
+    }, winviewformmax: function (url, title, width, height, callbact) {
+        var width = width || $("body").width() - 300;
+        var height = height || $("#main").height();
+        var optionwin = {
+            type: 2,
+            fix: true, //不固定
+            area: [width + 'px', height + 'px'],
+            maxmin: false,
+            content: url,
+            title: title,
+            shadeClose: false, //加上边框
+            success: function (layero, index) {
+                $(".layui-layer-shade").css("opacity", "0.1");
+
+            },
+            end: function () {
+                if (callbact) {
+                    return callbact.call(this);
+                }
+            }
+        }
+        var layerForm = layer.open(optionwin);
+        layer.full(layerForm);
     }, winviewformNoClose: function (url, title, width, height, option) {
         var width = width || $("body").width() - 300;
         var height = height || $("#main").height();
