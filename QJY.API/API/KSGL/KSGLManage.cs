@@ -42,7 +42,7 @@ namespace QJY.API
             int pagecount = 0;
             int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
             pagecount = pagecount == 0 ? 10 : pagecount;
-            DataTable dt = new SZHL_GZBGB().GetDataPager("  SZHL_KS_TKFL ", " ID,TKFLName,Remark,CRUser,CRDate  ",pagecount, page, "CRDate desc", string.Format(" comId='{0}' and isDel!=1", UserInfo.User.ComId), ref recordCount);
+            DataTable dt = new SZHL_GZBGB().GetDataPager("  SZHL_KS_TKFL ", " ID,TKFLName,Remark,CRUser,CRDate  ", pagecount, page, "CRDate desc", string.Format(" comId='{0}' and isDel!=1", UserInfo.User.ComId), ref recordCount);
             msg.Result = dt;
             msg.Result1 = recordCount;
 
@@ -694,7 +694,26 @@ namespace QJY.API
         public void GETKSAPMODEL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             int Id = int.Parse(P1);
-            msg.Result = new SZHL_KS_KSAPB().GetEntity(d => d.ID == Id);
+            SZHL_KS_KSAP ksap = new SZHL_KS_KSAPB().GetEntity(d => d.ID == Id);
+            string status = "0";
+            if (ksap.KSDate < DateTime.Now && ksap.KSDate.Value.AddMinutes(ksap.YCSY.Value) > DateTime.Now)//考试进行中
+            {
+                status = "1";
+            }
+            else if (ksap.KSDate.Value.AddMinutes(ksap.YCSY.Value) < DateTime.Now && ksap.Status == 0)//考试已结束,阅卷未结束
+            {
+
+                status = "2";
+            }
+            else if (ksap.Status == 1)//阅卷完成
+            {
+                status = "3";
+            }
+            msg.Result = ksap;
+            SZHL_KS_SJ sjmodel = new SZHL_KS_SJB().GetEntity(d => d.ID == ksap.SJID);
+            msg.Result2 = sjmodel == null ? "" : sjmodel.SJName;
+            msg.Result1 = status;
+
         }
         public void ADDKSAP(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {

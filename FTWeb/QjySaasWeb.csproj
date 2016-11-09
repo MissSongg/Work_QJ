@@ -176,6 +176,7 @@
     <Content Include="ViewV5\AppPage\KQGL\KQTJ.html" />
     <Content Include="ViewV5\AppPage\KSGL\KSAP.html" />
     <Content Include="ViewV5\AppPage\KSGL\KSAPLIST.html" />
+    <Content Include="ViewV5\AppPage\KSGL\KSAPVIEW.html" />
     <Content Include="ViewV5\AppPage\KSGL\SELSTLIST.html" />
     <Content Include="ViewV5\AppPage\KSGL\SJGL.html" />
     <Content Include="ViewV5\AppPage\KSGL\SJGLDF.html" />
