@@ -1091,7 +1091,7 @@ namespace QJY.API
             }
             List<JH_Auth_ZiDian> zidiannew = new JH_Auth_ZiDianB().GetEntities(d => d.TypeName == zidian.TypeName && d.Class == zidian.Class && d.ComId == UserInfo.QYinfo.ComId && d.Remark != "1" && d.ID != zidian.ID).ToList();
 
-            if (zidiannew != null)
+            if (zidiannew.Count>0)
             {
                 msg.ErrorMsg = "此分类已存在";
                 return;

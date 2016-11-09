@@ -156,7 +156,7 @@
                     result = JSON.parse(result)
                     if (result.ErrorMsg == "") {
                         top.ComFunJS.winsuccess("删除成功");
-                        model.CommonData.remove(item);
+                        model.ListData.remove(item);
                     } else {
                         top.ComFunJS.winwarning(result.ErrorMsg);
                     }

@@ -1,21 +1,21 @@
-﻿<div ms-controller="TKFLLIST">
+﻿<div ms-controller="W_KCGL">
     <!-- 添加按钮 -->
     <div class="btn-add">
-        <button type="button" class="btn btn-info btn-lg" ms-click="AddView('KSGL_TKGL')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加题库</button>
+        <button type="button" class="btn btn-info btn-lg"   ms-click="AddView('KCGL_KCGL')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加课程</button>
     </div>
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
         <div class="oh">
-            <h5 class="pull-left tr">题库分类：</h5>
+            <h5 class="pull-left tr">课程分类：</h5>
             <ul class="tab-type ft14">
-                <li ms-click="SelectType('')"><span ms-class="active:el.ID==model.search.seartype">全部</span></li>
-                <li ms-repeat-el="TypeData" ms-click="SelectType(el.ID)" ms-class="active:el.ID==model.search.seartype"><span>{{el.TKFLName}}</span></li>
+                <li ms-click="SelectType('')" ><span ms-class-1="active:kcflType==''">全部</span></li>
+                <li ms-repeat-el="kcflData" ms-click="SelectType(el.ID)" ><span ms-class="active:el.ID==kcflType">{{el.TypeName}}</span></li>
             </ul>
         </div>
         <!-- 搜索 -->
         <div class="oh">
             <div class="input-group ml15" style="width:295px;">
-                <input type="search" class="form-control" ms-duplex="search.searchcontent" placeholder="搜索题库名称">
+                <input type="search" class="form-control" ms-duplex="search.searchcontent" placeholder="搜索考试课程管理名称">
                 <span class="input-group-addon" ms-click="GetLIST()">搜索</span>
             </div>
         </div>
@@ -31,38 +31,29 @@
             <thead>
                 <tr>
                     <th class="tc">
-                        题库名称
+                        专业分类
                     </th>
-                    <th>题库分类</th>
-                    <th>题库描述</th>
-                    <th>题库状态</th>
-                    <th>添加人</th>
-                    <th>添加时间</th>
+                    <th>培训课程名称</th>
+                    <th>主讲人姓名</th>
+                    <th>课时数(小时)</th> 
+                    <th>操作</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ms-repeat-el="ListData">
-                    <td class="tc">
-                        {{$index+1+page.pagecount*(page.pageindex-1)}}
-                    </td>
-                    <td>{{el.TKName}}</td>
-                    <td>{{el.TKFLName}}</td>
-                    <td>{{ComFunJS.convstr(el.TKDescribe)}}</td>
-                    <td>{{el.Status}}</td>
-                    <td>{{ComFunJS.convertuser(el.CRUser) }}</td>
-                    <td>{{el.CRDate|date('yyyy-MM-dd')}}</td>
+                    <td>{{el.TypeName}}</td>
+                    <td>{{el.KCName}}</td> 
+                    <td>{{el.KCZJR}}</td>
+                    <td>{{el.KSS }}</td> 
                     <td>
                         <span class="btn-click">
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-if="el.CRUser==userName" ms-click="AddView('KSGL_TKGL','题库编辑',el.ID,$event)">
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="AddView('KCGL_KCGL','课程编辑',el.ID,$event)" >
                                 <i class="iconfont icon-bianji"></i>
                             </a>
-                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-if="el.CRUser==userName" ms-click="DeleteView(el,$event)">
+                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELKCGL(el,event)" >
                                 <i class="iconfont icon-shanchu"></i>
                             </a>
-                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="试题管理" ms-click="ChangeMenu(el)">
-                                <i class="iconfont icon-bianji"></i>
-                            </a>
-                        </span>
+                        </span> 
                     </td>
                 </tr>
 
@@ -91,38 +82,31 @@
 </div>
 
 <script>
-
     var tempindex = avalon.define({
-        $id: "TKFLLIST",
+        $id: "W_KCGL",
+        kcflData:[],
+        userName: ComFunJS.getnowuser(),
+        kcflType:"",
+        InitWigetData: function (str) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 24 }, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempindex.kcflData = resultData.Result;
+                    
+                }
+            }) 
+            tempindex.GetLIST();
+
+        },
         SelectType: function (type) {
             model.search.seartype = type;
             tempindex.GetLIST();
         },
-        selNum: function (item) {    //选择显示的条数
-            model.page.pagecount = item;
-            tempindex.GetLIST();
-        },
-        InitWigetData: function () {
-
-            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKFLSEL', function (resultData) {
-                if (resultData.ErrorMsg == "") {
-                    model.TypeData = resultData.Result;
-
-                }
-            })
-            tempindex.GetLIST();
-        }, ChangeMenu: function (el) { 
-            model.initobj = el.ID;
-            model.PageCodeRdm = "AppPage/KSGL/TKSTLIST.html?r=" + model.rdm; 
-        },
         GetLIST: function () {
-            model.page.pageindex = 1;
-            model.ListData.clear();
-            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKGLLIST', { p: 1, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCGLLIST', { p: 1, P1: tempindex.kcflType, Content: model.search.searchcontent, pagecount: model.page.pagecount }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     model.ListData = resultData.Result;
-                    if (model.ListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
                     model.page.total = resultData.Result1;
+                    if (model.ListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
                     laypage({
                         cont: 'pageDiv', //容器。值支持id名、原生dom对象，jquery对象。
                         pages: Math.ceil(parseInt(resultData.Result1) * 1.0 / model.page.pagecount), //通过后台拿到的总页数
@@ -130,7 +114,7 @@
                         skin: 'molv',
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKGLLIST', { p: e.curr, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCGLLIST', { p: e.curr, P1: tempindex.kcflType, Content: model.search.searchcontent, pagecount: model.page.pagecount }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
                                         model.ListData = resultData.Result;
                                     }
@@ -141,9 +125,13 @@
                     });
                 }
             })
-        }, DeleteView: function (item, event) {
-            top.ComFunJS.winconfirm("删除此题库，此题库下的试题将被删除,确认要删除此题库吗", function () {
-                $.post('/API/VIEWAPI.ashx?Action=KSGL_DELETETKGL', { "P1": item.ID }, function (result) {
+        }, 
+        DELKCGL: function (item, event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            top.ComFunJS.winconfirm("确认要删除此课程吗？", function () {
+                $.post('/API/VIEWAPI.ashx?Action=KCGL_DELKCGLBYID', { "P1": item.ID }, function (result) {
                     result = JSON.parse(result)
                     if (result.ErrorMsg == "") {
                         top.ComFunJS.winsuccess("删除成功");
@@ -153,6 +141,8 @@
                     }
                 })
             }, function () { })
-        }
-    })
+        },
+    })//@ sourceURL=KCGLLSIT.js;
+
+
 </script>
