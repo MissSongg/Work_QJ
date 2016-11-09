@@ -8,6 +8,7 @@
     <meta http-equiv="x-dns-prefetch-control" content="on">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在线全真模拟考场</title>
+    <link href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css" rel="stylesheet" />
     <link href="/ViewV5/CSS/saved_resource.css" rel="stylesheet" />
     <link href="/ViewV5/CSS/saved_resource(2).css" rel="stylesheet" />
     <link href="/ViewV5/CSS/zj.css" rel="stylesheet" type="text/css">
@@ -63,9 +64,8 @@
             cursor: pointer;
         }
     </style>
-    <link href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css" rel="stylesheet" />
     <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
-    <script src="/ViewV5/JS/avalon.js"></script>
+    <script src="/ViewV5/JS/avalon1.47.js?ver=1"></script>
     <script src="/ViewV5/JS/toastr.js"></script>
     <script src="/ViewV5/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
     <script src="/ViewV5/JS/SZHLCommon.js"></script>
@@ -78,7 +78,7 @@
             userName: ComFunJS.getQueryString("USER", ""),
             UserKSInfo: {},
             numberData: ["一", "二", "三", "四", "五", "六", "七", "八"],
-            GetKSPAGE: function () {
+            GetKSPAGE: function () { 
                 $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETYJVIEW', { P1: model.userName, P2: model.ksapId }, function (result) {
                     var i = 1;
                     result.Result[0].TXType.forEach(function (item) {
