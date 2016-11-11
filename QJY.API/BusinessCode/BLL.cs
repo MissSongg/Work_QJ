@@ -559,7 +559,10 @@ namespace QJY.API
     public class SZHL_KS_USERKSItemB : BaseEFDao<SZHL_KS_USERKSItem>
     {
     }
-    public class SZHL_KS_KCGLB : BaseEFDao<SZHL_KS_KCGL>
+    public class SZHL_PX_KCGLB : BaseEFDao<SZHL_PX_KCGL>
+    {
+    }
+    public class SZHL_PX_KJGLB : BaseEFDao<SZHL_PX_KJGL>
     {
     }
     public class SZHL_DBGLB : BaseEFDao<SZHL_DBGL>

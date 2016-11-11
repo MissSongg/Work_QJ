@@ -1479,27 +1479,6 @@
           <Property Name="Latitude" Type="varchar" MaxLength="500" />
           <Property Name="Position" Type="varchar" MaxLength="500" />
         </EntityType>
-        <EntityType Name="SZHL_KS_KCGL">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="KCName" Type="varchar" MaxLength="50" />
-          <Property Name="KCTypeID" Type="int" />
-          <Property Name="KCZJR" Type="varchar" MaxLength="50" />
-          <Property Name="KCZJRZC" Type="varchar" MaxLength="50" />
-          <Property Name="KSS" Type="varchar" MaxLength="50" />
-          <Property Name="KCPXZQ" Type="varchar" MaxLength="50" />
-          <Property Name="Remark" Type="varchar" MaxLength="4000" />
-          <Property Name="SQType" Type="varchar" MaxLength="50" />
-          <Property Name="CRUser" Type="varchar" MaxLength="50" />
-          <Property Name="CRDate" Type="datetime" />
-          <Property Name="CHUser" Type="varchar" MaxLength="50" />
-          <Property Name="CHDate" Type="datetime" />
-          <Property Name="ComId" Type="int" />
-          <Property Name="KJID" Type="varchar" MaxLength="50" />
-          <Property Name="KCFM" Type="varchar" MaxLength="50" />
-        </EntityType>
         <EntityType Name="SZHL_KS_KSAP">
           <Key>
             <PropertyRef Name="ID" />
@@ -1703,6 +1682,49 @@
           <Property Name="UPDDate" Type="datetime" />
           <Property Name="NoteTitle" Type="varchar" MaxLength="200" />
           <Property Name="ComId" Type="int" />
+        </EntityType>
+        <EntityType Name="SZHL_PX_KCGL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KCName" Type="varchar" MaxLength="50" />
+          <Property Name="KCTypeID" Type="int" />
+          <Property Name="KCZJR" Type="varchar" MaxLength="50" />
+          <Property Name="KCZJRZC" Type="varchar" MaxLength="50" />
+          <Property Name="KSS" Type="varchar" MaxLength="50" />
+          <Property Name="KCPXZQ" Type="varchar" MaxLength="50" />
+          <Property Name="Remark" Type="varchar" MaxLength="4000" />
+          <Property Name="SQType" Type="varchar" MaxLength="50" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CHUser" Type="varchar" MaxLength="50" />
+          <Property Name="CHDate" Type="datetime" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="KJID" Type="varchar" MaxLength="50" />
+          <Property Name="KCFM" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SZHL_PX_KJGL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KJName" Type="varchar" MaxLength="50" />
+          <Property Name="KJDec" Type="varchar" MaxLength="4000" />
+          <Property Name="KJType" Type="varchar" MaxLength="50" />
+          <Property Name="FilePath" Type="varchar" MaxLength="4000" />
+          <Property Name="FileType" Type="varchar" MaxLength="50" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CHUser" Type="varchar" MaxLength="50" />
+          <Property Name="CHDate" Type="datetime" />
+          <Property Name="KJZJR" Type="varchar" MaxLength="50" />
+          <Property Name="KJZZType" Type="int" />
+          <Property Name="Files" Type="varchar" MaxLength="500" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="CW" Type="text" />
+          <Property Name="FolderID" Type="int" />
+          <Property Name="TotalTime" Type="int" />
         </EntityType>
         <EntityType Name="SZHL_QYHD">
           <Key>
@@ -2422,7 +2444,6 @@
           <EntitySet Name="SZHL_KDGL" EntityType="Self.SZHL_KDGL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_KQBC" EntityType="Self.SZHL_KQBC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_KQJL" EntityType="Self.SZHL_KQJL" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SZHL_KS_KCGL" EntityType="Self.SZHL_KS_KCGL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_KS_KSAP" EntityType="Self.SZHL_KS_KSAP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_KS_SJ" EntityType="Self.SZHL_KS_SJ" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_KS_SJST" EntityType="Self.SZHL_KS_SJST" Schema="dbo" store:Type="Tables" />
@@ -2436,6 +2457,8 @@
           <EntitySet Name="SZHL_KS_USERKSItem" EntityType="Self.SZHL_KS_USERKSItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_LCSP" EntityType="Self.SZHL_LCSP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_NOTE" EntityType="Self.SZHL_NOTE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_PX_KCGL" EntityType="Self.SZHL_PX_KCGL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_PX_KJGL" EntityType="Self.SZHL_PX_KJGL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_QYHD" EntityType="Self.SZHL_QYHD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_QYHD_ITEM" EntityType="Self.SZHL_QYHD_ITEM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_QYHD_Option" EntityType="Self.SZHL_QYHD_Option" Schema="dbo" store:Type="Tables" />
@@ -2592,7 +2615,8 @@
           <EntitySet Name="SZHL_KS_USERKS" EntityType="QJY_SaaSModel.SZHL_KS_USERKS" />
           <EntitySet Name="SZHL_KS_USERKSItem" EntityType="QJY_SaaSModel.SZHL_KS_USERKSItem" />
           <EntitySet Name="SZHL_DBGL" EntityType="QJY_SaaSModel.SZHL_DBGL" />
-          <EntitySet Name="SZHL_KS_KCGL" EntityType="QJY_SaaSModel.SZHL_KS_KCGL" />
+          <EntitySet Name="SZHL_PX_KCGL" EntityType="QJY_SaaSModel.SZHL_PX_KCGL" />
+          <EntitySet Name="SZHL_PX_KJGL" EntityType="QJY_SaaSModel.SZHL_PX_KJGL" />
         </EntityContainer>
         <EntityType Name="FT_File">
           <Key>
@@ -4912,7 +4936,7 @@
           <Property Name="Path" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="SZHL_KS_KCGL">
+        <EntityType Name="SZHL_PX_KCGL">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -4932,6 +4956,28 @@
           <Property Name="ComId" Type="Int32" />
           <Property Name="KJID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="KCFM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SZHL_PX_KJGL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KJName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="KJDec" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="KJType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FilePath" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="FileType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CHUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CHDate" Type="DateTime" Precision="3" />
+          <Property Name="KJZJR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="KJZZType" Type="Int32" />
+          <Property Name="Files" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="CW" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FolderID" Type="Int32" />
+          <Property Name="TotalTime" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7377,9 +7423,9 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SZHL_KS_KCGL">
-            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_KCGL">
-              <MappingFragment StoreEntitySet="SZHL_KS_KCGL">
+          <EntitySetMapping Name="SZHL_PX_KCGL">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_PX_KCGL">
+              <MappingFragment StoreEntitySet="SZHL_PX_KCGL">
                 <ScalarProperty Name="KCFM" ColumnName="KCFM" />
                 <ScalarProperty Name="KJID" ColumnName="KJID" />
                 <ScalarProperty Name="ComId" ColumnName="ComId" />
@@ -7395,6 +7441,29 @@
                 <ScalarProperty Name="KCZJR" ColumnName="KCZJR" />
                 <ScalarProperty Name="KCTypeID" ColumnName="KCTypeID" />
                 <ScalarProperty Name="KCName" ColumnName="KCName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_PX_KJGL">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_PX_KJGL">
+              <MappingFragment StoreEntitySet="SZHL_PX_KJGL">
+                <ScalarProperty Name="TotalTime" ColumnName="TotalTime" />
+                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
+                <ScalarProperty Name="CW" ColumnName="CW" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="KJZZType" ColumnName="KJZZType" />
+                <ScalarProperty Name="KJZJR" ColumnName="KJZJR" />
+                <ScalarProperty Name="CHDate" ColumnName="CHDate" />
+                <ScalarProperty Name="CHUser" ColumnName="CHUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="FileType" ColumnName="FileType" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="KJType" ColumnName="KJType" />
+                <ScalarProperty Name="KJDec" ColumnName="KJDec" />
+                <ScalarProperty Name="KJName" ColumnName="KJName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -297,9 +297,6 @@
     <Compile Include="SZHL_KQJL.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
-    <Compile Include="SZHL_KS_KCGL.cs">
-      <DependentUpon>QJY.tt</DependentUpon>
-    </Compile>
     <Compile Include="SZHL_KS_KSAP.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
@@ -337,6 +334,12 @@
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
     <Compile Include="SZHL_NOTE.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_PX_KCGL.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_PX_KJGL.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
     <Compile Include="SZHL_QYHD.cs">
