@@ -293,6 +293,7 @@
     <Content Include="ViewV5\Base\ppt.html" />
     <Content Include="ViewV5\Base\SelDXTemplate.html" />
     <Content Include="ViewV5\Base\showvideo.html" />
+    <Content Include="ViewV5\Base\showvideo_bak.html" />
     <Content Include="ViewV5\Base\Success.html" />
     <Content Include="ViewV5\Base\UserSelect.html" />
     <Content Include="ViewV5\Base\xls.html" />
@@ -591,6 +592,10 @@
     <Content Include="ViewV5\JS\layer\skin\layer.ext.css" />
     <Content Include="ViewV5\JS\laypage\laypage.js" />
     <Content Include="ViewV5\JS\laypage\skin\laypage.css" />
+    <Content Include="ViewV5\JS\player\action.js" />
+    <Content Include="ViewV5\JS\player\CuSunV3set.xml" />
+    <Content Include="ViewV5\JS\player\player.swf" />
+    <Content Include="ViewV5\JS\player\swfobject.js" />
     <Content Include="ViewV5\JS\raty\fonts\raty.svg" />
     <Content Include="ViewV5\JS\raty\images\cancel-off.png" />
     <Content Include="ViewV5\JS\raty\images\cancel-on.png" />
