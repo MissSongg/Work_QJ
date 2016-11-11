@@ -40,7 +40,7 @@ namespace QJY.API
             page = page == 0 ? 1 : page;
             int recordCount = 0;
             int pagecount = 0;
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
+            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页码
             pagecount = pagecount == 0 ? 10 : pagecount;
             DataTable dt = new SZHL_GZBGB().GetDataPager("  SZHL_KS_TKFL ", " ID,TKFLName,Remark,CRUser,CRDate  ", pagecount, page, "CRDate desc", string.Format(" comId='{0}' and isDel!=1", UserInfo.User.ComId), ref recordCount);
             msg.Result = dt;
@@ -145,7 +145,7 @@ namespace QJY.API
                 strWhere += string.Format(" and tk.TKName like '%{0}%'", content);
             }
             int pagecount = 0;
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
+            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页码
             pagecount = pagecount == 0 ? 10 : pagecount;
             DataTable dt = new SZHL_GZBGB().GetDataPager("  SZHL_KS_TK tk inner join  SZHL_KS_TKFL tkfl on tk.TKTypeId=tkfl.ID ", " tk.*,tkfl.TKFLName   ", pagecount, page, "tk.CRDate desc", strWhere, ref recordCount);
             msg.Result = dt;
@@ -713,6 +713,8 @@ namespace QJY.API
             SZHL_KS_SJ sjmodel = new SZHL_KS_SJB().GetEntity(d => d.ID == ksap.SJID);
             msg.Result2 = sjmodel == null ? "" : sjmodel.SJName;
             msg.Result1 = status;
+            DataTable dt = new SZHL_KS_SJB().GetDTByCommand(string.Format("SELECT sj.ID,sj.SJName,sj.TotalRecord,sj.SJDescribe,sj.PassRecord,sj.KSSC,COUNT(DISTINCT sjst.STType) DTCount,COUNT(DISTINCT sjst.STID) XTCount  from  SZHL_KS_SJ sj inner join SZHL_KS_SJSTGL sjst on  sj.ID=sjst.SJID where  sj.ID={0} and sj.ComId={1}  GROUP by sj.ID,sj.SJName,sj.TotalRecord,sj.SJDescribe,sj.PassRecord,sj.KSSC", ksap.SJID, UserInfo.User.ComId));
+            msg.Result3 = dt;
 
         }
         public void ADDKSAP(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
@@ -787,7 +789,14 @@ namespace QJY.API
             }
             if (P2 != "")
             {
-                sqlWhere += string.Format(" and kszt={0} ", P2);
+                if (P2 == "1")
+                {
+                    sqlWhere += string.Format(" and kszt=1 or kszt=2 ", P2);
+
+                }
+                else { 
+                    sqlWhere += string.Format(" and kszt=3 ", P2);
+                } 
                 orderby = " kszt,KSDate ";
             }
             string sql = @"(SELECT
@@ -811,7 +820,7 @@ END AS kszt
 FROM
 SZHL_KS_KSAP where " + strWhere + ") AS newksap";
             int pagecount = 0;
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
+            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页码
             pagecount = pagecount == 0 ? 10 : pagecount;
             DataTable dt = new SZHL_KS_KSAPB().GetDataPager(sql, " * ", pagecount, page, orderby, sqlWhere, ref recordCount);
             dt.Columns.Add("ISCY", Type.GetType("System.String"));
@@ -1116,7 +1125,7 @@ SZHL_KS_KSAP where " + strWhere + ") AS newksap";
                 strWhere += string.Format(" and Status ={0} ", sjzt);
             }
             int pagecount = 0;
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
+            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页码
             pagecount = pagecount == 0 ? 10 : pagecount;
             DataTable dt = new SZHL_KS_SJB().GetDataPager("  SZHL_KS_SJ ", " *  ", pagecount, page, "CRDate desc", strWhere, ref recordCount);
             msg.Result = dt;
@@ -1473,7 +1482,7 @@ AND CRUser = '{2}';", userKs.ID, userKs.SJID, UserInfo.User.UserName);
                 int.TryParse(P1, out ksapid);
                 strWhere += string.Format(" and ku.KSAPID ={0} ", P1);
                 int pagecount = 0;
-                int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
+                int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页码
                 pagecount = pagecount == 0 ? 10 : pagecount;
                 DataTable dt = new SZHL_KS_SJB().GetDataPager("  SZHL_KS_USERKS ku LEFT JOIN SZHL_KS_SJ ksj ON ku.SJID=ksj.ID ", " ku.*,ksj.TotalRecord,ksj.PassRecord ", pagecount, page, " ku.CRDate ", strWhere, ref recordCount);
                 msg.Result = dt;

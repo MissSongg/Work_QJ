@@ -48,7 +48,7 @@
                     <td>{{el.KSName}}</td>
                     <td>{{el.KSSC}}</td>
                     <td>{{el.YCSY}}</td>
-                    <td>{{el.KSDate|date('yyyy-MM-dd')}}</td>
+                    <td>{{el.KSDate|date('yyyy-MM-dd HH:mm')}}</td>
                     <td>{{getstuName(el)}}</td>
                     <td>
                         <span class="btn-click" ms-if="el.kszt==1&&el.ISCY=='1'&&el.ISKS!='2'">
@@ -96,7 +96,7 @@
             tempindex.GetLIST();
         },
         GetLIST: function () {
-            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKSAPLIST', { p: 1, P2: tempindex.lbType, pagecount: model.page.pagecount, Content: model.search.SearchContent, myks: "1" }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKSAPLIST', { p: 1, P2: tempindex.lbType, pagecount: model.page.pagecount, Content: model.search.searchcontent, myks: "1" }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     model.ListData = resultData.Result;
                     model.page.total = resultData.Result1;
@@ -108,7 +108,7 @@
                         skin: 'molv',
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKSAPLIST', { p: e.curr, P2: tempindex.lbType, pagecount: model.page.pagecount, Content: model.search.SearchContent, myks: "1" }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKSAPLIST', { p: e.curr, P2: tempindex.lbType, pagecount: model.page.pagecount, Content: model.search.searchcontent, myks: "1" }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
                                         model.ListData = resultData.Result;
                                     }
