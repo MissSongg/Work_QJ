@@ -17,7 +17,7 @@
                         <input type="text" class="form-control szhl_require" ms-duplex="modelData.KCName" />
                     </div>
                 </li>
-                <!--<li class="add-item add-widthall">
+                <li class="add-item add-widthall">
                     <label class="add-item-label"><i>*</i>培训课件</label>
                     <div class="add-ic">
                         <textarea type="search" class="form-control" ms-duplex="SelKJName" onfocus="this.blur()" placeholder="请选择课件"></textarea>
@@ -25,7 +25,7 @@
 
                         <a ms-click="SelKJ()" class="btn btn-primary" style="margin-top:5px;">从课件库中选择</a>
                     </div>
-                </li>-->
+                </li>
                 <li class="add-item add-widthall">
                     <label class="add-item-label">授权类型</label>
                     <div class="add-ic">
@@ -109,30 +109,7 @@
                 })
             } else {
                 ComFunJS.initForm();
-            }
-            //if ($(".szhl_select").length > 0) {
-
-            //    $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCPXKJLIST', function (resultData) {
-            //        if (resultData.ErrorMsg == "") {
-
-            //            var tabsel = $(".szhl_select").YanSelect({
-            //                valueindex: 0,//值对应列
-            //                textindex: 1,
-            //                isCanAdd: false,
-            //                isMulSel: true,
-            //                width: "800px",
-            //                dataobj: resultData.Result,
-            //                columns: [{ "fieldname": "ID", "text": "序号" }, { "fieldname": "KJName", "text": "课件名称" }, { "fieldname": "KJDec", "text": "课件描述" }],
-            //                afterSelect: function (dom) {
-            //                    tempmodel.modelData.KJID = dom.attr('dataid')
-            //                }
-            //            })
-            //        }
-            //    })
-
-            //}
-
-
+            }  
         },//初始化
         modelData: { "KCTypeID": "", "KCName": "", "KCZJR": "", "KCZJRZC": "", "KSS": "", "KCPXZQ": "", "SQType": "公开", "Remark": "", "KJID": "", "KCFM": "" },
         SaveData: function (callback) {
@@ -141,7 +118,7 @@
             });
         }, SelKJName: "", SelKJ: function () {
 
-            top.ComFunJS.winbtnwin("/View/Common/KJGLSelect.html?checkvalue=" + tempmodel.modelData.KJID, "选择课件", 900, 470, {}, function (layero, index) {
+            top.ComFunJS.winbtnwin("/ViewV5/AppPage/KCGL/KJGLSelect.html?checkvalue=" + tempmodel.modelData.KJID, "选择课件", 900, 470, {}, function (layero, index) {
                 var frameid = $("iframe", $(layero)).attr('id');
                 var data = top.window.frames[frameid].GetSelKJData();
                 if (data.length == 0) {
