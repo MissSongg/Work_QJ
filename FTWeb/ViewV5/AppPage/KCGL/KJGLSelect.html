@@ -7,9 +7,10 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>选择课件</title>
     <!-- Bootstrap -->
-    <link href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css" rel="stylesheet">
-    <link href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.css" rel="stylesheet">
-     
+    <link href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css" rel="stylesheet"> 
+    <link href="/ViewV5/CSS/sass.css" rel="stylesheet" />
+    <link href="/ViewV5/CSS/list.css" rel="stylesheet" />
+    <link href="/ViewV5/CSS/default.css" rel="stylesheet" />
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -63,8 +64,8 @@
                         <span ms-class-1="clicked:lbtype==''" ms-click="SelectType('')">全部</span>
                     </li>
                     <li class="pull-left">
-                        <span ms-class-1="clicked:lbtype==1" ms-click="SelectType(1)">三分屏课件(视频,目录,文档)</span>
-                        <span ms-class-1="clicked:lbtype==2" ms-click="SelectType(2)">二分屏课件(视频和目录)</span>
+                        <span ms-class-1="clicked:lbtype==1" ms-click="SelectType(1)">视频</span>
+                        <span ms-class-1="clicked:lbtype==2" ms-click="SelectType(2)">文档</span>
                     </li>
                 </ul>
             </div>
@@ -80,15 +81,27 @@
             <table class="ui-datatable table-hover table-responsive table-striped">
                 <thead>
                     <tr>
-                        <th class="text-center"><i class="fa fa-square-o" ms-click="SelKJGLAll(this)"></i></th>
-                        <th>课件名称</th> 
+                        <th class="text-center" style="width:60px;">
+                            <div class="checkbox checkbox-inline" ms-click="SelKJGLAll(this)" style="padding-left:0px">
+                                <div class="icheckbox_square-blue" id="inlineCheck2">
+                                    <span class="iconfont icon-check ft12"></span>
+                                </div>
+                            </div>
+                        </th>
+                        <th>课件名称</th>
                         <th>主讲人</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ms-repeat-kjdata="CommonData">
-                        <td class="text-center"><i class="fa " ms-class-2="fa-square-o:!kjdata.issel" ms-class-1="fa-check-square-o:kjdata.issel" ms-click="SelKJGLData(kjdata,this)"></i></td>
-                        <td>{{kjdata.KJName}}</td> 
+                        <td class="text-center">
+                            <div class="checkbox checkbox-inline" ms-click="SelKJGLData(kjdata,this)" style="padding-left:0px">
+                                <div class="icheckbox_square-blue" ms-class-1="checked:kjdata.issel" id="inlineCheck2">
+                                    <span class="iconfont icon-check ft12"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{kjdata.KJName}}</td>
                         <td>{{kjdata.KJZJR}}</td>
                     </tr>
                 </tbody>
@@ -98,10 +111,10 @@
         </div>
     </div>
     <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
-    <script src="/JPlug/laypage/laypage.js"></script>
-    <script src="/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
-    <script src="/Scripts/avalon.js"></script>
-    <script src="/Scripts/SZHLCommon.js?jsver=20160425"></script>
+    <script src="/ViewV5/JS/laypage/laypage.js"></script>
+    <script src="/ViewV5/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
+    <script src="/ViewV5/JS/avalon.js"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160425"></script>
     <script>
         var model = avalon.define({
             $id: "KJGLSelect",
@@ -114,7 +127,7 @@
                 model.GetKJGLList();
             },
             Total: "",
-            page:1,
+            page: 1,
             GetKJGLList: function (el) {
                 $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETPXKJLIST', { p: 1, P1: model.lbtype, Content: model.SearchContent }, function (resultData) {
                     if (resultData.ErrorMsg == "") {
@@ -150,7 +163,7 @@
                                                         item.issel = true;
                                                         model.SelKJGL.push(item)
                                                     }
-                                                } 
+                                                }
                                             })
                                             model.CommonData = resultData.Result;
                                         }
@@ -176,7 +189,7 @@
                 }
             },
             SelKJGLAll: function (dom) {
-                if ($(dom).hasClass("fa-square-o")) {
+                if (!$(dom).children().eq(0).hasClass("checked")) {
                     model.CommonData.forEach(function (item) {
                         item.issel = true;
                         if (ComFunJS.FindItem(model.SelKJGL, function (e) {
@@ -185,14 +198,14 @@
                             model.SelKJGL.push(item)
                         }
                     })
-                    $(dom).removeClass("fa-square-o").addClass("fa-check-square-o")
+                    $(dom).children().eq(0).addClass("checked");
                 } else {
                     model.CommonData.forEach(function (item) {
                         item.issel = false;
                         ComFunJS.DelItem(model.SelKJGL, "ID", item.ID)
 
                     })
-                    $(dom).removeClass("fa-check-square-o").addClass("fa-square-o")
+                    $(dom).children().eq(0).removeClass("checked");
                 }
 
             },

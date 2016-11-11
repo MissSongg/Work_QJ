@@ -87,7 +87,10 @@ namespace QJY.API
         public void GETKCGLMODEL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             int Id = int.Parse(P1);
-            msg.Result = new SZHL_PX_KCGLB().GetEntity(d => d.ID == Id);
+            SZHL_PX_KCGL kcgl = new SZHL_PX_KCGLB().GetEntity(d => d.ID == Id);
+            msg.Result = kcgl;
+            int[] kjIds = kcgl.KJID.SplitTOInt(',');
+            msg.Result1 = new SZHL_PX_KJGLB().GetEntities(d => kjIds.Contains(d.ID)).Select(d => d.KJName).ToList().ListTOString(',');
         }
 
         #endregion
@@ -116,7 +119,7 @@ namespace QJY.API
             int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
             pagecount = pagecount == 0 ? 10 : pagecount;
             DataTable dt = new SZHL_GZBGB().GetDataPager(" SZHL_PX_KJGL", "*  ", pagecount, page, "CRDate desc", strWhere, ref recordCount);
-             
+
             msg.Result = dt;
             msg.Result1 = recordCount;
         }
@@ -134,7 +137,7 @@ namespace QJY.API
                 msg.ErrorMsg = "课件必须有课件文件";
                 return;
             }
-            
+
             if (kjgl.ID == 0)
             {
                 kjgl.CRDate = DateTime.Now;
@@ -142,15 +145,15 @@ namespace QJY.API
                 kjgl.ComId = UserInfo.User.ComId;
 
                 new SZHL_PX_KJGLB().Insert(kjgl);
-               
+
             }
             else
             {
-                SZHL_PX_KJGL kjgl1 = new SZHL_PX_KJGLB().GetEntity(d => d.ID == kjgl.ID); 
+                SZHL_PX_KJGL kjgl1 = new SZHL_PX_KJGLB().GetEntity(d => d.ID == kjgl.ID);
                 new SZHL_PX_KJGLB().Update(kjgl);
             }
-            
-            msg.Result = kjgl; 
+
+            msg.Result = kjgl;
         }
         public void DELKJGLBYID(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
@@ -194,8 +197,8 @@ namespace QJY.API
                 msg.ErrorMsg = "请检查课件文件";
             }
         }
-   
+
         #endregion
-       
+
     }
 }
