@@ -16,7 +16,7 @@
         <!-- 搜索 -->
         <div class="oh">
             <div class="input-group ml15" style="width:295px;">
-                <input type="search" class="form-control" ms-duplex="search.searchcontent" placeholder="搜索课件管理名称">
+                <input type="search" class="form-control" ms-duplex="search.searchcontent" placeholder="搜索课件名称">
                 <span class="input-group-addon" ms-click="GetLIST()">搜索</span>
             </div>
         </div>
@@ -34,7 +34,7 @@
                     <th class="tc">序号</th>
                     <th>
                         课件分类
-                    </th> 
+                    </th>
                     <th>课件名称</th>
                     <th>主讲人</th>
                     <th>操作</th>
@@ -45,9 +45,9 @@
                     <td class="tc">
                         {{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <td>{{el.KJZZType}}</td>
+                    <td>{{GetTypeName(el.KJType)}}</td>
                     <td>{{el.KJName}}</td>
-                    <td>{{el.KJZJR}}</td> 
+                    <td>{{el.KJZJR}}</td>
                     <td>
                         <span class="btn-click">
                             <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="AddView('KCGL_KJGL','课件编辑',el.ID,$event)">
@@ -87,9 +87,9 @@
 <script>
     var tempindex = avalon.define({
         $id: "W_KCGL",
-        kcflData: [], 
+        kcflData: [],
         lbType: "",
-        InitWigetData: function (str) { 
+        InitWigetData: function (str) {
             tempindex.GetLIST();
 
         },
@@ -125,19 +125,32 @@
         DELKCGL: function (item, event) {
             if (event) {
                 event.stopPropagation();
-            } 
+            }
             top.ComFunJS.winconfirm("确认要删除此课件吗", function () {
                 $.post('/API/VIEWAPI.ashx?Action=KCGL_DELKJGLBYID', { "P1": item.ID }, function (result) {
                     result = JSON.parse(result)
                     if (result.ErrorMsg == "") {
-                         ComFunJS.winsuccess("删除成功");
+                        ComFunJS.winsuccess("删除成功");
                         model.ListData.remove(item);
                     } else {
-                         ComFunJS.winwarning(result.ErrorMsg);
+                        ComFunJS.winwarning(result.ErrorMsg);
                     }
                 })
             }, function () { })
         },
+        GetTypeName: function (str) {
+            var strName = "";
+            switch (str) {
+                case "1":
+                    strName = "视频";
+                    break;
+                case "2":
+                    strName = "文档";
+                    break;
+            }
+            return strName;
+
+        }
     })//@ sourceURL=KCGLLSIT.js;
 
 

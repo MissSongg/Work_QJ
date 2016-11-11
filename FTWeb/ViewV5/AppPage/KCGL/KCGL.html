@@ -120,7 +120,8 @@
 
             top.ComFunJS.winbtnwin("/ViewV5/AppPage/KCGL/KJGLSelect.html?checkvalue=" + tempmodel.modelData.KJID, "选择课件", 900, 470, {}, function (layero, index) {
                 var frameid = $("iframe", $(layero)).attr('id');
-                var data = top.window.frames[frameid].GetSelKJData();
+                var nowwin = ComFunJS.isIE() ? top.window.frames[frameid] : top.window.frames[frameid].contentWindow;
+                var data = nowwin.GetSelKJData();
                 if (data.length == 0) {
                     top.ComFunJS.winwarning("请选择课件");
                     return;

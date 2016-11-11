@@ -166,6 +166,7 @@
     <Content Include="ViewV5\AppPage\KCGL\KJGL.html" />
     <Content Include="ViewV5\AppPage\KCGL\KJGLLIST.html" />
     <Content Include="ViewV5\AppPage\KCGL\KCGLLIST.html" />
+    <Content Include="ViewV5\AppPage\KCGL\KJGLSelect.html" />
     <Content Include="ViewV5\AppPage\KCGL\KJGLVIEW.html" />
     <Content Include="ViewV5\AppPage\KDDY\KDDY.html" />
     <Content Include="ViewV5\AppPage\KDDY\KDDYLIST.html" />
@@ -401,12 +402,14 @@
     <Content Include="ViewV5\CSS\default.css" />
     <Content Include="ViewV5\CSS\im.css" />
     <Content Include="ViewV5\CSS\index.css" />
+    <Content Include="ViewV5\CSS\list.css" />
     <Content Include="ViewV5\CSS\Office\bootstrap-responsive.min.css" />
     <Content Include="ViewV5\CSS\Office\bootstrap.min.css" />
     <Content Include="ViewV5\CSS\Office\bootstrap.min.js" />
     <Content Include="ViewV5\CSS\Office\Doc.css" />
     <Content Include="ViewV5\CSS\Office\ppt.css" />
     <Content Include="ViewV5\CSS\Office\xls.css" />
+    <Content Include="ViewV5\CSS\sass.css" />
     <Content Include="ViewV5\CSS\saved_resource%282%29.css" />
     <Content Include="ViewV5\CSS\saved_resource.css" />
     <Content Include="ViewV5\CSS\ShowCss.css" />
