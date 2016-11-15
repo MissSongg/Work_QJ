@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>试卷-选择题</title>
+    <title>试卷考试</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/View_Mobile/UI/KSGL/css/style.css">
 
 </head>
 <body ms-controller="UI_USERKS">
@@ -77,7 +77,7 @@
                 <p class="title-list">{{item.STType}}&nbsp; 共{{item.totalCount}}题</p>
                 <ul class="overflow">
                     <li ms-repeat-el="item.STList" ms-click="SetSTIndex(el.Order)">
-                        <div class="answer-title" ms-class-1="active:el.ksCount>0">
+                        <div class="answer-title" ms-class-1="active:el.el.ItemArray[4]>0">
                             {{el.Order}}
                         </div>
                     </li>

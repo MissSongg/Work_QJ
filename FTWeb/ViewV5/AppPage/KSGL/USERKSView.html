@@ -78,7 +78,7 @@
             userName: ComFunJS.getQueryString("USER", ""),
             UserKSInfo: {},
             numberData: ["一", "二", "三", "四", "五", "六", "七", "八"],
-            GetKSPAGE: function () { 
+            GetKSPAGE: function () {
                 $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETYJVIEW', { P1: model.userName, P2: model.ksapId }, function (result) {
                     var i = 1;
                     result.Result[0].TXType.forEach(function (item) {
@@ -90,45 +90,21 @@
                     model.SJModelInfo = result.Result[0];
                     model.UserKSInfo = result.Result1;
                 })
-            }, lsDFblur: function (item) {
-                if (item.Record > item.stRecord) {
-                    item.Record = item.stRecord;
-                    top.ComFunJS.winwarning("分数大于试题分数");
-                }
-            }, YJTJ: function () {
-                var stdfList = [];
-
-                model.SJModelInfo.TXType.forEach(function (item) {
-                    item.STList.forEach(function (el) {
-                        if (el.Record > el.stRecord) {
-                            el.Record = el.stRecord;
-                        }
-                        stdfList.push({ STID: el.STID, Record: el.Record });
-                    })
-                })
-
-                $.post('/API/VIEWAPI.ashx?Action=KSGL_YJENDTJ', { P1: model.UserKSInfo.ID, P2: JSON.stringify(stdfList) }, function (result) {
-                    result = JSON.parse(result);
-                    if (result.ErrorMsg == "") {
-                        top.ComFunJS.winsuccess("提交成功");
-                        top.layer.closeAll();
-                    }
-                })
             }
         })
         avalon.ready(function () {
             model.GetKSPAGE();
         })
-        //# sourceURL=USERKSDA.js;
+        //# sourceURL=KSDAPAGE.js;
     </script>
     <div>
-        <div class="bg-default" ms-controller="KSDAPAGE">
+        <div class="container bg-default" style="min-width: 1000px;" ms-controller="KSDAPAGE">
             <div class="content ">
                 <!-- 内容 部分 -->
                 <div class="exam-report  page_container" style="position:relative">
                     <div class="m-examHead f-bg ">
                         <!--试卷头信息-->
-                        <h1 class="h1"> {{SJModelInfo.SJName}} </h1>
+                        <h1 class="h1"> {{SJModelInfo.SJName}} <div style="color:#d95700;font-size:18px;float:right">学员总分：{{UserKSInfo.Record}} -<span ms-css-color="UserKSInfo.Record>SJModelInfo.PassRecord?'green':'red'">{{UserKSInfo.Record>SJModelInfo.PassRecord?"及格":"不及格"}}</span></div></h1>
                         <div class="info">
                             <p>◇ 本卷共分为 {{SJModelInfo.DTCount}}大题 {{SJModelInfo.XTCount}}小题，总分 {{SJModelInfo.TotalRecord}} 分，{{SJModelInfo.PassRecord}} 分及格。</p>
                             <div class="attention">
@@ -154,10 +130,8 @@
                                             (试题分数：{{el.stRecord}})
                                         </div>
                                         <div class="button-xt" style="padding-right:20px;">
-                                            分数：
-                                            <input type="number" ms-attr-max="{{el.stRecord}}" min="0" class="input-t" style="width:70px;" ms-attr-disabled="!el.Answer" ms-duplex="el.Record" placeholder="分数" ms-visible="item.STType!='单选题'&&item.STType!='判断题'" ms-blur="lsDFblur(el)">
-                                            <label ms-visible="item.STType=='单选题'||item.STType=='判断题'">{{el.Record}}</label>
-                                            <!--<input type="button" value="打分" class="btn-ks" ms-click="lsDF(el)" ms-visible="item.STType!='单选题'&&item.STType!='判断题'" />-->
+                                            得分：
+                                            <label>{{el.Record}}</label>
                                         </div>
                                     </div>
                                     <div class="m-question-list-html" ms-if="item.STType!='单选题'&&item.STType!='多选题'&&item.STType!='判断题'">
@@ -175,7 +149,7 @@
                                     <div class="m-question-html " style="min-height:67px;" ms-if="el.QItem.size()>0">
                                         <div class=" m-questiontoolbar">
                                             <div class="m-checkBox single">
-                                                <a class="question-option-list " ms-repeat-qaitem="el.QItem" ms-class-1="u-selected:qaitem.isselect" href="javascript:void(0)" ms-attr-value="qaitem.ItemName" ms-click="ADDKS(qaitem,el)">{{qaitem.ItemName}}</a>
+                                                <a class="question-option-list " ms-repeat-qaitem="el.QItem" ms-class-1="u-selected:qaitem.isselect" href="javascript:void(0)" ms-attr-value="qaitem.ItemName" ms-click="ADDKS(qaitem,el)"  >{{qaitem.ItemName}}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -194,16 +168,12 @@
                     </div>
                     <!-- 试题部分 END -->
                     <!-- // END -->
-                    <div class="form-group">
-                        <div class="col-sm-12" style="text-align:center">
-                            <button type="button" class="btn  btn-primary next1 btn-all" style="padding:5px 30px;margin-top:30px;" ms-click="YJTJ()">提交</button>
-                        </div>
-                    </div>
                     <div class="clearfix"></div>
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
 
 </body>
 </html>

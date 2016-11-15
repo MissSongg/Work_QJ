@@ -25,5 +25,6 @@ namespace QJY.Data
         public Nullable<int> ISJJ { get; set; }
         public Nullable<int> KSType { get; set; }
         public Nullable<int> ComId { get; set; }
+        public Nullable<System.DateTime> JJDate { get; set; }
     }
 }

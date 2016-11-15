@@ -139,7 +139,9 @@
             model.PageCodeRdm = "AppPage/KSGL/USERCJLIST.html?r=" + model.rdm;
         },
         EndView: function (item) {
-
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            }
             top.ComFunJS.winconfirm("确定要阅卷结束吗？", function () {
                 item.Status = 1;
                 $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_ADDKSAP', { P1: JSON.stringify(item.$model) }, function (result) {

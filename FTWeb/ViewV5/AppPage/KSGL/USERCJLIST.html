@@ -1,5 +1,5 @@
 ﻿<div ms-controller="W_KSUSERGL">
-   
+
     <!-- 表格 -->
     <div class="default-tab ft14 pt20 hover-btn">
         <table class="table table-striped table-responsive table-hover">
@@ -44,8 +44,9 @@
         KSAPID: "",
         stu: "",
         GetLIST: function () {
-            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKSUSER', { p: 1, pagecount: model.page.pagecount, P1: tempindex.KSAPID, Content: model.search.SearchContent }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKSUSER', { p: 1, pagecount: model.page.pagecount, P1: tempindex.KSAPID }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
+                    model.ListData.clear();
                     model.ListData = resultData.Result;
                     if (model.ListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
                     model.page.total = resultData.Result1;
@@ -56,8 +57,9 @@
                         skin: 'molv',
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKSUSER', { p: e.curr, pagecount: model.page.pagecount, P1: tempindex.KSAPID, Content: model.search.SearchContent, }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKSUSER', { p: e.curr, pagecount: model.page.pagecount, P1: tempindex.KSAPID }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
+                                        model.ListData.clear();
                                         model.ListData = resultData.Result;
                                     }
                                 })
@@ -70,8 +72,8 @@
         },
         DFView: function (KSAPID, UserName) {
             top.ComFunJS.winviewform("/ViewV5/AppPage/KSGL/USERKSDA.html?ID=" + KSAPID + "&&USER=" + UserName, "试卷", "1000", "");
-        },
+        }, 
     })
-
+    //# sourceURL=SJGL.js
 
 </script>

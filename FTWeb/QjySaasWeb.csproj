@@ -195,6 +195,7 @@
     <Content Include="ViewV5\AppPage\KSGL\TKSTLIST.html" />
     <Content Include="ViewV5\AppPage\KSGL\USERCJLIST.html" />
     <Content Include="ViewV5\AppPage\KSGL\USERKS.html" />
+    <Content Include="ViewV5\AppPage\KSGL\USERKSView.html" />
     <Content Include="ViewV5\AppPage\KSGL\USERKSDA.html" />
     <Content Include="ViewV5\AppPage\KSGL\USERKSLIST.html" />
     <Content Include="ViewV5\AppPage\LCSP\LCSP.html" />

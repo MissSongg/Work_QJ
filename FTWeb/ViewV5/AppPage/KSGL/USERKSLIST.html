@@ -51,8 +51,11 @@
                     <td>{{el.KSDate|date('yyyy-MM-dd HH:mm')}}</td>
                     <td>{{getstuName(el)}}</td>
                     <td>
-                        <span class="btn-click" ms-if="el.kszt==1&&el.ISCY=='1'&&el.ISKS!='2'">
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="考试" ms-click="View(el)">
+                        <span class="btn-click" >
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" ms-if="el.kszt==1&&el.ISCY=='1'&&el.ISKS!='2'" title="考试" ms-click="View(el)">
+                                <i class="iconfont icon-look"></i>
+                            </a>
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="查看成绩" ms-if="el.Status==1" ms-click="ViewCJ(el)">
                                 <i class="iconfont icon-look"></i>
                             </a>
                         </span>
@@ -158,7 +161,7 @@
 
         }
         ,ViewCJ: function (item) {
-                top.ComFunJS.winviewform("/XYView/KS/USERKSDA.html?ID=" + item.ID + "&USER=" + ComFunJS.getnowuser(), '查看成绩', "1100", "700")
+            top.ComFunJS.winviewform("/ViewV5/AppPage/KSGL/USERKSView.html?ID=" + item.ID + "&USER=" + ComFunJS.getnowuser(), '查看成绩', "1100", "700")
             }
     })
 
