@@ -970,7 +970,7 @@ SZHL_KS_KSAP where " + strWhere + ") AS newksap";
                     }
                     rowType["STList"] = dtST;
                 }
-               
+
                 row["TXType"] = dtType;
             }
             SZHL_KS_USERKS userks = new SZHL_KS_USERKSB().GetEntity(d => d.CRUser == UserInfo.User.UserName && d.ComId == UserInfo.User.ComId && d.KSAPID == ksapID && d.KSType == 1);
@@ -1341,12 +1341,19 @@ END AS kszt,dateadd(minute,ISNULL(KSSC,0),KSDate) AS ksEND from SZHL_KS_KSAP " +
             SZHL_KS_USERKSItem userKSItem = JsonConvert.DeserializeObject<SZHL_KS_USERKSItem>(P2);
             if (userKs != null && userKs.ID == 0)
             {
-                userKs.SJID = userKSItem.SJID;
-                userKs.CRUser = UserInfo.User.UserName;
-                userKs.CRDate = DateTime.Now;
-                userKs.ISJJ = 0;
-                userKs.ComId = UserInfo.User.ComId;
-                new SZHL_KS_USERKSB().Insert(userKs);
+                SZHL_KS_USERKS userKs1 = new SZHL_KS_USERKSB().GetEntity(d => d.KSAPID == userKs.KSAPID);
+                if (userKs != null && userKs1 == null)
+                {
+                    userKs.SJID = userKSItem.SJID;
+                    userKs.CRUser = UserInfo.User.UserName;
+                    userKs.CRDate = DateTime.Now;
+                    userKs.ISJJ = 0;
+                    userKs.ComId = UserInfo.User.ComId;
+                    new SZHL_KS_USERKSB().Insert(userKs);
+                }
+                else {
+                    userKs = userKs1;
+                } 
             }
             int isExists = 0;
             if (new SZHL_KS_USERKSItemB().GetEntities(d => d.SJID == userKSItem.SJID && d.ComId == UserInfo.User.ComId && d.CRUser == UserInfo.User.UserName && d.STID == userKSItem.STID && d.UserKSID == userKs.ID).Count() > 0)
@@ -1372,9 +1379,9 @@ END AS kszt,dateadd(minute,ISNULL(KSSC,0),KSDate) AS ksEND from SZHL_KS_KSAP " +
         public void DELKSITEM(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             SZHL_KS_USERKSItem userKSItem = JsonConvert.DeserializeObject<SZHL_KS_USERKSItem>(P1);
-            if (new SZHL_KS_USERKSItemB().GetEntities(d => d.SJID == userKSItem.SJID && d.ComId == UserInfo.User.ComId && d.CRUser == UserInfo.User.UserName && d.STID == userKSItem.STID && d.UserKSID == userKSItem.UserKSID).Count() > 0)
+            if (new SZHL_KS_USERKSItemB().GetEntities(d => d.SJID == userKSItem.SJID && d.ComId == UserInfo.User.ComId && d.CRUser == UserInfo.User.UserName && d.STID == userKSItem.STID && d.ID == userKSItem.UserKSID).Count() > 0)
             {
-                new SZHL_KS_USERKSItemB().Delete(d => d.CRUser == UserInfo.User.UserName && d.SJID == userKSItem.SJID && d.STID == userKSItem.STID && d.Answer == userKSItem.Answer && d.UserKSID == userKSItem.UserKSID);
+                new SZHL_KS_USERKSItemB().Delete(d => d.CRUser == UserInfo.User.UserName && d.SJID == userKSItem.SJID && d.STID == userKSItem.STID && d.Answer == userKSItem.Answer && d.ID == userKSItem.UserKSID);
             }
         }
         public void SUBMITSJ(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)

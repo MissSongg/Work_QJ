@@ -20,7 +20,7 @@
             <!-- 标题栏 -->
             <header class="bar bar-nav" id="bar">
                 <a class="icon icon-left pull-left"></a>
-                <h1 class="title">新员工培训检测试卷</h1>
+                <h1 class="title">{{SJModelInfo.SJName}}</h1>
             </header>
             <!-- 工具栏 -->
             <nav class="bar bar-tab">
@@ -30,8 +30,12 @@
                 <a class="tab-item external">
 
                 </a>
-                <a class="tab-item external active" ms-click="SetSTIndex(-2)" ms-if="stindex!=SJModelInfo.STLIST.size()">
+                <a class="tab-item external active" ms-click="SetSTIndex(-2)" ms-if="stindex!=SJModelInfo.STLIST.size()-1">
                     下一题<i class=" iconfont icon-jtright ml5">
+                    </i>
+                </a>
+                <a class="tab-item external active" ms-click="SubmitKS()" ms-if="stindex==SJModelInfo.STLIST.size()-1">
+                    交卷<i class=" iconfont icon-jtright ml5">
                     </i>
                 </a>
             </nav>
@@ -48,9 +52,9 @@
                     <div>{{SJModelInfo.STLIST[stindex].Order}}.{{SJModelInfo.STLIST[stindex].QContent|html}}({{SJModelInfo.STLIST[stindex].Record}}分)</div>
                     <div class="list-block media-list">
                         <ul style="background: TRANSPARENT;" ms-if="SJModelInfo.STLIST[stindex].STType=='单选题'||SJModelInfo.STLIST[stindex].STType=='多选题'||SJModelInfo.STLIST[stindex].STType=='判断题'">
-                            <li ms-repeat-qitem="SJModelInfo.STLIST[stindex].QItem" ms-click="ADDKS(qaitem,SJModelInfo.STLIST[stindex])">
+                            <li ms-repeat-qitem="SJModelInfo.STLIST[stindex].QItem">
                                 <label class="label-checkbox item-content">
-                                    <input ms-attr-type="SJModelInfo.STLIST[stindex].STType=='多选题'?'checkbox':'radio'" name="my-radio" ms-attr-checked="qaitem.isselect">
+                                    <input ms-attr-type="SJModelInfo.STLIST[stindex].STType=='多选题'?'checkbox':'radio'" name="my-radio" ms-attr-checked="qitem.isselect" ms-click="ADDKS(qitem,SJModelInfo.STLIST[stindex])">
                                     <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
                                     <div class="item-inner">
                                         <div>{{qitem.ItemName|html}}、 {{qitem.ItemDesc|html}}</div>
@@ -61,7 +65,7 @@
                         <!-- 填空题输入框 -->
                         <div style="background:#fff;" ms-if="SJModelInfo.STLIST[stindex].STType!='单选题'&&SJModelInfo.STLIST[stindex].STType!='多选题'&&SJModelInfo.STLIST[stindex].STType!='判断题'">
                             <textarea placeholder="请输入您的答案" ms-duplex="SJModelInfo.STLIST[stindex].Answer" ms-blur="Completion(SJModelInfo.STLIST[stindex])"></textarea>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -206,7 +210,7 @@
                     }
                 })
             }, ADDKS: function (QItem, STItem) {
-                var UserKSItem = { "SJID": model.SJModelInfo.ID, "Answer": QItem.ItemName, "STID": QItem.STID };
+                var UserKSItem = { "SJID": model.SJModelInfo.ID, "Answer": QItem.ItemName, "STID": QItem.STID, "UserKSID": QItem.isselect };
                 if (QItem.isselect && STItem.STType == "多选题") {
                     $.getJSON("/API/VIEWAPI.ashx?ACTION=KSGL_DELKSITEM", { P1: JSON.stringify(UserKSItem) }, function () {
                         QItem.isselect = "";
@@ -229,18 +233,8 @@
                         }
                     }
                 });
-            }, refiframe: function () {
-
-                var piframe = $("iframe", top.frames["main"].document)[0];
-                if (piframe && piframe.contentWindow.location.href && piframe.contentWindow.location.href !== "about:blank") {
-                    piframe.contentWindow.location.reload()
-                } else {
-                    if (top.frames["main"].location.href !== "about:blank") {
-                        top.frames["main"].location.reload();
-                    }
-                }
-            }, SubmitKS: function () {
-                top.ComFunJS.winconfirm("确定要交卷吗？", function () {
+            } , SubmitKS: function () {
+                $.confirm("确定要交卷吗？", function () {
                     model.SubmitKSnew();
                 })
             }, SubmitKSnew: function () {
@@ -248,9 +242,8 @@
                     result = JSON.parse(result)
                     if (result.ErrorMsg == "") {
                         model.UserKSInfo = result.Result;
-                        top.ComFunJS.winAlert2("交卷成功", function () {
-                            model.refiframe();
-                            top.layer.closeAll();
+                       ComFunJS.AlertMsg("交卷成功", function () {
+                           location.href = "/View_Mobile/UI/KSGL/UI_USERKSLIST.html";
                         });
                     }
                 });
@@ -273,7 +266,7 @@
                 });
             },
             SetSTIndex: function (index) {
-                if (index == -1) { 
+                if (index == -1) {
                     model.stindex--;
 
                 } else if (index == -2) {
