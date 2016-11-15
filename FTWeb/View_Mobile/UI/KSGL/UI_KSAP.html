@@ -23,7 +23,7 @@
             </header>
             <!-- 工具栏 -->
             <nav class="bar bar-tab">
-                <a class="tab-item external active c-red" href="test-center.html">
+                <a class="tab-item  active c-red" external ms-attr-href="ModelData.Status==1?'/View_Mobile/UI/KSGL/UI_USERKS.html?ksapid='+ModelData.ID:'javascript:void(0)'">
                     {{getstatus(ModelData.Status)}}
                 </a>
             </nav>
@@ -87,7 +87,7 @@
                                         <div class="item-title">考试时间</div>
 
                                     </div>
-                                    <div class="item-subtitle c999 ft7"><i class="iconfont icon-shijian"></i>{{ModelData.KSDate|date('yyyy-MM-dd')}}</div>
+                                    <div class="item-subtitle c999 ft7"><i class="iconfont icon-shijian"></i>{{ModelData.KSDate|date('yyyy-MM-dd HH:mm')}}</div>
                                 </div>
                             </div>
                         </li>
@@ -130,6 +130,7 @@
                     if (resultData.ErrorMsg == "") {
                         model.ModelData = resultData.Result;
                         model.SJData = resultData.Result3[0];
+                        model.ModelData.Status = resultData.Result1;
                     }
                 })
 
