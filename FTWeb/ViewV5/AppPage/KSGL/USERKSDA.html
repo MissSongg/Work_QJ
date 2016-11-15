@@ -122,7 +122,7 @@
         //# sourceURL=USERKSDA.js;
     </script>
     <div>
-        <div class="container bg-default" style="min-width: 1000px;" ms-controller="KSDAPAGE">
+        <div class="bg-default" ms-controller="KSDAPAGE">
             <div class="content ">
                 <!-- 内容 部分 -->
                 <div class="exam-report  page_container" style="position:relative">
@@ -175,7 +175,7 @@
                                     <div class="m-question-html " style="min-height:67px;" ms-if="el.QItem.size()>0">
                                         <div class=" m-questiontoolbar">
                                             <div class="m-checkBox single">
-                                                <a class="question-option-list " ms-repeat-qaitem="el.QItem" ms-class-1="u-selected:qaitem.isselect" href="javascript:void(0)" ms-attr-value="qaitem.ItemName" ms-click="ADDKS(qaitem,el)" style="width:90px;">{{qaitem.ItemName}}</a>
+                                                <a class="question-option-list " ms-repeat-qaitem="el.QItem" ms-class-1="u-selected:qaitem.isselect" href="javascript:void(0)" ms-attr-value="qaitem.ItemName" ms-click="ADDKS(qaitem,el)">{{qaitem.ItemName}}</a>
                                             </div>
                                         </div>
                                     </div>
