@@ -695,19 +695,23 @@ namespace QJY.API
         {
             int Id = int.Parse(P1);
             SZHL_KS_KSAP ksap = new SZHL_KS_KSAPB().GetEntity(d => d.ID == Id);
-            string status = "0";
-            if (ksap.KSDate < DateTime.Now && ksap.KSDate.Value.AddMinutes(ksap.YCSY.Value) > DateTime.Now)//考试进行中
+            int status = 0;
+            if (ksap.KSDate > DateTime.Now)
             {
-                status = "1";
+                status = 0;
+            }
+            else if (ksap.KSDate < DateTime.Now && ksap.KSDate.Value.AddMinutes(ksap.KSSC.Value) > DateTime.Now)//考试进行中
+            {
+                status = 1;
             }
             else if (ksap.KSDate.Value.AddMinutes(ksap.YCSY.Value) < DateTime.Now && ksap.Status == 0)//考试已结束,阅卷未结束
             {
 
-                status = "2";
+                status = 2;
             }
             else if (ksap.Status == 1)//阅卷完成
             {
-                status = "3";
+                status = 3;
             }
             msg.Result = ksap;
             SZHL_KS_SJ sjmodel = new SZHL_KS_SJB().GetEntity(d => d.ID == ksap.SJID);
@@ -794,9 +798,10 @@ namespace QJY.API
                     sqlWhere += string.Format(" and kszt=1 or kszt=2 ", P2);
 
                 }
-                else { 
+                else
+                {
                     sqlWhere += string.Format(" and kszt=3 ", P2);
-                } 
+                }
                 orderby = " kszt,KSDate ";
             }
             string sql = @"(SELECT
@@ -965,11 +970,79 @@ SZHL_KS_KSAP where " + strWhere + ") AS newksap";
                     }
                     rowType["STList"] = dtST;
                 }
+               
                 row["TXType"] = dtType;
             }
             SZHL_KS_USERKS userks = new SZHL_KS_USERKSB().GetEntity(d => d.CRUser == UserInfo.User.UserName && d.ComId == UserInfo.User.ComId && d.KSAPID == ksapID && d.KSType == 1);
             msg.Result1 = userks;
 
+            msg.Result = dt;
+        }
+        //考试获取试卷
+        public void GETMOBILESJGLMODELVIEW(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int sjID = 0, ksapID = 0;
+            int.TryParse(P1, out sjID);
+            int.TryParse(P2, out ksapID);
+            if (P2 != "")
+            {
+                SZHL_KS_KSAP ksap = new SZHL_KS_KSAPB().GetEntity(d => d.ID == ksapID);
+                if (ksap != null)
+                {
+                    sjID = ksap.SJID.Value;
+                    if (ksap.KSDate > DateTime.Now)
+                    {
+                        msg.ErrorMsg = "考试未开始";
+                    }
+                    TimeSpan timespan = DateTime.Now - ksap.KSDate.Value;
+                    if ((timespan.TotalSeconds - (ksap.KSSC + ksap.YCSY) * 60) > 0)
+                    {
+                        msg.ErrorMsg = "考试已结束";
+                    }
+                    msg.Result2 = (int)((ksap.KSSC + ksap.YCSY) * 60 - timespan.TotalSeconds);
+                    msg.Result3 = ksap.KSSC + ksap.YCSY;
+                }
+            }
+            //获取试卷信息
+            DataTable dt = new SZHL_KS_SJB().GetDTByCommand(string.Format("SELECT sj.ID,sj.SJName,sj.TotalRecord,sj.SJDescribe,sj.PassRecord,sj.KSSC,COUNT(DISTINCT sjst.STType) DTCount,COUNT(DISTINCT sjst.STID) XTCount  from  SZHL_KS_SJ sj inner join SZHL_KS_SJSTGL sjst on  sj.ID=sjst.SJID where  sj.ID={0} and sj.ComId={1}  GROUP by sj.ID,sj.SJName,sj.TotalRecord,sj.SJDescribe,sj.PassRecord,sj.KSSC", sjID, UserInfo.User.ComId));
+            dt.Columns.Add("TXType", Type.GetType("System.Object"));
+            dt.Columns.Add("STLIST", Type.GetType("System.Object"));
+            //获取试卷的题型列表 strIds 题库试题Id 
+            DataTable dtType = new SZHL_KS_SJB().GetDTByCommand(@"SELECT  DISTINCT STType,sum(isnull(Record,0)) totalRecord,COUNT(ID) totalCount,stuff((select ','+cast( sjst.STID as varchar) from SZHL_KS_SJSTGL sjst where sjst.SJID=SZHL_KS_SJSTGL.SJID and sjst.STType=SZHL_KS_SJSTGL.STType for xml path('')),1,1,'') stIds
+                                                                    from SZHL_KS_SJSTGL where SJID=" + sjID + " GROUP by STType,SJID");
+
+            dtType.Columns.Add("STList", Type.GetType("System.Object"));
+            //获取试卷的题列表
+            DataTable dtST = new SZHL_KS_SJB().GetDTByCommand(@"SELECT st.ID,st.STID,st.Record,st.STType,cast(st.QContent as VARCHAR(MAX)) QContent,COUNT(item.UserKSID) ksCount FROM  SZHL_KS_SJSTGL st LEFT  JOIN SZHL_KS_USERKSItem item on st.STID=item.STID and item.SJID=" + sjID + "  and item.CRUser='" + UserInfo.User.UserName + "' where    st.SJID=" + sjID + " GROUP by st.ID,st.STID,st.STType,cast(st.QContent as VARCHAR(MAX)),st.Record ");
+
+            dtST.Columns.Add("QItem", Type.GetType("System.Object"));
+            dtST.Columns.Add("Answer", Type.GetType("System.String"));
+            string strItemSql = string.Format(@"SELECT item.*,ksitem.ID isselect from SZHL_KS_STItem item inner join SZHL_KS_SJST sjst on item.STID=sjst.STID LEFT join SZHL_KS_USERKSItem ksitem on item.STID=ksitem.STID and ksitem.SJID=" + sjID + "  AND item.ItemName=CAST( ksitem.Answer as VARCHAR(50)) and ksitem.CRUser='{0}' where   sjst.SJID={1}", UserInfo.User.UserName, sjID);
+            strItemSql = string.Format(@"SELECT item.*,ksitem.ID isselect from SZHL_KS_SJSTGLItem item inner join SZHL_KS_SJSTGL sjst 
+                                            on item.STID=sjst.STID and item.SJID=sjst.SJID LEFT join SZHL_KS_USERKSItem ksitem on item.STID=ksitem.STID and item.SJID=ksitem.SJID and ksitem.SJID={1}  
+                                            AND item.ItemName=CAST( ksitem.Answer as VARCHAR(50)) and ksitem.CRUser='{0}' where   item.SJID={1}", UserInfo.User.UserName, sjID);
+            string sql = string.Format("SELECT * FROM SZHL_KS_USERKSItem WHERE CRUser='{0}'   AND SJID={1}", UserInfo.User.UserName, sjID);
+            DataTable questionItem = new SZHL_KS_STItemB().GetDTByCommand(strItemSql);
+            DataTable dtuser = new SZHL_KS_USERKSItemB().GetDTByCommand(sql);
+            foreach (DataRow rowST in dtST.Rows)
+            {
+                rowST["QItem"] = questionItem.FilterTable(" STID=" + rowST["STID"]);
+                DataTable dtuser2 = dtuser.FilterTable(" STID=" + rowST["STID"]);
+                if (dtuser2 != null && dtuser2.Rows.Count > 0)
+                {
+                    rowST["Answer"] = dtuser2.Rows[0]["Answer"];
+                }
+            }
+            foreach (DataRow rowType in dtType.Rows)
+            {
+                //获取试卷的题列表 
+                rowType["STList"] = dtST.Select("STID in (" + rowType["stIds"] + ")");
+            }
+            dt.Rows[0]["TXType"] = dtType;
+            dt.Rows[0]["STLIST"] = dtST;
+
+            SZHL_KS_USERKS userks = new SZHL_KS_USERKSB().GetEntity(d => d.CRUser == UserInfo.User.UserName && d.ComId == UserInfo.User.ComId && d.KSAPID == ksapID && d.KSType == 1);
+            msg.Result1 = userks;
             msg.Result = dt;
         }
         //课程考试

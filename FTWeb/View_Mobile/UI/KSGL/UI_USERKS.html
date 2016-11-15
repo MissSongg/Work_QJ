@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>试卷-选择题</title>
@@ -10,214 +10,283 @@
     <link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="http://g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-   <style type="text/css">
-      
-   </style>
-  </head>
-  <body>
-    
+
+</head>
+<body ms-controller="UI_USERKS">
+
     <div class="page-group" style="background:#fff;">
-       
+
         <div class="page">
             <!-- 标题栏 -->
             <header class="bar bar-nav" id="bar">
                 <a class="icon icon-left pull-left"></a>
                 <h1 class="title">新员工培训检测试卷</h1>
             </header>
-             <!-- 工具栏 -->
+            <!-- 工具栏 -->
             <nav class="bar bar-tab">
-                <a class="tab-item external active">
+                <a class="tab-item external active" ms-click="SetSTIndex(-1)" ms-if="stindex!=0">
                     <i class="iconfont icon-jtleft mr5"></i>上一题
                 </a>
                 <a class="tab-item external">
-                    
-                </a> 
-                <a class="tab-item external active">
-                    下一题<i class="iconfont icon-jtright ml5"></i>
-                </a>                 
+
+                </a>
+                <a class="tab-item external active" ms-click="SetSTIndex(-2)" ms-if="stindex!=SJModelInfo.STLIST.size()">
+                    下一题<i class=" iconfont icon-jtright ml5">
+                    </i>
+                </a>
             </nav>
             <!-- 这里是页面内容区 -->
-           <div class="content">
-                 <header class="bar bar-nav" style="background:#20affe;">
+            <div class="content">
+                <header class="bar bar-nav" style="background:#20affe;">
                     <h1 class="title" style="padding:0 1rem;">
-                      <span class="pull-left">00:39:20</span>
-                      <span class="pull-right" id="dtk">答题卡 3/9</span>
+                        <span class="pull-left" id="hid"> </span>
+                        <span class="pull-right" id="dtk">答题卡 {{YZTCount}}/{{SJModelInfo.XTCount}}</span>
                     </h1>
                 </header>
                 <div class="exambox">
-                    <p>【单选题】</p>
-                    <div>1.用上量限为300V的0.5级电压表,在温度为30℃条件下测量150V电压时,最大可能测量误差是(   )。(5分)</div>
+                    <p>【{{SJModelInfo.STLIST[stindex].STType}}】</p>
+                    <div>{{SJModelInfo.STLIST[stindex].Order}}.{{SJModelInfo.STLIST[stindex].QContent|html}}({{SJModelInfo.STLIST[stindex].Record}}分)</div>
                     <div class="list-block media-list">
-                    <ul style="background: TRANSPARENT;">
-                      <li>
-                        <label class="label-checkbox item-content">
-                          <input type="radio" name="my-radio">
-                          <!-- 如果是多选  请将  input 换成  <input type="checkbox" name="checkbox">   -->
-                          <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
-                          <div class="item-inner">
-                            <div>A</div>                         
-                          </div>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="label-checkbox item-content">
-                          <input type="radio" name="my-radio">
-                          <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
-                          <div class="item-inner">
-                            <div>B</div>                         
-                          </div>
-                        </label>
-                      </li>
-                      <li>
-                        <label class="label-checkbox item-content">
-                          <input type="radio" name="my-radio">
-                          <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
-                          <div class="item-inner">
-                            <div>C</div>                         
-                          </div>
-                        </label>
-                      </li>
-                       <li>
-                        <label class="label-checkbox item-content">
-                          <input type="radio" name="my-radio">
-                          <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
-                          <div class="item-inner">
-                            <div>D</div>                         
-                          </div>
-                        </label>
-                      </li>
-                    </ul>
-                    <!-- 填空题输入框 -->
-                    <div style="background:#fff;">
-                      <textarea placeholder="请输入您的答案"></textarea>
+                        <ul style="background: TRANSPARENT;" ms-if="SJModelInfo.STLIST[stindex].STType=='单选题'||SJModelInfo.STLIST[stindex].STType=='多选题'||SJModelInfo.STLIST[stindex].STType=='判断题'">
+                            <li ms-repeat-qitem="SJModelInfo.STLIST[stindex].QItem" ms-click="ADDKS(qaitem,SJModelInfo.STLIST[stindex])">
+                                <label class="label-checkbox item-content">
+                                    <input ms-attr-type="SJModelInfo.STLIST[stindex].STType=='多选题'?'checkbox':'radio'" name="my-radio" ms-attr-checked="qaitem.isselect">
+                                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                                    <div class="item-inner">
+                                        <div>{{qitem.ItemName|html}}、 {{qitem.ItemDesc|html}}</div>
+                                    </div>
+                                </label>
+                            </li>
+                        </ul>
+                        <!-- 填空题输入框 -->
+                        <div style="background:#fff;" ms-if="SJModelInfo.STLIST[stindex].STType!='单选题'&&SJModelInfo.STLIST[stindex].STType!='多选题'&&SJModelInfo.STLIST[stindex].STType!='判断题'">
+                            <textarea placeholder="请输入您的答案" ms-duplex="SJModelInfo.STLIST[stindex].Answer" ms-blur="Completion(SJModelInfo.STLIST[stindex])"></textarea>
+                        </div> 
                     </div>
-                    <p class="c-green">参考答案：  A</p>
-                  </div>
                 </div>
             </div>
-        </div>       
+        </div>
     </div>
     <div id="answer-sheet" class="answer-sheet">
-      <div class="answer-panel">
-      <p class="title-list">【单选题】</p>
-        <ul class="overflow">
-          <li>
-            <div class="answer-title">
-              1
+        <div class="answer-panel">
+            <div ms-repeat-item="SJModelInfo.TXType">
+                <p class="title-list">{{item.STType}}&nbsp; 共{{item.totalCount}}题</p>
+                <ul class="overflow">
+                    <li ms-repeat-el="item.STList" ms-click="SetSTIndex(el.Order)">
+                        <div class="answer-title" ms-class-1="active:el.ksCount>0">
+                            {{el.Order}}
+                        </div>
+                    </li>
+                </ul>
             </div>
-          </li>
-          <li>
-            <div class="answer-title">
-              2
-            </div>
-          </li>
-          <li>
-            <div class="answer-title active">
-              3
-            </div>
-          </li>
-          <li>
-            <div class="answer-title active">
-              4
-            </div>
-          </li>
-          <li>
-            <div class="answer-title">
-              5
-            </div>
-          </li>
-          <li>
-            <div class="answer-title">
-              6
-            </div>
-          </li>
-          <li>
-            <div class="answer-title active">
-              7
-            </div>
-          </li>
-          <li>
-            <div class="answer-title">
-              8
-            </div>
-          </li>
-          <li>
-            <div class="answer-title active">
-              9
-            </div>
-          </li>
-        </ul>
-        <p class="title-list">【多选题】</p>
-        <ul class="overflow">
-          <li>
-            <div class="answer-title">
-              1
-            </div>
-          </li>
-          <li>
-            <div class="answer-title">
-              2
-            </div>
-          </li>
-          <li>
-            <div class="answer-title active">
-              3
-            </div>
-          </li>
-          <li>
-            <div class="answer-title active">
-              4
-            </div>
-          </li>
-          <li>
-            <div class="answer-title">
-              5
-            </div>
-          </li>
-          <li>
-            <div class="answer-title">
-              6
-            </div>
-          </li>
-          <li>
-            <div class="answer-title active">
-              7
-            </div>
-          </li>
-          <li>
-            <div class="answer-title">
-              8
-            </div>
-          </li>
-          <li>
-            <div class="answer-title active">
-              9
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
- <script type='text/javascript' src='http://g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
-    <script type='text/javascript' src='http://g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
-    <script type='text/javascript' src='http://g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
-    <script type="text/javascript">
-    $(function () {
-        $(document).on("pageInit", function() {
-            $('.buttons-tab').fixedTab({offset:44});           
-        });
-        $.init();
-        // 计算弹窗位置
-        var h1 = document.getElementById("bar").offsetHeight;
-        var h2 = window.innerHeight - h1*2;
-        document.getElementById("answer-sheet").style.height = h2 + "px";
-        document.getElementById("answer-sheet").style.top = h1*2 + "px";
-        $("#dtk").click(function(){
-          $("#answer-sheet").toggle();
-        })
-    });
 
+        </div>
+    </div>
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm-extend.min.js' charset='utf-8'></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+    <script src="/View_Mobile/JS/touch/toucher.js"></script>
+    <script src="/View_Mobile/JS/avalon.mobile.min.js"></script>
+    <script src="/View_Mobile/JS/raty/jquery.raty.js?v=1.3"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.init();
+            // 计算弹窗位置
+            var h1 = document.getElementById("bar").offsetHeight;
+            var h2 = window.innerHeight - h1 * 2;
+            document.getElementById("answer-sheet").style.height = h2 + "px";
+            document.getElementById("answer-sheet").style.top = h1 * 2 + "px";
+            $("#dtk").click(function () {
+                $("#answer-sheet").toggle();
+            })
+        });
+        var h = 0, m = 0, s = 0;
+        var mytime = null;
+        //开始倒计时
+        function doSubmit() {
+            m = parseInt(model.surplusTime / 60);
+            s = parseInt(model.surplusTime % 60);
+
+            if (m > 60) {
+                h = parseInt(m / 60);
+                m = parseInt(m % 60);
+            }
+            run();
+            return false;
+        }
+        //执行倒计时
+        function run() {
+            //输出
+            var hid = document.getElementById("hid");
+            hid.innerHTML = (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+            s--;
+            if (s < 0) {
+                s = 59;
+                m--;
+                if (m < 0) {
+                    m = 59;
+                    h--;
+                    if (h < 0) {
+                        alert('时间到！');
+                        model.SubmitKSnew();
+                        return;
+                    }
+                }
+            }
+            mytime = setTimeout("run()", 1000);
+        }
+
+        //暂停
+        function doPause() {
+            if (mytime != null) {
+                clearTimeout(mytime);
+                mytime = null;
+            }
+            document.getElementById("tid").disabled = true
+            document.getElementById("gid").disabled = false;
+        }
+
+        //继续
+        function doGo() {
+            run();
+            document.getElementById("tid").disabled = false;
+            document.getElementById("gid").disabled = true;
+        }
 
     </script>
+    <script>
+        var model = avalon.define({
+            $id: "UI_USERKS",
+            SJModelInfo: {},
+            surplusTime: 0,
+            YZTCount: 0,
+            ksapsc: 0,
+            stindex: 0,
+            ksapId: ComFunJS.getQueryString("ksapid", 4),
+            ksType: ComFunJS.getQueryString("ksType", 0),
+            UserKSInfo: { "KSAPID": ComFunJS.getQueryString("ksapid", 4), "KSType": ComFunJS.getQueryString("ksType", 0) },
+            numberData: ["一", "二", "三", "四", "五", "六", "七", "八"],
+            GetKSPAGE: function () {
+                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETMOBILESJGLMODELVIEW', { P1: ComFunJS.getQueryString("sjid", ""), P2: model.ksapId }, function (result) {
+                    if (result.ErrorMsg == "") {
+                        var i = 1;
+                        result.Result[0].TXType.forEach(function (item) {
+                            item.STList.forEach(function (el) {
+                                el.Order = i;
+                                i++;
+                            })
+                        })
+                        i = 1;
+                        result.Result[0].STLIST.forEach(function (el) {
+                            el.Order = i;
+                            i++;
+                            if (el.ksCount > 0) {
+                                model.YZTCount++;
+                            }
+                        })
+                        model.SJModelInfo = result.Result[0];
+                        model.stindex = 0;
+                        model.ksapsc = result.Result3;
+                        if (result.Result1) {
+                            model.UserKSInfo = result.Result1;
+                        }
+                        if (result.Result2) {
+                            model.surplusTime = result.Result2;
+                        }
+                        else {
+                            model.surplusTime = model.SJModelInfo.KSSC * 60;
+                        }
+                        doSubmit();
+                    }
+                    else {
+                        top.ComFunJS.AlertMsg(result.ErrorMsg);
+                    }
+                })
+            }, ADDKS: function (QItem, STItem) {
+                var UserKSItem = { "SJID": model.SJModelInfo.ID, "Answer": QItem.ItemName, "STID": QItem.STID };
+                if (QItem.isselect && STItem.STType == "多选题") {
+                    $.getJSON("/API/VIEWAPI.ashx?ACTION=KSGL_DELKSITEM", { P1: JSON.stringify(UserKSItem) }, function () {
+                        QItem.isselect = "";
+                    })
+                    return;
+                }
+                $.post("/API/VIEWAPI.ashx?ACTION=KSGL_ADDUSERKS", { P1: JSON.stringify(model.UserKSInfo.$model), P2: JSON.stringify(UserKSItem), stType: STItem.STType }, function (result) {
+                    result = JSON.parse(result);
+                    if (result.ErrorMsg == "") {
+                        if (STItem.STType == "单选题") {
+                            STItem.QItem.forEach(function (item) {
+                                item.isselect = "";
+                            })
+                        }
+                        QItem.isselect = result.Result1.ID;
+                        STItem.ksCount = 1;
+                        model.UserKSInfo = result.Result;
+                        if (result.Result2 == 0) {
+                            model.YZTCount++;
+                        }
+                    }
+                });
+            }, refiframe: function () {
 
-  </body>
+                var piframe = $("iframe", top.frames["main"].document)[0];
+                if (piframe && piframe.contentWindow.location.href && piframe.contentWindow.location.href !== "about:blank") {
+                    piframe.contentWindow.location.reload()
+                } else {
+                    if (top.frames["main"].location.href !== "about:blank") {
+                        top.frames["main"].location.reload();
+                    }
+                }
+            }, SubmitKS: function () {
+                top.ComFunJS.winconfirm("确定要交卷吗？", function () {
+                    model.SubmitKSnew();
+                })
+            }, SubmitKSnew: function () {
+                $.post("/API/VIEWAPI.ashx?ACTION=KSGL_SUBMITSJ", { P1: model.UserKSInfo.ID }, function (result) {
+                    result = JSON.parse(result)
+                    if (result.ErrorMsg == "") {
+                        model.UserKSInfo = result.Result;
+                        top.ComFunJS.winAlert2("交卷成功", function () {
+                            model.refiframe();
+                            top.layer.closeAll();
+                        });
+                    }
+                });
+            }, DelKS: function (sjID, stID) {
+                $.getJSON("/API/VIEWAPI.ashx?ACTION=KSGL_DELKSITEM", { P1: sjID, P2: stID }, function () {
+
+                })
+            },
+            Completion: function (STItem) {
+                var UserKSItem = { "SJID": model.SJModelInfo.ID, "Answer": STItem.Answer, "STID": STItem.STID };
+                $.post("/API/VIEWAPI.ashx?ACTION=KSGL_ADDUSERKS", { P1: JSON.stringify(model.UserKSInfo.$model), P2: JSON.stringify(UserKSItem), stType: STItem.STType }, function (result) {
+                    result = JSON.parse(result);
+                    if (result.ErrorMsg == "") {
+                        STItem.ksCount = 1;
+                        model.UserKSInfo = result.Result;
+                        if (result.Result2 == 0) {
+                            model.YZTCount++;
+                        }
+                    }
+                });
+            },
+            SetSTIndex: function (index) {
+                if (index == -1) { 
+                    model.stindex--;
+
+                } else if (index == -2) {
+                    model.stindex++;
+                } else {
+                    model.stindex = index - 1;
+                    $("#answer-sheet").hide();
+                }
+            }
+        })
+        avalon.ready(function () {
+            model.GetKSPAGE();
+        })
+    </script>
+</body>
 </html>

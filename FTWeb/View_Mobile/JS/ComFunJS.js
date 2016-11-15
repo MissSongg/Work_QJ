@@ -179,6 +179,15 @@ var ComFunJS = {
             btn: ['确认']
         });
     },//弹框提示
+    AlertMsg: function (content, callback) {
+        layer.open({
+            content: content,
+            btn: ['确认'],
+            yes: function () {
+                return callback.call(this);
+            },
+        });
+    },//弹框提示
     confirm: function (content, callback) {
         var content = content || "确定要删除吗？";
         layer.open({
@@ -789,7 +798,7 @@ var ComFunJS = {
                 }
 
 
-            } 
+            }
         })
     },//上传图片（神皖）
     uploadimgnew: function (tpdata) {
