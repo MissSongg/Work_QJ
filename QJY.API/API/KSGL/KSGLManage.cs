@@ -310,7 +310,7 @@ namespace QJY.API
                 int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
                 page = page == 0 ? 1 : page;
                 int pagecount = 0;
-                int.TryParse(context.Request.QueryString["count"] ?? "1", out pagecount);//页码
+                int.TryParse(context.Request.QueryString["count"] ?? "8", out pagecount);//页码
                 pagecount = pagecount == 0 ? 10 : pagecount;
                 dt = new SZHL_KS_STB().GetDataPager(" SZHL_KS_ST st inner join SZHL_KS_TK  tk on st.TKID=tk.ID ", strCol + " st.* ", pagecount, page, strOrder, strWhere, ref recordCount);
             }

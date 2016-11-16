@@ -168,7 +168,7 @@
                                     <div class="m-question-list-html" ms-if="item.STType=='单选题'||item.STType=='多选题'||item.STType=='判断题'">
                                         <div class="m-choicebox">
                                             <ul class="single">
-                                                <li class="question-option-list" ms-repeat-qitem="el.QItem" ms-attr-value="qitem.ItemName"><span>{{qitem.ItemName}}</span><div class="option-content">{{qitem.ItemDesc}}</div></li>
+                                                <li class="question-option-list" ms-repeat-qitem="el.QItem" ms-attr-value="qitem.ItemName"><span>{{qitem.ItemName}}</span><div class="option-content">{{qitem.ItemDesc|html}}</div></li>
                                             </ul>
                                         </div>
                                     </div>

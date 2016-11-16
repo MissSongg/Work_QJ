@@ -494,7 +494,7 @@
 .rightArea-answer dt { border-left: 2px solid #f06000; padding-left:5px; line-height: 10px;font-size: 100%;font-weight: 700; color:#666}
 .rightArea-answer .panel-order { margin-top:15px; overflow: hidden; }
 .rightArea-answer .panel-order a { float:left; cursor: pointer; margin: 0 2px 5px 0; width:22px; height:22px; line-height: 22px; outline: none; text-align: center; font-size: 12px; background:url(../images/tk_exam_new.png) 0 -168px;font-family: 'Arial'; }
-.rightArea-answer .panel-order a:hover { text-decoration: none; background: #f06000; color: #fff; }
+.rightArea-answer .panel-order a:hover,.rightArea-answer .panel-order a.active { text-decoration: none; background: #f06000; color: #fff; }
 .rightArea-answer .panel-order a.checked { background-position:-29px -168px;color: #fff; }
 .rightArea-answer .panel-order a.error { background-position:-93px -168px;color: #fff; }
 .rightArea-answer .panel-order a.right { background-position:-60px -168px;color: #fff; }
