@@ -1327,6 +1327,8 @@
     <Content Include="View_Mobile\UI\CRM\UI_KHMP_LIST.html" />
     <Content Include="View_Mobile\UI\CUSTOM\UI_RWGL_PJLIST.html" />
     <Content Include="View_Mobile\UI\KQQD.html" />
+    <Content Include="View_Mobile\UI\KSGL\UI_KCGLIST.html" />
+    <Content Include="View_Mobile\UI\KSGL\UI_KCGL.html" />
     <Content Include="View_Mobile\UI\KSGL\css\style.css" />
     <Content Include="View_Mobile\UI\KSGL\UI_SJGL.html" />
     <Content Include="View_Mobile\UI\KSGL\UI_KSAP.html" />

@@ -1,10 +1,27 @@
-@import url(http://at.alicdn.com/t/font_hshgxe7qt8ci8uxr.css);
+@import url(http://at.alicdn.com/t/font_itj7jkf99y3c8fr.css);
 /*自定义样式*/
 .bar.bar-nav{background:#393a3f;}
 .title{color: #fff;}
 .bar.bar-nav .icon{color: #fff;}
+.bar:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: auto;
+    top: auto;
+    height: 1px;
+    width: 100%;
+    background-color: #393a3f;
+    display: block;
+    z-index: 15;
+    -webkit-transform-origin: 50% 100%;
+    transform-origin: 50% 100%;
+}
 /*公共样式*/
 ul,li{list-style: none;margin: 0;padding:0;}
+dt,dd,dl{margin: 0 !important;}
+img{width: 100%}
 .c000{color: #000;}
 .c333{color: #333;}
 .c666{color: #666;}
@@ -16,7 +33,9 @@ ul,li{list-style: none;margin: 0;padding:0;}
 .inline-block{display: inline-block;}
 .mr5{margin-right:5px }
 .ml5{margin-left:5px }
-/**/
+.item-title{font-size: .8rem;}
+.word-break {white-space: nowrap;word-break: keep-all;overflow: hidden;text-overflow: ellipsis;}
+/*考试结果/详情*/
 .box-block{background:#20affe;color:#fff;text-align: center;padding-bottom: 1.5rem;}
 .no-content{text-align: center;font-size: .7rem;color: #666;}
 .block-icon{display: inline-block;float: left;margin-left:1.5rem; }
@@ -38,4 +57,19 @@ ul,li{list-style: none;margin: 0;padding:0;}
 .answer-title.active{background-color: #20affe}
 .title-list{margin: .3rem 0}
 .overflow{overflow: hidden;}
-.answer-sheet{position: fixed;top: 0;left: 0;z-index: 9999;width: 100%;height: 80%;background: rgba(0,0,0,.5);transition: all .2s ease;display: none;}
+.answer-sheet{position: fixed;top: 0;left: 0;z-index: 9999;width: 100%;height: 80%;background: rgba(0,0,0,.2);transition: all .2s ease;display: none;}
+/**/
+.course-img{height: 9rem;}
+.video li {position: relative;padding-left:.2rem;padding:.3rem 0 .3rem .3rem;background-color: #fff;margin-bottom:.5rem;font-size: .8rem;}
+.video li a{color:#71777d; font-size: .7rem}
+.course-panel{padding:1rem;}
+.course-info-tip dt {padding: .8rem 0 .2rem;line-height: .7rem;font-size: .7rem;color: #2b333b;}
+.course-info-tip dd {line-height: 1rem;font-size: .6rem;color: #71777d;}
+.ksfs{width:44px;height:44px;line-height:44px;text-align:center;font-size: 1rem;color: #fff;background-color: #20affe;border-radius: 100%;}
+.bg-red{background-color:#FF5E5E;}
+.card{background: #fff;box-shadow: 0 .05rem .1rem rgba(0,0,0,.1);}
+
+#btnSelect{display: inline-block;}
+.ulDiv li{float: inherit;width: 100%;line-height:1.8rem;position: relative;font-size: .7rem;color: #666;text-indent: 1em;text-align: left;}
+.ulDiv li.cor{color:#0894ec;}
+.answer-panel.ulDiv{padding:0;}
