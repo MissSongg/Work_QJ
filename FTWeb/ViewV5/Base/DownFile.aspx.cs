@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Net;
 
 namespace QjySaaSWeb.ViewV5.Base
 {
@@ -130,7 +131,12 @@ namespace QjySaaSWeb.ViewV5.Base
                     Response.Redirect(filename);
 
                 }
+                if (type == "video")
+                {
+                    Byte[] bytes = new WebClient().DownloadData("http://60.205.107.141:9000/v2/qycode/document/video/e7872e6f41459c1b8daa280ad1d0c7a9");
+                    Response.OutputStream.Write(bytes, 0, bytes.Length);
 
+                }
             }
             catch (Exception ex) { }
             // Response.ContentType = "application/x-zip-compressed";
