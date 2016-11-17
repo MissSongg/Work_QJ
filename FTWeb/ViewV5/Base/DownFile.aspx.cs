@@ -133,7 +133,8 @@ namespace QjySaaSWeb.ViewV5.Base
                 }
                 if (type == "video")
                 {
-                    Byte[] bytes = new WebClient().DownloadData("http://60.205.107.141:9000/v2/qycode/document/video/e7872e6f41459c1b8daa280ad1d0c7a9");
+                    string url = UserInfo.QYinfo.FileServerUrl + "video/" + MD5;
+                    Byte[] bytes = new WebClient().DownloadData(url);
                     Response.OutputStream.Write(bytes, 0, bytes.Length);
 
                 }

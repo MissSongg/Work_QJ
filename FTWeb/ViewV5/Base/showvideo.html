@@ -18,9 +18,11 @@
     <script type="text/javascript">
         $(function () {
             var id = ComFunJS.getQueryString("md5");
+            var strlocation = "http://" + location.host + "/ViewV5/Base/DownFile.aspx?type=video&MD5=" + id
+
             var player = new prismplayer({
                 id: "J_prismPlayer", // 容器id
-                source: "http://101.201.143.151:8001/ViewV5/Base/DownFile.aspx?type=video", // 视频url 支持互联网可直接访问的视频地址
+                source: strlocation, // 视频url 支持互联网可直接访问的视频地址
                 autoplay: true,      // 自动播放
                 width: "100%",       // 播放器宽度
                 height: "500px"      // 播放器高度

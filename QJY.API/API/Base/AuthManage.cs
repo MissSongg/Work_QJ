@@ -293,6 +293,26 @@ namespace QJY.API
                     {
                         msg.ErrorMsg = "修改用户失败";
                     }
+                    else {
+
+                        string strSql = "";
+                        JH_Auth_Role role = new JH_Auth_RoleB().GetEntity(d => d.RoleName == user.zhiwu && (d.ComId == UserInfo.User.ComId || d.ComId == 0));
+                        if (role == null)
+                        {
+                            role = new JH_Auth_Role();
+                            role.PRoleCode = 0;
+                            role.RoleName = user.zhiwu;
+                            role.RoleDec = user.zhiwu;
+                            role.IsUse = "Y";
+                            role.isSysRole = "N";
+                            role.leve = 0;
+                            role.ComId = UserInfo.User.ComId;
+                            role.DisplayOrder = 0;
+                            new JH_Auth_RoleB().Insert(role);
+                        }
+                        strSql += string.Format("DELETE JH_Auth_UserRole where UserName='{0}';INSERT into JH_Auth_UserRole (UserName,RoleCode,ComId) Values('{0}',{1},{2})", user.UserName, role.RoleCode, UserInfo.User.ComId);
+                        new JH_Auth_RoleB().ExsSql(strSql);
+                    }
                 }
                 else
                 {
@@ -339,7 +359,7 @@ namespace QJY.API
                             role.DisplayOrder = 0;
                             new JH_Auth_RoleB().Insert(role);
                         }
-                        strSql += string.Format("INSERT into JH_Auth_UserRole (UserName,RoleCode,ComId) Values('{0}',{1},{2})", user.UserName, role.RoleCode, UserInfo.User.ComId);
+                        strSql += string.Format("DELETE JH_Auth_UserRole where UserName='{0}';INSERT into JH_Auth_UserRole (UserName,RoleCode,ComId) Values('{0}',{1},{2})", user.UserName, role.RoleCode, UserInfo.User.ComId);
                         new JH_Auth_RoleB().ExsSql(strSql);
 
                     }

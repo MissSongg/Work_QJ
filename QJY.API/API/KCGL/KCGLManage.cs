@@ -91,7 +91,8 @@ namespace QJY.API
             msg.Result = kcgl;
             int[] kjIds = kcgl.KJID.SplitTOInt(',');
             msg.Result1 = new SZHL_PX_KJGLB().GetEntities(d => kjIds.Contains(d.ID)).Select(d => d.KJName).ToList().ListTOString(',');
-            msg.Result2 = new SZHL_PX_KJGLB().GetEntities(d => kjIds.Contains(d.ID)).ToList();
+            string strSql = string.Format("SELECT kjgl.*,f.FileMD5 from SZHL_PX_KJGL kjgl inner join FT_File  f on kjgl.Files=f.ID where  kjgl.ID in ({0})", kcgl.KJID);
+            msg.Result2 = new SZHL_PX_KJGLB().GetDTByCommand(strSql);
         }
 
         #endregion
