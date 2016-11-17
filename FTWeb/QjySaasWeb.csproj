@@ -291,7 +291,6 @@
     <Content Include="ViewV5\Base\FileSel.html" />
     <Content Include="ViewV5\Base\FolderSel.html" />
     <Content Include="ViewV5\Base\LCSZSelect.html" />
-    <Content Include="ViewV5\Base\mp4show.html" />
     <Content Include="ViewV5\Base\pdf.html" />
     <Content Include="ViewV5\Base\ppt.html" />
     <Content Include="ViewV5\Base\SelDXTemplate.html" />
