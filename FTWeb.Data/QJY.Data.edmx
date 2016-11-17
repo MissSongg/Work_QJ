@@ -1631,6 +1631,7 @@
           <Property Name="ISJJ" Type="int" />
           <Property Name="KSType" Type="int" />
           <Property Name="ComId" Type="int" />
+          <Property Name="JJDate" Type="datetime" />
         </EntityType>
         <EntityType Name="SZHL_KS_USERKSItem">
           <Key>
@@ -4907,6 +4908,7 @@
           <Property Name="ISJJ" Type="Int32" />
           <Property Name="KSType" Type="Int32" />
           <Property Name="ComId" Type="Int32" />
+          <Property Name="JJDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="SZHL_KS_USERKSItem">
           <Key>
@@ -7379,6 +7381,7 @@
           <EntitySetMapping Name="SZHL_KS_USERKS">
             <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_KS_USERKS">
               <MappingFragment StoreEntitySet="SZHL_KS_USERKS">
+                <ScalarProperty Name="JJDate" ColumnName="JJDate" />
                 <ScalarProperty Name="ComId" ColumnName="ComId" />
                 <ScalarProperty Name="KSType" ColumnName="KSType" />
                 <ScalarProperty Name="ISJJ" ColumnName="ISJJ" />

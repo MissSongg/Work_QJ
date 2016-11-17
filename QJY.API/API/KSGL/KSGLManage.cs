@@ -854,7 +854,7 @@ SZHL_KS_KSAP where " + strWhere + ") AS newksap";
                 DataTable dtuks = userks.FilterTable("KSAPID=" + row["ID"]);
                 if (dtuks != null && dtuks.Rows.Count > 0)
                 {
-                    row["ISLSYJ"] = dtuks.Rows[0]["YJTeacher"];
+                    row["ISLSYJ"] = row["Status"].ToString() == "0" ? "" : "1";
                     row["ISKS"] = "1";
                     if (dtuks.Rows[0]["ISJJ"].ToString() == "1")
                     {
@@ -1351,9 +1351,10 @@ END AS kszt,dateadd(minute,ISNULL(KSSC,0),KSDate) AS ksEND from SZHL_KS_KSAP " +
                     userKs.ComId = UserInfo.User.ComId;
                     new SZHL_KS_USERKSB().Insert(userKs);
                 }
-                else {
+                else
+                {
                     userKs = userKs1;
-                } 
+                }
             }
             int isExists = 0;
             if (new SZHL_KS_USERKSItemB().GetEntities(d => d.SJID == userKSItem.SJID && d.ComId == UserInfo.User.ComId && d.CRUser == UserInfo.User.UserName && d.STID == userKSItem.STID && d.UserKSID == userKs.ID).Count() > 0)
@@ -1452,9 +1453,9 @@ AND CRUser = '{2}';", userKs.ID, userKs.SJID, UserInfo.User.UserName);
                 object record = new SZHL_KS_USERKSItemB().ExsSclarSql(sqlitem);
                 decimal total = 0;
                 decimal.TryParse(record.ToString(), out total);
-                userKs.CRDate = DateTime.Now;
                 userKs.ISJJ = 1;
                 userKs.Record = total;
+                userKs.JJDate = DateTime.Now;
                 new SZHL_KS_USERKSB().Update(userKs);
             }
             msg.Result = userKs;
@@ -1666,6 +1667,70 @@ AND CRUser = '{2}';", userKs.ID, userKs.SJID, UserInfo.User.UserName);
 
             msg.Result = dt;
         }
+        /// <summary>
+        /// 阅卷获取人员填写答案手机
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETMOBILEYJVIEW(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int sjID = 0, ksapID = 0;
+            int.TryParse(P2, out ksapID);
+            SZHL_KS_KSAP ksap = new SZHL_KS_KSAPB().GetEntity(d => d.ID == ksapID);
+            if (ksap != null)
+            {
+                sjID = ksap.SJID.Value;
+            }
+            //获取试卷信息
+            DataTable dt = new SZHL_KS_SJB().GetDTByCommand(string.Format("SELECT sj.ID,sj.SJName,sj.TotalRecord,sj.SJDescribe,sj.PassRecord,sj.KSSC,COUNT(DISTINCT sjst.STType) DTCount,COUNT(DISTINCT sjst.STID) XTCount from  SZHL_KS_SJ sj inner join SZHL_KS_SJSTGL sjst on  sj.ID=sjst.SJID where  sj.ID={0} and sj.ComId={1}  GROUP by sj.ID,sj.SJName,sj.TotalRecord,sj.SJDescribe,sj.PassRecord,sj.KSSC ", sjID, UserInfo.User.ComId));
+            dt.Columns.Add("TXType", Type.GetType("System.Object"));
+            dt.Columns.Add("STLIST", Type.GetType("System.Object"));
+            //获取试卷的题型列表 strIds 题库试题Id 
+            DataTable dtType = new SZHL_KS_SJB().GetDTByCommand(@"SELECT  DISTINCT STType,sum(isnull(Record,0)) totalRecord,COUNT(ID) totalCount,stuff((select ','+cast( sjst.STID as varchar) from SZHL_KS_SJSTGL sjst where sjst.SJID=SZHL_KS_SJSTGL.SJID and sjst.STType=SZHL_KS_SJSTGL.STType for xml path('')),1,1,'') stIds
+                                                                    from SZHL_KS_SJSTGL where SJID=" + sjID + " GROUP by STType,SJID");
+
+            dtType.Columns.Add("STList", Type.GetType("System.Object"));
+            //获取试卷的题列表
+            DataTable dtST = new SZHL_KS_SJB().GetDTByCommand(@"SELECT st.ID,st.STID,st.STType,cast(st.QContent as VARCHAR(MAX)) QContent,COUNT(item.UserKSID) ksCount,st.QAnswer,st.Record as stRecord  FROM  SZHL_KS_SJSTGL st LEFT  JOIN SZHL_KS_USERKSItem item on st.STID=item.STID and item.SJID=" + sjID + "  and item.CRUser='" + P1 + "' where   st.SJID=" + sjID + " GROUP by st.ID,st.STID,st.STType,cast(st.QContent as VARCHAR(MAX)),st.QAnswer,st.Record ");
+
+            dtST.Columns.Add("QItem", Type.GetType("System.Object"));
+            dtST.Columns.Add("Answer", Type.GetType("System.String"));
+            dtST.Columns.Add("Record", Type.GetType("System.String"));
+            string strItemSql = string.Format(@"SELECT item.*,ksitem.ID isselect from SZHL_KS_STItem item inner join SZHL_KS_SJST sjst on item.STID=sjst.STID LEFT join SZHL_KS_USERKSItem ksitem on item.STID=ksitem.STID and ksitem.SJID=" + sjID + "  AND item.ItemName=CAST( ksitem.Answer as VARCHAR(50)) and ksitem.CRUser='{0}' where   sjst.SJID={1}", P1 , sjID);
+            strItemSql = string.Format(@"SELECT item.*,ksitem.ID isselect from SZHL_KS_SJSTGLItem item inner join SZHL_KS_SJSTGL sjst 
+                                            on item.STID=sjst.STID and item.SJID=sjst.SJID LEFT join SZHL_KS_USERKSItem ksitem on item.STID=ksitem.STID and item.SJID=ksitem.SJID and ksitem.SJID={1}  
+                                            AND item.ItemName=CAST( ksitem.Answer as VARCHAR(50)) and ksitem.CRUser='{0}' where item.STID in ({1}) and item.SJID={1}", P1, sjID);
+            string sql = string.Format("SELECT STID,CAST( isnull(Record,0) as INT) Record,Answer FROM SZHL_KS_USERKSItem WHERE CRUser='{0}'  AND SJID={1}", P1, sjID);
+            DataTable questionItem = new SZHL_KS_STItemB().GetDTByCommand(strItemSql);
+            DataTable dtuser = new SZHL_KS_USERKSItemB().GetDTByCommand(sql);
+            foreach (DataRow rowST in dtST.Rows)
+            {
+                rowST["QItem"] = questionItem.FilterTable(" STID=" + rowST["STID"]);
+                DataTable dtuser2 = dtuser.FilterTable(" STID=" + rowST["STID"]);
+                if (dtuser2 != null && dtuser2.Rows.Count > 0)
+                {
+                    rowST["Answer"] = dtuser2.Rows[0]["Answer"];
+                    rowST["Record"] = dtuser2.Rows[0]["Record"];
+                }
+                else
+                {
+                    rowST["Record"] = 0;
+                }
+            }
+            foreach (DataRow rowType in dtType.Rows)
+            {
+                //获取试卷的题列表 
+                rowType["STList"] = dtST.Select("STID in (" + rowType["stIds"] + ")");
+            }
+            dt.Rows[0]["TXType"] = dtType;
+            dt.Rows[0]["STLIST"] = dtST;
+            SZHL_KS_USERKS userks = new SZHL_KS_USERKSB().GetEntity(d => d.CRUser == P1 && d.ComId == UserInfo.User.ComId && d.KSAPID == ksapID);
+            msg.Result1 = userks; 
+            msg.Result = dt;
+        }
         // 课程详细页面考试记录查看详细 
         public void GETKCYJVIEW(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
@@ -1746,6 +1811,32 @@ AND CRUser = '{2}';", userKs.ID, userKs.SJID, UserInfo.User.UserName);
             msg.Result = dt;
             msg.Result1 = recordCount;
         }
+        #endregion
+
+        #region 手机获取考试结果信息
+        public void GETKSINFORESULT(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int ksapid = 0;
+            int.TryParse(P1, out ksapid);
+            SZHL_KS_KSAP ksap = new SZHL_KS_KSAPB().GetEntity(d => d.ID == ksapid);
+            msg.Result = ksap;
+            //获取试卷信息
+            DataTable dt = new SZHL_KS_SJB().GetDTByCommand(string.Format(@"SELECT sj.ID,sj.SJName,sj.TotalRecord,sj.SJDescribe,sj.PassRecord,userks.JJDate ,userks.ID,userks.Record,
+                                                                            COUNT(DISTINCT sjst.STID) XTCount ,COUNT(DISTINCT ksitem.STID ) yzcount,SUM(case when   sjst.QAnswer<>ksitem.Answer 
+                                                                            and sjst.STType in ('单选题','多选题','判断题') then 0 else 1 END) ErrorCount
+                                                                            from  SZHL_KS_SJ sj inner join SZHL_KS_SJSTGL sjst on  sj.ID=sjst.SJID
+                                                                            left join SZHL_KS_USERKS userks on userks.SJID=sj.ID and userks.CRUser='{0}'
+                                                                            LEFT JOIN SZHL_KS_USERKSItem  ksitem on sjst.STID=ksitem.STID and ksitem.UserKSID=userks.ID
+                                                                            where  sj.ID={1} and sj.ComId={2}  GROUP by sj.ID,userks.JJDate,userks.Record,sj.SJName,sj.TotalRecord,sj.SJDescribe,sj.PassRecord,userks.ID ", UserInfo.User.UserName, ksap.SJID, UserInfo.User.ComId));
+            msg.Result1 = dt;
+            if (dt.Rows[0]["JJDate"].ToString() != "")
+            {
+
+                DateTime subDate = (DateTime)dt.Rows[0]["JJDate"];
+                msg.Result2 = (int)(subDate - ksap.KSDate.Value).TotalMinutes;
+            }
+        }
+
         #endregion
 
     }
