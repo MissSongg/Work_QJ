@@ -470,6 +470,8 @@
         OpenUserLead: function (item) {
             $('#UserLeadModal').modal('show');
             tempindex.selUserName = item;
+            tempindex.userLead = item.UserLeader;
+            ComFunJS.initForm();
         },
         SetUserLeader: function () {
             $.post("/API/VIEWAPI.ashx", { Action: "XTGL_SETUSERLEADER", P1: tempindex.userLead, P2: tempindex.selUserName.UserName },
