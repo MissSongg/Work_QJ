@@ -91,6 +91,7 @@ namespace QJY.API
             msg.Result = kcgl;
             int[] kjIds = kcgl.KJID.SplitTOInt(',');
             msg.Result1 = new SZHL_PX_KJGLB().GetEntities(d => kjIds.Contains(d.ID)).Select(d => d.KJName).ToList().ListTOString(',');
+            msg.Result2 = new SZHL_PX_KJGLB().GetEntities(d => kjIds.Contains(d.ID)).ToList();
         }
 
         #endregion

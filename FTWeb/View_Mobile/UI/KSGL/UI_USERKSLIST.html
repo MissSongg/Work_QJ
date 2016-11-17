@@ -76,6 +76,7 @@
             search: "",
             page: 1,
             loadtip: "",
+            loading:false,
             type: 1,
             pagecount: 8,
             GetList: function () {
@@ -87,13 +88,7 @@
                         if (model.page == 1 && resultData.Result.length == 0) {
                             model.loadtip = '没有找到数据哦'
                         }
-
-                        for (var i = 0; i < resultData.Result.length; i++) {
-                            resultData.Result[i].isfold = model.isfold;
-                            if (model.DataID != "-1") {//如果有数据ID，则展开显示
-                                resultData.Result[i].isfold = true;
-                            }
-                        }
+                         
 
                         model.ListData.pushArray(resultData.Result);
                         //判断是否加载完毕
