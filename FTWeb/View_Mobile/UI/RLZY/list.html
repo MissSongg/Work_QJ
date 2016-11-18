@@ -122,7 +122,7 @@
             loadMore: function () {
                 if (model.loading) return;
                 model.loading = true;
-                $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETRLZYLIST&r=" + Math.random(), { P1: model.type, "p": model.page }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETRLZYLIST&r=" + Math.random(), { P1: model.type, "p": model.page }, function (r) {
                     model.loading = false;
                     if (r.ErrorMsg == "") {
                         if (model.page == 1 && r.Result.length == 0) {

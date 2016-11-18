@@ -38,7 +38,7 @@
                 var lg = $.loading({
                     content: '保存中...',
                 })
-                $.post("/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLWCQK&r=" + Math.random(), { P1: wcel.RWWCQK, P2: wcel.ID }, function (data) {
+                $.post("/API/VIEWAPI.ashx?Action=DBRW_SETCUS_SWRWGLWCQK&r=" + Math.random(), { P1: wcel.RWWCQK, P2: wcel.ID }, function (data) {
                     lg.hide();
                     var data = $.parseJSON(data);
                     if (data.ErrorMsg == "") {
@@ -61,7 +61,7 @@
                 var lg = $.loading({
                     content: '保存中...',
                 })
-                $.getJSON('/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLPJWCQK_WX&r=' + Math.random(), { "P1": pjel.DBPJ, ID: pjel.ID }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=DBRW_SETCUS_SWRWGLPJWCQK_WX&r=' + Math.random(), { "P1": pjel.DBPJ, ID: pjel.ID }, function (resultData) {
                     lg.hide();
                     if (resultData.ErrorMsg == "") {
                         $.tips({
@@ -89,7 +89,7 @@
                         },
                         click: function (score, evt) {
                             var obj = $(this);
-                            $.getJSON('/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLPFWCQK_WX&r=' + Math.random(), { "P1": score * 20, ID: $(this).attr("itemid") }, function (resultData) {
+                            $.getJSON('/API/VIEWAPI.ashx?Action=DBRW_SETCUS_SWRWGLPFWCQK_WX&r=' + Math.random(), { "P1": score * 20, ID: $(this).attr("itemid") }, function (resultData) {
                                 if (resultData.ErrorMsg == "") {
                                     if ($(obj).parent().parent().parent().find(".pftatus .ui-badge-muted").text() == "未评价") {
                                         $(obj).parent().parent().parent().find(".pftatus .ui-badge-muted").text("已评价")
@@ -123,7 +123,7 @@
                 content: '加载中...',
             })
 
-            $.getJSON("/API/WXAPI.ashx?Action=DBRW_GETCUS_SWRWGLPJLIST_WX&r=" + Math.random(), { "P1": strId }, function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=DBRW_GETCUS_SWRWGLPJLIST_WX&r=" + Math.random(), { "P1": strId }, function (r) {
                 lg.hide();
                 if (r.ErrorMsg == "") {
                     if (r.Result.length > 0) {

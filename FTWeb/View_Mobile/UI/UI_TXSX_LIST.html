@@ -213,7 +213,7 @@
             delTXSX: function (el) {
                 $.confirm('确定要删除此提醒吗？', function () {
 
-                    $.getJSON("/API/WXAPI.ashx?Action=TXSX_DELTXSX&r=" + Math.random(), { P1: el.ID }, function (r) {
+                    $.getJSON("/API/VIEWAPI.ashx?Action=TXSX_DELTXSX&r=" + Math.random(), { P1: el.ID }, function (r) {
 
                         if (r.ErrorMsg == "") {
                             model.ctData.remove(el);
@@ -229,7 +229,7 @@
             loadMore: function () {
                 if (model.loading) return;
                 model.loading = true;
-                $.getJSON("/API/WXAPI.ashx?Action=TXSX_GETTXSXLIST&r=" + Math.random(), { "p": model.page, lb: model.type, ID: model.DataID, P2: -1,Content:model.search }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=TXSX_GETTXSXLIST&r=" + Math.random(), { "p": model.page, lb: model.type, ID: model.DataID, P2: -1,Content:model.search }, function (r) {
                     model.loading = false;
                     if (r.ErrorMsg == "") {
                         for (var i = 0; i < r.Result.length; i++) {

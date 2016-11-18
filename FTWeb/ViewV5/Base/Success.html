@@ -33,7 +33,7 @@
                         if (covtype) { //如果有转化参数,则循环判断是否转化文档成功,成功后再返回
                             var time = 1000;
                             var timer = setInterval(function () {
-                                $.getJSON("/API/WXAPI.ashx?Action=QYWD_ISCOV&r=" + Math.random(), { "P1":JSON.stringify(result.Result) }, function (resultdada) {
+                                $.getJSON("/API/VIEWAPI.ashx?Action=QYWD_ISCOV&r=" + Math.random(), { "P1":JSON.stringify(result.Result) }, function (resultdada) {
                                     if (resultdada.ErrorMsg == "") {
                                         window.name = "";//返回存入数据库的文件数据,清除window.name属性
                                         window.document.getElementById("tb").className = "fa fa-flag";

@@ -31,14 +31,14 @@ namespace QjySaaSWeb.APP
             string P2 = context.Request["P2"] ?? "";
             string P3 = context.Request["P3"] ?? "";
             string UserName = context.Request["UserName"] ?? "";
-            string strIP = CommonHelp.getIP(context);
+            string strIP = CommonHelp.getIP(context);//用户IP
+            int intTimeOut = 5;//用户超时间隔时间即szhlcode失效时间
 
             Msg_Result Model = new Msg_Result() { Action = strAction.ToUpper(), ErrorMsg = "" };
             if (!string.IsNullOrEmpty(strAction))
             {
                 try
                 {
-                    //TODO: 未实现,分享页面的接口通过暂时将分享人的code传递给打开链接的人来调用接口(不安全)
                     #region 必须登录执行接口
                     Model.ErrorMsg = "";
 
@@ -53,8 +53,8 @@ namespace QjySaaSWeb.APP
                             Model.Action = acs[1];
                             container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), new JH_Auth_UserB.UserInfo());
                             int cid = 0;
-                            string un=string.Empty;
-                            if (Model.Result4 != null )
+                            string un = string.Empty;
+                            if (Model.Result4 != null)
                             {
                                 JH_Auth_User UserInfo = Model.Result4;
                                 cid = UserInfo.ComId.Value;
@@ -72,14 +72,24 @@ namespace QjySaaSWeb.APP
                             //通过Code获取用户名，然后执行接口方法
                             var container = ServiceContainerV.Current().Resolve<IWsService>(acs[0].ToUpper());
                             JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB().GetUserInfo(strSZHLCode);
+                            TimeSpan ts = new TimeSpan(UserInfo.User.logindate.Value.Ticks).Subtract(new TimeSpan(DateTime.Now.Ticks)).Duration();
                             if (UserInfo != null)
                             {
-                                Model.Action = Model.Action.Substring(acs[0].Length + 1);
-                                container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), UserInfo);
-                                if (strAction != "CHAT_GETNOREADMSG")
+                                if (ts.TotalMinutes > intTimeOut)  // 超过五分钟了,超时了哦;
                                 {
-                                    new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserInfo.User.UserName, UserInfo.User.UserRealName, UserInfo.QYinfo.ComId, strIP);
+                                    UserInfo.User.pccode = "";
+                                    new JH_Auth_UserB().Update(UserInfo.User);//清除PCCode
+                                    Model.ErrorMsg = "NOSESSIONCODE";
                                 }
+                                else
+                                {
+                                    Model.Action = Model.Action.Substring(acs[0].Length + 1);
+                                    container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), UserInfo);
+                                    new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserInfo.User.UserName, UserInfo.User.UserRealName, UserInfo.QYinfo.ComId, strIP);
+                                    UserInfo.User.logindate = DateTime.Now;
+                                    new JH_Auth_UserB().Update(UserInfo.User);//更新用户最近的操作时间
+                                }
+
                             }
                             else
                             {
@@ -99,7 +109,7 @@ namespace QjySaaSWeb.APP
                 {
                     Model.ErrorMsg = strAction + "接口调用失败,请检查日志";
                     Model.Result = ex.ToString();
-                    new JH_Auth_LogB().InsertLog(strAction, Model.ErrorMsg, ex.ToString(), UserName,"", 0, strIP);
+                    new JH_Auth_LogB().InsertLog(strAction, Model.ErrorMsg, ex.ToString(), UserName, "", 0, strIP);
 
                 }
             }

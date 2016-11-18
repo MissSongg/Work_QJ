@@ -195,7 +195,7 @@
                     })
                     Ids = Ids.length > 1 ? Ids.substring(0, Ids.length - 1) : Ids;
                 }
-                $.getJSON("/API/WXAPI.ashx?Action=XTGL_UPDTEREADSTATES&r=" + Math.random(), { P1: Ids, s: "1" }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_UPDTEREADSTATES&r=" + Math.random(), { P1: Ids, s: "1" }, function (r) {
                     if (r.ErrorMsg == "") {
                         if (!type && el.wxLink) {
                             el.isRead = 1;
@@ -216,7 +216,7 @@
                 // 重置加载flag
                 if (model.loading) return;
                 model.loading = true;
-                $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETXXZXIST_PAGE&r=" + Math.random(), { "p": model.page, "pagecount": 10, "msgTypes": msgtype, P1: model.isRead }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETXXZXIST_PAGE&r=" + Math.random(), { "p": model.page, "pagecount": 10, "msgTypes": msgtype, P1: model.isRead }, function (r) {
                     model.loading = false;
                     if (r.ErrorMsg == "") {
                         if (model.page == 1) {
@@ -254,7 +254,7 @@
 
         avalon.ready(function () {
             model.GetKJFSModel();
-            $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETUSERINFO", function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETUSERINFO", function (r) {
                 if (r.ErrorMsg == "") {
                     model.userData = r.Result;
                     $(".header").show('normal');

@@ -274,7 +274,7 @@
                 loadMore: function () {
                     if (model.loading) return;
                     model.loading = true;
-                    $.getJSON("/API/WXAPI.ashx?Action=YCGL_GETYCGLLIST&r=" + Math.random(), { P1: model.type, "p": model.page, ID: model.DataID, Content: model.search }, function (r) {
+                    $.getJSON("/API/VIEWAPI.ashx?Action=YCGL_GETYCGLLIST&r=" + Math.random(), { P1: model.type, "p": model.page, ID: model.DataID, Content: model.search }, function (r) {
                         model.loading = false;
                         if (r.ErrorMsg == "") {
                             if (model.page == 1 && r.Result.length == 0) {
@@ -326,7 +326,7 @@
                     model.getSHNum();
                 },
                 getSHNum: function () {//抓取审核数量
-                    $.getJSON("/API/WXAPI.ashx?Action=LCSP_GETMODELDSHQTY&r=" + Math.random(), { P1: "YCGL" }, function (r) {
+                    $.getJSON("/API/VIEWAPI.ashx?Action=LCSP_GETMODELDSHQTY&r=" + Math.random(), { P1: "YCGL" }, function (r) {
                         if (r.ErrorMsg == "") {
                             if (r.Result.length > 0) {
                                 model.shNum = r.Result[0].QTY;

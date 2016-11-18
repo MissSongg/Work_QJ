@@ -21,7 +21,7 @@
             ctData: [],
             GetModelList: function () {
 
-                $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETUSERINFO", function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETUSERINFO", function (r) {
 
                     if (r.ErrorMsg == "") {
                         model.userData = r.Result;
@@ -30,7 +30,7 @@
                 })
             },
             GetNews: function () {
-                $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETXXZXIST_PAGE&r=" + Math.random(), { "p": 1, "msgTypes": "QYHD,KDGL,DCGL", "P1": 0 }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETXXZXIST_PAGE&r=" + Math.random(), { "p": 1, "msgTypes": "QYHD,KDGL,DCGL", "P1": 0 }, function (r) {
                     layer.closeAll();
                     if (r.ErrorMsg == "") {
                         if (r.Result.length > 0) {
@@ -41,7 +41,7 @@
             },
             vieww: function (el) {
 
-                $.getJSON("/API/WXAPI.ashx?Action=XTGL_UPDTEREADSTATES&r=" + Math.random(), { "P1": el.ID, "s": "1" }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_UPDTEREADSTATES&r=" + Math.random(), { "P1": el.ID, "s": "1" }, function (r) {
 
                     if (r.ErrorMsg == "") {
                         el.isRead = 1;

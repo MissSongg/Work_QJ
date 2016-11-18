@@ -174,7 +174,7 @@
             ids: "",
             vieww: function (el) {
 
-                $.getJSON("/API/WXAPI.ashx?Action=XTGL_UPDTEREADSTATES&r=" + Math.random(), { P1: el.ID, s: "1" }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_UPDTEREADSTATES&r=" + Math.random(), { P1: el.ID, s: "1" }, function (r) {
                     if (r.ErrorMsg == "") {
                         el.isRead = 1;
                         if (el.wxLink) {
@@ -185,7 +185,7 @@
 
             },
             getmsgtype: function () {
-                $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETUSERCENTERTYPE&r=" + Math.random(), { P1: model.msgTypes }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETUSERCENTERTYPE&r=" + Math.random(), { P1: model.msgTypes }, function (r) {
                     if (r.ErrorMsg == "") {
                         model.msgTypeData = r.Result;
                     }
@@ -221,7 +221,7 @@
             },
             bwyd: function () {
                 $.showIndicator();
-                $.post("/API/WXAPI.ashx?Action=XTGL_UPDTEREADSTATES&s=1&r=" + Math.random(), { P1: model.ids }, function (data) {
+                $.post("/API/VIEWAPI.ashx?Action=XTGL_UPDTEREADSTATES&s=1&r=" + Math.random(), { P1: model.ids }, function (data) {
                     $.hideIndicator();
                     var data = $.parseJSON(data);
                     if (data.ErrorMsg == "") {
@@ -248,7 +248,7 @@
                 var page = window.localStorage.getItem("page");
 
                 if (page != "0") {
-                    $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETXXZXIST_PAGE&r=" + Math.random(), { p: page, msgTypes: model.msgTypes, msgType: model.msgType }, function (r) {
+                    $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETXXZXIST_PAGE&r=" + Math.random(), { p: page, msgTypes: model.msgTypes, msgType: model.msgType }, function (r) {
 
                         if (r.ErrorMsg == "") {
                             if (r.Result.length > 0) {

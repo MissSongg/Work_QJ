@@ -763,7 +763,7 @@
                 if ($("#weixin").hasClass("checked")) {
                     ffwx = 1;
                 }
-                $.post('/API/WXAPI.ashx?Action=XZGL_FFXZ&r=' + Math.random(),
+                $.post('/API/VIEWAPI.ashx?Action=XZGL_FFXZ&r=' + Math.random(),
                     {
                         "P1": JSON.stringify(tempindex.ctData.$model),
                         "P2": $('#xztitle').val(),

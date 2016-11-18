@@ -82,7 +82,7 @@
             GetList: function () {
                 if (model.loading) return;
                 model.loading = true;
-                $.getJSON('/API/WXAPI.ashx?Action=KSGL_GETKSAPLIST', { p: model.page, P2: model.type, Content: model.search, myks: "1" }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKSAPLIST', { p: model.page, P2: model.type, Content: model.search, myks: "1" }, function (resultData) {
                     model.loading = false;
                     if (resultData.ErrorMsg == "") {
                         if (model.page == 1 && resultData.Result.length == 0) {

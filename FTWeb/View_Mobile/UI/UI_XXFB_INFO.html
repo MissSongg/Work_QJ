@@ -99,9 +99,9 @@
                 var lg = $.loading({
                     content: '加载中...',
                 })
-                $.getJSON('/API/WXAPI.ashx?Action=XXFB_UPDATEXXFBREADUSER&r=' + Math.random(), { P1: strId }, function (data) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=XXFB_UPDATEXXFBREADUSER&r=' + Math.random(), { P1: strId }, function (data) {
                     if (data.ErrorMsg == "") {
-                        $.getJSON('/API/WXAPI.ashx?Action=XXFB_GETXXFBMODELWX&r=' + Math.random(), { P1: strId }, function (resultData) {
+                        $.getJSON('/API/VIEWAPI.ashx?Action=XXFB_GETXXFBMODELWX&r=' + Math.random(), { P1: strId }, function (resultData) {
                             lg.hide();
                             if (resultData.ErrorMsg == "") {
                                 if (resultData.Result.ID) {
@@ -146,7 +146,7 @@
                         content: '评论中...',
                     })
 
-                    $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": $("#content").val(), "MsgType": "XXFB", "MsgLYID": strId }, function (resultData) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": $("#content").val(), "MsgType": "XXFB", "MsgLYID": strId }, function (resultData) {
                         lg.hide();
                         if (resultData.ErrorMsg == "") {
                             rwinfo.plData.push(resultData.Result);

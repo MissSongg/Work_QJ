@@ -140,7 +140,7 @@
             pl: function () {
                 ComFunJS.showCommentNew(function (result) {
 
-                    $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "TSSQ", "MsgLYID": model.modelData.ID }, function (resultData) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "TSSQ", "MsgLYID": model.modelData.ID }, function (resultData) {
 
                         if (resultData.ErrorMsg == "") {
                             model.modelData.PLList.push(resultData.Result);
@@ -152,7 +152,7 @@
             },
             zan: function (el) {
 
-                $.post('/API/WXAPI.ashx?Action=TSSQ_ZANHTBYID', { "P1": strId }, function (result) {
+                $.post('/API/VIEWAPI.ashx?Action=TSSQ_ZANHTBYID', { "P1": strId }, function (result) {
                     result = JSON.parse(result)
                     if (result.ErrorMsg == "") {
                         //ComFunJS.winsuccess("点赞成功");
@@ -183,7 +183,7 @@
             },
             getModelData: function (strId) {
 
-                $.getJSON('/API/WXAPI.ashx?Action=TSSQ_GETHTLIST&r=' + Math.random(), { P1: "all", ID: strId }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=TSSQ_GETHTLIST&r=' + Math.random(), { P1: "all", ID: strId }, function (resultData) {
 
                     if (resultData.ErrorMsg == "") {
                         if (resultData.Result.length > 0) {

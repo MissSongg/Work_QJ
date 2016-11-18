@@ -3,7 +3,7 @@
         var Code = getQueryString("code");
         if (Code)
         {
-            $.getJSON("/API/WXAPI.ashx?Action=Commanage_GETWDZY&r=" + Math.random(), { "P1": Code }, function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=Commanage_GETWDZY&r=" + Math.random(), { "P1": Code }, function (r) {
 
                 if (r.ErrorMsg == "") {
                     if (r.Result && r.Result1 && r.Result2) {

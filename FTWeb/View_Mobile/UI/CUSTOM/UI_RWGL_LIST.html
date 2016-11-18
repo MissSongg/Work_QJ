@@ -254,7 +254,7 @@
             },
             addwc: function (wcel) {
                 $.showIndicator()
-                $.post("/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLWCQK&r=" + Math.random(), { P1: wcel.RWWCQK, P2: wcel.ID }, function (data) {
+                $.post("/API/VIEWAPI.ashx?Action=DBRW_SETCUS_SWRWGLWCQK&r=" + Math.random(), { P1: wcel.RWWCQK, P2: wcel.ID }, function (data) {
                     $.hideIndicator()
                     var data = $.parseJSON(data);
                     if (data.ErrorMsg == "") {
@@ -267,7 +267,7 @@
                 //ComFunJS.showBJK("200", wcel.RWWCQK, "完成情况", function (nr) {
 
                 //    $.showIndicator()
-                //    $.post("/API/WXAPI.ashx?Action=SETCUS_SWRWGLWCQK&r=" + Math.random(), { P1: nr, P2: wcel.ID }, function (data) {
+                //    $.post("/API/VIEWAPI.ashx?Action=SETCUS_SWRWGLWCQK&r=" + Math.random(), { P1: nr, P2: wcel.ID }, function (data) {
                 //        $.hideIndicator()
                 //        var data = $.parseJSON(data);
                 //        if (data.ErrorMsg == "") {
@@ -319,7 +319,7 @@
                     yes: function () {
                         layer.close(tc);
                         $.showIndicator();
-                        $.getJSON('/API/WXAPI.ashx?Action=DBRW_DELCUS_SWRWGLITEM', { P1: chel.ID }, function (resultData) {
+                        $.getJSON('/API/VIEWAPI.ashx?Action=DBRW_DELCUS_SWRWGLITEM', { P1: chel.ID }, function (resultData) {
                             $.hideIndicator();
                             if (resultData.ErrorMsg == "") {
                                 model.ctData.remove(chel);
@@ -341,7 +341,7 @@
                     yes: function () {
                         layer.close(tc);
                         $.showIndicator();
-                        $.getJSON('/API/WXAPI.ashx?Action=DBRW_CUS_SWRWGLGD', { P1: gdel.ID }, function (resultData) {
+                        $.getJSON('/API/VIEWAPI.ashx?Action=DBRW_CUS_SWRWGLGD', { P1: gdel.ID }, function (resultData) {
                             $.hideIndicator();
                             if (resultData.ErrorMsg == "") {
                                 gdel.Status = 2;
@@ -357,7 +357,7 @@
             },
             addpj: function (pjel) {
                 $.showIndicator();
-                $.getJSON('/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLPJWCQK_WX&r=' + Math.random(), { "P1": pjel.DBPJ, ID: pjel.ID }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=DBRW_SETCUS_SWRWGLPJWCQK_WX&r=' + Math.random(), { "P1": pjel.DBPJ, ID: pjel.ID }, function (resultData) {
                     $.hideIndicator();
                     if (resultData.ErrorMsg == "") {
                         $.toast("操作成功");
@@ -369,7 +369,7 @@
 
                 //ComFunJS.showPFBJK("200", pjel.DBPJ, pjel.RWFS, "评价意见", function (nr, pc) {
                 //    $.showIndicator();
-                //    $.getJSON('/API/WXAPI.ashx?Action=SETCUS_SWRWGLPJWCQK&r=' + Math.random(), { "P1": nr, "P2": pc, ID: pjel.ID }, function (resultData) {
+                //    $.getJSON('/API/VIEWAPI.ashx?Action=SETCUS_SWRWGLPJWCQK&r=' + Math.random(), { "P1": nr, "P2": pc, ID: pjel.ID }, function (resultData) {
                 //        $.hideIndicator();
                 //        if (resultData.ErrorMsg == "") {
                 //            pjel.DBPJ = nr;
@@ -392,7 +392,7 @@
                             return $(this).attr("score") * 1 / 20;
                         },
                         click: function (score, evt) {
-                            $.getJSON('/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLPFWCQK_WX&r=' + Math.random(), { "P1": score * 20, ID: $(this).attr("itemid") }, function (resultData) {
+                            $.getJSON('/API/VIEWAPI.ashx?Action=DBRW_SETCUS_SWRWGLPFWCQK_WX&r=' + Math.random(), { "P1": score * 20, ID: $(this).attr("itemid") }, function (resultData) {
                                 if (resultData.ErrorMsg == "") {
                                     $.toast("操作成功");
                                 }
@@ -432,7 +432,7 @@
                         yes: function () {
                             layer.close(tc);
                             $.showIndicator();
-                            $.getJSON('/API/WXAPI.ashx?Action=DBRW_DELCUS_SWRWGLITEM', { P1: model.ids }, function (resultData) {
+                            $.getJSON('/API/VIEWAPI.ashx?Action=DBRW_DELCUS_SWRWGLITEM', { P1: model.ids }, function (resultData) {
                                 $.hideIndicator();
                                 if (resultData.ErrorMsg == "") {
                                     $(model.ids.split(',')).each(function (index, obj) {
@@ -477,7 +477,7 @@
                         yes: function () {
                             layer.close(tc);
                             $.showIndicator();
-                            $.getJSON('/API/WXAPI.ashx?Action=DBRW_CUS_SWRWGLGD', { P1: model.ids }, function (resultData) {
+                            $.getJSON('/API/VIEWAPI.ashx?Action=DBRW_CUS_SWRWGLGD', { P1: model.ids }, function (resultData) {
                                 $.hideIndicator();
                                 if (resultData.ErrorMsg == "") {
                                     $(model.ids.split(',')).each(function (index, obj) {
@@ -520,7 +520,7 @@
                 var page = window.localStorage.getItem("page");
 
                 if (page != "0") {
-                    $.getJSON("/API/WXAPI.ashx?Action=" + model.action() + "&r=" + Math.random(), { "p": page }, function (r) {
+                    $.getJSON("/API/VIEWAPI.ashx?Action=" + model.action() + "&r=" + Math.random(), { "p": page }, function (r) {
 
                         if (r.ErrorMsg == "") {
                             if (r.Result.length > 0) {
@@ -573,7 +573,7 @@
 
             $("#iframep").attr("src", "/View_Mobile/UI/UI_PERSON.html?r=" + Math.random() + "&Type=1");
 
-            //$.getJSON("/API/WXAPI.ashx?Action=GETCUS_SWRWGLDSHLIST&r=" + Math.random(), { "p": 1 }, function (r) {
+            //$.getJSON("/API/VIEWAPI.ashx?Action=GETCUS_SWRWGLDSHLIST&r=" + Math.random(), { "p": 1 }, function (r) {
 
             //    if (r.ErrorMsg == "") {
             //        if (r.Result.length > 0) {
@@ -619,7 +619,7 @@
             if (json != null) {
                 $.showIndicator();
                 model.ctData.HDPeople = json.vusername;
-                $.getJSON('/API/WXAPI.ashx?Action=DBRW_SENDCUS_SWRWGLWCQK&r=' + Math.random(), { P1: json.vusername, P2: model.ids }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=DBRW_SENDCUS_SWRWGLWCQK&r=' + Math.random(), { P1: json.vusername, P2: model.ids }, function (resultData) {
                     $.hideIndicator();
                     if (resultData.ErrorMsg == "") {
                         $(model.ids.split(',')).each(function (index, obj) {

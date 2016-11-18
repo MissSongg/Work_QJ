@@ -45,7 +45,7 @@
             var lg = $.loading({
                 content: '加载中...',
             })
-            $.getJSON("/API/WXAPI.ashx?action=XTGL_GETWXUSER&r=" + Math.random(), function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?action=XTGL_GETWXUSER&r=" + Math.random(), function (r) {
                 lg.hide();
                 model.ctData = r.Result;
 

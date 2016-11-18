@@ -341,7 +341,7 @@
         pl: function () {
 
             ComFunJS.showCommentNew(function (result) {
-                $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "GZBG", "MsgLYID": tempmodel.dataid }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "GZBG", "MsgLYID": tempmodel.dataid }, function (resultData) {
                     if (resultData.ErrorMsg == "") {
                         tempmodel.plData.push(resultData.Result);
                         tempmodel.plcount = tempmodel.plcount + 1;

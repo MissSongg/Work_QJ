@@ -199,7 +199,7 @@
         });
         avalon.ready(function () {
             if (strId != null) {
-                $.getJSON('/API/WXAPI.ashx?Action=YCGL_GETCLINFO&r=' + Math.random(), { P1: strId }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=YCGL_GETCLINFO&r=' + Math.random(), { P1: strId }, function (resultData) {
                     if (resultData.ErrorMsg == "") {
                         model.modelData = resultData.Result;
                         model.ctData = resultData.Result2;

@@ -414,7 +414,7 @@
             loadMore: function () {
                 if (model.loading) return;
                 model.loading = true;
-                $.getJSON("/API/WXAPI.ashx?Action=HYGL_GETHYGLLIST&r=" + Math.random(), { "p": model.page, P1: model.type, ID: model.DataID, Content: model.search }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=HYGL_GETHYGLLIST&r=" + Math.random(), { "p": model.page, P1: model.type, ID: model.DataID, Content: model.search }, function (r) {
                     model.loading = false;
                     if (r.ErrorMsg == "") {
                         if (model.page == 1 && r.Result.length == 0) {
@@ -559,7 +559,7 @@
                 }
             },//文件查看方法
             hyqr: function (el) {//确认参加
-                $.post("/API/WXAPI.ashx?Action=HYGL_UPDATEHYQK&r=" + Math.random(), { "P1": el.ID, "P2": "2" }, function (data) {
+                $.post("/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYQK&r=" + Math.random(), { "P1": el.ID, "P2": "2" }, function (data) {
 
                     var data = $.parseJSON(data);
                     if (data.ErrorMsg == "") {
@@ -577,7 +577,7 @@
             },
             hyqd: function (el) {//签到
 
-                $.post("/API/WXAPI.ashx?Action=HYGL_UPDATEHYQK&r=" + Math.random(), { "P1": el.ID, "P2": "3" }, function (data) {
+                $.post("/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYQK&r=" + Math.random(), { "P1": el.ID, "P2": "3" }, function (data) {
 
                     var data = $.parseJSON(data);
                     if (data.ErrorMsg == "") {
@@ -596,7 +596,7 @@
             },
             hyqj: function (el) {//请假
                 ComFunJS.showCommentNew(function (result) {
-                    $.post("/API/WXAPI.ashx?Action=HYGL_UPDATEHYQK&QJSY=" + result.comment + "&r=" + Math.random(), { "P1": el.ID, "P2": "4" }, function (data) {
+                    $.post("/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYQK&QJSY=" + result.comment + "&r=" + Math.random(), { "P1": el.ID, "P2": "4" }, function (data) {
 
                         var data = $.parseJSON(data);
                         if (data.ErrorMsg == "") {
@@ -617,7 +617,7 @@
             hyjy: function (el) {//记录
                 ComFunJS.showCommentNew(function (result) {
 
-                    $.getJSON('/API/WXAPI.ashx?Action=HYGL_UPDATEHYJL&r=' + Math.random(), { "P1": el.ID, "P2": result.comment }, function (resultData) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYJL&r=' + Math.random(), { "P1": el.ID, "P2": result.comment }, function (resultData) {
 
                         if (resultData.ErrorMsg == "") {
                             el.HYJL = result.comment;
@@ -630,7 +630,7 @@
             },
             pl: function (el) {
                 ComFunJS.showCommentNew(function (result) {
-                    $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "MsgType": "HYGL", "MsgLYID": el.ID }, function (resultData) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "MsgType": "HYGL", "MsgLYID": el.ID }, function (resultData) {
 
                         if (resultData.ErrorMsg == "") {
                             //tempmodel.plCount = tempmodel.plCount + 1;
@@ -655,7 +655,7 @@
                 model.getSHNum();
             },
             getSHNum: function () {//抓取审核数量
-                $.getJSON("/API/WXAPI.ashx?Action=LCSP_GETMODELDSHQTY&r=" + Math.random(), { P1: "HYGL" }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=LCSP_GETMODELDSHQTY&r=" + Math.random(), { P1: "HYGL" }, function (r) {
                     if (r.ErrorMsg == "" ) {
                         if (r.Result.length > 0) {
                             model.shNum = r.Result[0].QTY;

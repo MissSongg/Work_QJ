@@ -126,7 +126,7 @@
             ModelData: {},
             SJData: {},
             GetKSINFO: function (user) {//获取用户数据接口
-                $.getJSON('/API/WXAPI.ashx?Action=KSGL_GETKSAPMODEL', { P1: ComFunJS.getQueryString("ksapid") }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKSAPMODEL', { P1: ComFunJS.getQueryString("ksapid") }, function (resultData) {
                     if (resultData.ErrorMsg == "") {
                         model.ModelData = resultData.Result;
                         model.SJData = resultData.Result3[0];

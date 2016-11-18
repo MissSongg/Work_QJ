@@ -29,8 +29,6 @@
 
                         ComFunJS.delCookie("szhlcode");
                         ComFunJS.delCookie("wxusername");
-                        //window.location.replace(window.location.href + '&v=' + Math.random());
-
                         hqsq();
                     }
                 })
@@ -82,7 +80,7 @@
             }
 
             var returnmsg = [];
-            $.getJSON("/API/WXAPI.ashx?action=XTGL_WXINIT&r=" + Math.random(), { P1: funcode, P2: ftype }, function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?action=XTGL_WXINIT&r=" + Math.random(), { P1: funcode, P2: ftype }, function (r) {
                 //el.loading("hide");
                 if (r.ErrorMsg == "") {
                     var usersarr = r.Result;

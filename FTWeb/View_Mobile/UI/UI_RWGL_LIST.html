@@ -282,7 +282,7 @@
             loadMore: function () {
                 if (model.loading) return;
                 model.loading = true;
-                $.getJSON("/API/WXAPI.ashx?Action=RWGL_GETRWGLLIST&r=" + Math.random(), { P1: "", "p": model.page, P2: model.type, ID: model.DataID, Content: model.search }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=RWGL_GETRWGLLIST&r=" + Math.random(), { P1: "", "p": model.page, P2: model.type, ID: model.DataID, Content: model.search }, function (r) {
                     model.loading = false;
                     if (r.ErrorMsg == "") {
                         for (var i = 0; i < r.Result.length; i++) {
@@ -326,7 +326,7 @@
             },//文件查看方法
             pl: function (el) {
                 ComFunJS.showCommentNew(function (result) {
-                    $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "RWGL", "MsgLYID": el.ID }, function (resultData) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "RWGL", "MsgLYID": el.ID }, function (resultData) {
 
                         if (resultData.ErrorMsg == "") {
                             el.PLList.push(resultData.Result);
@@ -397,7 +397,7 @@
             DELRWGL: function (item) {
                 $.confirm('确认要删除吗？', function () {
 
-                    $.getJSON("/API/WXAPI.ashx?Action=RWGL_DELRWGLMODEL&r=" + Math.random(), { P1: item.ID }, function (r) {
+                    $.getJSON("/API/VIEWAPI.ashx?Action=RWGL_DELRWGLMODEL&r=" + Math.random(), { P1: item.ID }, function (r) {
                         if (r.ErrorMsg == "") {
                             model.ctData.remove(item);
                             top.ComFunJS.winsuccess("删除成功！！");

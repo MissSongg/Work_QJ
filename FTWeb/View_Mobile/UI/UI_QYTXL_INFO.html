@@ -99,7 +99,7 @@
         user: ComFunJS.getQueryString("user", ""),
         GetWXUser: function (user) {//获取用户数据接口
             if (!user) return;
-            $.getJSON('/API/WXAPI.ashx?Action=XTGL_GETUSERBYUSERNAME', { "P1": user }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETUSERBYUSERNAME', { "P1": user }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     modeltxlinfo.userData = resultData.Result;
                     modeltxlinfo.UserModel = resultData.Result.User;

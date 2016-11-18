@@ -75,7 +75,7 @@
             formsh: model.sh,
             savedata: function (bdid) {
 
-                $.getJSON("/API/WXAPI.ashx?ACTION=LCSP_STARTWF&r=" + Math.random(), { P1: psmodel.formcode, P2: psmodel.shr, PDID: psmodel.formpdid, DataID: bdid }, function (result) {
+                $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_STARTWF&r=" + Math.random(), { P1: psmodel.formcode, P2: psmodel.shr, PDID: psmodel.formpdid, DataID: bdid }, function (result) {
                     model.lg.hide();
                     if ($.trim(result.ErrorMsg) == "") {
                         $("button").hide();
@@ -125,7 +125,7 @@
             if (strId) {
                 psmodel.formpiid = model.modelData.intProcessStanceid;
                 psmodel.formid = model.modelData.ID;
-                $.getJSON("/API/WXAPI.ashx?action=LCSP_GETWFDATA&r=" + Math.random(), { P1: psmodel.formpiid }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?action=LCSP_GETWFDATA&r=" + Math.random(), { P1: psmodel.formpiid }, function (r) {
                     psmodel.spData = r.Result;
                     psmodel.lcdata = r.Result1;
                     psmodel.lcdata.remove(psmodel.lcdata[0]);
@@ -149,7 +149,7 @@
                 if (model.pdid) {
                     psmodel.formpdid = model.pdid;
                 }
-                $.getJSON("/API/WXAPI.ashx?ACTION=LCSP_GETSPUSERLIST&r=" + Math.random(), { P1: psmodel.formcode, PDID: psmodel.formpdid, PIID: psmodel.formpiid }, function (result) {
+                $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_GETSPUSERLIST&r=" + Math.random(), { P1: psmodel.formcode, PDID: psmodel.formpdid, PIID: psmodel.formpiid }, function (result) {
                     if (result.ErrorMsg == "") {
                         if (result.Result.length > 0) {
                             psmodel.urData = result.Result;
@@ -187,7 +187,7 @@
                     model.savedata();
                 }
                 psmodel.shyj = nr;
-                $.post("/API/WXAPI.ashx?ACTION=LCSP_MANAGEWF&r=" + Math.random(), { P1: psmodel.formpiid, P2: psmodel.shyj, formcode: psmodel.formcode, ID: psmodel.formid }, function (result) {
+                $.post("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF&r=" + Math.random(), { P1: psmodel.formpiid, P2: psmodel.shyj, formcode: psmodel.formcode, ID: psmodel.formid }, function (result) {
                     lg.hide();
                     var result = $.parseJSON(result)
                     if ($.trim(result.ErrorMsg) == "") {
@@ -215,7 +215,7 @@
 
         function zs() {
             psmodel.shyj = "同意";
-            $.getJSON("/API/WXAPI.ashx?ACTION=LCSP_GETSPUSERLIST&r=" + Math.random(), { P1: psmodel.formcode, PDID: psmodel.formpdid, PIID: psmodel.formpiid }, function (result) {
+            $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_GETSPUSERLIST&r=" + Math.random(), { P1: psmodel.formcode, PDID: psmodel.formpdid, PIID: psmodel.formpiid }, function (result) {
                 if (result.ErrorMsg == "") {
                     psmodel.zsurData = result.Result;
                     if (result.Result.length > 0) {
@@ -227,7 +227,7 @@
                             })
                             psmodel.shyj = nr;
                             psmodel.zsshr = zsr;
-                            $.post("/API/WXAPI.ashx?ACTION=LCSP_MANAGEWF&r=" + Math.random(), { P1: psmodel.formpiid, P2: psmodel.shyj, SHUser: psmodel.zsshr, formcode: psmodel.formcode, ID: psmodel.formid }, function (result) {
+                            $.post("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF&r=" + Math.random(), { P1: psmodel.formpiid, P2: psmodel.shyj, SHUser: psmodel.zsshr, formcode: psmodel.formcode, ID: psmodel.formid }, function (result) {
                                 lg.hide();
                                 var result = $.parseJSON(result)
                                 if ($.trim(result.ErrorMsg) == "") {
@@ -278,7 +278,7 @@
                 var lg = $.loading({
                     content: '保存中...',
                 })
-                $.post("/API/WXAPI.ashx?ACTION=LCSP_REBACKWF&r=" + Math.random(), { P1: psmodel.formpiid, P2: psmodel.shyj, formcode: psmodel.formcode, ID: psmodel.formid }, function (result) {
+                $.post("/API/VIEWAPI.ashx?ACTION=LCSP_REBACKWF&r=" + Math.random(), { P1: psmodel.formpiid, P2: psmodel.shyj, formcode: psmodel.formcode, ID: psmodel.formid }, function (result) {
                     lg.hide();
                     var result = $.parseJSON(result)
                     if ($.trim(result.ErrorMsg) == "") {

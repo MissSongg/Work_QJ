@@ -49,7 +49,7 @@ namespace QjySaaSWeb.APP
                         JH_Auth_QY jaq = new JH_Auth_QYB().GetEntities("1=1").FirstOrDefault();
                         JH_Auth_Model jam = new JH_Auth_ModelB().GetEntity(p => p.ModelCode == strCode);
                         //if (jaq != null && jam != null && !string.IsNullOrEmpty(jam.TJId))
-                        if (jaq != null && jam != null )
+                        if (jaq != null && jam != null)
                         {
                             #region POST
                             if (HttpContext.Current.Request.HttpMethod.ToUpper() == "POST")
@@ -328,14 +328,14 @@ namespace QjySaaSWeb.APP
                                         }
                                     }
                                 }
-                            } 
+                            }
                             #endregion
 
                             #region GET
                             if (HttpContext.Current.Request.HttpMethod.ToUpper() == "GET")
                             {
                                 Auth(jam.Token, jam.EncodingAESKey, jaq.corpId);
-                            } 
+                            }
                             #endregion
 
                         }
@@ -349,50 +349,8 @@ namespace QjySaaSWeb.APP
                 }
                 #endregion
 
-                #region 微信扫码登录
-                else if (strAction == "GETWXSMDL")
-                {
-                    string strCID = context.Request["corp_id"] ?? "";
-                    string strAID = context.Request["auth_code"] ?? "";
-                    string strPsc = CommonHelp.GetConfig("providersecret");
-                    try
-                    {
-                        var url = "https://qyapi.weixin.qq.com/cgi-bin/service/get_provider_token";
-
-                        var data = new
-                        {
-                            corpid = strCID,
-                            provider_secret = strPsc
-                        };
-
-                        QJY.API.GetProviderToken Token = Senparc.Weixin.CommonAPIs.CommonJsonSend.Send<QJY.API.GetProviderToken>(null, url, data, CommonJsonSendType.POST); ;
-
-                        Senparc.Weixin.QY.AdvancedAPIs.LoginAuth.GetLoginInfoResult user = LoginAuthApi.GetLoginInfo(Token.provider_access_token, strAID);
-
-                        JH_Auth_QY jaq = new JH_Auth_QYB().GetEntity(p => p.corpId == user.corp_info.corpid);
-                        JH_Auth_User jau = new JH_Auth_UserB().GetUserByUserName(jaq.ComId, user.user_info.userid);
-                        if (jau != null)
-                        {
-                            if (string.IsNullOrEmpty(jau.pccode))
-                            {
-                                jau.pccode = CommonHelp.CreatePCCode(jau);
-                            }
-
-                            jau.logindate = DateTime.Now;
-                            new JH_Auth_UserB().Update(jau);
-                            Model.Result = jau.pccode;
-                            Model.Result1 = jau.UserName;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Model.ErrorMsg = ex.ToString();
-                    }
-                }
-                #endregion
-
                 #region 企业会话
-                else if (strAction == "QYIM")
+                if (strAction == "QYIM")
                 {
                     if (HttpContext.Current.Request.HttpMethod.ToUpper() == "POST")
                     {
@@ -809,7 +767,7 @@ namespace QjySaaSWeb.APP
                 #endregion
 
                 #region 获取唯一code
-                else if (strAction.ToUpper() == "GetUserCodeByCode".ToUpper())
+                if (strAction.ToUpper() == "GetUserCodeByCode".ToUpper())
                 {
                     #region 获取Code
                     Model.ErrorMsg = "获取Code错误，请重试";
@@ -826,7 +784,7 @@ namespace QjySaaSWeb.APP
                         {
                             try
                             {
-                              
+
                                 //获取用户名
                                 WXHelp wx = new WXHelp(qy);
                                 string username = wx.GetUserDataByCode(strCode);
@@ -872,7 +830,7 @@ namespace QjySaaSWeb.APP
                 }
                 #endregion
                 #region 是否存在
-                else if (strAction.ToUpper() == "isexist".ToUpper())
+                if (strAction.ToUpper() == "isexist".ToUpper())
                 {
                     string strcorpid = context.Request["corpid"] ?? "";
                     if (strcorpid != "")
@@ -915,73 +873,13 @@ namespace QjySaaSWeb.APP
 
                 }
                 #endregion
-                #region 获取企业信息
-                else if (strAction.ToUpper() == "GETQYINFO".ToUpper())
-                {
-                    string strCorpID = context.Request["CorpID"] ?? "";
-
-                    JH_Auth_QY jaq = new JH_Auth_QYB().GetEntity(p => p.corpId == strCorpID);
-                    if (jaq != null)
-                    {
-                        Model.Result = jaq;
-                    }
-                    else
-                    {
-                        Model.ErrorMsg = "当前企业号未在电脑端注册";
-                    }
-                }
-                #endregion
                 #region 发送提醒
-                else if (strAction.ToUpper() == "AUTOALERT")
+                if (strAction.ToUpper() == "AUTOALERT")
                 {
                     TXSX.TXSXAPI.AUTOALERT();
                     CommonHelp.WriteLOG("调用提醒接口");
                 }
                 #endregion
-                #region 必须登录执行接口
-                else
-                {
-                    
-                    try
-                    {
-                        string P1 = context.Request["P1"] ?? "";
-                        string P2 = context.Request["P2"] ?? "";
-
-                        var acs = Model.Action.Split('_');
-
-                        string strUserName = string.Empty;
-
-                        if (context.Request.Cookies["szhlcode"] != null)
-                        {
-                            //通过Cookies获取Code
-                            //string szhlcode = "5ab470be-4988-4bb3-9658-050481b98fca"; 
-                            string szhlcode = context.Request.Cookies["szhlcode"].Value.ToString();
-                            //通过Code获取用户名，然后执行接口方法
-                            var jau = new JH_Auth_UserB().GetUserByPCCode(szhlcode);
-                            if (jau != null)
-                            {
-                                var container = ServiceContainerV.Current().Resolve<IWsService>(acs[0].ToUpper());
-                                JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB().GetUserInfo(szhlcode);
-
-                                Model.Action = Model.Action.Substring(acs[0].Length + 1);
-                                container.ProcessRequest(context, ref Model, P1, P2, UserInfo);
-                                new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserInfo.User.UserName, UserInfo.User.UserRealName, UserInfo.QYinfo.ComId, strIP);
-                            }
-                        }
-                        else
-                        {
-                            Model.ErrorMsg = "NOSESSIONCODE";
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Model.ErrorMsg = strAction + "接口调用失败,请检查日志";
-                        Model.Result = ex.Message;
-                        new JH_Auth_LogB().InsertLog(strAction, Model.ErrorMsg, ex.Message.ToString(), UserName,"", 0, strIP);
-                    }
-                }
-                #endregion
-
             }
             else
             {
@@ -1055,7 +953,7 @@ namespace QjySaaSWeb.APP
                         pj.Ticket = strtct;
 
                         new JH_Auth_WXPJB().Update(pj);
-                    }                    
+                    }
 
 
                     HttpContext.Current.Response.Write("success");
@@ -1076,7 +974,7 @@ namespace QjySaaSWeb.APP
         /// </summary>
         private void Auth(string token, string encodingAESKey, string corpId)
         {
-        
+
             string echoString = HttpContext.Current.Request.QueryString["echoStr"];
             string signature = HttpContext.Current.Request.QueryString["msg_signature"];//企业号的 msg_signature
             string timestamp = HttpContext.Current.Request.QueryString["timestamp"];

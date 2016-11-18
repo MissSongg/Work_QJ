@@ -170,7 +170,7 @@
                 var frameid = $("iframe", $(layero)).attr('id');
                 var plnr = ComFunJS.isIE() ? top.window.frames[frameid].getpl() : top.window.frames[frameid].contentWindow.getpl();
 
-                $.post('/API/WXAPI.ashx?Action=HYGL_UPDATEHYJL&r=' + Math.random(), { "P1": el.ID, "P2": plnr }, function (resultData) {
+                $.post('/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYJL&r=' + Math.random(), { "P1": el.ID, "P2": plnr }, function (resultData) {
                     top.layer.close(index);
                     var resultData = JSON.parse(resultData);
                     if (resultData.ErrorMsg == "") {

@@ -1093,8 +1093,8 @@ namespace QJY.API
                     LogType = Action,
                     LogContent = LogContent,
                     Remark = ReMark,
-                    IP=strIP,
-                    Remark1=strUserName,
+                    IP = strIP,
+                    Remark1 = strUserName,
                     CRUser = strUser,
                     CRDate = DateTime.Now
                 });

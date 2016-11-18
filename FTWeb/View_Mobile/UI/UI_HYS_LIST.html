@@ -87,7 +87,7 @@
         })
 
         avalon.ready(function () {
-            $.getJSON('/API/WXAPI.ashx?Action=HYGL_GETKYHYSLIST&r=' + Math.random(), {}, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=HYGL_GETKYHYSLIST&r=' + Math.random(), {}, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     model.ctData = resultData.Result;
                 }

@@ -152,17 +152,6 @@ var ComFunJS = {
             return defauval || "";
         }
     },//获取参数
-    GetUserCode: function (callback) {
-        var Code = ComFunJS.getQueryString("code");
-        $.get('/View/Comon/ComBaseAPI.ashx?Action=GetUserCodeByCode&code=' + Code, function (UserCode) {
-            if (UserCode == "") {
-                window.location.href = "Msg.html";
-            } else {
-                $("#hidUserCode").val(UserCode);
-                return callback.call(this, UserCode);
-            }
-        })
-    },//无用
     daysBetween: function (start, end) {
         var OneMonth = start.substring(5, start.lastIndexOf('-'));
         var OneDay = start.substring(start.length, start.lastIndexOf('-') + 1);
@@ -668,7 +657,7 @@ var ComFunJS = {
         return sts;
     },//获取请假状态（无用）
     initwxConfig: function () {
-        $.getJSON("/API/WXAPI.ashx?action=JSSDK_GETSIGNAGURE&r=" + Math.random(), { "P1": window.location.href }, function (r) {
+        $.getJSON("/API/VIEWAPI.ashx?action=JSSDK_GETSIGNAGURE&r=" + Math.random(), { "P1": window.location.href }, function (r) {
             if (r.ErrorMsg == "") {
 
                 wx.config({
@@ -718,7 +707,7 @@ var ComFunJS = {
         })
     },//微信插件初始化
     uploadimg: function () {
-        $.getJSON("/API/WXAPI.ashx?action=JSSDK_GETSIGNAGURE&r=" + Math.random(), { "P1": window.location.href }, function (r) {
+        $.getJSON("/API/VIEWAPI.ashx?action=JSSDK_GETSIGNAGURE&r=" + Math.random(), { "P1": window.location.href }, function (r) {
             if (r.ErrorMsg == "") {
 
                 wx.config({
@@ -992,7 +981,7 @@ var ComFunJS = {
     },//获取用户对象
     chooseUser: function () {
 
-        $.getJSON("/API/WXAPI.ashx?action=JSSDK_GETSIGNAGURE&r=" + Math.random(), { "P1": window.location.href, "P2": 2 }, function (r) {
+        $.getJSON("/API/VIEWAPI.ashx?action=JSSDK_GETSIGNAGURE&r=" + Math.random(), { "P1": window.location.href, "P2": 2 }, function (r) {
             if (r.ErrorMsg == "") {
                 wx.config({
                     debug: false,
@@ -1331,7 +1320,7 @@ var ComFunJS = {
             var formData = new FormData();
             formData.append("upFile", document.getElementById("file").files[0]);
             $.ajax({
-                url: "/API/WXAPI.ashx?ACTION=XTGL_UPLOADFILE&P1=" + str + "&r=" + Math.random(),
+                url: "/API/VIEWAPI.ashx?ACTION=XTGL_UPLOADFILE&P1=" + str + "&r=" + Math.random(),
                 type: "POST",
                 data: formData,
                 /**

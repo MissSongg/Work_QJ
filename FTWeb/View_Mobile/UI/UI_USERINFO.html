@@ -30,7 +30,7 @@
             var lg = $.loading({
                 content: '加载中...',
             })
-            $.post("/API/WXAPI.ashx?Action=XTGL_GetUserInfo&r=" + Math.random(), {}, function (data) {
+            $.post("/API/VIEWAPI.ashx?Action=XTGL_GetUserInfo&r=" + Math.random(), {}, function (data) {
                 lg.hide();
                 var data = $.parseJSON(data);
                 if (data.ErrorMsg == "") {

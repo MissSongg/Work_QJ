@@ -138,7 +138,7 @@
             dd: function (el) {
                 ComFunJS.showBJK("200", "", "备注", function (nr) {
                     $.showIndicator();
-                    $.getJSON("/API/WXAPI.ashx?Action=DCGL_QRSDDD&r=" + Math.random(), { "P1": el.ID, "P2": nr }, function (r) {
+                    $.getJSON("/API/VIEWAPI.ashx?Action=DCGL_QRSDDD&r=" + Math.random(), { "P1": el.ID, "P2": nr }, function (r) {
                         $.hideIndicator()
                         if (r.ErrorMsg == "") {
                             el.Status = r.Result.Status;
@@ -163,7 +163,7 @@
                 var page = window.localStorage.getItem("page");
 
                 if (page != "0") {
-                    $.getJSON("/API/WXAPI.ashx?Action=DCGL_GETDCGLHEADERLIST_PAGE&r=" + Math.random(), { "p": page, P1: model.isjd }, function (r) {
+                    $.getJSON("/API/VIEWAPI.ashx?Action=DCGL_GETDCGLHEADERLIST_PAGE&r=" + Math.random(), { "p": page, P1: model.isjd }, function (r) {
 
                         if (r.ErrorMsg == "") {
                             if (r.Result.length > 0) {
@@ -208,7 +208,7 @@
         }
 
         avalon.ready(function () {
-            $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETCPROLE&r=" + Math.random(), {}, function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETCPROLE&r=" + Math.random(), {}, function (r) {
                 if (r.ErrorMsg == "") {
                     if (r.Result == "Y")
                     {

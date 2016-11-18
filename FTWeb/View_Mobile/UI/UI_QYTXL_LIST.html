@@ -240,7 +240,7 @@
                 modeltxl.show = type;
             },
             GetWXUser: function () {//获取用户数据接口
-                $.getJSON('/API/WXAPI.ashx?Action=XTGL_GETWXUSER', function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETWXUSER', function (resultData) {
                     if (resultData.ErrorMsg == "") {
                         modeltxl.USERModel = resultData.Result;
                         modeltxl.AllUser = resultData.Result1;

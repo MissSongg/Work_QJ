@@ -117,7 +117,7 @@
             sj: function (el) {
                 $.confirm('您确认收件吗?',
                     function () {
-                        $.getJSON("/API/WXAPI.ashx?Action=KDGL_QRSDKD&r=" + Math.random(), { "P1": el.ID }, function (r) {
+                        $.getJSON("/API/VIEWAPI.ashx?Action=KDGL_QRSDKD&r=" + Math.random(), { "P1": el.ID }, function (r) {
                             if (r.ErrorMsg == "") {
 
                                 el.Status = r.Result.Status;
@@ -146,7 +146,7 @@
                     var page = window.localStorage.getItem("page");
 
                     if (page != "0") {
-                        $.getJSON("/API/WXAPI.ashx?Action=KDGL_GETMYKDGLLIST_PAGE&r=" + Math.random() + "&p=" + page, { P2: model.islr }, function (r) {
+                        $.getJSON("/API/VIEWAPI.ashx?Action=KDGL_GETMYKDGLLIST_PAGE&r=" + Math.random() + "&p=" + page, { P2: model.islr }, function (r) {
 
                             if (r.ErrorMsg == "") {
                                 if (r.Result.length > 0) {
@@ -201,7 +201,7 @@
         }
 
         avalon.ready(function () {
-            $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETKDROLE&r=" + Math.random(), {}, function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETKDROLE&r=" + Math.random(), {}, function (r) {
                 if (r.ErrorMsg == "") {
                     if (r.Result == "Y") {
                         model.islr = "Y";

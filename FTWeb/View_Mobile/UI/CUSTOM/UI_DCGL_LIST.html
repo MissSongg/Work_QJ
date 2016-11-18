@@ -165,7 +165,7 @@
                     var lg = $.loading({
                         content: '下架中...',
                     })
-                    $.getJSON('/API/WXAPI.ashx?Action=DCGL_XJCP&r=' + Math.random(), { P1: html }, function (resultData) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=DCGL_XJCP&r=' + Math.random(), { P1: html }, function (resultData) {
 
                         if (resultData.ErrorMsg == "") {
                             var el=$.tips({
@@ -248,7 +248,7 @@
                             "IDS": IDS
                         };
 
-                        $.post("/API/WXAPI.ashx?Action=DCGL_ADDDCGLDD&r=" + Math.random(), { "P1": JSON.stringify(d) }, function (data) {
+                        $.post("/API/VIEWAPI.ashx?Action=DCGL_ADDDCGLDD&r=" + Math.random(), { "P1": JSON.stringify(d) }, function (data) {
                             lg.hide();
                             var data = $.parseJSON(data);
                             if (data.ErrorMsg == "") {
@@ -316,7 +316,7 @@
             var lg = $.loading({
                 content: '加载中...',
             })
-            $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETCPROLE&r=" + Math.random(), {}, function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETCPROLE&r=" + Math.random(), {}, function (r) {
                 if (r.ErrorMsg == "") {
                     if (r.Result == "Y") {
                         if (strType == "2") {
@@ -325,7 +325,7 @@
                     }
                 }
             })
-            $.post("/API/WXAPI.ashx?Action=DCGL_GETDCGLLIST_PAGE&r=" + Math.random(), {}, function (data) {
+            $.post("/API/VIEWAPI.ashx?Action=DCGL_GETDCGLLIST_PAGE&r=" + Math.random(), {}, function (data) {
                 lg.hide();
                 var data = $.parseJSON(data);
                 if (data.ErrorMsg == "") {

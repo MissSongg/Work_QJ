@@ -109,7 +109,7 @@
                 else {
                     model.ctData.Status = "0";
                 }
-                $.post("/API/WXAPI.ashx?Action=DCGL_ADDDCGL&r=" + Math.random(), { "P1": JSON.stringify(model.ctData.$model), P2: model.wximg }, function (data) {
+                $.post("/API/VIEWAPI.ashx?Action=DCGL_ADDDCGL&r=" + Math.random(), { "P1": JSON.stringify(model.ctData.$model), P2: model.wximg }, function (data) {
                     lg.hide();
                     var data = $.parseJSON(data);
                     if (data.ErrorMsg == "") {
@@ -152,7 +152,7 @@
                 $("#save").text("保存菜品");
                 $("title").text("修改菜品");
             }
-            $.post("/API/WXAPI.ashx?Action=XTGL_GETZIDIANLIST&r=" + Math.random(), { "P1": "3" }, function (data) {
+            $.post("/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST&r=" + Math.random(), { "P1": "3" }, function (data) {
                 if (!strId) {
                     lg.hide();
                 }
@@ -168,7 +168,7 @@
 
                     if (strId) {
 
-                        $.getJSON('/API/WXAPI.ashx?Action=DCGL_GETDCGLMODEL&r=' + Math.random(), { P1: strId }, function (resultData) {
+                        $.getJSON('/API/VIEWAPI.ashx?Action=DCGL_GETDCGLMODEL&r=' + Math.random(), { P1: strId }, function (resultData) {
                             lg.hide();
                             if (resultData.ErrorMsg == "") {
                                 model.ctData = resultData.Result;
@@ -186,7 +186,7 @@
 
             })
 
-            $.getJSON("/API/WXAPI.ashx?action=JSSDK_GETSIGNAGURE&r=" + Math.random(), { "P1": window.location.href }, function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?action=JSSDK_GETSIGNAGURE&r=" + Math.random(), { "P1": window.location.href }, function (r) {
                 if (r.ErrorMsg == "") {
 
                     wx.config({

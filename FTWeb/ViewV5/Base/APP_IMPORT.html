@@ -97,7 +97,7 @@
         <div class="tab">
             <div class="mb20 progress-item">
                 <p>一、请按照数据模板的格式，准备要导入的数据</p>
-                <p class="mb10">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:red;" ms-attr-href="/API/WXAPI.ashx?Action=XTGL_DOWNLOADEXCEL&headrow=1&P1={{code}}"> 下载数据模板 </a></p>
+                <p class="mb10">&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:red;" ms-attr-href="/API/VIEWAPI.ashx?Action=XTGL_DOWNLOADEXCEL&headrow=1&P1={{code}}"> 下载数据模板 </a></p>
                 <!--<p class="mb10">&nbsp;&nbsp;&nbsp;&nbsp;<a class=" c999">查看注意事项>></a></p>-->
 
             </div>
@@ -310,7 +310,7 @@
                                 case "KHLXR": str = "CRM_IMPORTLXR"; break;
                                 case "HTGL": str = "CRM_IMPORTHT"; break;
                             }
-                            $.post('/API/WXAPI.ashx?Action=' + str + '&r=' + Math.random(), { "P1": JSON.stringify(model.ctData.$model) }, function (resultData) {
+                            $.post('/API/VIEWAPI.ashx?Action=' + str + '&r=' + Math.random(), { "P1": JSON.stringify(model.ctData.$model) }, function (resultData) {
                                 var resultData = JSON.parse(resultData);
                                 if (resultData.ErrorMsg == "") {
                                     model.ctData.clear();

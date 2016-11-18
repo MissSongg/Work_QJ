@@ -61,7 +61,7 @@
             }
         });
         avalon.ready(function () {
-            $.getJSON("/API/WXAPI.ashx?Action=LCSP_GETWFPDLIST&r=" + Math.random(), { "P1": "1" }, function (data) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=LCSP_GETWFPDLIST&r=" + Math.random(), { "P1": "1" }, function (data) {
                 if (data.ErrorMsg == "") {
                     model.ctData = data.Result;
                     if (data.Result.length == 0)
