@@ -145,6 +145,7 @@ namespace QJY.Data
         public virtual DbSet<SZHL_KS_USERKS> SZHL_KS_USERKS { get; set; }
         public virtual DbSet<SZHL_KS_USERKSItem> SZHL_KS_USERKSItem { get; set; }
         public virtual DbSet<SZHL_DBGL> SZHL_DBGL { get; set; }
-        public virtual DbSet<SZHL_KS_KCGL> SZHL_KS_KCGL { get; set; }
+        public virtual DbSet<SZHL_PX_KCGL> SZHL_PX_KCGL { get; set; }
+        public virtual DbSet<SZHL_PX_KJGL> SZHL_PX_KJGL { get; set; }
     }
 }

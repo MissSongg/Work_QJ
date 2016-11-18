@@ -12,23 +12,24 @@ namespace QJY.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class SZHL_KS_KCGL
+    public partial class SZHL_PX_KJGL
     {
         public int ID { get; set; }
-        public string KCName { get; set; }
-        public Nullable<int> KCTypeID { get; set; }
-        public string KCZJR { get; set; }
-        public string KCZJRZC { get; set; }
-        public string KSS { get; set; }
-        public string KCPXZQ { get; set; }
-        public string Remark { get; set; }
-        public string SQType { get; set; }
+        public string KJName { get; set; }
+        public string KJDec { get; set; }
+        public string KJType { get; set; }
+        public string FilePath { get; set; }
+        public string FileType { get; set; }
         public string CRUser { get; set; }
         public Nullable<System.DateTime> CRDate { get; set; }
         public string CHUser { get; set; }
         public Nullable<System.DateTime> CHDate { get; set; }
+        public string KJZJR { get; set; }
+        public Nullable<int> KJZZType { get; set; }
+        public string Files { get; set; }
         public Nullable<int> ComId { get; set; }
-        public string KJID { get; set; }
-        public string KCFM { get; set; }
+        public string CW { get; set; }
+        public Nullable<int> FolderID { get; set; }
+        public Nullable<int> TotalTime { get; set; }
     }
 }

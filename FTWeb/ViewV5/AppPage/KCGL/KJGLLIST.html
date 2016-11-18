@@ -1,21 +1,22 @@
 ﻿<div ms-controller="W_KCGL">
     <!-- 添加按钮 -->
     <div class="btn-add">
-        <button type="button" class="btn btn-info btn-lg"   ms-click="AddView('KCGL_KCGL')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加课程</button>
+        <button type="button" class="btn btn-info btn-lg" ms-click="AddView('KCGL_KJGL')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加课件</button>
     </div>
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
         <div class="oh">
-            <h5 class="pull-left tr">课程分类：</h5>
+            <h5 class="pull-left tr">课件分类：</h5>
             <ul class="tab-type ft14">
-                <li ms-click="SelectType('')" ><span ms-class-1="active:kcflType==''">全部</span></li>
-                <li ms-repeat-el="kcflData" ms-click="SelectType(el.ID)" ><span ms-class="active:el.ID==kcflType">{{el.TypeName}}</span></li>
+                <li ms-click="SelectType('')"><span ms-class-1="active:lbType==''">全部</span></li>
+                <li ms-click="SelectType(1)"><span ms-class="active:lbType==1">视频</span></li>
+                <li ms-click="SelectType(2)"><span ms-class="active:lbType==2">文档</span></li>
             </ul>
         </div>
         <!-- 搜索 -->
         <div class="oh">
             <div class="input-group ml15" style="width:295px;">
-                <input type="search" class="form-control" ms-duplex="search.searchcontent" placeholder="搜索课程管理名称">
+                <input type="search" class="form-control" ms-duplex="search.searchcontent" placeholder="搜索课件管理名称">
                 <span class="input-group-addon" ms-click="GetLIST()">搜索</span>
             </div>
         </div>
@@ -32,11 +33,10 @@
                 <tr>
                     <th class="tc">序号</th>
                     <th>
-                        专业分类
-                    </th>
-                    <th>培训课程名称</th>
-                    <th>主讲人姓名</th>
-                    <th>课时数(小时)</th> 
+                        课件分类
+                    </th> 
+                    <th>课件名称</th>
+                    <th>主讲人</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -45,19 +45,18 @@
                     <td class="tc">
                         {{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <td>{{el.TypeName}}</td>
-                    <td>{{el.KCName}}</td> 
-                    <td>{{el.KCZJR}}</td>
-                    <td>{{el.KSS }}</td> 
+                    <td>{{el.KJZZType}}</td>
+                    <td>{{el.KJName}}</td>
+                    <td>{{el.KJZJR}}</td> 
                     <td>
                         <span class="btn-click">
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="AddView('KCGL_KCGL','课程编辑',el.ID,$event)" >
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="AddView('KCGL_KJGL','课件编辑',el.ID,$event)">
                                 <i class="iconfont icon-bianji"></i>
                             </a>
-                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELKCGL(el,event)" >
+                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELKCGL(el,event)">
                                 <i class="iconfont icon-shanchu"></i>
                             </a>
-                        </span> 
+                        </span>
                     </td>
                 </tr>
 
@@ -88,25 +87,18 @@
 <script>
     var tempindex = avalon.define({
         $id: "W_KCGL",
-        kcflData:[],
-        userName: ComFunJS.getnowuser(),
-        kcflType:"",
-        InitWigetData: function (str) {
-            $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 24 }, function (resultData) {
-                if (resultData.ErrorMsg == "") {
-                    tempindex.kcflData = resultData.Result;
-                    
-                }
-            }) 
+        kcflData: [], 
+        lbType: "",
+        InitWigetData: function (str) { 
             tempindex.GetLIST();
 
         },
         SelectType: function (type) {
-            tempindex.kcflType = type;
+            tempindex.lbType = type;
             tempindex.GetLIST();
         },
         GetLIST: function () {
-            $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCGLLIST', { p: 1, P1: tempindex.kcflType, Content: model.search.searchcontent, pagecount: model.page.pagecount }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETPXKJLIST', { p: 1, P1: tempindex.lbType, Content: model.search.searchcontent, pagecount: model.page.pagecount }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     model.ListData = resultData.Result;
                     model.page.total = resultData.Result1;
@@ -118,7 +110,7 @@
                         skin: 'molv',
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCGLLIST', { p: e.curr, P1: tempindex.kcflType, Content: model.search.searchcontent, pagecount: model.page.pagecount }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETPXKJLIST', { p: e.curr, P1: tempindex.lbType, Content: model.search.searchcontent, pagecount: model.page.pagecount }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
                                         model.ListData = resultData.Result;
                                     }
@@ -129,19 +121,19 @@
                     });
                 }
             })
-        }, 
+        },
         DELKCGL: function (item, event) {
             if (event) {
                 event.stopPropagation();
-            }
-            top.ComFunJS.winconfirm("确认要删除此课程吗？", function () {
-                $.post('/API/VIEWAPI.ashx?Action=KCGL_DELKCGLBYID', { "P1": item.ID }, function (result) {
+            } 
+            top.ComFunJS.winconfirm("确认要删除此课件吗", function () {
+                $.post('/API/VIEWAPI.ashx?Action=KCGL_DELKJGLBYID', { "P1": item.ID }, function (result) {
                     result = JSON.parse(result)
                     if (result.ErrorMsg == "") {
-                        top.ComFunJS.winsuccess("删除成功");
+                         ComFunJS.winsuccess("删除成功");
                         model.ListData.remove(item);
                     } else {
-                        top.ComFunJS.winwarning(result.ErrorMsg);
+                         ComFunJS.winwarning(result.ErrorMsg);
                     }
                 })
             }, function () { })
