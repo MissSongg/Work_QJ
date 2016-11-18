@@ -1727,6 +1727,20 @@
           <Property Name="FolderID" Type="int" />
           <Property Name="TotalTime" Type="int" />
         </EntityType>
+        <EntityType Name="SZHL_PX_SeeTime">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KCID" Type="int" />
+          <Property Name="KCName" Type="varchar" MaxLength="500" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="KCDuration" Type="int" />
+        </EntityType>
         <EntityType Name="SZHL_QYHD">
           <Key>
             <PropertyRef Name="ID" />
@@ -2460,6 +2474,7 @@
           <EntitySet Name="SZHL_NOTE" EntityType="Self.SZHL_NOTE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_PX_KCGL" EntityType="Self.SZHL_PX_KCGL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_PX_KJGL" EntityType="Self.SZHL_PX_KJGL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_PX_SeeTime" EntityType="Self.SZHL_PX_SeeTime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_QYHD" EntityType="Self.SZHL_QYHD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_QYHD_ITEM" EntityType="Self.SZHL_QYHD_ITEM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_QYHD_Option" EntityType="Self.SZHL_QYHD_Option" Schema="dbo" store:Type="Tables" />
@@ -2618,6 +2633,7 @@
           <EntitySet Name="SZHL_DBGL" EntityType="QJY_SaaSModel.SZHL_DBGL" />
           <EntitySet Name="SZHL_PX_KCGL" EntityType="QJY_SaaSModel.SZHL_PX_KCGL" />
           <EntitySet Name="SZHL_PX_KJGL" EntityType="QJY_SaaSModel.SZHL_PX_KJGL" />
+          <EntitySet Name="SZHL_PX_SeeTime" EntityType="QJY_SaaSModel.SZHL_PX_SeeTime" />
         </EntityContainer>
         <EntityType Name="FT_File">
           <Key>
@@ -4980,6 +4996,20 @@
           <Property Name="CW" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="FolderID" Type="Int32" />
           <Property Name="TotalTime" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SZHL_PX_SeeTime">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KCID" Type="Int32" />
+          <Property Name="KCName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="KCDuration" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7467,6 +7497,21 @@
                 <ScalarProperty Name="KJType" ColumnName="KJType" />
                 <ScalarProperty Name="KJDec" ColumnName="KJDec" />
                 <ScalarProperty Name="KJName" ColumnName="KJName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_PX_SeeTime">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_PX_SeeTime">
+              <MappingFragment StoreEntitySet="SZHL_PX_SeeTime">
+                <ScalarProperty Name="KCDuration" ColumnName="KCDuration" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="KCName" ColumnName="KCName" />
+                <ScalarProperty Name="KCID" ColumnName="KCID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

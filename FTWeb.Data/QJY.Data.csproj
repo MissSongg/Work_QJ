@@ -342,6 +342,9 @@
     <Compile Include="SZHL_PX_KJGL.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
+    <Compile Include="SZHL_PX_SeeTime.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
     <Compile Include="SZHL_QYHD.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>

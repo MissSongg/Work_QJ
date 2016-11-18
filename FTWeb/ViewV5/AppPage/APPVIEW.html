@@ -488,8 +488,8 @@
                 return str;
             }
         });
-        avalon.ready(function () {
-
+        avalon.ready(function () { 
+            ComFunJS.initsetajax(true);//初始化数据
             var FormCode = ComFunJS.getQueryString("FormCode")
             if (FormCode.indexOf("_") > 0) {
                 model.PathCode = FormCode.split('_')[0];
