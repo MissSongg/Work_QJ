@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta name=”renderer” content=”webkit|ie-comp|ie-stand” />
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_1473753044_842232.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_ug9f5r880f36usor.css">
     <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/animate.css">
     <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/default.css">
@@ -17,14 +17,14 @@
         .ms-controller, .ms-important, [ms-controller], [ms-important] {
             visibility: hidden;
         }
-
         .szhl_getPeoples {
             display: none;
         }
     </style>
 </head>
-<body style="background-color: #e7ecf1" ms-controller="IndexV5">
-    <div class="worker mb20">
+<body style="background-image: url('/ViewV5/images/skin/skin1.png');
+    background-color: transparent;" ms-controller="IndexV5">
+    <div class="worker mb20" style="opacity:.9">
         <div class="header box-shadow">
             <div class="head-center clearfix">
                 <div class="logo c666 pull-left">
@@ -54,6 +54,25 @@
                                 扫描二维码，关注企业号
                             </div>
                         </li>
+                        <li>
+                            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                <i class="iconfont icon-pifu tip" data-toggle="tooltip" title="壁纸" data-placement="bottom"></i>
+                            </a>
+                            <div class="dropdown-menu animated fadeInRight" style="overflow: auto;  text-align: center">
+                                <table class="table noborder" style="margin-bottom:0" >
+                                    <tr>
+                                        <td style="border:0"><img style="width:120px;height:60px" src="/ViewV5/images/skin/skin1.png" alt="Alternate Text" /> </td>
+                                        <td style="border:0"><img style="width:120px;height:60px" src="/ViewV5/images/skin/skin1.png" alt="Alternate Text" /> </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="border:0"><img style="width:120px;height:60px" src="/ViewV5/images/skin/skin1.png" alt="Alternate Text" /> </td>
+                                        <td style="border:0"><img style="width:120px;height:60px" src="/ViewV5/images/skin/skin1.png" alt="Alternate Text" /> </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                        </li>
                         <li ms-click="SelModelXX()">
                             <a class="dropdown-toggle">
                                 <i class="iconfont icon-xinfeng tip" data-toggle="tooltip" title="消息中心" data-placement="bottom"></i>
@@ -64,19 +83,6 @@
                             <a class="shuaxin">
                                 <i class="iconfont icon-shuaxin tip" data-toggle="tooltip" title="刷新" data-placement="bottom"></i>
                             </a>
-                        </li>
-                        <!--帮助中心-->
-                        <li>
-                            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                <i class="iconfont icon-help-bangzhu tip" data-toggle="tooltip" title="帮助中心" data-placement="bottom"></i>
-                            </a>
-                            <ul class="dropdown-menu add-msg dropdown-menu add-msg animated fadeInRight">
-                                <li ms-click="SelModelWTFK()">
-                                    <a href="###">
-                                        问题反馈
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li ms-click="exit()">
                             <a>

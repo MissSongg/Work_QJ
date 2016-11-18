@@ -32,7 +32,7 @@ namespace QjySaaSWeb.APP
             string P3 = context.Request["P3"] ?? "";
             string UserName = context.Request["UserName"] ?? "";
             string strIP = CommonHelp.getIP(context);//用户IP
-            int intTimeOut = 5;//用户超时间隔时间即szhlcode失效时间
+            int intTimeOut = 60;//用户超时间隔时间即szhlcode失效时间
 
             Msg_Result Model = new Msg_Result() { Action = strAction.ToUpper(), ErrorMsg = "" };
             if (!string.IsNullOrEmpty(strAction))
