@@ -703,6 +703,7 @@
         getSearchFile: function () {
             tempindex.FileList.clear();
             tempindex.FolderList.clear();
+            tempindex.SelItemData.clear();
             if (tempindex.searchContent) {
                 $.getJSON('/API/VIEWAPI.ashx?Action=QYWD_QUERYFILE', {
                     P1: tempindex.itemtype, P2: tempindex.searchContent
