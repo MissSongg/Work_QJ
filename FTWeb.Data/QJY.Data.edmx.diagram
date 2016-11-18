@@ -127,6 +127,7 @@
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_DBGL" Width="1.5" PointX="35.375" PointY="32.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_PX_KCGL" Width="1.5" PointX="23.375" PointY="36.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_PX_KJGL" Width="1.5" PointX="31.375" PointY="36.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_PX_SeeTime" Width="1.5" PointX="5.375" PointY="36.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

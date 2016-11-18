@@ -1297,6 +1297,11 @@
     }
 
 });
+
+$(function () { 
+    ComFunJS.initsetajax(true);//初始化数据
+})
+
 ///<abbr class="timeago" title="2012-11-28T11:17:00Z"></abbr>
 ///   $(".timeago").timeago();     jQuery.timeago("2012-12-09");            //=> "1天前" 
 

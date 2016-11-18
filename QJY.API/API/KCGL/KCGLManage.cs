@@ -96,6 +96,7 @@ namespace QJY.API
         }
 
         #endregion
+
         #region 课件管理
         public void GETPXKJLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
@@ -202,5 +203,70 @@ namespace QJY.API
 
         #endregion
 
+        #region 课件观看时间
+        /// <summary>
+        /// 添加课件观看时间
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void CREATESEETIME(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            SZHL_PX_SeeTime sps = JsonConvert.DeserializeObject<SZHL_PX_SeeTime>(P1); 
+            sps.UserName = UserInfo.User.UserName;
+            sps.CRDate = DateTime.Now;
+            sps.CRUser = UserInfo.User.UserName;
+            sps.ComId = UserInfo.User.ComId;
+            sps.StartTime = DateTime.Now;
+            sps.KCDuration = 0; 
+            new SZHL_PX_SeeTimeB().Insert(sps);  
+            msg.Result = sps;
+        }
+        /// <summary>
+        /// 更新课件观看时间
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void UPDATESEETIME(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            SZHL_PX_SeeTime sps = JsonConvert.DeserializeObject<SZHL_PX_SeeTime>(P1); 
+            new SZHL_PX_SeeTimeB().Update(sps);
+        }
+
+        /// <summary>
+        /// 获取学员观看课件时间
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETKCSEETIME(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int page = 0;
+            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
+            page = page == 0 ? 1 : page;
+            int recordCount = 0;
+            string strWhere = string.Format(" ps.ComId={0} ", UserInfo.User.ComId);
+            if (P1 != "")
+            {
+                strWhere += " AND ps.KCID=" + P1;
+            }
+            string content = context.Request["Content"] ?? "";
+            if (content != "")
+            {
+                strWhere += string.Format(" and (auser.UserRealName like '%{0}%' OR ps.KCName like '%{0}%')", content);
+            }
+            DataTable dt = new SZHL_PX_SeeTimeB().GetDataPager("  SZHL_PX_SeeTime ps INNER JOIN JH_Auth_User auser ON ps.UserName= auser.UserName ", " ps.*,auser.UserRealName ", 8, page, " ps.CRDate ", strWhere, ref recordCount);
+
+            msg.Result = dt;
+            msg.Result1 = recordCount;
+        }
+        #endregion
     }
 }

@@ -147,5 +147,6 @@ namespace QJY.Data
         public virtual DbSet<SZHL_DBGL> SZHL_DBGL { get; set; }
         public virtual DbSet<SZHL_PX_KCGL> SZHL_PX_KCGL { get; set; }
         public virtual DbSet<SZHL_PX_KJGL> SZHL_PX_KJGL { get; set; }
+        public virtual DbSet<SZHL_PX_SeeTime> SZHL_PX_SeeTime { get; set; }
     }
 }

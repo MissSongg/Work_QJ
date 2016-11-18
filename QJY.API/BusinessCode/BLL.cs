@@ -243,7 +243,7 @@ namespace QJY.API
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-      
+
 
         /// <summary>
         /// 更新企业空间占用
@@ -509,7 +509,7 @@ namespace QJY.API
     public class SZHL_CHAT_GROUPUSERB : BaseEFDao<SZHL_CHAT_GROUPUSER> { }
     public class SZHL_CHAT_MSG_GROUPB : BaseEFDao<SZHL_CHAT_MSG_GROUP> { }
     public class SZHL_CHAT_MSG_GROUP_USERB : BaseEFDao<SZHL_CHAT_MSG_GROUP_USER> { }
-    
+
     public class SZHL_DRAFTB : BaseEFDao<SZHL_DRAFT> { }
     public class SZHL_DDGL_ITEMB : BaseEFDao<SZHL_DDGL_ITEM> { }
     public class SZHL_GZGLB : BaseEFDao<SZHL_GZGL> { }
@@ -552,7 +552,7 @@ namespace QJY.API
     }
     public class SZHL_KS_TKFLB : BaseEFDao<SZHL_KS_TKFL>
     {
-    } 
+    }
     public class SZHL_KS_USERKSB : BaseEFDao<SZHL_KS_USERKS>
     {
     }
@@ -568,4 +568,8 @@ namespace QJY.API
     public class SZHL_DBGLB : BaseEFDao<SZHL_DBGL>
     {
     }
+    public class SZHL_PX_SeeTimeB : BaseEFDao<SZHL_PX_SeeTime>
+    {
+    }
+
 }
