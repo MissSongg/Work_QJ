@@ -16,21 +16,57 @@
     <script src="../JS/SZHLCommon.js?jsver=20160915"></script>
     <script type="text/javascript" src="http://g.alicdn.com/de/prismplayer/1.4.8/prism.js"></script>
     <script type="text/javascript">
+        var player, kcmodelSee;
         $(function () {
             var id = ComFunJS.getQueryString("md5");
             var strlocation = "http://" + location.host + "/ViewV5/Base/DownFile.aspx?type=video&MD5=" + id
 
-            var player = new prismplayer({
+            player = new prismplayer({
                 id: "J_prismPlayer", // 容器id
                 source: strlocation, // 视频url 支持互联网可直接访问的视频地址
                 autoplay: true,      // 自动播放
                 width: "100%",       // 播放器宽度
                 height: "500px"      // 播放器高度
             });
+            player.on("ready", function () {
+                $.getJSON('/API/WXAPI.ashx?Action=KCGL_GETKCGLMODEL', { P1: ComFunJS.getQueryString("id") }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        var modelData = resultData.Result;
+                        //创建观看进度
+                        $.post('/API/VIEWAPI.ashx?Action=KCGL_CREATESEETIME', {
+                            "P1": JSON.stringify({
+                                KCName: modelData.KJName,
+                                KCID: modelData.ID
+                            })
+                        }, function (resultData) {
+                            resultData = JSON.parse(resultData)
+                            if (resultData.ErrorMsg == "") {
+                                kcmodelSee = resultData.Result;
+                                player.seek(0);
+                                setInterval(countPlaySec, 1000);
+                                setInterval(updateSeeDuration, 60000);
+                            }
+                        });
+                    }
+                })
 
+            });
 
         })
+        function countPlaySec() {
+            kcmodelSee.KCDuration = kcmodelSee.KCDuration + 1;
+        }
+        function updateSeeDuration() {
+            if (kcmodelSee.KCDuration == player.getCurrentTime())
+                return;
 
+            kcmodelSee.KCDuration =parseInt(player.getCurrentTime());
+            $.post('/API/VIEWAPI.ashx?Action=KCGL_UPDATESEETIME', {
+                "P1": JSON.stringify(kcmodelSee)
+            }, function (resultData) {
+                //console.log('update success');
+            });
+        }
 
     </script>
 </body>
