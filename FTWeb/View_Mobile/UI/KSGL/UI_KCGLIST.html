@@ -119,7 +119,7 @@
             GetList: function () {
                 if (model.loading) return;
                 model.loading = true;
-                $.getJSON('/API/WXAPI.ashx?Action=KCGL_GETKCGLLIST', { p: model.page, P1: model.kcflType, pagecount: model.pagecount }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCGLLIST', { p: model.page, P1: model.kcflType, pagecount: model.pagecount }, function (resultData) {
                     model.loading = false;
                     if (resultData.ErrorMsg == "") {
                         if (model.page == 1 && resultData.Result.length == 0) {

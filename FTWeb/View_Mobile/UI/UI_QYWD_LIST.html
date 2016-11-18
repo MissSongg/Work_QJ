@@ -180,7 +180,7 @@
         });
 
         function loadMore() {
-            $.getJSON("/API/WXAPI.ashx?Action=QYWD_GETLISTDATA&r=" + Math.random(), { P1: strId == "0" ? "" : strId, itemtype: strType }, function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=QYWD_GETLISTDATA&r=" + Math.random(), { P1: strId == "0" ? "" : strId, itemtype: strType }, function (r) {
 
                 if (r.ErrorMsg == "") {
                     model.wjjData.pushArray(r.Result);
@@ -269,7 +269,7 @@
                 var formData = new FormData();
                 formData.append("upFile", document.getElementById("file").files[0]);
                 $.ajax({
-                    url: "/API/WXAPI.ashx?ACTION=XTGL_UPLOADFILES&P1=" + str + "&r=" + Math.random(),
+                    url: "/API/VIEWAPI.ashx?ACTION=XTGL_UPLOADFILES&P1=" + str + "&r=" + Math.random(),
                     type: "POST",
                     data: formData,
                     /**

@@ -39,7 +39,7 @@
                 var lg = $.loading({
                     content: '保存中...',
                 })
-                $.post("/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLWCQK&r=" + Math.random(), { P1: model.ModelData.RWWCQK, P2: strId }, function (data) {
+                $.post("/API/VIEWAPI.ashx?Action=DBRW_SETCUS_SWRWGLWCQK&r=" + Math.random(), { P1: model.ModelData.RWWCQK, P2: strId }, function (data) {
                     lg.hide();
                     var data = $.parseJSON(data);
                     if (data.ErrorMsg == "") {
@@ -62,7 +62,7 @@
                 var lg = $.loading({
                     content: '保存中...',
                 })
-                $.getJSON('/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLPJWCQK_WX&r=' + Math.random(), { "P1": model.ModelData.DBPJ, ID: strId }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=DBRW_SETCUS_SWRWGLPJWCQK_WX&r=' + Math.random(), { "P1": model.ModelData.DBPJ, ID: strId }, function (resultData) {
                     lg.hide();
                     if (resultData.ErrorMsg == "") {
                         $.tips({
@@ -89,7 +89,7 @@
                 content: '加载中...',
             })
 
-            $.getJSON("/API/WXAPI.ashx?Action=DBRW_GETCUS_SWRWGLDBLIST_WX&r=" + Math.random(), { "P1": strId }, function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=DBRW_GETCUS_SWRWGLDBLIST_WX&r=" + Math.random(), { "P1": strId }, function (r) {
                 lg.hide();
                 if (r.ErrorMsg == "") {
                     if (r.Result.length > 0) {
@@ -101,7 +101,7 @@
                                 return $(this).attr("score") * 1 / 20;
                             },
                             click: function (score, evt) {
-                                $.getJSON('/API/WXAPI.ashx?Action=DBRW_SETCUS_SWRWGLPFWCQK_WX&r=' + Math.random(), { "P1": score * 20, ID: strId }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=DBRW_SETCUS_SWRWGLPFWCQK_WX&r=' + Math.random(), { "P1": score * 20, ID: strId }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
                                         $.tips({
                                             content: "评分成功",

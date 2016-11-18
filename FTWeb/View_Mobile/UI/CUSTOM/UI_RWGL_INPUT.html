@@ -134,7 +134,7 @@
                     //    }
 
                     //})
-                    $.post("/API/WXAPI.ashx?Action=DBRW_ADDCUS_SWRWGL&r=" + Math.random(), { "P1": JSON.stringify(model.ctData.$model), P2: JSON.stringify(model.mxList) }, function (data) {
+                    $.post("/API/VIEWAPI.ashx?Action=DBRW_ADDCUS_SWRWGL&r=" + Math.random(), { "P1": JSON.stringify(model.ctData.$model), P2: JSON.stringify(model.mxList) }, function (data) {
                         lg.hide();
                         var data = $.parseJSON(data);
                         if (data.ErrorMsg == "") {
@@ -257,7 +257,7 @@
             //model.ctData.StartTime = $("#djsj").val();
             //model.ctData.EndTime = $("#jssj").val();
             //获取督办类别
-            $.getJSON('/API/WXAPI.ashx?Action=XTGL_GETZIDIANLIST&r=' + Math.random(), { P1: 2 }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST&r=' + Math.random(), { P1: 2 }, function (resultData) {
                 lg.hide();
                 if (resultData.ErrorMsg == "") {
                     model.lbData = resultData.Result;

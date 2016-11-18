@@ -178,7 +178,7 @@
             msgtype: "",
             msgdata: [],
             getmsgdata: function () {
-                $.getJSON("/API/WXAPI.ashx?Action=XXFB_GETXXFBTYPETOP", function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XXFB_GETXXFBTYPETOP", function (r) {
                     if (r.ErrorMsg == "") {
                         model.msgdata = r.Result;
                     }
@@ -188,7 +188,7 @@
 
 
         avalon.ready(function () {
-            $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETUSERINFO", function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETUSERINFO", function (r) {
                 if (r.ErrorMsg == "") {
                     model.userData = r.Result;
                     $(".header").show('normal');

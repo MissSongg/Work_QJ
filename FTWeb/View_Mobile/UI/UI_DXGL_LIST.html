@@ -114,7 +114,7 @@
                 var page = window.localStorage.getItem("page");
 
                 if (page != "0") {
-                    $.getJSON("/API/WXAPI.ashx?Action=DXGL_GETDXGLLIST&r=" + Math.random(), { "p": page }, function (r) {
+                    $.getJSON("/API/VIEWAPI.ashx?Action=DXGL_GETDXGLLIST&r=" + Math.random(), { "p": page }, function (r) {
 
                         if (r.ErrorMsg == "") {
                             if (r.Result.length > 0) {

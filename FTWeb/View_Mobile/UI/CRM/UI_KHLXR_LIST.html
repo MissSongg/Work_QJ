@@ -344,7 +344,7 @@
             },
             delLXR: function (el) {
                 $.confirm("确认要删除吗", function () {
-                    $.post('/API/WXAPI.ashx?Action=CRM_DELKHLXR', { "P1": el.ID }, function (result) {
+                    $.post('/API/VIEWAPI.ashx?Action=CRM_DELKHLXR', { "P1": el.ID }, function (result) {
                         result = JSON.parse(result)
                         if (result.ErrorMsg == "") {
                             ComFunJS.winsuccess("删除成功");
@@ -359,7 +359,7 @@
             loadMore: function () {
                 if (model.loading) return;
                 model.loading = true;
-                $.getJSON("/API/WXAPI.ashx?Action=CRM_GETKHLXRLIST&r=" + Math.random(), { "p": model.page, P1: model.type, Content: model.search, ID: model.DataID }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=CRM_GETKHLXRLIST&r=" + Math.random(), { "p": model.page, P1: model.type, Content: model.search, ID: model.DataID }, function (r) {
                     model.loading = false;
                     if (r.ErrorMsg == "") {
                         if (model.page == 1 && r.Result.length == 0) {

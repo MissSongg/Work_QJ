@@ -427,7 +427,7 @@
             loadMore: function () {
                 if (model.loading) return;
                 model.loading = true;
-                $.getJSON("/API/WXAPI.ashx?Action=QYHD_GETQYHDLIST_PAGE&r=" + Math.random(), { "p": model.page, listType: model.type, ID: model.DataID, P2: model.search }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=QYHD_GETQYHDLIST_PAGE&r=" + Math.random(), { "p": model.page, listType: model.type, ID: model.DataID, P2: model.search }, function (r) {
                     model.loading = false;
                     if (r.ErrorMsg == "") {
                         if (model.page == 1 && r.Result.length == 0) {
@@ -469,7 +469,7 @@
             },
             pl: function (el) {
                 ComFunJS.showCommentNew(function (result) {
-                    $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "MsgType": "QYHD", "MsgLYID": el.ID }, function (resultData) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "MsgType": "QYHD", "MsgLYID": el.ID }, function (resultData) {
 
                         if (resultData.ErrorMsg == "") {
                             el.PLList.push(resultData.Result);
@@ -570,7 +570,7 @@
                             model.QYHDBMData.OptionUser = $(".layermcont #lxr").val();
 
 
-                            $.getJSON('/API/WXAPI.ashx?Action=QYHD_ADDQYHDITEM&r=' + Math.random(), { P1: JSON.stringify(model.QYHDBMData.$model) }, function (resultData) {
+                            $.getJSON('/API/VIEWAPI.ashx?Action=QYHD_ADDQYHDITEM&r=' + Math.random(), { P1: JSON.stringify(model.QYHDBMData.$model) }, function (resultData) {
 
                                 if (resultData.ErrorMsg == "") {
                                     layer.close(tc);

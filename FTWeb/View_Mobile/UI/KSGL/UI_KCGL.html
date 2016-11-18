@@ -135,7 +135,7 @@
             modelData: {},
             KCGLList: [],
             GetModelData: function () {
-                $.getJSON('/API/WXAPI.ashx?Action=KCGL_GETKCGLMODEL', { P1: ComFunJS.getQueryString("id") }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCGLMODEL', { P1: ComFunJS.getQueryString("id") }, function (resultData) {
                     if (resultData.ErrorMsg == "") {
                         model.modelData = resultData.Result; 
                         model.KCGLList = resultData.Result2; 

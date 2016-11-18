@@ -254,7 +254,7 @@
             loadMore: function () {
                 if (model.loading) return;
                 model.loading = true;
-                $.getJSON("/API/WXAPI.ashx?Action=TSSQ_GETHTLIST&r=" + Math.random(), { P1: model.type, "p": model.page, ID: model.DataID, Content: model.search }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=TSSQ_GETHTLIST&r=" + Math.random(), { P1: model.type, "p": model.page, ID: model.DataID, Content: model.search }, function (r) {
                     model.loading = false;
                     if (r.ErrorMsg == "") {
                         if (model.page == 1 && r.Result.length == 0) {
@@ -294,7 +294,7 @@
             },
             pl: function (el) {
                 ComFunJS.showCommentNew(function (result) {
-                    $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "TSSQ", "MsgLYID": el.ID }, function (resultData) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "TSSQ", "MsgLYID": el.ID }, function (resultData) {
 
                         if (resultData.ErrorMsg == "") {
                             el.PLList.push(resultData.Result);
@@ -307,7 +307,7 @@
             hf: function (el, pl) {
                 ComFunJS.showCommentNew(function (result) {
 
-                    $.getJSON('/API/WXAPI.ashx?Action=TSSQ_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "TLID": pl.ID, "MsgLYID": el.ID }, function (resultData) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=TSSQ_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "TLID": pl.ID, "MsgLYID": el.ID }, function (resultData) {
 
                         if (resultData.ErrorMsg == "") {
                             el.PLList.push(resultData.Result);
@@ -319,7 +319,7 @@
             },
             zan: function (el,obj) {
                 $(this).toggleClass("active animated pulse");
-                $.post('/API/WXAPI.ashx?Action=TSSQ_ZANHTBYID', { "P1": el.ID }, function (result) {
+                $.post('/API/VIEWAPI.ashx?Action=TSSQ_ZANHTBYID', { "P1": el.ID }, function (result) {
                     result = JSON.parse(result)
                     if (result.ErrorMsg == "") {
                         //ComFunJS.winsuccess("点赞成功");
@@ -351,7 +351,7 @@
             },
             DELHT: function (item) {
                 $.confirm('确认要删除吗？', function () {
-                    $.post('/API/WXAPI.ashx?Action=TSSQ_DELHTBYID', { "P1": item.ID }, function (result) {
+                    $.post('/API/VIEWAPI.ashx?Action=TSSQ_DELHTBYID', { "P1": item.ID }, function (result) {
                         result = JSON.parse(result)
                         if (result.ErrorMsg == "") {
                             ComFunJS.winsuccess("删除成功");

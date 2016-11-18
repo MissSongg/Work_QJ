@@ -343,13 +343,6 @@
         </div>
     </div>
     <!--聊天窗口-->
-    <div class="wei-icon">
-        <img src="/VIEWV5/images/IM/im.png">
-        <i id="noReadMsgCount" style="display:none"></i>
-    </div>
-    <div style="position: fixed; bottom: 20px; right: 120px; display: none; z-index: 1020" id="im">
-        <iframe src="/VIEWV5/Chat/chat.html" frameborder="0" style="width: 692px; height: 557px;"></iframe>
-    </div>
     <!-- 自定义显示列 -->
     <div class="modal fade" id="myselfModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog">
@@ -461,9 +454,7 @@
             //    $(this).toggleClass("dh")
             //})
             // 聊天窗口的显示隐藏
-            $(".wei-icon").click(function () {
-                $("#im").toggle();
-            })
+
             //保持页面永远能到底部
             var h2 = window.innerHeight - 90;
             document.getElementById("leftlayout").style.minHeight = h2 + "px";
@@ -505,29 +496,6 @@
 
 
         });
-
-        //隐藏聊天框
-        function closeim() {
-            $("#im").hide();
-        }
-
-        //获取未读消息数量
-        function getNoReadMsgCount() {
-            $.getJSON('/API/VIEWAPI.ashx?Action=CHAT_GETALLNOREADCOUNT', {}, function (resultData) {
-                if (resultData.ErrorMsg == "") {
-                    setNoReadMsgCount(resultData.Result);
-                }
-            });
-        }
-        //设置未读消息数量
-        function setNoReadMsgCount(count) {
-            if (count == 0) {
-                $('#noReadMsgCount').hide();
-            }
-            else {
-                $('#noReadMsgCount').show().text(count);
-            }
-        }
     </script>
 
 

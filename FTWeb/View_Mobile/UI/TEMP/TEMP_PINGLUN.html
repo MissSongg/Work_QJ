@@ -54,7 +54,7 @@
         SavePL: function () {
 
             ComFunJS.showCommentNew(function (result) {
-                $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "MsgType": tempmodelPL.type, "MsgLYID": tempmodelPL.dataid }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "MsgType": tempmodelPL.type, "MsgLYID": tempmodelPL.dataid }, function (resultData) {
 ;
                     if (resultData.ErrorMsg == "") {
                         tempmodelPL.plData.push(resultData.Result);

@@ -107,7 +107,7 @@
 
         },
         GetNewsData: function () {
-            $.getJSON("/API/WXAPI.ashx?Action=XTGL_GETXXZXMODELINFO&r=" + Math.random(), {}, function (r) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GETXXZXMODELINFO&r=" + Math.random(), {}, function (r) {
                 if (r.ErrorMsg == "") {
                     tempmodel.newsData = r.Result;
                 }

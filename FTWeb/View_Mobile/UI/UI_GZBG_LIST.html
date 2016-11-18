@@ -311,7 +311,7 @@
                 if (model.loading) return;
                 model.loading = true;
 
-                $.getJSON("/API/WXAPI.ashx?Action=GZBG_GETGZBGLIST&r=" + Math.random(), { "p": model.page, P2: model.search, type: model.type, ID: model.DataID }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=GZBG_GETGZBGLIST&r=" + Math.random(), { "p": model.page, P2: model.search, type: model.type, ID: model.DataID }, function (r) {
                     model.loading = false;
                     if (r.ErrorMsg == "") {
                         for (var i = 0; i < r.Result.length; i++) {
@@ -355,7 +355,7 @@
             pl: function (el) {
                 ComFunJS.showCommentNew(function (result) {
 
-                    $.getJSON('/API/WXAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "GZBG", "MsgLYID": el.ID }, function (resultData) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "Points": result.point, "MsgType": "GZBG", "MsgLYID": el.ID }, function (resultData) {
 
                         if (resultData.ErrorMsg == "") {
                             el.PLList.push(resultData.Result);
@@ -389,7 +389,7 @@
             },
             DELGZBG: function (item) {
                 $.confirm('确认要删除吗？', function () {
-                    $.getJSON('/API/WXAPI.ashx?Action=GZBG_DELGZBGBYID', { "P1": item.ID }, function (result) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=GZBG_DELGZBGBYID', { "P1": item.ID }, function (result) {
                         if (result.ErrorMsg == "") {
                             ComFunJS.winsuccess("删除成功");
                             model.ctData.remove(item);

@@ -69,7 +69,7 @@
                     content: '保存中...',
                 })
                 
-                $.post("/API/WXAPI.ashx?Action=KDGL_ADDKDGL&jsr=" + model.jsr + "&r=" + Math.random(), { "P1": JSON.stringify(model.ctData.$model), "P2": model.wximg }, function (data) {
+                $.post("/API/VIEWAPI.ashx?Action=KDGL_ADDKDGL&jsr=" + model.jsr + "&r=" + Math.random(), { "P1": JSON.stringify(model.ctData.$model), "P2": model.wximg }, function (data) {
                     lg.hide();
                     var data = $.parseJSON(data);
                     if (data.ErrorMsg == "") {

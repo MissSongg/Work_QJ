@@ -139,14 +139,14 @@
             },
             UpStatus: function (el, type) {
                 var msg = "退回";
-                var urlapi = "/API/WXAPI.ashx?ACTION=XXFB_SHXXFB&r=" + Math.random();
+                var urlapi = "/API/VIEWAPI.ashx?ACTION=XXFB_SHXXFB&r=" + Math.random();
                 if (type == "1") {
                     msg = "同意";
                 } else if (type == "-1") {
                     msg = "退回";
                 } else if (type == "2") {
                     msg = "发布";
-                    urlapi = "/API/WXAPI.ashx?ACTION=XXFB_SUREXXFB&r=" + Math.random();
+                    urlapi = "/API/VIEWAPI.ashx?ACTION=XXFB_SUREXXFB&r=" + Math.random();
                 }
                 ComFunJS.showSH("200", msg, function (nr) {
                     $.post(urlapi, { P1: el.ID, P2: type, jy: nr }, function (result) {
@@ -165,7 +165,7 @@
             GetModelList: function () {
                 if (model.loading) return;
                 model.loading = true;
-                $.getJSON("/API/WXAPI.ashx?Action=XXFB_GETXXFBLISTWXSH&r=" + Math.random(), { "p": model.page, P1: model.flag }, function (r) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XXFB_GETXXFBLISTWXSH&r=" + Math.random(), { "p": model.page, P1: model.flag }, function (r) {
                     model.loading = false;
                     if (r.ErrorMsg == "") {
                         model.xxList.pushArray(r.Result);

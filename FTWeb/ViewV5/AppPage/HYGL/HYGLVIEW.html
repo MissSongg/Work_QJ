@@ -192,7 +192,7 @@
                     var frameid = $("iframe", $(layero)).attr('id');
                     var plnr = ComFunJS.isIE() ? window.frames[frameid].getpl() : window.frames[frameid].contentWindow.getpl();
                     if (plnr) {
-                        $.post('/API/WXAPI.ashx?Action=HYGL_UPDATEHYQK&r=' + Math.random() + '&QJSY=' + plnr, { "P1": model.strId, "P2": "4" }, function (resultData) {
+                        $.post('/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYQK&r=' + Math.random() + '&QJSY=' + plnr, { "P1": model.strId, "P2": "4" }, function (resultData) {
                             layer.close(inx);
                             var resultData = JSON.parse(resultData);
                             if (resultData.ErrorMsg == "") {
@@ -219,7 +219,7 @@
                     var frameid = $("iframe", $(layero)).attr('id');
                     var plnr = ComFunJS.isIE() ? window.frames[frameid].getpl() : window.frames[frameid].contentWindow.getpl();
                     if (plnr) {
-                        $.post('/API/WXAPI.ashx?Action=HYGL_UPDATEHYJL&r=' + Math.random(), { "P1": model.strId, "P2": plnr }, function (resultData) {
+                        $.post('/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYJL&r=' + Math.random(), { "P1": model.strId, "P2": plnr }, function (resultData) {
                             layer.close(inx);
                             var resultData = JSON.parse(resultData);
                             if (resultData.ErrorMsg == "") {

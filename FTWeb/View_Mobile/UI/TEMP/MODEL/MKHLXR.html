@@ -864,7 +864,7 @@
         },
         addmpkh: function () {
             $.confirm("确认要新增客户【" + tempmodel.modelData.Company + "】？", function () {
-                $.post('/API/WXAPI.ashx?Action=CRM_ADDMPKH&r=' + Math.random(), { "P1": tempmodel.modelData.Company }, function (result) {
+                $.post('/API/VIEWAPI.ashx?Action=CRM_ADDMPKH&r=' + Math.random(), { "P1": tempmodel.modelData.Company }, function (result) {
                     result = JSON.parse(result)
                     if (result.ErrorMsg == "") {
                         //tempmodel.ColumnData.push(result.Result);
