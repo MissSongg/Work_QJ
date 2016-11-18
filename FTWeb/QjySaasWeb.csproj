@@ -438,6 +438,7 @@
     <Content Include="ViewV5\CSS\zj.css" />
     <Content Include="ViewV5\images\DJ\sethd.png" />
     <Content Include="ViewV5\images\qrcode.jpg" />
+    <Content Include="ViewV5\images\skin\skin1.png" />
     <Content Include="ViewV5\images\tk_exam.png" />
     <Content Include="ViewV5\images\TX.png" />
     <Content Include="ViewV5\images\head.jpg" />
