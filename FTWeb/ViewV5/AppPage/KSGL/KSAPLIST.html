@@ -26,7 +26,7 @@
                     <th class="tc">
                         序号
                     </th>
-                    <th class="tc">
+                    <th >
                         考试安排名称
                     </th>
                     <th>考试时长</th>
@@ -136,7 +136,7 @@
                 event.stopPropagation();
             }
             model.initobj = { Id: ID, stu: status };
-            model.PageCodeRdm = "AppPage/KSGL/USERCJLIST.html?r=" + model.rdm;
+            model.PageCode = "AppPage/KSGL/USERCJLIST";
         },
         EndView: function (item) {
             if (event.stopPropagation) {

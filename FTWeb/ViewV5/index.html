@@ -17,6 +17,7 @@
         .ms-controller, .ms-important, [ms-controller], [ms-important] {
             visibility: hidden;
         }
+
         .szhl_getPeoples {
             display: none;
         }
@@ -24,7 +25,7 @@
 </head>
 <body style="background-image: url('/ViewV5/images/skin/skin1.png');
     background-color: transparent;" ms-controller="IndexV5">
-    <div class="worker mb20" style="opacity:.9">
+    <div class="worker mb20" >
         <div class="header box-shadow">
             <div class="head-center clearfix">
                 <div class="logo c666 pull-left">
@@ -50,7 +51,7 @@
                                 <i class="iconfont icon-erweima tip" data-toggle="tooltip" title="扫描关注" data-placement="bottom"></i>
                             </a>
                             <div class="dropdown-menu animated fadeInRight" style="overflow: auto; width: 200px; text-align: center">
-                                <img width="100%" src = '/ViewV5/images/qrcode.jpg'>
+                                <img width="100%" src='/ViewV5/images/qrcode.jpg'>
                                 扫描二维码，关注企业号
                             </div>
                         </li>
@@ -59,7 +60,7 @@
                                 <i class="iconfont icon-pifu tip" data-toggle="tooltip" title="壁纸" data-placement="bottom"></i>
                             </a>
                             <div class="dropdown-menu animated fadeInRight" style="overflow: auto;  text-align: center">
-                                <table class="table noborder" style="margin-bottom:0" >
+                                <table class="table noborder" style="margin-bottom:0">
                                     <tr>
                                         <td style="border:0"><img style="width:120px;height:60px" src="/ViewV5/images/skin/skin1.png" alt="Alternate Text" /> </td>
                                         <td style="border:0"><img style="width:120px;height:60px" src="/ViewV5/images/skin/skin1.png" alt="Alternate Text" /> </td>
@@ -167,14 +168,14 @@
                         <div class="menu-general ft16 box-shadow">
                             <ul>
                                 <li ms-repeat-el="model.FunData" ms-class-1="active:el.PageName==model.FunData[0].PageName" ms-click="selmenulev2(el,this)" ms-visible="el.isshow"><a>{{el.PageName}}</a><i ms-if="el.PageName=='微信企业号'" style="position: absolute; right: -19px;top:-10px;"><img src="/ViewV5/images/tuijian.gif" /></i></li>
-                               
+
                             </ul>
                             <ins style="position: absolute;right: 25px;text-decoration: none;cursor: pointer;color: #666;font-size: 22px;" class="iconfont icon-shuaxin tip" ms-click="refpage('')" ms-if="!ishasLeft" data-toggle="tooltip" title="刷新" data-placement="bottom"></ins>
                             <ins class="iconfont icon-shezhi tblue" data-toggle="modal" data-target="#DragSort" ms-if="ishasLeft"></ins>
 
                         </div>
                         <!-- 下边内容 -->
-                        <div ms-visible="isshowload" class="main-content ft16 mt10 pt20 c666 box-shadow clearfix" ms-include-src="PageCodeRdm" data-include-rendered='Temprender'>
+                        <div ms-visible="isshowload" class="main-content ft16 mt10 pt20 c666 box-shadow clearfix" ms-include-src="PageCode+'.html?r='+model.rdm" data-include-rendered='Temprender'>
                         </div>
                         <div class="index-right" ms-if="ishasLeft">
                             <!-- 考勤 -->
@@ -194,7 +195,7 @@
                                             <tr class="first">
                                                 <td class="title">
                                                     <div>上班 </div>
-                                                    <span>{{model.KQGZData.KQStart}}</span>
+                                                    <span ms-if="model.KQGZData.KQStart">{{model.KQGZData.KQStart}}</span>
                                                 </td>
                                                 <td class="clock">
                                                     <span class="time" ms-visible="QDData.QDDate!='未签到'" ms-class-1="error:QDData.Status==1">
@@ -209,7 +210,7 @@
                                             <tr>
                                                 <td class="title">
                                                     <div>下班</div>
-                                                    <span>{{model.KQGZData.KQEnd}}</span>
+                                                    <span ms-if="model.KQGZData.KQEnd">{{model.KQGZData.KQEnd}}</span>
                                                 </td>
                                                 <td class="clock">
                                                     <span class="time" ms-visible="QTData.QTDate!='未签退'" ms-class-1="error:QTData.Status==2">
@@ -455,7 +456,7 @@
                 layer.closeAll();
             });//筛选类型
 
-            
+
             //$(".shuaxin").click(function () {
             //    $(this).toggleClass("dh")
             //})
@@ -479,10 +480,10 @@
                         localStorage.setItem(sortable.options.group, order.join('|'));
                     }
                 },
-                onAdd: function (evt) {  },
-                onUpdate: function (evt) {  },
-                onRemove: function (evt) {},
-                onStart: function (evt) {},
+                onAdd: function (evt) { },
+                onUpdate: function (evt) { },
+                onRemove: function (evt) { },
+                onStart: function (evt) { },
                 onEnd: function (evt) {
                     var arrayStr = JSON.stringify(model.FunData.$model);
                     model.FunData.forEach(function (item) {

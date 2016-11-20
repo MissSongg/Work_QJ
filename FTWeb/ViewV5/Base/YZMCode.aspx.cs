@@ -16,7 +16,7 @@ namespace QjySaaSWeb.ViewV5.Base
         }
         public void NumberChar(string sessionName, int length)
         {
-            string Vchar = "0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,W,X,Y,Z";
+            string Vchar = "2,3,4,5,6,7,8,9,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,U,W,X,Y,Z";
             string[] VcArray = Vchar.Split(',');
             string[] str = new string[length];
             Random random = new Random();

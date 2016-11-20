@@ -34,7 +34,7 @@
                     <th class="tc">
                         序号
                     </th>
-                    <th class="tc">
+                    <th>
                         试卷名称
                     </th>
                     <th>总分数</th>
@@ -165,10 +165,10 @@
                 })
             }, function () { })
         }, AddSJGL: function () {
-            model.PageCodeRdm = "AppPage/KSGL/SJGL.html?r=" + model.rdm;
+            model.PageCode = "AppPage/KSGL/SJGL";
         }, EditSJGL: function (id) {
             model.initobj = { sjId: id, kcId: "" };
-            model.PageCodeRdm = "AppPage/KSGL/SJGL.html?r=" + model.rdm;
+            model.PageCode = "AppPage/KSGL/SJGL";
         }, jszt: function (type) {
             var statusName = "";
             if (type == 1) {
