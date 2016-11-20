@@ -72,7 +72,6 @@
         model.PageCode = item.PageCode;
         model.initobj = item.ExtData;
         model.rdm = Math.random();
-        model.PageCodeRdm = model.PageCode + '.html?r=' + model.rdm;
         model.page.pageindex = 1;
         model.page.total = 0;
         model.ShowColumns = [];
@@ -103,10 +102,8 @@
         }
 
     },//刷新页面
-    PageCode: "/ViewV5/Base/Loading",//需要加载的模板
-    PageCodeRdm: "/ViewV5/Base/Loading.html",//需要加载的模板
+    PageCode: "",//需要加载的模板
     rdm: Math.random(),//随机数
-
     Temprender: function () {
         if (typeof (tempindex) != "undefined") {
             tempindex.InitWigetData(model.initobj);

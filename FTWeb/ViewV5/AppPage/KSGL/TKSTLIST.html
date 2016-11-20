@@ -12,7 +12,7 @@
             curType: "",
             TKSTData: [], selNum: function (item) {    //选择显示的条数
                 model.page.pagecount = item;
-                tempindex.GetTKST();
+                tempindex.GetLIST();
             },
             InitWigetData: function (strId) {
                 tempindex.tkID = strId;
@@ -27,10 +27,10 @@
                     }
                 })
 
-                tempindex.GetTKST();
+                tempindex.GetLIST();
             },  ImportTKST: function () {
                 top.ComFunJS.winviewform('/ViewV5/AppPage/KSGL/TKSTExport.html?tkid=' + tempindex.tkID, "试题导入", "750", "300");
-            }, Total: 0, GetTKST: function () {
+            }, Total: 0, GetLIST: function () {
                 $.getJSON("/API/VIEWAPI.ashx?Action=KSGL_GETTKSTLIST", { p: 1, P1: tempindex.curKnowLedge, P2: tempindex.curType, level: tempindex.curLevel, tkid: tempindex.tkID,count:model.page.pagecount }, function (result) {
                     if (result.ErrorMsg == "") {
                         tempindex.TKSTData = result.Result;
@@ -60,13 +60,13 @@
                 } else {
                     tempindex.curKnowLedge = "";
                 }
-                tempindex.GetTKST();
+                tempindex.GetLIST();
             }, selLevel: function (val) {
                 tempindex.curLevel = val;
-                tempindex.GetTKST();
+                tempindex.GetLIST();
             }, selType: function (val) {
                 tempindex.curType = val;
-                tempindex.GetTKST();
+                tempindex.GetLIST();
             }, AddTKST: function () {
                 top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=KSGL_TKST&tkid=" + tempindex.tkID, "添加试题", "1000", "700");
             }, DelTKST: function (item) {
