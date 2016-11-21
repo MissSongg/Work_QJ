@@ -179,6 +179,7 @@
     <Content Include="ViewV5\AppPage\KQGL\KQGL.html" />
     <Content Include="ViewV5\AppPage\KQGL\KQINSTALL.html" />
     <Content Include="ViewV5\AppPage\KQGL\KQTJ.html" />
+    <Content Include="ViewV5\AppPage\KSGL\kc-look.html" />
     <Content Include="ViewV5\AppPage\KSGL\KSAP.html" />
     <Content Include="ViewV5\AppPage\KSGL\KSAPLIST.html" />
     <Content Include="ViewV5\AppPage\KSGL\KSAPVIEW.html" />
