@@ -92,34 +92,34 @@ namespace QJY.API
         public void DELBRANCH(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
 
-           
-                int deptCode = int.Parse(P1);
-                JH_Auth_Branch branch = new JH_Auth_BranchB().GetEntity(d => d.DeptCode == deptCode);
-                if (branch != null)
-                {
 
-                    if (new JH_Auth_UserB().GetEntities(d => d.BranchCode == deptCode && d.ComId == UserInfo.User.ComId).ToList().Count > 0)
-                    {
-                        msg.ErrorMsg = "本部门中存在用户，请先删除用户";
-                        return;
-                    }
-                    if (new JH_Auth_BranchB().GetEntities(d => d.DeptRoot == branch.DeptCode).Count() > 0)
-                    {
-                        msg.ErrorMsg = "本部门中存在子部门，请先删除子部门";
-                        return;
-                    }
-                    if (UserInfo.QYinfo.IsUseWX == "Y")
-                    {
-                        WXHelp bm = new WXHelp(UserInfo.QYinfo);
-                        bm.WX_DelBranch(branch.WXBMCode.ToString());
-                    }
-                    if (!new JH_Auth_BranchB().Delete(d => d.DeptCode == deptCode))
-                    {
-                        msg.ErrorMsg = "删除部门失败";
-                        return;
-                    }
+            int deptCode = int.Parse(P1);
+            JH_Auth_Branch branch = new JH_Auth_BranchB().GetEntity(d => d.DeptCode == deptCode);
+            if (branch != null)
+            {
+
+                if (new JH_Auth_UserB().GetEntities(d => d.BranchCode == deptCode && d.ComId == UserInfo.User.ComId).ToList().Count > 0)
+                {
+                    msg.ErrorMsg = "本部门中存在用户，请先删除用户";
+                    return;
                 }
-         
+                if (new JH_Auth_BranchB().GetEntities(d => d.DeptRoot == branch.DeptCode).Count() > 0)
+                {
+                    msg.ErrorMsg = "本部门中存在子部门，请先删除子部门";
+                    return;
+                }
+                if (UserInfo.QYinfo.IsUseWX == "Y")
+                {
+                    WXHelp bm = new WXHelp(UserInfo.QYinfo);
+                    bm.WX_DelBranch(branch.WXBMCode.ToString());
+                }
+                if (!new JH_Auth_BranchB().Delete(d => d.DeptCode == deptCode))
+                {
+                    msg.ErrorMsg = "删除部门失败";
+                    return;
+                }
+            }
+
 
         }
         /// <summary>
@@ -258,114 +258,116 @@ namespace QJY.API
         public void ADDUSER(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
 
-                JH_Auth_User user = new JH_Auth_User();
-                user = JsonConvert.DeserializeObject<JH_Auth_User>(P1);
-                if (string.IsNullOrEmpty(user.UserName))
+            JH_Auth_User user = new JH_Auth_User();
+            user = JsonConvert.DeserializeObject<JH_Auth_User>(P1);
+            if (string.IsNullOrEmpty(user.UserName))
+            {
+                msg.ErrorMsg = "用户名必填";
+                return;
+            }
+            if (string.IsNullOrEmpty(user.mobphone))
+            {
+                msg.ErrorMsg = "手机号必填";
+                return;
+            }
+            Regex regexPhone = new Regex("^0?1[3|4|5|8|7][0-9]\\d{8}$");
+            if (!regexPhone.IsMatch(user.mobphone))
+            {
+                msg.ErrorMsg = "手机号填写不正确";
+                return;
+            }
+            Regex regexOrder = new Regex("^[0-9]*$");
+            if (user.UserOrder != null && !regexOrder.IsMatch(user.UserOrder.ToString()))
+            {
+                msg.ErrorMsg = "序号必须是数字";
+                return;
+            }
+            if (user.ID != 0)
+            {
+                if (UserInfo.QYinfo.IsUseWX == "Y")
                 {
-                    msg.ErrorMsg = "用户名必填";
-                    return;
+                    WXHelp wx = new WXHelp(UserInfo.QYinfo);
+                    wx.WX_UpdateUser(user);
                 }
-                if (string.IsNullOrEmpty(user.mobphone))
+                if (!new JH_Auth_UserB().Update(user))
                 {
-                    msg.ErrorMsg = "手机号必填";
-                    return;
-                }
-                Regex regexPhone = new Regex("^0?1[3|4|5|8|7][0-9]\\d{8}$");
-                if (!regexPhone.IsMatch(user.mobphone))
-                {
-                    msg.ErrorMsg = "手机号填写不正确";
-                    return;
-                }
-                Regex regexOrder = new Regex("^[0-9]*$");
-                if (user.UserOrder != null && !regexOrder.IsMatch(user.UserOrder.ToString()))
-                {
-                    msg.ErrorMsg = "序号必须是数字";
-                    return;
-                }
-                if (user.ID != 0)
-                {
-                    if (UserInfo.QYinfo.IsUseWX == "Y")
-                    {
-                        WXHelp wx = new WXHelp(UserInfo.QYinfo);
-                        wx.WX_UpdateUser(user);
-                    }
-                    if (!new JH_Auth_UserB().Update(user))
-                    {
-                        msg.ErrorMsg = "修改用户失败";
-                    }
-                    else {
-
-                        string strSql = "";
-                        JH_Auth_Role role = new JH_Auth_RoleB().GetEntity(d => d.RoleName == user.zhiwu && (d.ComId == UserInfo.User.ComId || d.ComId == 0));
-                        if (role == null)
-                        {
-                            role = new JH_Auth_Role();
-                            role.PRoleCode = 0;
-                            role.RoleName = user.zhiwu;
-                            role.RoleDec = user.zhiwu;
-                            role.IsUse = "Y";
-                            role.isSysRole = "N";
-                            role.leve = 0;
-                            role.ComId = UserInfo.User.ComId;
-                            role.DisplayOrder = 0;
-                            new JH_Auth_RoleB().Insert(role);
-                        }
-                        strSql += string.Format("DELETE JH_Auth_UserRole where UserName='{0}';INSERT into JH_Auth_UserRole (UserName,RoleCode,ComId) Values('{0}',{1},{2})", user.UserName, role.RoleCode, UserInfo.User.ComId);
-                        new JH_Auth_RoleB().ExsSql(strSql);
-                    }
+                    msg.ErrorMsg = "修改用户失败";
                 }
                 else
                 {
-                    JH_Auth_User user1 = new JH_Auth_UserB().GetUserByUserName(UserInfo.QYinfo.ComId, user.UserName);
-                    if (user1 != null)
-                    {
-                        msg.ErrorMsg = "用户已存在";
-                        return;
-                    }
-                    List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => d.mobphone == user.mobphone && d.ComId == UserInfo.User.ComId).ToList();
-                    if (userList.Count > 0)
-                    {
-                        msg.ErrorMsg = "此手机号的用户已存在";
-                        return;
-                    }
-                    user.UserPass = CommonHelp.GetMD5(user.UserPass);
-                    user.ComId = UserInfo.User.ComId;
-                    user.zhiwu = user.zhiwu == "" ? "员工" : user.zhiwu;
-                    if (UserInfo.QYinfo.IsUseWX == "Y")
-                    {
-                        WXHelp wx = new WXHelp(UserInfo.QYinfo);
-                        wx.WX_CreateUser(user);
-                    }
-                    user.CRDate = DateTime.Now;
-                    user.CRUser = UserInfo.User.UserName;
-                    if (!new JH_Auth_UserB().Insert(user))
-                    {
-                        msg.ErrorMsg = "添加用户失败";
-                    }
-                    else
-                    {
-                        string strSql = "";
-                        JH_Auth_Role role = new JH_Auth_RoleB().GetEntity(d => d.RoleName == user.zhiwu && (d.ComId == UserInfo.User.ComId || d.ComId == 0));
-                        if (role == null)
-                        {
-                            role = new JH_Auth_Role();
-                            role.PRoleCode = 0;
-                            role.RoleName = user.zhiwu;
-                            role.RoleDec = user.zhiwu;
-                            role.IsUse = "Y";
-                            role.isSysRole = "N";
-                            role.leve = 0;
-                            role.ComId = UserInfo.User.ComId;
-                            role.DisplayOrder = 0;
-                            new JH_Auth_RoleB().Insert(role);
-                        }
-                        strSql += string.Format("DELETE JH_Auth_UserRole where UserName='{0}';INSERT into JH_Auth_UserRole (UserName,RoleCode,ComId) Values('{0}',{1},{2})", user.UserName, role.RoleCode, UserInfo.User.ComId);
-                        new JH_Auth_RoleB().ExsSql(strSql);
 
+                    string strSql = "";
+                    JH_Auth_Role role = new JH_Auth_RoleB().GetEntity(d => d.RoleName == user.zhiwu && (d.ComId == UserInfo.User.ComId || d.ComId == 0));
+                    if (role == null)
+                    {
+                        role = new JH_Auth_Role();
+                        role.PRoleCode = 0;
+                        role.RoleName = user.zhiwu;
+                        role.RoleDec = user.zhiwu;
+                        role.IsUse = "Y";
+                        role.isSysRole = "N";
+                        role.leve = 0;
+                        role.ComId = UserInfo.User.ComId;
+                        role.DisplayOrder = 0;
+                        new JH_Auth_RoleB().Insert(role);
                     }
+                    strSql += string.Format("DELETE JH_Auth_UserRole where UserName='{0}';INSERT into JH_Auth_UserRole (UserName,RoleCode,ComId) Values('{0}',{1},{2})", user.UserName, role.RoleCode, UserInfo.User.ComId);
+                    new JH_Auth_RoleB().ExsSql(strSql);
                 }
-                msg.Result = user;
-         
+            }
+            else
+            {
+                JH_Auth_User user1 = new JH_Auth_UserB().GetUserByUserName(UserInfo.QYinfo.ComId, user.UserName);
+                if (user1 != null)
+                {
+                    msg.ErrorMsg = "用户已存在";
+                    return;
+                }
+                List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => d.mobphone == user.mobphone && d.ComId == UserInfo.User.ComId).ToList();
+                if (userList.Count > 0)
+                {
+                    msg.ErrorMsg = "此手机号的用户已存在";
+                    return;
+                }
+                user.UserPass = CommonHelp.GetMD5(user.UserPass);
+                user.ComId = UserInfo.User.ComId;
+                user.zhiwu = user.zhiwu == "" ? "员工" : user.zhiwu;
+                if (UserInfo.QYinfo.IsUseWX == "Y")
+                {
+                    WXHelp wx = new WXHelp(UserInfo.QYinfo);
+                    wx.WX_CreateUser(user);
+                }
+                user.CRDate = DateTime.Now;
+                user.CRUser = UserInfo.User.UserName;
+                user.logindate = DateTime.Now;
+                if (!new JH_Auth_UserB().Insert(user))
+                {
+                    msg.ErrorMsg = "添加用户失败";
+                }
+                else
+                {
+                    string strSql = "";
+                    JH_Auth_Role role = new JH_Auth_RoleB().GetEntity(d => d.RoleName == user.zhiwu && (d.ComId == UserInfo.User.ComId || d.ComId == 0));
+                    if (role == null)
+                    {
+                        role = new JH_Auth_Role();
+                        role.PRoleCode = 0;
+                        role.RoleName = user.zhiwu;
+                        role.RoleDec = user.zhiwu;
+                        role.IsUse = "Y";
+                        role.isSysRole = "N";
+                        role.leve = 0;
+                        role.ComId = UserInfo.User.ComId;
+                        role.DisplayOrder = 0;
+                        new JH_Auth_RoleB().Insert(role);
+                    }
+                    strSql += string.Format("DELETE JH_Auth_UserRole where UserName='{0}';INSERT into JH_Auth_UserRole (UserName,RoleCode,ComId) Values('{0}',{1},{2})", user.UserName, role.RoleCode, UserInfo.User.ComId);
+                    new JH_Auth_RoleB().ExsSql(strSql);
+
+                }
+            }
+            msg.Result = user;
+
 
         }
         //批量设置部门
@@ -396,17 +398,17 @@ namespace QJY.API
         /// <param name="strUserName"></param>
         public void DELUSER(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-           
-                if (UserInfo.QYinfo.IsUseWX == "Y")
-                {
-                    WXHelp bm = new WXHelp(UserInfo.QYinfo);
-                    bm.WX_DelUser(P1);
-                }
-                if (!new JH_Auth_UserB().Delete(d => d.ComId == UserInfo.QYinfo.ComId && d.UserName == P1))
-                {
-                    msg.ErrorMsg = "删除失败";
-                }
-         
+
+            if (UserInfo.QYinfo.IsUseWX == "Y")
+            {
+                WXHelp bm = new WXHelp(UserInfo.QYinfo);
+                bm.WX_DelUser(P1);
+            }
+            if (!new JH_Auth_UserB().Delete(d => d.ComId == UserInfo.QYinfo.ComId && d.UserName == P1))
+            {
+                msg.ErrorMsg = "删除失败";
+            }
+
 
         }
         /// <summary>
@@ -419,20 +421,20 @@ namespace QJY.API
         /// <param name="strUserName"></param>
         public void UPDATEUSERISUSE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-           
-                JH_Auth_User UPUser = new JH_Auth_UserB().GetUserByUserName(UserInfo.QYinfo.ComId, P1);
-                UPUser.IsUse = P2;
 
-                if (UserInfo.QYinfo.IsUseWX == "Y")
-                {
-                    WXHelp bm = new WXHelp(UserInfo.QYinfo);
-                    bm.WX_UpdateUser(UPUser);//为了更新微信用户状态
-                }
-                if (!new JH_Auth_UserB().Update(UPUser))
-                {
-                    msg.ErrorMsg = "更新失败";
-                }
-          
+            JH_Auth_User UPUser = new JH_Auth_UserB().GetUserByUserName(UserInfo.QYinfo.ComId, P1);
+            UPUser.IsUse = P2;
+
+            if (UserInfo.QYinfo.IsUseWX == "Y")
+            {
+                WXHelp bm = new WXHelp(UserInfo.QYinfo);
+                bm.WX_UpdateUser(UPUser);//为了更新微信用户状态
+            }
+            if (!new JH_Auth_UserB().Update(UPUser))
+            {
+                msg.ErrorMsg = "更新失败";
+            }
+
         }
 
         public void SETISSHOWYD(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
@@ -1111,14 +1113,14 @@ namespace QJY.API
             }
             List<JH_Auth_ZiDian> zidiannew = new JH_Auth_ZiDianB().GetEntities(d => d.TypeName == zidian.TypeName && d.Class == zidian.Class && d.ComId == UserInfo.QYinfo.ComId && d.Remark != "1" && d.ID != zidian.ID).ToList();
 
-            if (zidiannew.Count>0)
+            if (zidiannew.Count > 0)
             {
                 msg.ErrorMsg = "此分类已存在";
                 return;
             }
             if (zidian.ID == 0)
             {
-                zidian.ComId = UserInfo.User.ComId; 
+                zidian.ComId = UserInfo.User.ComId;
                 zidian.Remark = "0";
                 zidian.CRDate = DateTime.Now;
                 zidian.CRUser = UserInfo.User.UserName;
@@ -2044,7 +2046,8 @@ namespace QJY.API
                     msg.ErrorMsg = ex.Message;
                 }
             }
-            else {
+            else
+            {
                 msg.ErrorMsg = "删除失败";
             }
         }
