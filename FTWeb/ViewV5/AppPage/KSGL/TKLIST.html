@@ -8,8 +8,8 @@
         <div class="oh">
             <h5 class="pull-left tr">题库分类：</h5>
             <ul class="tab-type ft14">
-                <li ms-click="SelectType('')"><span ms-class="active:el.ID==model.search.seartype">全部</span></li>
-                <li ms-repeat-el="TypeData" ms-click="SelectType(el.ID)" ms-class="active:el.ID==model.search.seartype"><span>{{el.TKFLName}}</span></li>
+                <li ms-click="SelectType('')"><span ms-class="active:''==tempindex.tkfl">全部</span></li>
+                <li ms-repeat-el="TypeData" ms-click="SelectType(el.ID)" ms-class="active:el.ID==tempindex.tkfl"><span>{{el.TKFLName}}</span></li>
             </ul>
         </div>
         <!-- 搜索 -->
@@ -31,6 +31,9 @@
             <thead>
                 <tr>
                     <th class="tc">
+                        序号
+                    </th>
+                    <th>
                         题库名称
                     </th>
                     <th>题库分类</th>
@@ -55,12 +58,12 @@
                         <span class="btn-click">
                             <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑"   ms-click="AddView('KSGL_TKGL','题库编辑',el.ID,$event)">
                                 <i class="iconfont icon-bianji"></i>
-                            </a>
-                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除"   ms-click="DeleteView(el,$event)">
-                                <i class="iconfont icon-shanchu"></i>
-                            </a>
+                            </a> 
                             <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="试题管理" ms-click="ChangeMenu(el)">
                                 <i class="iconfont icon-bianji"></i>
+                            </a>
+                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DeleteView(el,$event)">
+                                <i class="iconfont icon-shanchu"></i>
                             </a>
                         </span>
                     </td>
@@ -94,8 +97,9 @@
 
     var tempindex = avalon.define({
         $id: "TKFLLIST",
+        tkfl:"",
         SelectType: function (type) {
-            model.search.seartype = type;
+            tempindex.tkfl = type;
             tempindex.GetLIST();
         },
         selNum: function (item) {    //选择显示的条数
@@ -118,7 +122,7 @@
         GetLIST: function () {
             model.page.pageindex = 1;
             model.ListData.clear();
-            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKGLLIST', { p: 1, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKGLLIST', { p: 1, P1: tempindex.tkfl, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     model.ListData = resultData.Result;
                     if (model.ListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
@@ -130,7 +134,7 @@
                         skin: 'molv',
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKGLLIST', { p: e.curr, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKGLLIST', { p: e.curr, P1: tempindex.tkfl, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
                                         model.ListData = resultData.Result;
                                     }

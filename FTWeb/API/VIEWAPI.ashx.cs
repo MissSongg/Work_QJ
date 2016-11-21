@@ -33,7 +33,22 @@ namespace QjySaaSWeb.APP
             string UserName = context.Request["UserName"] ?? "";
             string strIP = CommonHelp.getIP(context);//用户IP
             int intTimeOut = 60;//用户超时间隔时间即szhlcode失效时间
-
+            if (P1.IndexOf("<script>") > -1)
+            {
+                P1 = P1.Replace("<script>", "&gt;script&lt;");
+            }
+            if (P2.IndexOf("<script>") > -1)
+            {
+                P2 = P2.Replace("<script>", "&gt;script&lt;"); 
+            }
+            if (P1.IndexOf("<script/>") > -1)
+            {
+                P1 = P1.Replace("<script/>", "&gt;script/&lt;");
+            }
+            if (P2.IndexOf("<script/>") > -1)
+            {
+                P2 = P2.Replace("<script/>", "&gt;script/&lt;");
+            }
             Msg_Result Model = new Msg_Result() { Action = strAction.ToUpper(), ErrorMsg = "" };
             if (!string.IsNullOrEmpty(strAction))
             {

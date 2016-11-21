@@ -3,114 +3,114 @@
 <link href="/ViewV5/CSS/saved_resource(2).css" rel="stylesheet" />
 <script>
     tempindex = avalon.define({
-            $id: "TKSTList",
-            tkID: ComFunJS.getQueryString("tkid"),
-            TKInfo: {}, //题库信息
-            KnowLedge: [],
-            curKnowLedge: "",
-            curLevel: "",
-            curType: "",
-            TKSTData: [], selNum: function (item) {    //选择显示的条数
-                model.page.pagecount = item;
-                tempindex.GetLIST();
-            },
-            InitWigetData: function (strId) {
-                tempindex.tkID = strId;
-                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKNOWLEDGE', { P1: tempindex.tkID }, function (result) {
-                    if (result.ErrorMsg == "") {
-                        tempindex.KnowLedge = result.Result;
-                    }
-                })
-                $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKGLMODEL', { P1: tempindex.tkID }, function (result) {
-                    if (result.ErrorMsg == "") {
-                        tempindex.TKInfo = result.Result;
-                    }
-                })
-
-                tempindex.GetLIST();
-            },  ImportTKST: function () {
-                top.ComFunJS.winviewform('/ViewV5/AppPage/KSGL/TKSTExport.html?tkid=' + tempindex.tkID, "试题导入", "750", "300");
-            }, Total: 0, GetLIST: function () {
-                $.getJSON("/API/VIEWAPI.ashx?Action=KSGL_GETTKSTLIST", { p: 1, P1: tempindex.curKnowLedge, P2: tempindex.curType, level: tempindex.curLevel, tkid: tempindex.tkID,count:model.page.pagecount }, function (result) {
-                    if (result.ErrorMsg == "") {
-                        tempindex.TKSTData = result.Result;
-                        tempindex.Total = result.Result2;
-                        var page = 1;
-                        laypage({
-                            cont: 'pageDiv', //容器。值支持id名、原生dom对象，jquery对象。
-                            pages: Math.ceil(parseInt(result.Result2) * 1.0 / 10), //通过后台拿到的总页数
-                            curr: 1, //初始化当前页
-                            skin: 'molv',
-                            jump: function (e) { //触发分页后的回调
-                                if (e.curr != page) {
-                                    $.getJSON("/API/VIEWAPI.ashx?Action=KSGL_GETTKSTLIST", { p: e.curr, P1: tempindex.curKnowLedge, P2: tempindex.curType, level: tempindex.curLevel, tkid: tempindex.tkID, count: model.page.pagecount }, function (result) {
-                                        if (result.ErrorMsg == "") {
-                                            tempindex.TKSTData = result.Result;
-                                        }
-                                    })
-                                    page = e.curr;
-                                }
-                            }
-                        });
-                    }
-                })
-            }, selKnowLedge: function (item) {
-                if (item) {
-                    tempindex.curKnowLedge = item.KnowLedge;
-                } else {
-                    tempindex.curKnowLedge = "";
+        $id: "TKSTList",
+        tkID: ComFunJS.getQueryString("tkid"),
+        TKInfo: {}, //题库信息
+        KnowLedge: [],
+        curKnowLedge: "",
+        curLevel: "",
+        curType: "",
+        TKSTData: [], selNum: function (item) {    //选择显示的条数
+            model.page.pagecount = item;
+            tempindex.GetLIST();
+        },
+        InitWigetData: function (strId) {
+            tempindex.tkID = strId;
+            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETKNOWLEDGE', { P1: tempindex.tkID }, function (result) {
+                if (result.ErrorMsg == "") {
+                    tempindex.KnowLedge = result.Result;
                 }
-                tempindex.GetLIST();
-            }, selLevel: function (val) {
-                tempindex.curLevel = val;
-                tempindex.GetLIST();
-            }, selType: function (val) {
-                tempindex.curType = val;
-                tempindex.GetLIST();
-            }, AddTKST: function () {
-                top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=KSGL_TKST&tkid=" + tempindex.tkID, "添加试题", "1000", "700");
-            }, DelTKST: function (item) {
-                top.ComFunJS.winconfirm("确定要删除此题吗？", function () {
-                    $.getJSON("/API/VIEWAPI.ashx?Action=KSGL_DELTKST", { P1: item.ID }, function (data) {
-                        if (data.ErrorMsg == "") {
-                            tempindex.TKSTData.remove(item);
-                            top.ComFunJS.winsuccess("删除成功");
+            })
+            $.getJSON('/API/VIEWAPI.ashx?Action=KSGL_GETTKGLMODEL', { P1: tempindex.tkID }, function (result) {
+                if (result.ErrorMsg == "") {
+                    tempindex.TKInfo = result.Result;
+                }
+            })
 
-                        } else {
-                            top.ComFunJS.winsuccess(msg);
-
+            tempindex.GetLIST();
+        }, ImportTKST: function () {
+            top.ComFunJS.winviewform('/ViewV5/AppPage/KSGL/TKSTExport.html?tkid=' + tempindex.tkID, "试题导入", "750", "300");
+        }, Total: 0, GetLIST: function () {
+            $.getJSON("/API/VIEWAPI.ashx?Action=KSGL_GETTKSTLIST", { p: 1, P1: tempindex.curKnowLedge, P2: tempindex.curType, level: tempindex.curLevel, tkid: tempindex.tkID, count: model.page.pagecount }, function (result) {
+                if (result.ErrorMsg == "") {
+                    tempindex.TKSTData = result.Result;
+                    tempindex.Total = result.Result2;
+                    var page = 1;
+                    laypage({
+                        cont: 'pageDiv', //容器。值支持id名、原生dom对象，jquery对象。
+                        pages: Math.ceil(parseInt(result.Result2) * 1.0 / 10), //通过后台拿到的总页数
+                        curr: 1, //初始化当前页
+                        skin: 'molv',
+                        jump: function (e) { //触发分页后的回调
+                            if (e.curr != page) {
+                                $.getJSON("/API/VIEWAPI.ashx?Action=KSGL_GETTKSTLIST", { p: e.curr, P1: tempindex.curKnowLedge, P2: tempindex.curType, level: tempindex.curLevel, tkid: tempindex.tkID, count: model.page.pagecount }, function (result) {
+                                    if (result.ErrorMsg == "") {
+                                        tempindex.TKSTData = result.Result;
+                                    }
+                                })
+                                page = e.curr;
+                            }
                         }
                     });
-                });
-            }, GetNYCD: function (level) {
-                var levelName = "";
-                switch (level) {
-                    case 1:
-                        levelName = "容易";
-                        break;
-                    case 2:
-                        levelName = "较易";
-                        break;
-                    case 3:
-                        levelName = "一般";
-                        break;
-                    case 4:
-                        levelName = "较难";
-                        break;
-                    case 5:
-                        levelName = "难";
-                        break;
-
                 }
-                return levelName;
-            }, ChangeTK: function () {
-                top.ComFunJS.winviewform("/ViewV5/AppPage/KSGL/ChangeTK.html", "添加试题", "1000", "700");
-            }, EDITTKST: function (item) {
-                top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=KSGL_TKST&tkid=" + tempindex.tkID + "&ID=" + item.ID, "编辑试题", "1000", "700");
+            })
+        }, selKnowLedge: function (item) {
+            if (item) {
+                tempindex.curKnowLedge = item.KnowLedge;
+            } else {
+                tempindex.curKnowLedge = "";
             }
+            tempindex.GetLIST();
+        }, selLevel: function (val) {
+            tempindex.curLevel = val;
+            tempindex.GetLIST();
+        }, selType: function (val) {
+            tempindex.curType = val;
+            tempindex.GetLIST();
+        }, AddTKST: function () {
+            top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=KSGL_TKST&tkid=" + tempindex.tkID, "添加试题", "1000", "700");
+        }, DelTKST: function (item) {
+            top.ComFunJS.winconfirm("确定要删除此题吗？", function () {
+                $.getJSON("/API/VIEWAPI.ashx?Action=KSGL_DELTKST", { P1: item.ID }, function (data) {
+                    if (data.ErrorMsg == "") {
+                        tempindex.TKSTData.remove(item);
+                        top.ComFunJS.winsuccess("删除成功");
 
-        })
-   
+                    } else {
+                        top.ComFunJS.winsuccess(msg);
+
+                    }
+                });
+            });
+        }, GetNYCD: function (level) {
+            var levelName = "";
+            switch (level) {
+                case 1:
+                    levelName = "容易";
+                    break;
+                case 2:
+                    levelName = "较易";
+                    break;
+                case 3:
+                    levelName = "一般";
+                    break;
+                case 4:
+                    levelName = "较难";
+                    break;
+                case 5:
+                    levelName = "难";
+                    break;
+
+            }
+            return levelName;
+        }, ChangeTK: function () {
+            model.PageCode = "AppPage/KSGL/TKLIST";
+        }, EDITTKST: function (item) {
+            top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=KSGL_TKST&tkid=" + tempindex.tkID + "&ID=" + item.ID, "编辑试题", "1000", "700");
+        }
+
+    })
+
 </script>
 
 <div ms-controller="TKSTList">
@@ -129,9 +129,9 @@
                     <!--工具区域-->
                     <div class="tool js_page_tool_frame">
 
-                        <ul data-name="skin" style="width:90px">
+                        <ul data-name="skin" style="width:120px">
                             <li class="tool-blk">
-                                <a href="javascript:void(0)" class="btn btn-lg btn-warning " ms-click="ChangeTK()" type="button"><span>切换题库</span></a>
+                                <a href="javascript:void(0)" class="btn btn-lg btn-warning " ms-click="ChangeTK()" type="button"><span>返回题库列表</span></a>
                             </li>
                         </ul>
                         <ul data-name="skin" style="width:90px">
