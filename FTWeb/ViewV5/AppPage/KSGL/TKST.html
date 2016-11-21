@@ -48,7 +48,48 @@
                 </li>
                 <li class="add-item add-widthall" ms-visible="modelData.Type=='单选题'||modelData.Type=='多选题'||modelData.Type=='判断题'">
                     <label class="add-item-label"><i>*</i>选项详细</label>
-                    <div class="add-ic">
+                    <div class="detail-item" style="padding-left:0px;">
+                        <table class="table table-hover table-bordered" id="tab">
+                            <thead style="background:#f7f7f7;">
+                                <tr>
+                                    <th width="100px" class="tc">是否为答案</th>
+                                    <th width="100px" class="tc">选项名称</th>
+                                    <th>选项内容</th>
+                                    <th width="100px">操作</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr ms-repeat-item="optionData">
+                                    <td class="tc">
+                                        <div class="icheckbox_square-blue checked">
+                                            <span class="iconfont icon-check ft12"></span>
+                                        </div>
+                                    </td>
+                                    <td class="tc">{{item.ItemName}}</td>
+                                    <td>
+                                        <input type="text" ms-if="modelData.Type!='判断题'&&item.ItemDesc.indexOf('img')<0" ms-blur="onBlur()" class="form-control" ms-duplex="item.ItemDesc" />
+                                        <label ms-if="modelData.Type=='判断题'||item.ItemDesc.indexOf('img')>-1">{{item.ItemDesc|html}}</label>
+                                    </td>
+                                    <td><input type='button' ms-if="modelData.Type!='判断题'" ms-click="DELOPTION(item)" class='btn btn-sm btn-warning' value='删除' /></td>
+
+                                </tr>
+
+                            </tbody>
+                            <tfoot ms-visible="modelData.Type!='判断题'">
+                                <tr>
+                                    <td colspan="3">
+                                        <input type="text" id="content" ms-duplex="optionContent" class="form-control" placeholder="请输入选项内容" />
+                                    </td>
+                                    <td style="width: 80px;">
+                                        <input type="button" value="添加" class="btn btn-sm btn-info" ms-click="AddOption()" />
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <!--<div class="add-ic">
                         <table class="table">
                             <thead>
                                 <tr>
@@ -84,7 +125,7 @@
                                 </tr>
                             </tfoot>
                         </table>
-                    </div>
+                    </div>-->
                 </li>
             </ul>
         </div>
@@ -141,8 +182,7 @@
         },//初始化
         modelData: { "KnowLedge": "", "TKID": ComFunJS.getQueryString("tkid", 0), "QContent": "", "QAnswer": "", "Type": "单选题", "Level": 3 },
         SaveData: function (callback) {
-            if (!ComFunJS.convstr(tempmodel.modelData.QContent))
-            {
+            if (!ComFunJS.convstr(tempmodel.modelData.QContent)) {
                 ComFunJS.winwarning("题文不能为空");
                 $(dom).attr("disabled", true).find(".fa").hide();//加上转圈样式
                 return;
