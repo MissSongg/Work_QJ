@@ -444,8 +444,7 @@
                 })
             }
         })
-        avalon.ready(function () {
-            ComFunJS.initsetajax(); 
+        avalon.ready(function () { 
             if (model.userType && model.typeid)
             {
                 $.getJSON('/API/VIEWAPI.ashx?Action=' + model.userType + '_GET' + model.userType + 'USERLIST', { P1: model.typeid }, function (resultData) {

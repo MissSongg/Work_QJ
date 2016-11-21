@@ -674,8 +674,7 @@
         $("#myModal").modal("show");
     }
 })
-avalon.ready(function () {
-    ComFunJS.initsetajax(true);//初始化数据
+avalon.ready(function () { 
     model.GetYYList();
     model.GetUserData();
     model.GetXXZXList();

@@ -141,6 +141,12 @@
         },//初始化
         modelData: { "KnowLedge": "", "TKID": ComFunJS.getQueryString("tkid", 0), "QContent": "", "QAnswer": "", "Type": "单选题", "Level": 3 },
         SaveData: function (callback) {
+            if (!ComFunJS.convstr(tempmodel.modelData.QContent))
+            {
+                ComFunJS.winwarning("题文不能为空");
+                $(dom).attr("disabled", true).find(".fa").hide();//加上转圈样式
+                return;
+            }
             if (tempmodel.Answer) {
                 tempmodel.modelData.QAnswer = tempmodel.Answer;
             }
@@ -184,6 +190,7 @@
             })
         }, ChangeSTType: function () {
             tempmodel.Answer = "";
+            tempmodel.optionData.clear();
             if (tempmodel.optionData.size() == 0) {
                 if (tempmodel.modelData.Type == "判断题") {
                     tempmodel.optionData.push({ "ItemName": "A", "ItemDesc": "×" });

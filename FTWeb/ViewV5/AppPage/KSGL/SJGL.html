@@ -266,7 +266,8 @@
                                 共<span class="important-cor">{{item.TotalRecord}}</span>分
                             </div>
                             <div class="di item-list xt-btn-box">
-                                <div class="btn-group" role="group" style="float:left">
+                                <a class="xt-btn" style="float:left" ms-click="SelSJ(item)">选题</a>
+                                <div class="btn-group" role="group" style="float:left;margin-left:10px">
                                     <button type="button" class="btn btn-default" ms-click="OpenAutoDF(item)">批量设置分数</button>
                                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                         <span class="caret"></span>
@@ -276,7 +277,6 @@
                                         <li ms-click="DFView(item)"><a>单独设置分数</a></li>
                                     </ul>
                                 </div>
-                                <a class="xt-btn" style="float:left" ms-click="SelSJ(item)">选题</a>
                             </div>
                         </div>
                     </div>
