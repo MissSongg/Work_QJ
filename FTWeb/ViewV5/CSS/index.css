@@ -659,7 +659,7 @@ button.toast-close-button{padding:0;cursor:pointer;background:0 0;border:0;-webk
 .detail-kc-bt{display: inline-block;width: 100px;/*height: 100%;*/background: #42a0f8;color: #fff;line-height:45px;text-align: center;font-size: 19px;/*font-weight: 700;*/opacity: .5}
 .detail-kc:hover .detail-kc-bt{opacity: 1}
 
-.course_nr{height:200px;  background:url(/View/images/icon-4.png) repeat-x center; }
+.course_nr{height:200px;  background:url(/ViewV5/images/icon-4.png) repeat-x center; }
 .course_nr li{ float:left;width:140px; text-align:center; position:relative;margin-right: 40px;height: 200px;cursor: pointer;}
 .cursor-pic {position: absolute;width: 100%;top: 60px;}
 .white{background: #fff;display: inline-block;}
