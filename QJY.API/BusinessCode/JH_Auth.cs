@@ -7,8 +7,6 @@ using QJY.Data;
 using System.Text;
 using Newtonsoft.Json;
 using System.Web.UI.WebControls;
-using Senparc.Weixin.QY.Entities;
-using ServiceStack.Redis;
 using System.Threading.Tasks;
 using System.Collections;
 
@@ -52,45 +50,20 @@ namespace QJY.API
         public JH_Auth_User GetUserByUserName(int ComID, string UserName)
         {
             JH_Auth_User branchmodel = new JH_Auth_User();
-            string strCathKey = "USERNAME" + ComID.ToString() + UserName;
-            if (CommonHelp.GetCache(strCathKey) == "")
-            {
-                branchmodel = new JH_Auth_UserB().GetEntity(d => d.ComId == ComID && d.UserName == UserName);
-                CommonHelp.SetCache(strCathKey, branchmodel);
-            }
-            else
-            {
-                string strJson = CommonHelp.GetCache(strCathKey);
-                branchmodel = JsonConvert.DeserializeObject<JH_Auth_User>(strJson);
-            }
+            branchmodel = new JH_Auth_UserB().GetEntity(d => d.ComId == ComID && d.UserName == UserName);
             return branchmodel;
         }
         public JH_Auth_User GetUserByPCCode(string PCCode)
         {
             JH_Auth_User branchmodel = new JH_Auth_User();
-            string strCathKey = "PCCODE" + PCCode;
-            if (CommonHelp.GetCache(strCathKey) == "")
-            {
-                branchmodel = new JH_Auth_UserB().GetEntity(d => d.pccode == PCCode);
-                CommonHelp.SetCache(strCathKey, branchmodel);
-            }
-            else
-            {
-                string strJson = CommonHelp.GetCache(strCathKey);
-                branchmodel = JsonConvert.DeserializeObject<JH_Auth_User>(strJson);
-            }
+            branchmodel = new JH_Auth_UserB().GetEntity(d => d.pccode == PCCode);
             return branchmodel;
         }
         public override bool Update(JH_Auth_User entity)
         {
-            string strCathKey = "USERNAME" + entity.ComId.ToString() + entity.UserName;
-            string strCathKey1 = "PCCODE" + entity.pccode;
 
             if (base.Update(entity))
             {
-                CommonHelp.SetCache(strCathKey, entity);
-                CommonHelp.SetCache(strCathKey1, entity);
-
                 return true;
             }
             else
@@ -100,10 +73,6 @@ namespace QJY.API
         }
         public override bool Delete(JH_Auth_User entity)
         {
-            string strCathKey = "USERNAME" + entity.ComId.ToString() + entity.UserName;
-            string strCathKey1 = "PCCODE" + entity.pccode;
-            CommonHelp.DelCache(strCathKey);
-            CommonHelp.DelCache(strCathKey1);
 
             return base.Delete(entity);
         }
@@ -453,27 +422,18 @@ namespace QJY.API
         public JH_Auth_Branch GetBMByDeptCode(int ComID, int DeptCode)
         {
             JH_Auth_Branch branchmodel = new JH_Auth_Branch();
-            string strCathKey = ComID.ToString() + DeptCode.ToString();
-            if (CommonHelp.GetCache(strCathKey) == "")
-            {
-                branchmodel = new JH_Auth_BranchB().GetEntity(d => d.ComId == ComID && d.DeptCode == DeptCode);
-                CommonHelp.SetCache(strCathKey, branchmodel);
-            }
-            else
-            {
-                string strJson = CommonHelp.GetCache(strCathKey);
-                branchmodel = JsonConvert.DeserializeObject<JH_Auth_Branch>(strJson);
-            }
+
+            branchmodel = new JH_Auth_BranchB().GetEntity(d => d.ComId == ComID && d.DeptCode == DeptCode);
+
             return branchmodel;
         }
 
 
         public override bool Update(JH_Auth_Branch entity)
         {
-            string strCathKey = entity.ComId.ToString() + entity.DeptCode.ToString();
+
             if (base.Update(entity))
             {
-                CommonHelp.SetCache(strCathKey, entity);
                 return true;
             }
             else
@@ -483,8 +443,7 @@ namespace QJY.API
         }
         public override bool Delete(JH_Auth_Branch entity)
         {
-            string strCathKey = entity.ComId.ToString() + entity.ComId.ToString();
-            CommonHelp.DelCache(strCathKey);
+
             return base.Delete(entity);
         }
 
@@ -1128,26 +1087,16 @@ namespace QJY.API
         public JH_Auth_QY GetQYByComID(int ComID)
         {
             JH_Auth_QY qymodel = new JH_Auth_QY();
-            string strCathKey = ComID.ToString();
-            if (CommonHelp.GetCache(strCathKey) == "")
-            {
-                qymodel = new JH_Auth_QYB().GetEntity(d => d.ComId == ComID);
-                CommonHelp.SetCache(strCathKey, qymodel);
-            }
-            else
-            {
-                string strJson = CommonHelp.GetCache(strCathKey);
-                qymodel = JsonConvert.DeserializeObject<JH_Auth_QY>(strJson);
-            }
+
+            qymodel = new JH_Auth_QYB().GetEntity(d => d.ComId == ComID);
             return qymodel;
         }
 
         public override bool Update(JH_Auth_QY entity)
         {
-            string strCathKey = entity.ComId.ToString();
+
             if (base.Update(entity))
             {
-                CommonHelp.SetCache(strCathKey, entity);
                 return true;
             }
             else
@@ -1157,8 +1106,6 @@ namespace QJY.API
         }
         public override bool Delete(JH_Auth_QY entity)
         {
-            string strCathKey = entity.ComId.ToString();
-            CommonHelp.DelCache(strCathKey);
             return base.Delete(entity);
         }
 
@@ -1206,7 +1153,7 @@ namespace QJY.API
         /// <param name="strAPPCode"></param>
         /// <param name="strSHR"></param>
         /// <returns>返回创建的第一个任务</returns>
-        public Yan_WF_TI StartWF(Yan_WF_PD PD, string strModelCode, string userName, string strSHR, ref  List<string> ListNextUser)
+        public Yan_WF_TI StartWF(Yan_WF_PD PD, string strModelCode, string userName, string strSHR, ref List<string> ListNextUser)
         {
 
             //创建流程实例
@@ -1502,7 +1449,7 @@ namespace QJY.API
         /// <param name="strUser"></param>
         /// <param name="PIID"></param>
         /// <returns></returns>
-        public bool MANAGEWF(string strUser, int PIID, string strYJView, ref  List<string> ListNextUser, string strShUser)
+        public bool MANAGEWF(string strUser, int PIID, string strYJView, ref List<string> ListNextUser, string strShUser)
         {
             try
             {
