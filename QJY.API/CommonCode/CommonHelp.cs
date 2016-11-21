@@ -11,7 +11,6 @@ using System.IO;
 using NPOI.SS.UserModel;
 using NPOI.HSSF.UserModel;
 using System.Configuration;
-using ServiceStack.Redis;
 using Newtonsoft.Json;
 using NPOI.XSSF.UserModel;
 
@@ -318,74 +317,6 @@ namespace QJY.API
                 }
             }
             return false;
-        }
-
-
-
-        public static string SetCache(string strKey, object obj)
-        {
-            try
-            {
-                string CatchServer = CommonHelp.GetConfig("RedisServer");
-                if (CatchServer != "")
-                {
-                    using (RedisClient redisClient = new RedisClient(CatchServer))
-                    {
-                        redisClient.Set(strKey, JsonConvert.SerializeObject(obj));
-
-                    }
-                }
-                return "";
-            }
-            catch (Exception)
-            {
-                return "";
-            }
-        }
-        public static string GetCache(string strKey)
-        {
-            try
-            {
-                string CatchServer = CommonHelp.GetConfig("RedisServer");
-                string strReturn = "";
-                if (CatchServer != "")
-                {
-                    using (RedisClient redisClient = new RedisClient(CatchServer))
-                    {
-                        if (redisClient.Get<string>(strKey) != null)
-                        {
-                            strReturn = redisClient.Get<string>(strKey).ToString();
-                        }
-                    }
-                }
-                return strReturn;
-
-            }
-            catch (Exception)
-            {
-                return "";
-            }
-        }
-        public static void DelCache(string strKey)
-        {
-            try
-            {
-                string CatchServer = CommonHelp.GetConfig("RedisServer");
-                if (CatchServer != "")
-                {
-                    using (RedisClient redisClient = new RedisClient(CatchServer))
-                    {
-                        if (redisClient.Get<string>(strKey) != null)
-                        {
-                            redisClient.Remove(strKey);
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-            }
-
         }
 
         /// <summary>

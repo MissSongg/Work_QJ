@@ -1156,11 +1156,9 @@
                 if (isload) {
                     top.ComFunJS.wincloseload();
                 }
-                console.debug("ajaxSuccess")
 
             }
         }).ajaxStop(function () {
-            console.debug("ajaxStop")
             if (isload) {
                 top.ComFunJS.wincloseload();
             }
@@ -1169,7 +1167,6 @@
             $(".col-sm-2 .ibox-content").eq(0).css("min-height", rheight);
             //  ComFunJS.wincloseload();
         }).ajaxError(function (event, xhr, options, exc) {
-            console.debug("ajaxError")
 
         })
 

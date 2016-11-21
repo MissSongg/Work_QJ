@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -621,6 +622,9 @@
     <Content Include="ViewV5\JS\Sortable\jquery.sortable.js" />
     <Content Include="ViewV5\JS\Sortable\jquery.sortable.min.js" />
     <Content Include="ViewV5\JS\SZHLCommon.js" />
+    <Content Include="ViewV5\JS\SZHLCommon.min.js">
+      <DependentUpon>SZHLCommon.js</DependentUpon>
+    </Content>
     <Content Include="ViewV5\JS\toastr.js" />
     <Content Include="ViewV5\JS\Toast\tests\toastr-tests.html" />
     <Content Include="ViewV5\JS\Toast\toastr.css" />
