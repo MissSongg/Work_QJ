@@ -1,15 +1,15 @@
 ﻿<div ms-controller="W_KCGL">
     <!-- 添加按钮 -->
     <div class="btn-add">
-        <button type="button" class="btn btn-info btn-lg"   ms-click="AddView('KCGL_KCGL')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加课程</button>
+        <button type="button" class="btn btn-info btn-lg" ms-click="AddView('KCGL_KCGL')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加课程</button>
     </div>
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
         <div class="oh">
             <h5 class="pull-left tr">课程分类：</h5>
             <ul class="tab-type ft14">
-                <li ms-click="SelectType('')" ><span ms-class-1="active:kcflType==''">全部</span></li>
-                <li ms-repeat-el="kcflData" ms-click="SelectType(el.ID)" ><span ms-class="active:el.ID==kcflType">{{el.TypeName}}</span></li>
+                <li ms-click="SelectType('')"><span ms-class-1="active:kcflType==''">全部</span></li>
+                <li ms-repeat-el="kcflData" ms-click="SelectType(el.ID)"><span ms-class="active:el.ID==kcflType">{{el.TypeName}}</span></li>
             </ul>
         </div>
         <!-- 搜索 -->
@@ -36,7 +36,7 @@
                     </th>
                     <th>培训课程名称</th>
                     <th>主讲人姓名</th>
-                    <th>课时数(小时)</th> 
+                    <th>课时数(小时)</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -46,18 +46,21 @@
                         {{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
                     <td>{{el.TypeName}}</td>
-                    <td>{{el.KCName}}</td> 
+                    <td>{{el.KCName}}</td>
                     <td>{{el.KCZJR}}</td>
-                    <td>{{el.KSS }}</td> 
+                    <td>{{el.KSS }}</td>
                     <td>
                         <span class="btn-click">
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="AddView('KCGL_KCGL','课程编辑',el.ID,$event)" >
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="AddView('KCGL_KCGL','课程编辑',el.ID,$event)">
                                 <i class="iconfont icon-bianji"></i>
                             </a>
-                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELKCGL(el,event)" >
+                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="查看" ms-click="KCView(el.ID)">
+                                <i class="iconfont icon-look"></i>
+                            </a>
+                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELKCGL(el,event)">
                                 <i class="iconfont icon-shanchu"></i>
                             </a>
-                        </span> 
+                        </span>
                     </td>
                 </tr>
 
@@ -88,22 +91,25 @@
 <script>
     var tempindex = avalon.define({
         $id: "W_KCGL",
-        kcflData:[],
+        kcflData: [],
         userName: ComFunJS.getnowuser(),
-        kcflType:"",
+        kcflType: "",
         InitWigetData: function (str) {
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 24 }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempindex.kcflData = resultData.Result;
-                    
+
                 }
-            }) 
+            })
             tempindex.GetLIST();
 
         },
         SelectType: function (type) {
             tempindex.kcflType = type;
             tempindex.GetLIST();
+        },
+        KCView: function (Id) { 
+            ComFunJS.winviewform("/ViewV5/AppPage/KCGL/KCINFO.html?id=" + Id, '课程查看详细', "1100", "700")
         },
         GetLIST: function () {
             $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCGLLIST', { p: 1, P1: tempindex.kcflType, Content: model.search.searchcontent, pagecount: model.page.pagecount }, function (resultData) {
@@ -129,7 +135,7 @@
                     });
                 }
             })
-        }, 
+        },
         DELKCGL: function (item, event) {
             if (event) {
                 event.stopPropagation();
