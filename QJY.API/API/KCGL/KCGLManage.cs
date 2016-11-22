@@ -214,14 +214,14 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void CREATESEETIME(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            SZHL_PX_SeeTime sps = JsonConvert.DeserializeObject<SZHL_PX_SeeTime>(P1); 
+            SZHL_PX_SeeTime sps = JsonConvert.DeserializeObject<SZHL_PX_SeeTime>(P1);
             sps.UserName = UserInfo.User.UserName;
             sps.CRDate = DateTime.Now;
             sps.CRUser = UserInfo.User.UserName;
             sps.ComId = UserInfo.User.ComId;
             sps.StartTime = DateTime.Now;
-            sps.KCDuration = 0; 
-            new SZHL_PX_SeeTimeB().Insert(sps);  
+            sps.KCDuration = 0;
+            new SZHL_PX_SeeTimeB().Insert(sps);
             msg.Result = sps;
         }
         /// <summary>
@@ -234,7 +234,7 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void UPDATESEETIME(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            SZHL_PX_SeeTime sps = JsonConvert.DeserializeObject<SZHL_PX_SeeTime>(P1); 
+            SZHL_PX_SeeTime sps = JsonConvert.DeserializeObject<SZHL_PX_SeeTime>(P1);
             new SZHL_PX_SeeTimeB().Update(sps);
         }
 
@@ -260,12 +260,40 @@ namespace QJY.API
             string content = context.Request["Content"] ?? "";
             if (content != "")
             {
-                strWhere += string.Format(" and (auser.UserRealName like '%{0}%' OR ps.KCName like '%{0}%')", content);
+                strWhere += string.Format(" and (auser.UserRealName like '%{0}%')", content);
             }
             DataTable dt = new SZHL_PX_SeeTimeB().GetDataPager("  SZHL_PX_SeeTime ps INNER JOIN JH_Auth_User auser ON ps.UserName= auser.UserName ", " ps.*,auser.UserRealName ", 8, page, " ps.CRDate ", strWhere, ref recordCount);
 
             msg.Result = dt;
             msg.Result1 = recordCount;
+        }
+        #endregion
+
+        #region 课程查看统计
+        public void GETKCCKTJ(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int page = 0;
+            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
+            page = page == 0 ? 1 : page;
+            int recordCount = 0;
+            string strWhere = " where kcgl.ComId=" + UserInfo.User.ComId;
+            if (P1 != "")
+            {
+                strWhere += string.Format(" and kcgl.KCTypeID=" + P1);
+            }
+            string content=context.Request["Content"]??"";
+            if (content!="")
+            {
+                strWhere += string.Format(" and kcgl.KCName  like '%{0}%'", content);
+            }
+            string strSql = string.Format(@"(SELECT kcgl.ID,kcgl.KCName,see.CRUser,kcgl.KSS,zd.TypeName,ltrim(SUM(see.KCDuration)/3600)+':'+ltrim(SUM(see.KCDuration)%3600/60)+':'+ltrim(SUM(see.KCDuration)%60) totalSeconds  from SZHL_PX_KCGL kcgl inner join JH_Auth_ZiDian zd on kcgl.KCTypeID=zd.ID INNER join SZHL_PX_SeeTime see on kcgl.ID=see.KCID
+                                         {0}  GROUP by kcgl.ID,kcgl.KCName,kcgl.KSS,zd.TypeName,see.CRUser) as newtab", strWhere);
+            int pagecount = 0;
+            int.TryParse(context.Request.QueryString["pagecount"] ?? "1", out pagecount);//页码
+            pagecount = pagecount == 0 ? 10 : pagecount;
+            DataTable dt = new SZHL_GZBGB().GetDataPager(strSql, "* ", pagecount, page, " KCName ", "1=1", ref recordCount);
+            msg.Result = dt;
+
         }
         #endregion
     }

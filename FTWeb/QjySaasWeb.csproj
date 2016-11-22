@@ -164,6 +164,9 @@
     <Content Include="ViewV5\AppPage\JFBX\JFBXTJ.html" />
     <Content Include="ViewV5\AppPage\JFBX\JFBXLIST.html" />
     <Content Include="ViewV5\AppPage\JFBX\JFBXVIEW.html" />
+    <Content Include="ViewV5\AppPage\KCGL\KCINFO.html" />
+    <Content Include="ViewV5\AppPage\KCGL\KCCKDetail.html" />
+    <Content Include="ViewV5\AppPage\KCGL\KCCKTJ.html" />
     <Content Include="ViewV5\AppPage\KCGL\KCGL.html" />
     <Content Include="ViewV5\AppPage\KCGL\KJGL.html" />
     <Content Include="ViewV5\AppPage\KCGL\KJGLLIST.html" />
@@ -180,7 +183,6 @@
     <Content Include="ViewV5\AppPage\KQGL\KQGL.html" />
     <Content Include="ViewV5\AppPage\KQGL\KQINSTALL.html" />
     <Content Include="ViewV5\AppPage\KQGL\KQTJ.html" />
-    <Content Include="ViewV5\AppPage\KSGL\kc-look.html" />
     <Content Include="ViewV5\AppPage\KSGL\KSAP.html" />
     <Content Include="ViewV5\AppPage\KSGL\KSAPLIST.html" />
     <Content Include="ViewV5\AppPage\KSGL\KSAPVIEW.html" />

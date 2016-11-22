@@ -35,7 +35,7 @@
                         //创建观看进度
                         $.post('/API/VIEWAPI.ashx?Action=KCGL_CREATESEETIME', {
                             "P1": JSON.stringify({
-                                KCName: modelData.KJName,
+                                KCName: modelData.KCName,
                                 KCID: modelData.ID
                             })
                         }, function (resultData) {
