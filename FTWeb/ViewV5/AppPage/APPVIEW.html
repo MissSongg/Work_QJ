@@ -314,7 +314,7 @@
                 }, function () { })
             },
             GetTypeDataByID: function (P1, callback) {//P1:字典类别ID，callback:回调函数
-                $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANSLIST', { P2: P1 }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANSLIST', { P1: P1 }, function (resultData) {
                     if (resultData.ErrorMsg == "") {
                         if (callback) {
                             return callback.call(this, resultData.Result);

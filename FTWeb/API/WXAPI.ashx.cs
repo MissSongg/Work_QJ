@@ -46,7 +46,7 @@ namespace QjySaaSWeb.APP
                     string strCode = context.Request["Code"] ?? "";
                     try
                     {
-                        JH_Auth_QY jaq = new JH_Auth_QYB().GetEntities("1=1").FirstOrDefault();
+                        JH_Auth_QY jaq = new JH_Auth_QYB().GetALLEntities().FirstOrDefault();
                         JH_Auth_Model jam = new JH_Auth_ModelB().GetEntity(p => p.ModelCode == strCode);
                         //if (jaq != null && jam != null && !string.IsNullOrEmpty(jam.TJId))
                         if (jaq != null && jam != null)
@@ -855,7 +855,7 @@ namespace QjySaaSWeb.APP
                                 }
                                 else
                                 {
-                                    if (new JH_Auth_QYB().GetQYByComID(jau.ComId.Value).corpId != strcorpid)
+                                    if (new JH_Auth_QYB().GetEntity(d=>d.ComId==jau.ComId.Value).corpId != strcorpid)
                                     {
                                         Model.ErrorMsg = "企业需要重新选择";
                                     }

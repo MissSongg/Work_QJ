@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Web.UI.WebControls;
 using System.Threading.Tasks;
 using System.Collections;
+using System.Linq.Expressions;
 
 namespace QJY.API
 {
@@ -32,7 +33,7 @@ namespace QJY.API
             UserInfo UserInfo = new UserInfo();
             UserInfo.User = new JH_Auth_UserB().GetUserByPCCode(strSZHLCode);
             UserInfo.UserRoleCode = new JH_Auth_UserRoleB().GetRoleCodeByUserName(UserInfo.User.UserName, UserInfo.User.ComId.Value);
-            UserInfo.QYinfo = new JH_Auth_QYB().GetQYByComID(UserInfo.User.ComId.Value);
+            UserInfo.QYinfo = new JH_Auth_QYB().GetEntity(d => d.ComId == UserInfo.User.ComId.Value);
             UserInfo.BranchInfo = new JH_Auth_BranchB().GetBMByDeptCode(UserInfo.QYinfo.ComId, UserInfo.User.BranchCode);
             return UserInfo;
         }
@@ -42,7 +43,7 @@ namespace QJY.API
             JH_Auth_User User = new JH_Auth_UserB().GetUserByUserName(intComid, strUserName);
             UserInfo.User = User;
             UserInfo.UserRoleCode = new JH_Auth_UserRoleB().GetRoleCodeByUserName(UserInfo.User.UserName, UserInfo.User.ComId.Value);
-            UserInfo.QYinfo = new JH_Auth_QYB().GetQYByComID(UserInfo.User.ComId.Value);
+            UserInfo.QYinfo = new JH_Auth_QYB().GetEntity(d => d.ComId == UserInfo.User.ComId.Value);
             UserInfo.BranchInfo = new JH_Auth_BranchB().GetBMByDeptCode(UserInfo.QYinfo.ComId, UserInfo.User.BranchCode);
             return UserInfo;
         }
@@ -1033,6 +1034,51 @@ namespace QJY.API
     public class JH_Auth_ZiDianB : BaseEFDao<JH_Auth_ZiDian>
     {
 
+        private List<JH_Auth_ZiDian> GetZDList()
+        {
+            List<JH_Auth_ZiDian> ListData = CacheHelp.Get("zidian") as List<JH_Auth_ZiDian>;
+            if (ListData != null)
+            {
+                return ListData;
+            }
+            else
+            {
+                ListData = base.GetALLEntities().ToList();
+                CacheHelp.Set("zidian", ListData);
+                return ListData;
+            }
+        }
+
+        public override IEnumerable<JH_Auth_ZiDian> GetEntities(Expression<Func<JH_Auth_ZiDian, bool>> exp)
+        {
+
+            List<JH_Auth_ZiDian> ListData = this.GetZDList();
+            return ListData.Where(exp.Compile());
+
+        }
+
+        /// <summary>
+        /// 重写字典修改方法,先清除缓存再删除
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public override bool Update(JH_Auth_ZiDian entity)
+        {
+            CacheHelp.Remove("zidian");
+            return base.Update(entity);
+        }
+
+        public override bool Delete(JH_Auth_ZiDian entity)
+        {
+            CacheHelp.Remove("zidian");
+            return base.Delete(entity);
+        }
+
+        public override bool Insert(JH_Auth_ZiDian entity)
+        {
+            CacheHelp.Remove("zidian");
+            return base.Insert(entity);
+        }
     }
 
 
@@ -1084,28 +1130,36 @@ namespace QJY.API
 
     public class JH_Auth_QYB : BaseEFDao<JH_Auth_QY>
     {
-        public JH_Auth_QY GetQYByComID(int ComID)
+        private List<JH_Auth_QY> GetQYList()
         {
-            JH_Auth_QY qymodel = new JH_Auth_QY();
+            List<JH_Auth_QY> ListData = CacheHelp.Get("qydata") as List<JH_Auth_QY>;
+            if (ListData != null)
+            {
+                return ListData;
+            }
+            else
+            {
+                ListData = base.GetALLEntities().ToList();
+                CacheHelp.Set("qydata", ListData);
+                return ListData;
+            }
+        }
 
-            qymodel = new JH_Auth_QYB().GetEntity(d => d.ComId == ComID);
-            return qymodel;
+
+        public override JH_Auth_QY GetEntity(Expression<Func<JH_Auth_QY, bool>> exp)
+        {
+            return this.GetQYList().Where(exp.Compile()).FirstOrDefault();
         }
 
         public override bool Update(JH_Auth_QY entity)
         {
-
-            if (base.Update(entity))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            CacheHelp.Remove("qydata");
+            return base.Update(entity);
+          
         }
         public override bool Delete(JH_Auth_QY entity)
         {
+            CacheHelp.Remove("qydata");
             return base.Delete(entity);
         }
 

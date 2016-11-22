@@ -252,7 +252,7 @@ namespace QJY.API
         /// <returns></returns>
         public int AddSpace(int ComId, int FileSize)
         {
-            JH_Auth_QY qymodel = new JH_Auth_QYB().GetQYByComID(ComId);
+            JH_Auth_QY qymodel = new JH_Auth_QYB().GetEntity(d => d.ComId == ComId);
             if (qymodel != null)
             {
                 qymodel.QyExpendSpace = qymodel.QyExpendSpace + FileSize;
