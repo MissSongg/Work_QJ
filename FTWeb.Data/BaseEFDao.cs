@@ -23,6 +23,16 @@ namespace QJY.Data
             return new QJY_SaaSEntities();
         }
 
+        public virtual IEnumerable<T> GetALLEntities()
+        {
+            using (DbContext Entities = GetDbContext())
+            {
+                //AsNoTracking不记录数据变化状况
+                ObjectContext context = ((IObjectContextAdapter)Entities).ObjectContext;
+                return context.CreateObjectSet<T>().AsNoTracking().ToList();
+            }
+
+        }
         public virtual IEnumerable<T> GetEntities(Expression<Func<T, bool>> exp)
         {
             using (DbContext Entities = GetDbContext())

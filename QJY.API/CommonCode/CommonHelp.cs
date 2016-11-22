@@ -536,7 +536,7 @@ namespace QJY.API
             {
                 string dxqz = "企捷科技";
                 decimal amcountmoney = 0;
-                var qy = new JH_Auth_QYB().GetQYByComID(ComId);
+                var qy = new JH_Auth_QYB().GetEntity(d => d.ComId == ComId);
                 if (qy != null)
                 {
                     dxqz = qy.DXQZ;
@@ -565,7 +565,9 @@ namespace QJY.API
                     //扣款
                     if (ComId != 0 && qy != null)
                     {
-                        new JH_Auth_QYB().ExsSql("update JH_Auth_QY set AccountMoney=AccountMoney-" + amount + " where ComId='" + qy.ComId + "'");
+                        qy.AccountMoney = qy.AccountMoney - amount;
+                        new JH_Auth_QYB().Update(qy);
+
                         //记录明细
                         SZHL_DDGL_ITEM im = new SZHL_DDGL_ITEM();
                         im.ComId = qy.ComId;

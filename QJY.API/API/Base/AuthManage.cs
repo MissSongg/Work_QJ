@@ -233,8 +233,8 @@ namespace QJY.API
         }
         public void SAVECOMPANYQZ(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            string strSql = string.Format("UPDATE JH_Auth_QY set DXQZ='{0}' where ComId={1}", P1, UserInfo.User.ComId);
-            new JH_Auth_QYB().ExsSql(strSql);
+            UserInfo.QYinfo.DXQZ = P1;
+            new JH_Auth_QYB().Update(UserInfo.QYinfo);
         }
         //更新下次不再提示
         public void UPDATECOMPANYNOALERT(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
@@ -1026,12 +1026,12 @@ namespace QJY.API
         #region 字典管理
         public void GETZIDIANLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            string strSql = string.Format("SELECT * from JH_Auth_ZiDian where  Class={0} and ComId={1} and Remark=0 ", P1, UserInfo.User.ComId);
+            var zdlist = new JH_Auth_ZiDianB().GetEntities(d => d.Class.ToString() == P1 && d.ComId == UserInfo.User.ComId && d.Remark == "0");
             if (P2 != "")//内容查询
             {
-                strSql += string.Format(" And TypeName like '%{0}%'", P2);
+                zdlist = zdlist.Where(d => d.TypeName.Contains(P2));
             }
-            msg.Result = new JH_Auth_QY_ModelB().GetDTByCommand(strSql);
+            msg.Result = zdlist;
         }
         public void GETZIDIANSLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
@@ -1048,23 +1048,18 @@ namespace QJY.API
                     {
                         DataRow dr = dt.NewRow();
                         dr["Class"] = str;
-
-                        string strSql = string.Format("SELECT * from JH_Auth_ZiDian where  Class={0} and ComId={1} and Remark=0", str, UserInfo.User.ComId);
-                        dr["Item"] = new JH_Auth_QY_ModelB().GetDTByCommand(strSql);
-
+                        dr["Item"] = new JH_Auth_ZiDianB().GetEntities(d => d.Class.ToString() == str && d.ComId == UserInfo.User.ComId && d.Remark == "0");
                         dt.Rows.Add(dr);
                     }
                 }
                 else
                 {
-                    string strSql = string.Format("SELECT * from JH_Auth_ZiDian where  Class={0} and ComId={1} and Remark=0 ", P1, UserInfo.User.ComId);
-                    dt = new JH_Auth_QY_ModelB().GetDTByCommand(strSql);
+                    dt = new JH_Auth_ZiDianB().GetEntities(d => d.Class.ToString() == P1 && d.ComId == UserInfo.User.ComId && d.Remark == "0").ToDataTable();
                 }
             }
             else if (P2 != "")
             {
-                string strSql = string.Format("SELECT * from JH_Auth_ZiDian where  ID={0} and ComId={1} ", P2, UserInfo.User.ComId);
-                dt = new JH_Auth_QY_ModelB().GetDTByCommand(strSql);
+                dt = new JH_Auth_ZiDianB().GetEntities(d => d.Class.ToString() == P2 && d.ComId == UserInfo.User.ComId && d.Remark == "0").ToDataTable();
             }
             msg.Result = dt;
         }
