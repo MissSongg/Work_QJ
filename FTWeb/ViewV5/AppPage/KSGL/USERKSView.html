@@ -88,7 +88,11 @@
                         })
                     })
                     model.SJModelInfo = result.Result[0];
-                    model.UserKSInfo = result.Result1;
+                    if (result.Result1.CRUser)
+                    {
+
+                        model.UserKSInfo = result.Result1;
+                    }
                 })
             }
         })
