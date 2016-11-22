@@ -18,10 +18,10 @@
 .text-danger {
     color: #F63A12;
 }
-.btn-click{visibility:hidden}
+/*.btn-click{visibility:hidden}
         .hover-btn tr:hover .btn-click {
             visibility:visible
-        }
+        }*/
 .breadcrumb{background:#fff;}
 label{font-weight:normal}
 /*弹出框样式替换*/
@@ -69,6 +69,9 @@ label{font-weight:normal}
 .js-color{background-color: #9ec0cd}
 .sc-color{background-color: #ff7800}
 .default-tab td{height: 50px;}
+.default-tab td:last-child{width:150px;}
+
+
 .fun-box-tj a.active{color: #12b8f6;}
 .fun-box-tj a{padding:0 10px;}
 /*-----头部-----*/
