@@ -89,10 +89,19 @@ namespace QJY.API
             int Id = int.Parse(P1);
             SZHL_PX_KCGL kcgl = new SZHL_PX_KCGLB().GetEntity(d => d.ID == Id);
             msg.Result = kcgl;
-            int[] kjIds = kcgl.KJID.SplitTOInt(',');
-            msg.Result1 = new SZHL_PX_KJGLB().GetEntities(d => kjIds.Contains(d.ID)).Select(d => d.KJName).ToList().ListTOString(',');
-            string strSql = string.Format("SELECT kjgl.*,f.FileMD5 from SZHL_PX_KJGL kjgl inner join FT_File  f on kjgl.Files=f.ID where  kjgl.ID in ({0})", kcgl.KJID);
-            msg.Result2 = new SZHL_PX_KJGLB().GetDTByCommand(strSql);
+            string fl = new JH_Auth_ZiDianB().GetEntity(d => d.ID == kcgl.KCTypeID).TypeName;
+            if (kcgl.KJID.Length > 0)
+            {
+                int[] kjIds = kcgl.KJID.SplitTOInt(',');
+                msg.Result1 = new SZHL_PX_KJGLB().GetEntities(d => kjIds.Contains(d.ID)).Select(d => d.KJName).ToList().ListTOString(',');
+                string strSql = string.Format("SELECT kjgl.*,f.FileMD5 from SZHL_PX_KJGL kjgl inner join FT_File  f on kjgl.Files=f.ID where  kjgl.ID in ({0})", kcgl.KJID);
+                DataTable dt = new SZHL_PX_KJGLB().GetDTByCommand(strSql);
+                msg.Result2 = dt; 
+                int seeTime = new SZHL_PX_SeeTimeB().GetEntities(d => d.KCID==kcgl.ID && d.CRUser == UserInfo.User.UserName).Sum(d => d.KCDuration.Value);
+                decimal a = decimal.Parse(seeTime.ToString()) / int.Parse(kcgl.KSS);
+                msg.Result3 = (a * 100) + "-" + fl;
+
+            }
         }
 
         #endregion
@@ -281,8 +290,8 @@ namespace QJY.API
             {
                 strWhere += string.Format(" and kcgl.KCTypeID=" + P1);
             }
-            string content=context.Request["Content"]??"";
-            if (content!="")
+            string content = context.Request["Content"] ?? "";
+            if (content != "")
             {
                 strWhere += string.Format(" and kcgl.KCName  like '%{0}%'", content);
             }
