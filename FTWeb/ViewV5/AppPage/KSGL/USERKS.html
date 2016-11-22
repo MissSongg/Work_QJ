@@ -245,7 +245,7 @@
                     </div>
                     <!-- 试题部分 END -->
                     <!-- 答题右侧操作 -->
-                    <div class="exam-rightArea" id="page-right-frame">
+                    <div class="exam-rightArea" id="page-right-frame" style="float:none;margin-left:750px">
                         <!--功能操作区域-->
                         <div class="rightArea-tool">
                             <div class="hd">
@@ -288,7 +288,7 @@
             </div>
         </div>
     </div>
-    <!--<script type="text/javascript">
+    <script type="text/javascript">
         $.fn.smartFloat = function () {
             var position = function (element) {
                 var top = element.position().top, pos = element.css("position");
@@ -299,6 +299,7 @@
                             element.css({
                                 position: "fixed",
                                 top: 0
+                                //left:50
                             });
                         } else { //如果是ie6
                             element.css({
@@ -322,7 +323,7 @@
 
         });
 
-    </script>-->
+    </script>
     <script type="text/javascript">
         var h = 0, m = 0, s = 0;
         var mytime = null;
