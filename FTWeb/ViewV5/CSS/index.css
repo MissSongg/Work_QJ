@@ -622,7 +622,7 @@ button.toast-close-button{padding:0;cursor:pointer;background:0 0;border:0;-webk
 .panel-title.panel-title2{font-size: 16px;}
 .panel-title a{font-size: 14px;color:#999;}
 /*课程列表样式*/
-.course li{float: left;width: 33.33%;margin-bottom: 15px;cursor: pointer;}
+.course li{float: left;width:25%;margin-bottom: 15px;cursor: pointer;}
 .course .course-list{margin:0 15px;border-color: #f7f7f7}
 .course li:hover .course-teacher{height: 36px;}
 .course li:hover>div{box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2)}
