@@ -295,7 +295,8 @@ namespace QJY.API
                 }
                 else
                 {
-
+                    //同时更新UserInfo的内容
+                    UserInfo.User = user;
                     string strSql = "";
                     JH_Auth_Role role = new JH_Auth_RoleB().GetEntity(d => d.RoleName == user.zhiwu && (d.ComId == UserInfo.User.ComId || d.ComId == 0));
                     if (role == null)

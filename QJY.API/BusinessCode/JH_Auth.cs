@@ -60,25 +60,7 @@ namespace QJY.API
             branchmodel = new JH_Auth_UserB().GetEntity(d => d.pccode == PCCode);
             return branchmodel;
         }
-        public override bool Update(JH_Auth_User entity)
-        {
-
-            if (base.Update(entity))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public override bool Delete(JH_Auth_User entity)
-        {
-
-            return base.Delete(entity);
-        }
-
-
+   
 
         public string GetUserRealName(int intComid, string strUserName)
         {

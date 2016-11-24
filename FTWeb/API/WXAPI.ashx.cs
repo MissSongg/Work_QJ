@@ -785,30 +785,33 @@ namespace QjySaaSWeb.APP
                             try
                             {
 
-                                //获取用户名
+                                //通过微信接口获取用户名
                                 WXHelp wx = new WXHelp(qy);
                                 string username = wx.GetUserDataByCode(strCode);
-
                                 if (!string.IsNullOrEmpty(username))
                                 {
                                     var jau = new JH_Auth_UserB().GetUserByUserName(qy.ComId, username);
                                     if (jau != null)
                                     {
-                                        if (string.IsNullOrEmpty(jau.pccode))
+                                        //如果PCCode为空或者超过60分钟没操作,统统重新生成PCCode,并更新最新操作时间
+                                        TimeSpan ts = new TimeSpan(jau.logindate.Value.Ticks).Subtract(new TimeSpan(DateTime.Now.Ticks)).Duration();
+                                        if (string.IsNullOrEmpty(jau.pccode) || ts.TotalMinutes > 60)
                                         {
                                             string strGuid = CommonHelp.CreatePCCode(jau);
                                             jau.pccode = strGuid;
+                                            jau.logindate = DateTime.Now;
                                             new JH_Auth_UserB().Update(jau);
                                         }
                                         Model.ErrorMsg = "";
                                         Model.Result = jau.pccode;
                                         Model.Result1 = jau.UserName;
+                                        Model.Result2 = ts.TotalMinutes;
                                     }
 
                                 }
                                 else
                                 {
-                                    Model.ErrorMsg = "当前用户名不存在";
+                                    Model.ErrorMsg = "当前用户不存在";
                                 }
                             }
                             catch (Exception ex)
@@ -855,7 +858,7 @@ namespace QjySaaSWeb.APP
                                 }
                                 else
                                 {
-                                    if (new JH_Auth_QYB().GetEntity(d=>d.ComId==jau.ComId.Value).corpId != strcorpid)
+                                    if (new JH_Auth_QYB().GetEntity(d => d.ComId == jau.ComId.Value).corpId != strcorpid)
                                     {
                                         Model.ErrorMsg = "企业需要重新选择";
                                     }
@@ -870,14 +873,12 @@ namespace QjySaaSWeb.APP
                     {
                         Model.ErrorMsg = "企业号连接有误，请重新连接";
                     }
-
                 }
                 #endregion
                 #region 发送提醒
                 if (strAction.ToUpper() == "AUTOALERT")
                 {
                     TXSX.TXSXAPI.AUTOALERT();
-                    CommonHelp.WriteLOG("调用提醒接口");
                 }
                 #endregion
             }
