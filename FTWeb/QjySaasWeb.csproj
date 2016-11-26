@@ -567,6 +567,24 @@
     <Content Include="ViewV5\JS\avalon.modern.js" />
     <Content Include="ViewV5\JS\avalon1.47.js" />
     <Content Include="ViewV5\JS\avalon1.5.js" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\chosen-sprite%402x.png" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\chosen-sprite.png" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\chosen.css" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\chosen.jquery.js" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\chosen.jquery.min.js" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\chosen.min.css" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\chosen.proto.js" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\chosen.proto.min.js" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\docsupport\chosen.png" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\docsupport\event.simulate.js" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\docsupport\oss-credit.png" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\docsupport\prism.css" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\docsupport\prism.js" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\docsupport\style.css" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\index.html" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\index.proto.html" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\jquery-1.8.0.min.js" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\options.html" />
     <Content Include="ViewV5\JS\clipboard.js" />
     <Content Include="ViewV5\JS\contextmenu.js" />
     <Content Include="ViewV5\JS\fullcalendar\fullcalendar.css" />
@@ -1564,6 +1582,8 @@
     <Content Include="ViewV5\Chat\msg.ogg" />
     <Content Include="View_Mobile\Frozenui1.3\font\iconfont-full.ttf" />
     <Content Include="View_Mobile\Frozenui1.3\font\iconfont.ttf" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\bower.json" />
+    <Content Include="ViewV5\JS\chosen_v1.6.2\package.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
