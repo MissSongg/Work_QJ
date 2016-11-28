@@ -1,4 +1,10 @@
-﻿<script type="text/javascript">
+﻿<link href="/ViewV5/JS/chosen_v1.6.2/chosen.css" rel="stylesheet" />
+<script src="/ViewV5/JS/chosen_v1.6.2/chosen.jquery.js"></script>
+<script></script>
+<style>
+
+</style>
+<script type="text/javascript">
 
     var branchNo = ComFunJS.getQueryString("branchNo");
     var tempmodel = avalon.define({
@@ -30,11 +36,10 @@
                 tempmodel.RoleData.forEach(function (item) {
                     rolelist.push(item.RoleName);
                 })
-                $('#zhiwu').typeahead({
-                    source: function (query, process) {
-                        return rolelist;
-                    }
-                })
+                $("#zhiwu").chosen().change(function (a,b) {
+                   
+                    tempmodel.UserData.zhiwu = $("#zhiwu").val().join(".");
+                });
             })
             if (strId) {
                 tempmodel.userName = strId;
@@ -70,29 +75,30 @@
             }
             ComFunJS.initForm();
         }, SaveData: function (callback, dom) {
-            if (!(/^0?1[3|4|5|8|7][0-9]\d{8}$/.test(tempmodel.UserData.mobphone))) {
-                top.ComFunJS.winwarning("手机号填写不正确");
-                $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
-                return;
-            }
-            var strRegex = /^(?=.*[a-zA-Z]+)(?=.*[0-9]+)[a-zA-Z0-9]+$/;
-            if (!tempmodel.UserData.ID && tempmodel.UserData.UserPass && (!strRegex.test(tempmodel.UserData.UserPass) || $.trim(tempmodel.UserData.UserPass).length < 6 || $.trim(tempmodel.UserData.UserPass).length > 16)) {
-                top.ComFunJS.winwarning("密码必须为6-16位长度,建议用英文和数字的组合");
-                $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
-                return;
-            }
-            if (!(/^[0-9]*$/.test(tempmodel.UserData.UserOrder))) {
-                parent.ComFunJS.winwarning("序号必须是数字");
-                $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
-                return;
-            }
-            if (tempmodel.UserData.ID==undefined||!tempmodel.UserData.ID) {
-                tempmodel.UserData.UserName = tempmodel.UserData.mobphone;
-            }
-            var modelValue = JSON.stringify(tempmodel.UserData.$model);
-            $.post("/API/VIEWAPI.ashx", { Action: "XTGL_ADDUSER", P1: modelValue }, function (result) {
-                return callback.call(this, $.parseJSON(result));
-            });
+            alert(tempmodel.UserData.zhiwu)
+            //if (!(/^0?1[3|4|5|8|7][0-9]\d{8}$/.test(tempmodel.UserData.mobphone))) {
+            //    top.ComFunJS.winwarning("手机号填写不正确");
+            //    $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
+            //    return;
+            //}
+            //var strRegex = /^(?=.*[a-zA-Z]+)(?=.*[0-9]+)[a-zA-Z0-9]+$/;
+            //if (!tempmodel.UserData.ID && tempmodel.UserData.UserPass && (!strRegex.test(tempmodel.UserData.UserPass) || $.trim(tempmodel.UserData.UserPass).length < 6 || $.trim(tempmodel.UserData.UserPass).length > 16)) {
+            //    top.ComFunJS.winwarning("密码必须为6-16位长度,建议用英文和数字的组合");
+            //    $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
+            //    return;
+            //}
+            //if (!(/^[0-9]*$/.test(tempmodel.UserData.UserOrder))) {
+            //    parent.ComFunJS.winwarning("序号必须是数字");
+            //    $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
+            //    return;
+            //}
+            //if (tempmodel.UserData.ID==undefined||!tempmodel.UserData.ID) {
+            //    tempmodel.UserData.UserName = tempmodel.UserData.mobphone;
+            //}
+            //var modelValue = JSON.stringify(tempmodel.UserData.$model);
+            //$.post("/API/VIEWAPI.ashx", { Action: "XTGL_ADDUSER", P1: modelValue }, function (result) {
+            //    return callback.call(this, $.parseJSON(result));
+            //});
         }, selecttype: function (type) {
             tempmodel.seltype = type;
         }
@@ -131,8 +137,16 @@
                     </li>
                     <li class="add-item add-width  fl-right">
                         <label class="add-item-label">职务</label>
+                   
                         <div class="add-ic">
-                            <input type="text" class="form-control" ms-duplex="UserData.zhiwu" id="zhiwu" placeholder="请输入用户职务" />
+                            <select id="zhiwu" class="form-control" ms-duplex="UserData.zhiwu" multiple>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+
+                            </select>
+                            <!--<input type="text" class="form-control" ms-duplex="UserData.zhiwu" id="zhiwu" placeholder="请输入用户职务" />-->
                         </div>
                     </li>
                     <li class="add-item add-widthall" ms-if="userName==''">
