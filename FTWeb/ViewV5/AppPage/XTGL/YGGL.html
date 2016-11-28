@@ -1,9 +1,4 @@
-﻿<link href="/ViewV5/JS/chosen_v1.6.2/chosen.css" rel="stylesheet" />
-<script src="/ViewV5/JS/chosen_v1.6.2/chosen.jquery.js"></script>
-<script></script>
-<style>
-
-</style>
+﻿
 <script type="text/javascript">
 
     var branchNo = ComFunJS.getQueryString("branchNo");
@@ -32,14 +27,7 @@
                 if (resultData.Result2) {
                     tempmodel.ComId = resultData.Result2;
                 }
-                var rolelist = [];
-                tempmodel.RoleData.forEach(function (item) {
-                    rolelist.push(item.RoleName);
-                })
-                $("#zhiwu").chosen().change(function (a,b) {
-                   
-                    tempmodel.UserData.zhiwu = $("#zhiwu").val().join(".");
-                });
+              
             })
             if (strId) {
                 tempmodel.userName = strId;
@@ -75,30 +63,29 @@
             }
             ComFunJS.initForm();
         }, SaveData: function (callback, dom) {
-            alert(tempmodel.UserData.zhiwu)
-            //if (!(/^0?1[3|4|5|8|7][0-9]\d{8}$/.test(tempmodel.UserData.mobphone))) {
-            //    top.ComFunJS.winwarning("手机号填写不正确");
-            //    $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
-            //    return;
-            //}
-            //var strRegex = /^(?=.*[a-zA-Z]+)(?=.*[0-9]+)[a-zA-Z0-9]+$/;
-            //if (!tempmodel.UserData.ID && tempmodel.UserData.UserPass && (!strRegex.test(tempmodel.UserData.UserPass) || $.trim(tempmodel.UserData.UserPass).length < 6 || $.trim(tempmodel.UserData.UserPass).length > 16)) {
-            //    top.ComFunJS.winwarning("密码必须为6-16位长度,建议用英文和数字的组合");
-            //    $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
-            //    return;
-            //}
-            //if (!(/^[0-9]*$/.test(tempmodel.UserData.UserOrder))) {
-            //    parent.ComFunJS.winwarning("序号必须是数字");
-            //    $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
-            //    return;
-            //}
-            //if (tempmodel.UserData.ID==undefined||!tempmodel.UserData.ID) {
-            //    tempmodel.UserData.UserName = tempmodel.UserData.mobphone;
-            //}
-            //var modelValue = JSON.stringify(tempmodel.UserData.$model);
-            //$.post("/API/VIEWAPI.ashx", { Action: "XTGL_ADDUSER", P1: modelValue }, function (result) {
-            //    return callback.call(this, $.parseJSON(result));
-            //});
+            if (!(/^0?1[3|4|5|8|7][0-9]\d{8}$/.test(tempmodel.UserData.mobphone))) {
+                top.ComFunJS.winwarning("手机号填写不正确");
+                $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
+                return;
+            }
+            var strRegex = /^(?=.*[a-zA-Z]+)(?=.*[0-9]+)[a-zA-Z0-9]+$/;
+            if (!tempmodel.UserData.ID && tempmodel.UserData.UserPass && (!strRegex.test(tempmodel.UserData.UserPass) || $.trim(tempmodel.UserData.UserPass).length < 6 || $.trim(tempmodel.UserData.UserPass).length > 16)) {
+                top.ComFunJS.winwarning("密码必须为6-16位长度,建议用英文和数字的组合");
+                $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
+                return;
+            }
+            if (!(/^[0-9]*$/.test(tempmodel.UserData.UserOrder))) {
+                parent.ComFunJS.winwarning("序号必须是数字");
+                $(dom).attr("disabled", false).find(".fa").hide();//加上转圈样式
+                return;
+            }
+            if (tempmodel.UserData.ID==undefined||!tempmodel.UserData.ID) {
+                tempmodel.UserData.UserName = tempmodel.UserData.mobphone;
+            }
+            var modelValue = JSON.stringify(tempmodel.UserData.$model);
+            $.post("/API/VIEWAPI.ashx", { Action: "XTGL_ADDUSER", P1: modelValue }, function (result) {
+                return callback.call(this, $.parseJSON(result));
+            });
         }, selecttype: function (type) {
             tempmodel.seltype = type;
         }
@@ -136,27 +123,19 @@
                         </div>
                     </li>
                     <li class="add-item add-width  fl-right">
-                        <label class="add-item-label">职务</label>
-                   
+                        <label class="add-item-label">默认职务</label>
                         <div class="add-ic">
-                            <select id="zhiwu" class="form-control" ms-duplex="UserData.zhiwu" multiple>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-
-                            </select>
-                            <!--<input type="text" class="form-control" ms-duplex="UserData.zhiwu" id="zhiwu" placeholder="请输入用户职务" />-->
+                            <input type="text" class="form-control" ms-duplex="UserData.zhiwu" id="zhiwu" placeholder="请输入用户默认职务" />
                         </div>
                     </li>
-                    <li class="add-item add-widthall" ms-if="userName==''">
+                    <li class="add-item add-width fl-left">
                         <label class="add-item-label"><i>*</i>用户密码</label>
                         <div class="add-ic">
                             <input type="password" class="form-control" autocomplete="off" ms-duplex="UserData.UserPass" placeholder="请输入用户密码" />
                         </div>
                     </li>
 
-                    <li class="add-item add-width  fl-left">
+                    <li class="add-item add-width  fl-right">
                         <label class="add-item-label">是否可用</label>
                         <div class="add-ic">
                             <select id="isUse" class="form-control" ms-duplex="UserData.IsUse">
@@ -165,31 +144,32 @@
                             </select>
                         </div>
                     </li>
-                    <li class="add-item add-width fl-right">
-                        <label class="add-item-label">邮箱</label>
-                        <div class="add-ic">
-                            <input type="text" class="form-control" ms-duplex="UserData.mailbox" maxlength="50" id="Email" placeholder="请输入邮箱" />
-                        </div>
-                    </li>
                     <li class="add-item add-width  fl-left">
                         <label class="add-item-label">座机</label>
                         <div class="add-ic">
                             <input type="text" class="form-control" ms-duplex="UserData.telphone" placeholder="请输入座机" />
                         </div>
                     </li>
-                    <li class="add-item add-width  fl-right">
+                    <li class="add-item add-width fl-right">
+                        <label class="add-item-label">邮箱</label>
+                        <div class="add-ic">
+                            <input type="text" class="form-control" ms-duplex="UserData.mailbox" maxlength="50" id="Email" placeholder="请输入邮箱" />
+                        </div>
+                    </li>
+                  
+                    <li class="add-item add-width  fl-left">
                         <label class="add-item-label">序号</label>
                         <div class="add-ic">
                             <input type="text" class="form-control" ms-duplex="UserData.UserOrder" placeholder="序号" />
                         </div>
                     </li>
-                    <li class="add-item add-widthall">
+                    <li class="add-item add-width   fl-right">
                         <label class="add-item-label">房间号</label>
                         <div class="add-ic">
                             <input type="text" class="form-control" ms-duplex="UserData.RoomCode" maxlength="50" placeholder="请输入房间号" />
                         </div>
                     </li>
-                    <li class="add-item add-widthall">
+                    <li class="add-item add-width  fl-left">
                         <label class="add-item-label">员工岗位</label>
                         <div class="add-ic">
                             <input type="text" class="form-control" ms-duplex="UserData.UserGW" maxlength="200" placeholder="请输入员工岗位" />

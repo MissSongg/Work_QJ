@@ -293,28 +293,7 @@ namespace QJY.API
                 {
                     msg.ErrorMsg = "修改用户失败";
                 }
-                else
-                {
-                    //同时更新UserInfo的内容
-                    UserInfo.User = user;
-                    string strSql = "";
-                    JH_Auth_Role role = new JH_Auth_RoleB().GetEntity(d => d.RoleName == user.zhiwu && (d.ComId == UserInfo.User.ComId || d.ComId == 0));
-                    if (role == null)
-                    {
-                        role = new JH_Auth_Role();
-                        role.PRoleCode = 0;
-                        role.RoleName = user.zhiwu;
-                        role.RoleDec = user.zhiwu;
-                        role.IsUse = "Y";
-                        role.isSysRole = "N";
-                        role.leve = 0;
-                        role.ComId = UserInfo.User.ComId;
-                        role.DisplayOrder = 0;
-                        new JH_Auth_RoleB().Insert(role);
-                    }
-                    strSql += string.Format("DELETE JH_Auth_UserRole where UserName='{0}';INSERT into JH_Auth_UserRole (UserName,RoleCode,ComId) Values('{0}',{1},{2})", user.UserName, role.RoleCode, UserInfo.User.ComId);
-                    new JH_Auth_RoleB().ExsSql(strSql);
-                }
+              
             }
             else
             {
@@ -332,7 +311,6 @@ namespace QJY.API
                 }
                 user.UserPass = CommonHelp.GetMD5(user.UserPass);
                 user.ComId = UserInfo.User.ComId;
-                user.zhiwu = user.zhiwu == "" ? "员工" : user.zhiwu;
                 if (UserInfo.QYinfo.IsUseWX == "Y")
                 {
                     WXHelp wx = new WXHelp(UserInfo.QYinfo);
@@ -347,23 +325,12 @@ namespace QJY.API
                 }
                 else
                 {
-                    string strSql = "";
-                    JH_Auth_Role role = new JH_Auth_RoleB().GetEntity(d => d.RoleName == user.zhiwu && (d.ComId == UserInfo.User.ComId || d.ComId == 0));
-                    if (role == null)
-                    {
-                        role = new JH_Auth_Role();
-                        role.PRoleCode = 0;
-                        role.RoleName = user.zhiwu;
-                        role.RoleDec = user.zhiwu;
-                        role.IsUse = "Y";
-                        role.isSysRole = "N";
-                        role.leve = 0;
-                        role.ComId = UserInfo.User.ComId;
-                        role.DisplayOrder = 0;
-                        new JH_Auth_RoleB().Insert(role);
-                    }
-                    strSql += string.Format("DELETE JH_Auth_UserRole where UserName='{0}';INSERT into JH_Auth_UserRole (UserName,RoleCode,ComId) Values('{0}',{1},{2})", user.UserName, role.RoleCode, UserInfo.User.ComId);
-                    new JH_Auth_RoleB().ExsSql(strSql);
+                    //添加默认员工角色
+                    JH_Auth_UserRole Model = new JH_Auth_UserRole();
+                    Model.UserName = user.UserName;
+                    Model.RoleCode = 1219;
+                    Model.ComId = user.ComId;
+                    new JH_Auth_UserRoleB().Insert(Model);
 
                 }
             }
@@ -1199,7 +1166,7 @@ namespace QJY.API
             wx.SubDept = list;
             foreach (var v in list)
             {
-                var users = new JH_Auth_UserB().GetEntities(d => d.BranchCode == v.DeptCode && d.IsUse == "Y").ToList().Select(d => new { d.ID, d.UserName, d.UserRealName, d.telphone, d.mobphone, d.zhiwu });
+                var users = new JH_Auth_UserB().GetEntities(d => d.BranchCode == v.DeptCode && d.IsUse == "Y").ToList().Select(d => new { d.ID, d.UserName, d.UserRealName, d.telphone, d.mobphone, d.UserGW });
                 v.DeptUser = users;
                 v.DeptUserNum = users.Count();
                 wx.DeptUserNum = wx.DeptUserNum + users.Count();
