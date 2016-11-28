@@ -39,7 +39,7 @@ namespace QjySaaSWeb.APP
             }
             if (P2.IndexOf("<script>") > -1)
             {
-                P2 = P2.Replace("<script>", "&gt;script&lt;"); 
+                P2 = P2.Replace("<script>", "&gt;script&lt;");
             }
             if (P1.IndexOf("<script/>") > -1)
             {
@@ -87,6 +87,10 @@ namespace QjySaaSWeb.APP
                             //通过Code获取用户名，然后执行接口方法
                             var container = ServiceContainerV.Current().Resolve<IWsService>(acs[0].ToUpper());
                             JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB().GetUserInfo(strSZHLCode);
+                            if (UserInfo.User.logindate == null)
+                            {
+                                UserInfo.User.logindate = DateTime.Now;
+                            }
                             TimeSpan ts = new TimeSpan(UserInfo.User.logindate.Value.Ticks).Subtract(new TimeSpan(DateTime.Now.Ticks)).Duration();
                             if (UserInfo != null)
                             {

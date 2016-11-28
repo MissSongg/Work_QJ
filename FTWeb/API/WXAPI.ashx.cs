@@ -794,6 +794,10 @@ namespace QjySaaSWeb.APP
                                     if (jau != null)
                                     {
                                         //如果PCCode为空或者超过60分钟没操作,统统重新生成PCCode,并更新最新操作时间
+                                        if (jau.logindate == null)
+                                        {
+                                            jau.logindate = DateTime.Now;
+                                        }
                                         TimeSpan ts = new TimeSpan(jau.logindate.Value.Ticks).Subtract(new TimeSpan(DateTime.Now.Ticks)).Duration();
                                         if (string.IsNullOrEmpty(jau.pccode) || ts.TotalMinutes > 60)
                                         {
