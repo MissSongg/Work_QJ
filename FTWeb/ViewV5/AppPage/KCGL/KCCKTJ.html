@@ -50,7 +50,7 @@
                     <td>{{el.totalSeconds }}</td>
                     <td>
                         <span class="btn-click">
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="查看详细" ms-click="KCTJDetail(el.ID)">
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="查看详细" ms-click="KCTJDetail(el.ID,el.CRUser)">
                                 <i class="iconfont icon-look"></i>
                             </a> 
                         </span>
@@ -101,8 +101,8 @@
             tempindex.kcflType = type;
             tempindex.GetLIST();
         },
-        KCTJDetail: function (Id) { 
-            ComFunJS.winviewform("/ViewV5/AppPage/KCGL/KCCKDetail.html?ID=" + Id, '课程查看详细', "1100", "700")
+        KCTJDetail: function (Id,user) { 
+            ComFunJS.winviewform("/ViewV5/AppPage/KCGL/KCCKDetail.html?ID=" + Id + "&user=" + user, '课程查看详细', "1100", "700")
         },
         GetLIST: function () {
             $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCCKTJ', { p: 1, P1: tempindex.kcflType, Content: model.search.searchcontent, pagecount: model.page.pagecount }, function (resultData) {
