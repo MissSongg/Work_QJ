@@ -261,10 +261,13 @@ namespace QJY.API
             int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
             page = page == 0 ? 1 : page;
             int recordCount = 0;
-            string strWhere = string.Format(" ps.ComId={0} ", UserInfo.User.ComId);
+            string strWhere = string.Format(" ps.ComId={0} and ps.KCDuration!=0", UserInfo.User.ComId);
             if (P1 != "")
             {
                 strWhere += " AND ps.KCID=" + P1;
+            } if (P2 != "")
+            {
+                strWhere += " AND ps.CRUser='" + P2+"'";
             }
             string content = context.Request["Content"] ?? "";
             if (content != "")
@@ -302,6 +305,7 @@ namespace QJY.API
             pagecount = pagecount == 0 ? 10 : pagecount;
             DataTable dt = new SZHL_GZBGB().GetDataPager(strSql, "* ", pagecount, page, " KCName ", "1=1", ref recordCount);
             msg.Result = dt;
+            msg.Result1 = recordCount;
 
         }
         #endregion

@@ -13,21 +13,7 @@
 </head>
 <body>
     <div ms-controller="W_KCCKDetail" style="margin-top:50px;"> 
-        <!-- 按条件选择 -->
-        <div class="tab-filter-type">
-            <!-- 搜索 -->
-            <div class="oh">
-                <div class="input-group ml15" style="width:295px;">
-                    <input type="search" class="form-control" ms-duplex="searchcontent" placeholder="搜索用户名称">
-                    <span class="input-group-addon" ms-click="GetLIST()">搜索</span>
-                </div>
-            </div>
-        </div>
-        <!-- 展开更多选项 -->
-        <div class="add-tab ft14 tc mt20" style="display:none;">
-            <span>更多筛选<i class="caret"></i></span>
-        </div>
-        <!-- 按条件选择 -->
+  
         <!-- 表格 -->
         <div class="default-tab ft14 pt20 hover-btn">
             <table class="table table-striped table-responsive table-hover">
@@ -87,9 +73,10 @@
             ListData: [],
             isnull:false,
             userName: ComFunJS.getnowuser(),
-            kcId: ComFunJS.getQueryString("ID"), 
+            kcId: ComFunJS.getQueryString("ID"),
+            user: ComFunJS.getQueryString("user"),
             GetLIST: function () {
-                $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCSEETIME', { p: 1, P1: tempindex.kcId, Content: tempindex.searchcontent, pagecount: tempindex.page.pagecount }, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCSEETIME', { p: 1, P1: tempindex.kcId,  pagecount: tempindex.page.pagecount, P2: tempindex.user }, function (resultData) {
                     if (resultData.ErrorMsg == "") {
                         tempindex.ListData = resultData.Result;
                         tempindex.page.total = resultData.Result1;
@@ -101,7 +88,7 @@
                             skin: 'molv',
                             jump: function (e) { //触发分页后的回调
                                 if (e.curr != tempindex.page.pageindex) {
-                                    $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCSEETIME', { p: e.curr, P1: tempindex.kcId, Content: tempindex.searchcontent, pagecount: tempindex.page.pagecount }, function (resultData) {
+                                    $.getJSON('/API/VIEWAPI.ashx?Action=KCGL_GETKCSEETIME', { p: e.curr, P1: tempindex.kcId,   pagecount: tempindex.page.pagecount, P2: tempindex.user }, function (resultData) {
                                         if (resultData.ErrorMsg == "") {
                                             tempindex.ListData = resultData.Result;
                                         }
