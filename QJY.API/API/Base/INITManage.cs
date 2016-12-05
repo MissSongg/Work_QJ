@@ -811,7 +811,7 @@ namespace QJY.API
                         userNew.UserName = row[2].ToString();
                         userNew.UserRealName = row[0].ToString();
                         userNew.zhiwu = row[5].ToString();
-                        userNew.UserPass = P2;
+                        userNew.UserPass = CommonHelp.GetMD5(P2);
                         if (!string.IsNullOrEmpty(row[8].ToString()))
                         {
                             int orderNum = 0;

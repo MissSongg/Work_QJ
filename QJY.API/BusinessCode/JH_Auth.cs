@@ -75,19 +75,12 @@ namespace QJY.API
             }
         }
 
-
-        /// <summary>
-        /// 修改密码(无用)
-        /// </summary>
-        public void UpadteMiMa(int ComId, string strUser, string strNewPassWord)
+        public void UpdateloginDate(int ComId, string strUser)
         {
-            StringBuilder strAddAuthTree = new StringBuilder();
-            JH_Auth_User UPUser = new JH_Auth_UserB().GetEntities(d => d.ComId == ComId && d.UserName == strUser).SingleOrDefault();
-            UPUser.UserPass = strNewPassWord;
-            new JH_Auth_UserB().Update(UPUser);
-
-
+            string strSql = string.Format("UPDATE JH_Auth_User SET logindate='{0}' WHERE ComId={1} and UserName = '{2}'", DateTime.Now, ComId, strUser.ToFormatLike());
+            new JH_Auth_UserB().ExsSql(strSql);
         }
+
         public void UpdatePassWord(int ComId, string strUser, string strNewPassWord)
         {
             string strSql = string.Format("UPDATE JH_Auth_User SET UserPass='{0}' WHERE ComId={1} and UserName in ('{2}')", strNewPassWord, ComId, strUser.ToFormatLike());
