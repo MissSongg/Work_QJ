@@ -98,7 +98,7 @@ namespace QjySaaSWeb.APP
                                 {
                                     UserInfo.User.pccode = "";
                                     new JH_Auth_UserB().Update(UserInfo.User);//清除PCCode
-                                    Model.ErrorMsg = "NOSESSIONCODE";
+                                    Model.ErrorMsg = "WXTIMEOUT";
                                 }
                                 else
                                 {

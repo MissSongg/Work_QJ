@@ -1569,7 +1569,7 @@ var ComFunJS = {
                     ComFunJS.winwarning("未登录或登录已过期");
                 }
                 else if (data.ErrorMsg != "") {
-                    ComFunJS.winwarning("wx"+data.ErrorMsg);
+                    ComFunJS.winwarning(data.ErrorMsg);
                 }
             } catch (e) {
                 $.hidePreloader();

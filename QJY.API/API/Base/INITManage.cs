@@ -229,97 +229,11 @@ namespace QJY.API
 
 
 
-        #region 首次初始化第二步获取安装列表
-        //获取微信安装app列表
-        public void GETMOBILEAZAPP(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
-            string type = context.Request["type"] ?? "";//获取页面：type==applist
-            //微信安装的应用判断依据为model表的WXURL，企业会话需要安装，但是微信中综合办公中不需要菜单，所以硬性查询出来企业会话，sql语句最后一行为查询的判断
-            string strSql = string.Format(@"SELECT model.*,qymodel.AgentId from JH_Auth_Model model inner join 
-                                            JH_Auth_QY_Model qymodel on model.ID=qymodel.ModelID where
-                                            qymodel.ComId={0} and model.TJId is not NULL and qymodel.Status=1
-                                            and  (model.ComId=0 or model.ComId={0})  And
-                                            ((  model.WXUrl!='' and model.WXUrl is not NULL  ) OR model.ModelCode='QYIM')", UserInfo.User.ComId);
-
-            DataTable dtModel = new JH_Auth_QY_ModelB().GetDTByCommand(strSql);
-            if (type != "applist")
-            {
-                //查询套件
-                DataTable dt = new JH_Auth_WXPJB().GetDTByCommand(@"SELECT distinct pj.* from JH_Auth_WXPJ pj inner join JH_Auth_Model  model on  pj.TJID=model.TJId 
-                                                                    inner join JH_Auth_QY_Model qymodel on model.ID=qymodel.ModelID  where qymodel.ComId=" + UserInfo.User.ComId + " and model.TJId is not NULL and qymodel.Status=1 order by pj.TJName ASC");
-
-                dt.Columns.Add("Model", Type.GetType("System.Object"));
-                foreach (DataRow row in dt.Rows)
-                {
-                    string tjId = row["TJID"].ToString();
-                    row["Model"] = dtModel.FilterTable("TJId='" + tjId + "' and (AgentId is null or AgentId='') ").OrderBy(" ORDERID asc");
-                }
-
-                msg.Result = dt;
-            }
-            else
-            {
-                msg.Result = dtModel.FilterTable("  (AgentId is null or AgentId='') ");
-            }
-            msg.Result1 = dtModel.FilterTable(" AgentId is not null and AgentId<>''").OrderBy(" ORDERID asc");
-            msg.Result2 = UserInfo.User.ComId;
-        }
-        #endregion
+       
 
 
 
-
-        #region 初始化系统菜单数据
-        public void INITSYSTEMDATA(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
-            try
-            {
-                string[] modelIds = P1.Split(',');
-                JH_Auth_QY_Model qymodel = new JH_Auth_QY_Model();
-                foreach (string strModel in modelIds)
-                {
-                    int modelId = 0;
-                    int.TryParse(strModel.Split(':')[0], out modelId);
-                    qymodel = new JH_Auth_QY_ModelB().GetEntity(d => d.ComId == UserInfo.User.ComId && d.ModelID == modelId);
-                    if (qymodel != null)
-                    {
-                        qymodel.Status = strModel.Split(':')[1];
-                        new JH_Auth_QY_ModelB().Update(qymodel);
-                    }
-                    else
-                    {
-                        qymodel = new JH_Auth_QY_Model();
-                        qymodel.ComId = UserInfo.User.ComId;
-                        qymodel.ModelID = modelId;
-                        qymodel.CRDate = DateTime.Now;
-                        qymodel.QYModelCode = new JH_Auth_ModelB().GetEntity(d => d.ID == modelId).ModelCode;
-                        qymodel.CRUser = UserInfo.User.UserName;
-                        qymodel.Status = strModel.Split(':')[1];
-                        qymodel.AgentId = "";
-                        new JH_Auth_QY_ModelB().Insert(qymodel);
-                    }
-                }
-                new JH_Auth_LogB().Insert(new JH_Auth_Log()
-                {
-                    ComId = UserInfo.User.ComId.ToString(),
-                    LogType = "APPSET",
-                    LogContent = P1 + "应用设置状态，设置时间:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " 设置IP：:" + CommonHelp.getIpAddr() + "设置人：" + UserInfo.User.UserName,
-                    CRUser = UserInfo.User.UserName,
-                    CRDate = DateTime.Now
-                });
-                //给超级管理员添加二级菜单权限
-                string strSql = string.Format(@"if  not exists(select * from JH_Auth_RoleFun where ComId={0} and RoleCode=0) INSERT INTO JH_Auth_RoleFun(ComId,RoleCode,FunCode,ActionCode)SELECT {0},RoleCode,FunCode,ActionCode from JH_Auth_RoleFun where ComId=0", UserInfo.User.ComId);
-                new JH_Auth_RoleFunB().ExsSql(strSql);
-
-            }
-            catch (Exception ex)
-            {
-                msg.ErrorMsg = ex.Message;
-            }
-
-        }
-
-        #endregion
+        
 
         #region 初始化模块类型数据
         public void INITMODELTYPE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
