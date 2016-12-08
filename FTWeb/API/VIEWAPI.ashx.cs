@@ -105,8 +105,7 @@ namespace QjySaaSWeb.APP
                                     Model.Action = Model.Action.Substring(acs[0].Length + 1);
                                     container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), UserInfo);
                                     new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserInfo.User.UserName, UserInfo.User.UserRealName, UserInfo.QYinfo.ComId, strIP);
-                                    UserInfo.User.logindate = DateTime.Now;
-                                    new JH_Auth_UserB().Update(UserInfo.User);//更新用户最近的操作时间
+                                    new JH_Auth_UserB().UpdateloginDate(UserInfo.User.ComId.Value, UserInfo.User.UserName);//更新用户最近的操作时间
                                 }
 
                             }
