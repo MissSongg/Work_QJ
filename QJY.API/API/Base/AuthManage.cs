@@ -293,7 +293,7 @@ namespace QJY.API
                 {
                     msg.ErrorMsg = "修改用户失败";
                 }
-              
+
             }
             else
             {
@@ -1186,7 +1186,15 @@ namespace QJY.API
             var url = new JH_Auth_CommonB().GetEntity(p => p.ModelCode == P1 && p.MenuCode == P2);
             if (url != null)
             {
-                msg.Result1 = url.Url1;
+                DataTable dtModel = new JH_Auth_ModelB().GETMenuList(UserInfo);//获取当前用户克查看得模块
+                for (int i = 0; i < dtModel.Rows.Count; i++)
+                {
+                    if (dtModel.Rows[i]["ModelCode"].ToString() == url.ModelCode)//判断是否拥有该模块得权限
+                    {
+                        msg.Result1 = url.Url1;
+
+                    }
+                }
             }
         }
 

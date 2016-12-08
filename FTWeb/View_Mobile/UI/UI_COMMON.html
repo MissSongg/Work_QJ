@@ -5,7 +5,7 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title></title>
     <script src="/View_Mobile/JS/zepto.min.js"></script>
-    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160426"></script>
     <script>
         //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
         //    //隐藏右上角按钮
@@ -100,9 +100,14 @@
                     else {
                         window.location.replace('/View_Mobile/UI/UI_ERROR.html?r=' + Math.random() + "&msg=很抱歉，您没有权限!!");
                     }
-                } else {
-                    alert("wx"+r.ErrorMsg);
                 }
+                if (r.ErrorMsg == "WXTIMEOUT") {
+                    //微信端超时处理
+                    ComFunJS.delCookie("szhlcode");
+                    ComFunJS.delCookie("wxusername");
+                    window.location.href = window.location.href + "&&r=" + Math.random()
+                }
+
 
             })
         }
