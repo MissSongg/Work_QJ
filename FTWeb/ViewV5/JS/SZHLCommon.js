@@ -1144,7 +1144,7 @@
                 if (s.type == "GET") {
                     data = data
                 }
-                if (data.ErrorMsg == "NOSESSIONCODE") {
+                if (data.ErrorMsg == "NOSESSIONCODE" || data.ErrorMsg == "WXTIMEOUT") {
                     top.ComFunJS.winwarning("页面超时!")
                     top.window.location.href = "/Login.html";
                     return;

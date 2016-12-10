@@ -646,6 +646,7 @@
     <Content Include="ViewV5\JS\SZHLCommon.min.js">
       <DependentUpon>SZHLCommon.js</DependentUpon>
     </Content>
+    <Content Include="ViewV5\JS\timego.js" />
     <Content Include="ViewV5\JS\toastr.js" />
     <Content Include="ViewV5\JS\Toast\tests\toastr-tests.html" />
     <Content Include="ViewV5\JS\Toast\toastr.css" />

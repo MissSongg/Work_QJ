@@ -159,7 +159,7 @@
                     containerId: 'toast-container',
                     debug: false,
                     showMethod: 'fadeIn', //fadeIn, slideDown, and show are built into jQuery
-                    showDuration: 500,
+                    showDuration: 1000,
                     showEasing: 'swing', //swing and linear are built into jQuery
                     onShown: undefined,
                     hideMethod: 'fadeOut',
@@ -171,7 +171,7 @@
                     closeEasing: false,
                     closeButton: true,
                     onclick:false,
-                    extendedTimeOut: 500,
+                    extendedTimeOut: 1000,
                     iconClasses: {
                         error: 'toast-error',
                         info: 'toast-info',
@@ -180,7 +180,7 @@
                     },
                     iconClass: 'toast-info',
                     positionClass: 'toast-top-center',
-                    timeOut: 500, // Set timeOut and extendedTimeOut to 0 to make it sticky
+                    timeOut: 1000, // Set timeOut and extendedTimeOut to 0 to make it sticky
                     titleClass: 'toast-title',
                     messageClass: 'toast-message',
                     escapeHtml: false,

@@ -171,7 +171,7 @@
                                 </div>
                                 <span class="c999 text-blue-2 ft14">
                                     密码：{{ShareData.SharePasd?ShareData.SharePasd:"无"}}<a class="ml10" ms-click="SetPassWord()">{{tempindex.ShareData.ShareType=="0"?"设置":"取消"}}</a>
-                                    | 到期时间：{{ShareData.ShareDueDate}}<a class="ml10" ms-click="SetDueShow()">设置</a>
+                                    | 到期时间：{{ShareData.ShareDueDate}}({{jQuery.timeago(ShareData.ShareDueDate);}})<a class="ml10" ms-click="SetDueShow()">设置</a>
                                     <div class="input-group mt15" style="width:295px;" ms-if="isDueShow">
                                         <input type="search" ms-duplex="DueDate" class="form-control szhl_form_date" placeholder="选择到期时间">
                                         <span class="input-group-addon" ms-click="ModifyDate()">保存</span>
