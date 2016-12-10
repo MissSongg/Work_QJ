@@ -1565,7 +1565,7 @@ var ComFunJS = {
                 if (s.type == "GET") {
                     data = data;
                 }
-                if (data.ErrorMsg == "NOSESSIONCODE") {
+                if (data.ErrorMsg == "NOSESSIONCODE" || data.ErrorMsg == "WXTIMEOUT") {
                     ComFunJS.winwarning("未登录或登录已过期");
                 }
                 else if (data.ErrorMsg != "") {
