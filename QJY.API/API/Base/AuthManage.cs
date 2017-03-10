@@ -1179,22 +1179,23 @@ namespace QJY.API
         /// </summary>
         public void WXINIT(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            DataTable dtUsers = new JH_Auth_UserB().GetDTByCommand(" SELECT * FROM JH_Auth_User where ComId='" + UserInfo.User.ComId + "'");
+            DataTable dtUsers = new JH_Auth_UserB().GetDTByCommand(" SELECT UserName,UserRealName,mobphone FROM JH_Auth_User where ComId='" + UserInfo.User.ComId + "'");
             //获取选择用户需要的HTML和转化用户名需要的json数据
             msg.Result = dtUsers;
 
             var url = new JH_Auth_CommonB().GetEntity(p => p.ModelCode == P1 && p.MenuCode == P2);
             if (url != null)
             {
-                DataTable dtModel = new JH_Auth_ModelB().GETMenuList(UserInfo);//获取当前用户克查看得模块
-                for (int i = 0; i < dtModel.Rows.Count; i++)
-                {
-                    if (dtModel.Rows[i]["ModelCode"].ToString() == url.ModelCode)//判断是否拥有该模块得权限
-                    {
-                        msg.Result1 = url.Url1;
+                msg.Result1 = url.Url1;
 
-                    }
-                }
+                //DataTable dtModel = new JH_Auth_ModelB().GETMenuList(UserInfo);//获取当前用户克查看得模块
+                //for (int i = 0; i < dtModel.Rows.Count; i++)
+                //{
+                //    if (dtModel.Rows[i]["ModelCode"].ToString() == url.ModelCode)//判断是否拥有该模块得权限
+                //    {
+
+                //    }
+                //}
             }
         }
 
