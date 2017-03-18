@@ -1585,6 +1585,9 @@
     <Content Include="View_Mobile\Frozenui1.3\font\iconfont.ttf" />
     <Content Include="ViewV5\JS\chosen_v1.6.2\bower.json" />
     <Content Include="ViewV5\JS\chosen_v1.6.2\package.json" />
+    <Content Include="ViewV5\JS\SZHLCommon.min.js.map">
+      <DependentUpon>SZHLCommon.min.js</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

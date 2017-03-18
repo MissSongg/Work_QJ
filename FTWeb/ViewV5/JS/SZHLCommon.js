@@ -1149,7 +1149,7 @@
                     top.window.location.href = "/Login.html";
                     return;
                 }
-                if (data.ErrorMsg != "") {
+                if (data.ErrorMsg) {
                     top.ComFunJS.winwarning(data.ErrorMsg)
                 }
             } catch (e) {
