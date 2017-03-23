@@ -321,7 +321,8 @@
         if (dom.data("people")) {
             checkvalue = dom.data("people").userid;
         }
-        ComFunJS.winbtnwin("/ViewV5/Base/UserSelect.html?checkvalue=" + checkvalue, "选择人员", 900, 540, {}, function (layero, index) {
+        top.$("body").data("checkvalue", checkvalue);
+        ComFunJS.winbtnwin("/ViewV5/Base/UserSelect.html", "选择人员", 900, 540, {}, function (layero, index) {
             var frameid = $("iframe", $(layero)).attr('id');
             var people = ComFunJS.isIE() ? window.frames[frameid].getqiandaopeople() : window.frames[frameid].contentWindow.getqiandaopeople();
             dom.data("people", people).val(people.username).next('input:hidden').val(people.userid);
@@ -946,7 +947,8 @@
                     if ($input.attr("usertype")) {
                         peopleType = "&userType=" + $input.attr("usertype") + "&typeid=" + $input.attr("typeid");
                     }
-                    top.ComFunJS.winbtnwin("/ViewV5/Base/UserSelect.html?checkvalue=" + $input.val() + "&issignle=" + issignle + peopleType, "选择人员", 900, 470, {}, function (layero, index) {
+                    top.$("body").data("checkvalue", $input.val());
+                    top.ComFunJS.winbtnwin("/ViewV5/Base/UserSelect.html?issignle=" + issignle + peopleType, "选择人员", 900, 470, {}, function (layero, index) {
                         var frameid = $("iframe", $(layero)).attr('id');
                         var people = ComFunJS.isIE() ? top.window.frames[frameid].getqiandaopeople() : top.window.frames[frameid].contentWindow.getqiandaopeople();
 

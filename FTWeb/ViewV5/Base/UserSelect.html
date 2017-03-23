@@ -219,7 +219,7 @@
         var model = avalon.define({
             $id: "UserSelect",
             isSignle: ComFunJS.getQueryString("issignle") ? ComFunJS.getQueryString("issignle") : "N",
-            checkval: ComFunJS.getQueryString("checkvalue") ? ComFunJS.getQueryString("checkvalue") : "",
+            checkval: top.$("body").data("checkvalue") ? top.$("body").data("checkvalue") : "",
             userType: ComFunJS.getQueryString("userType") ? ComFunJS.getQueryString("userType") : "",
             typeid: ComFunJS.getQueryString("typeid") ? ComFunJS.getQueryString("typeid") : "", 
             isAll: ComFunJS.getQueryString("isall"), //是否加载所有人，N:根据当前用户所在部门加载，Y:加载所有人员
