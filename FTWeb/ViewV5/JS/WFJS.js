@@ -167,12 +167,7 @@
 
                         }
                     });
-                    //保存扩展数据
-                    if (pmodel.ExtData.size() > 0) {
-                        $.post("/API/VIEWAPI.ashx?ACTION=XTGL_UPDATEEXTDATA", { P1: pmodel.FormCode, P2: result1.Result.ID, ExtData: JSON.stringify(pmodel.ExtData.$model) }, function (result) {
-                            var result = $.parseJSON(result)
-                        })
-                    }
+                    pmodel.SaveExtData(result1.Result.ID);
                     //删除草稿
                     pmodel.DelDraft();
                     localStorage.removeItem(pmodel.FormCode);
@@ -186,6 +181,14 @@
                     }
                 }
             }, dom);
+        }
+    },
+    SaveExtData: function (DATAID) {
+        //保存扩展数据
+        if (pmodel.ExtData.size() > 0) {
+            $.post("/API/VIEWAPI.ashx?ACTION=XTGL_UPDATEEXTDATA", { P1: pmodel.FormCode, P2: DATAID, ExtData: JSON.stringify(pmodel.ExtData.$model) }, function (result) {
+                var result = $.parseJSON(result)
+            })
         }
     },
     //存草稿
@@ -381,6 +384,7 @@
 
                 if (pmodel.isedit == "Y") {//如果可编辑，就保存数据
                     tempmodel.SaveData(function (result) { }, $(".btnSucc")[0]);
+                    pmodel.SaveExtData(pmodel.DataID);
                 }
                 pmodel.refiframe();
 
