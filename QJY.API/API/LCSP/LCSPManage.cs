@@ -1041,17 +1041,13 @@ namespace QJY.API
                 else
                 {
 
-                    //if (P2 == "")
-                    //{
-                    //    P2 = "-1"; //没有设置流程
-                    //}
-                    //int PDID = int.Parse(P2);
+                  
                     if (PDID > 0)
                     {
                         Yan_WF_PD pdmodel = new Yan_WF_PDB().GetEntity(d => d.ID == PDID);
                         if (pdmodel != null && pdmodel.ProcessType == "1")//0自由流程,1固定流程 
                         {
-                            dtList = new Yan_WF_TDB().GetEntities(d => d.ProcessDefinitionID == pdmodel.ID && d.TDCODE != "-1").OrderBy(d => d.TDCODE).ToDataTable();
+                            dtList = new Yan_WF_TDB().GetEntities(d => d.ProcessDefinitionID == pdmodel.ID && d.TDCODE != "-1").OrderBy(d => d.Taskorder).ToDataTable();
                             dtList.Columns.Add("userrealname");
                             dtList.Columns.Add("EndTime");
                             dtList.Columns.Add("TaskUserView");

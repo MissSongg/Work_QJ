@@ -38,9 +38,9 @@
 <body>
     <div class="container-fluid maindiv" style="margin: 20px" id="dvContent" ms-controller="APP_LCSP_SEL">
         <div class="formtitle"><span>请先选择流程</span></div>
-        <div class="pCard" ms-repeat-el="LCTypeData" style="width: 80px;text-align: center;min-width: 110px;background-color: transparent;" ms-click="SelLCFun(el)">
+        <div class="pCard" ms-repeat-el="LCTypeData" style="width: 160px;text-align: center;min-width: 110px;background-color: transparent;" ms-attr-title="el.ProcessName" ms-click="SelLCFun(el)">
             <div style="height:90px"><i class="iconfont icon-biaodan" style="font-size:80px;color:#66c9f3"></i></div>
-            <div class="pName">{{el.ProcessName}}</div>
+            <div class="pName" style="max-width:160px">{{el.ProcessName}}</div>
         </div>
 
     </div>
