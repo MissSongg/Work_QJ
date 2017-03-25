@@ -991,7 +991,7 @@ namespace QJY.API
                     {
                         if (string.IsNullOrEmpty(PIMODEL.isComplete) && string.IsNullOrEmpty(PIMODEL.IsCanceled))
                         {
-                            dtList = new Yan_WF_TDB().GetEntities(d => d.ProcessDefinitionID == PIMODEL.PDID.Value).OrderBy(d => d.TDCODE).ToDataTable();
+                            dtList = new Yan_WF_TDB().GetEntities(d => d.ProcessDefinitionID == PIMODEL.PDID.Value).OrderBy(d => d.Taskorder).ToDataTable();
                             dtList.Columns.Add("userrealname");
                             dtList.Columns.Add("EndTime");
                             dtList.Columns.Add("TaskUserView");
