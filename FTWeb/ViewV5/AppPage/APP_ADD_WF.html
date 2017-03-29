@@ -232,6 +232,7 @@
                 font-size: 12px;
                 cursor: pointer;
             }
+
         .input-group-addon {
             color: #FFF;
             background-color: #12B8F6;
@@ -239,6 +240,7 @@
             border-radius: 0px;
             cursor: pointer;
         }
+
         .gb {
             width: 20px;
             height: 20px;
@@ -250,10 +252,11 @@
             color: #949494;
             margin-left: 15px;
         }
+
         label {
-           
             font-weight: normal;
         }
+
         .control-label i {
             color: red;
         }
@@ -264,10 +267,10 @@
 <body ms-controller="APP_ADD" ms-keypress="jptj(event,$(this))">
     <div class="container-fluid" style="margin-top: 20px; margin-bottom: 150px">
         <div ms-include-src="/ViewV5/AppPage/{{PathCode}}/{{FormCode}}.html" data-include-rendered='render'></div>
-        <div  ms-if="ExtData.size()>0"  id="extdiv">
+        <div ms-if="ExtData.size()>0" id="extdiv">
             <div>
                 <!--<div class="fg-item"><span>{{FormCode=='LCSP'?'表单信息':'扩展信息'}}</span></div>-->
-                <ul class="clearfix" style="padding:0" id="ExtDiv">
+                <ul class="clearfix" style="padding: 0" id="ExtDiv">
                     <li class="add-item add-width2 fl-left" ms-repeat-item="ExtData">
                         <label class="add-item-label">{{item.TableFiledName}}</label>
                         <div class="add-ic" ms-if="item.TableFileType=='1'||item.TableFileType=='3'">
@@ -288,11 +291,12 @@
     </div>
 
 
-    <table class="table navbar-fixed-bottom toolfootbar" style="background-color: #F8F8F8;width:98%;">
+    <table class="table navbar-fixed-bottom toolfootbar" style="background-color: #F8F8F8; width: 98%;">
         <tbody>
             <tr class="wfdata" ms-if="TASKDATA.size()!=0">
                 <td>
-                    <div class="lcspstep"></div>
+                    <div class="lcspstep" style="width: 1000px; overflow: auto;">
+                    </div>
                 </td>
             </tr>
             <tr class="trss" ms-if="(!DataID||isHasDataQX=='Y')&&!iscansp">
@@ -307,18 +311,18 @@
                         </select>
                         <span class="input-group-btn">
                             <button class="btn btn-danger btnqx" ms-click="qx()" style="width: 120px; height: 40px;">取消</button>
-                            <button class="btn btn-success btnSucc" style="width: 120px; height: 40px;margin-left:2px;" ms-click="SaveData(this,false)"><i class="fa fa-spinner fa-spin" style="display: none"></i>提交信息</button>
+                            <button class="btn btn-success btnSucc" style="width: 120px; height: 40px; margin-left: 2px;" ms-click="SaveData(this,false)"><i class="fa fa-spinner fa-spin" style="display: none"></i>提交信息</button>
                             <!--<button class="btn btn-info" ms-if="lctype==0||lctype==1" style="width: 120px; height: 40px;margin-left:2px;" ms-click="SaveDraft(this)" >存草稿</button>-->
-<div class="btn-group dropup" style="margin-left:2px;" ms-if="isDraft">
-  <button type="button" class="btn btn-info" style="width: 100px; height: 40px;" ms-click="SaveDraft(this)" >存草稿</button>
-  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px; background-color: #1595C5; " ms-visible="DraftList.size()>0">
-    <span class="caret"></span>
-    <span class="sr-only"></span>
-  </button>
-  <ul class="dropdown-menu" style=" right: 0; left: auto;" >
-    <li ms-repeat-el="DraftList" ms-click="SelDraft(el)"><a href="#">{{el.CRTime|date('MM-dd HH:mm')}} 草稿<span class="gb" ms-click="DelDraft(el,$event)">x</span></a></li>
-  </ul>
-</div>
+                            <div class="btn-group dropup" style="margin-left: 2px;" ms-if="isDraft">
+                                <button type="button" class="btn btn-info" style="width: 100px; height: 40px;" ms-click="SaveDraft(this)">存草稿</button>
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px; background-color: #1595C5;" ms-visible="DraftList.size()>0">
+                                    <span class="caret"></span>
+                                    <span class="sr-only"></span>
+                                </button>
+                                <ul class="dropdown-menu" style="right: 0; left: auto;">
+                                    <li ms-repeat-el="DraftList" ms-click="SelDraft(el)"><a href="#">{{el.CRTime|date('MM-dd HH:mm')}} 草稿<span class="gb" ms-click="DelDraft(el,$event)">x</span></a></li>
+                                </ul>
+                            </div>
                         </span>
                     </div>
                 </td>
@@ -348,6 +352,6 @@
     <script src="/ViewV5/JS/umeditor122/umeditor.config.js" type="text/javascript" charset="utf-8"></script>
     <link href="/ViewV5/JS/YanSelect/YanSelect.css" rel="stylesheet" />
     <script src="/ViewV5/JS/YanSelect/YanSelect.js"></script>
-   
+
 </body>
 </html>
