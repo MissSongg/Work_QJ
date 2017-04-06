@@ -279,6 +279,7 @@
                         window.location = file.YLUrl;
                         return;
                     }
+                    window.location = "/ViewV5/Base/DownFile.aspx?MD5=" + file.FileMD5;
                 },//文件查看方法
                 getdata: function (type) {
                     $.attachInfiniteScroll($('.infinite-scroll'))
