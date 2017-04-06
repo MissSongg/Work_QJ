@@ -4109,7 +4109,7 @@
           <Property Name="CancelDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="CRDate" Type="DateTime" Precision="3" />
           <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Files" Type="String" FixedLength="false" Unicode="false" MaxLength="5000" />
           <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="intProcessStanceid" Type="Int32" Nullable="false" />
