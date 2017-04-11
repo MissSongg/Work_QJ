@@ -25,15 +25,22 @@
     <div class="page page-current" id="pageindex1">
 
         <div class="content infinite-scroll infinite-scroll-bottom" data-distance="50">
-            <div class="list-block" style="margin:0">
+            
+            <div class="list-block" style="margin:0" ms-repeat-lb="LCLBData">
+                <p style="padding: 5px;background-color: whitesmoke;margin:2px;padding-left:10px;border-left: 2px solid #49d2ad;">{{lb}}</p>
                 <ul>
-                    <li class="item-content item-link" ms-repeat-el="ctData" ms-on-tap="vieww(el)">
+                    <li class="item-content item-link" ms-repeat-el="LCTypeData" ms-visible="el.RelatedTable==lb" ms-on-tap="vieww(el)">
                         <!--<div class="item-media" style="height:60px"><i class="icon icon-f7"></i></div>-->
                         <div class="item-inner" style="height:60px">
                             <div class="item-title">{{el.ProcessName}}</div>
                             <!--<div class="item-after"></div>-->
                         </div>
                     </li>
+                   
+                </ul>
+            </div>
+            <div class="list-block" style="margin:0">
+                <ul>
                     <li class="item-content" ms-if="issj=='0'">
                         <div class="item-inner" style="height:60px">
                             <div class="item-title">无流程</div>
@@ -53,7 +60,8 @@
 
         var model = avalon.define({
             $id: "list",
-            ctData: [],
+            LCTypeData: [],
+            LCLBData: [],
             issj: '',
             vieww: function (el) {
                 //window.location = "UI_LCSP_LIST.html?ID=" + el.ID + "&r=" + Math.random();
@@ -61,10 +69,17 @@
             }
         });
         avalon.ready(function () {
-            $.getJSON("/API/VIEWAPI.ashx?Action=LCSP_GETWFPDLIST&r=" + Math.random(), { "P1": "1" }, function (data) {
-                if (data.ErrorMsg == "") {
-                    model.ctData = data.Result;
-                    if (data.Result.length == 0)
+            $.getJSON("/API/VIEWAPI.ashx?Action=LCSP_GETWFPDLIST&r=" + Math.random(), { "P1": "1" }, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    model.LCTypeData = resultData.Result;
+                    var tempdata = [];
+                    for (var i = 0; i < resultData.Result.length; i++) {
+                        if ($.inArray(resultData.Result[i].RelatedTable, tempdata) == -1) {
+                            tempdata.push(resultData.Result[i].RelatedTable)
+                        }
+                    }
+                    model.LCLBData = tempdata;
+                    if (resultData.Result.length == 0)
                     {
                         model.issj = '0';
                     }
