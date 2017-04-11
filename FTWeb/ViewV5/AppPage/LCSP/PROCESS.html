@@ -1,9 +1,26 @@
 ﻿<script>
     var tempmodel = avalon.define({
         $id: "ZiDian",
-        modelData: { "ProcessName": "", "isTemp": "1", "ManageUser": "", "ProcessType": "-1" },
+        modelData: { "ProcessName": "", "isTemp": "1", "ManageUser": "", "ProcessType": "-1", "RelatedTable": "" },
         iswf: false,//是否属于流程表单
+        BDLBData:[],
         inittemp: function (strId) {
+
+            $.getJSON('/API/VIEWAPI.ashx?Action=LCSP_GETLCBDLB', function (resultData) {
+                if (resultData.ErrorMsg == "" && resultData.Result.length > 0) {
+                    for (var i = 0; i < resultData.Result.length; i++) {
+                        tempmodel.BDLBData.push(resultData.Result[i].RelatedTable)
+                    }
+                    if ($(".szhl_select").length > 0) {
+                        $('.szhl_select').typeahead({
+                            source: function (query, process) {
+                                console.debug(tempmodel.BDLBData.$model)
+                                return tempmodel.BDLBData.$model;
+                            }
+                        })
+                    }
+                }
+            })
             if (strId) {
                 //编辑加载数据
                 $.getJSON('/API/VIEWAPI.ashx?Action=LCSP_GETPROCESSBYID', { P1: strId }, function (resultData) {
@@ -21,14 +38,23 @@
                 return callback.call(this, $.parseJSON(result));
             });
         }
-    });
+    });//@ sourceURL=PROCESS.js;
 </script>
-<div class="form-horizontal" ms-controller="ZiDian" style="margin-top:50px;">
+<div class="form-horizontal" ms-controller="ZiDian" style="margin-top: 50px;">
+    <div class="form-group">
+        <label class="col-xs-3 control-label">流程类别</label>
+        <div class="col-xs-8">
+            <input type="text" class="form-control szhl_select " ms-duplex="modelData.RelatedTable">
+        </div>
+        <span class="input-group-addon" style="width: 40px; height: 34px;" ms-if="modelData.XMID" ms-click="ClearXM()"><i class="iconfont icon-shanchu ft14 " style="color: white"></i></span>
+    </div>
     <div class="form-group">
         <label class="col-xs-3 control-label"><i>*</i>自定义表单名称</label>
         <div class="col-xs-8">
             <input type="text" value="" class="span2  form-control szhl_require" ms-duplex="modelData.ProcessName" id="qygg" />
         </div>
+
+
     </div>
     <div class="form-group">
         <label class="col-xs-3 control-label">可见范围</label>

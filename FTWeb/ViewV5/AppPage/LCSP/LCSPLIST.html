@@ -15,6 +15,13 @@
             </ul>
         </div>
         <div class="oh">
+            <h5 class="pull-left tr">流程类别：</h5>
+            <ul class="tab-type ft14" style="height: 40px;">
+                <li ms-click="SelectLBType('')"><span class="active">全部</span></li>
+                <li ms-repeat-el="LBTypeData" ms-click="SelectLBType(el.RelatedTable)"><span>{{el.RelatedTable}}</span></li>
+            </ul>
+        </div>
+        <div class="oh">
             <h5 class="pull-left tr">流程名称：</h5>
             <ul class="tab-type ft14">
                 <li ms-click="SelectXJType('')"><span class="active">全部</span></li>
@@ -24,14 +31,14 @@
 
         <!-- 搜索 -->
         <div class="oh">
-            <div class="input-group ml15" style="width:295px;">
+            <div class="input-group ml15" style="width: 295px;">
                 <input type="search" class="form-control" ms-duplex="search.searchcontent" placeholder="搜索流程名称">
                 <span class="input-group-addon" ms-click="GetLIST()">搜索</span>
             </div>
         </div>
     </div>
     <!-- 展开更多选项 -->
-    <div class="add-tab ft14 tc mt20" style="display:none;">
+    <div class="add-tab ft14 tc mt20" style="display: none;">
         <span>更多筛选<i class="caret"></i></span>
     </div>
     <!-- 表格 -->
@@ -50,7 +57,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ms-repeat-el="ListData" >
+                <tr ms-repeat-el="ListData">
                     <td class="tc">
                         <!--<div class="icheckbox_square-blue">
                             <input type="checkbox">
@@ -68,7 +75,10 @@
 
             </tbody>
             <tfoot>
-                <tr ms-if="isnull"><td class="tc"></td><td>暂无数据</td></tr>
+                <tr ms-if="isnull">
+                    <td class="tc"></td>
+                    <td>暂无数据</td>
+                </tr>
             </tfoot>
         </table>
         <div class="ui-datatable-page ft14 pl20">
@@ -76,8 +86,7 @@
             <div id="pageDiv" ms-visible="model.page.total>model.pageNum[0].num" class="pull-right"></div>
             <div class="pull-right" ms-visible="ListData.size()!=0">
                 <span>共{{model.page.total}}条记录</span>
-                <span ms-visible="model.page.total>model.pageNum[0].num">
-                    选择每页条数
+                <span ms-visible="model.page.total>model.pageNum[0].num">选择每页条数
                     <select style="height: 25px; width: 50px;" ms-change="selNum(this.value)" ms-duplex="model.page.pagecount">
                         <option ms-repeat-pg="pageNum" ms-attr-value="pg.num" ms-attr-selected="pg.num==model.page.pagecount?'selected':''">{{pg.num}}</option>
                     </select>
@@ -87,7 +96,7 @@
         </div>
     </div>
 
-   
+
 </div>
 
 <script>
@@ -95,12 +104,18 @@
     var tempindex = avalon.define({
         $id: "LCSPLIST",
         curXJType: "",
+        curLBType: "",
+        LBTypeData: [],
         SelectType: function (type) {
             model.search.seartype = type;
             tempindex.GetLIST();
         },
         SelectXJType: function (type) {
             tempindex.curXJType = type;
+            tempindex.GetLIST();
+        },
+        SelectLBType: function (type) {
+            tempindex.curLBType = type;
             tempindex.GetLIST();
         },
         selNum: function (item) {    //选择显示的条数
@@ -112,13 +127,18 @@
             //显示的列名
             model.ShowColumns.clear();
             model.ShowColumns.pushArray([
+                { "ColName": "RelatedTable", "ColText": "流程类别", "IsSel": true, "format": "text" },
                 { "ColName": "ProcessName", "ColText": "流程名称", "IsSel": true, "format": "text", "type": "link" },
                 { "ColName": "ShenQingRen", "ColText": "申请人", "IsSel": true, "format": "text" },
                 { "ColName": "CRDate", "ColText": "申请时间", "IsSel": true, "format": "dateformat" },
                 { "ColName": "StateName", "ColText": "状态", "IsSel": true, "format": "statename" }
             ]);
             //类型数据
-
+            $.getJSON('/API/VIEWAPI.ashx?Action=LCSP_GETLCBDLB', function (resultData) {
+                if (resultData.ErrorMsg == "" && resultData.Result.length > 0) {
+                    tempindex.LBTypeData = resultData.Result;
+                }
+            })
             tempindex.GetLCSP();
             tempindex.GetLIST();
         },
@@ -135,7 +155,7 @@
         GetLIST: function () {
             model.page.pageindex = 1;
             model.ListData.clear();
-            $.getJSON('/API/VIEWAPI.ashx?Action=LCSP_GETLCSPLIST', { p: 1, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent, lb: tempindex.curXJType }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=LCSP_GETLCSPLIST', { p: 1, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent, lb: tempindex.curXJType, lb1: tempindex.curLBType }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     model.ListData = resultData.Result;
                     if (model.ListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }

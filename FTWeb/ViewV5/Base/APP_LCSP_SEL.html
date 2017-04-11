@@ -18,11 +18,19 @@
         var model = avalon.define({
             $id: "APP_LCSP_SEL",
             LCTypeData: [],
+            LCLBData: [],
             GetLCTypeData: function () {
                 //获取主要菜单
                 $.getJSON('/API/VIEWAPI.ashx?Action=LCSP_GETWFPDLIST', { P1: 1 }, function (resultData) {
                     if (resultData.ErrorMsg == "") {
                         model.LCTypeData = resultData.Result;
+                        var tempdata = [];
+                        for (var i = 0; i < resultData.Result.length; i++) {
+                            if ($.inArray(resultData.Result[i].RelatedTable, tempdata) == -1) {
+                                tempdata.push(resultData.Result[i].RelatedTable)
+                            }
+                        }
+                        model.LCLBData = tempdata;
                     }
                 })
             },
@@ -37,12 +45,13 @@
 </head>
 <body>
     <div class="container-fluid maindiv" style="margin: 20px" id="dvContent" ms-controller="APP_LCSP_SEL">
-        <div class="formtitle"><span>请先选择流程</span></div>
-        <div class="pCard" ms-repeat-el="LCTypeData" style="width: 160px;text-align: center;min-width: 110px;background-color: transparent;" ms-attr-title="el.ProcessName" ms-click="SelLCFun(el)">
-            <div style="height:90px"><i class="iconfont icon-biaodan" style="font-size:80px;color:#66c9f3"></i></div>
-            <div class="pName" style="max-width:160px">{{el.ProcessName}}</div>
+        <div ms-repeat-lb="LCLBData">
+            <div class="formtitle"><span>{{lb}}</span></div>
+            <div class="pCard" ms-repeat-el="LCTypeData"  ms-visible="el.RelatedTable==lb"  style="width: 160px; text-align: center; min-width: 110px; background-color: transparent;" ms-attr-title="el.ProcessName" ms-click="SelLCFun(el)">
+                <div style="height: 90px"><i class="iconfont icon-biaodan" style="font-size: 80px; color: #66c9f3"></i></div>
+                <div class="pName" style="max-width: 160px">{{el.ProcessName}}</div>
+            </div>
         </div>
-
     </div>
 </body>
 </html>

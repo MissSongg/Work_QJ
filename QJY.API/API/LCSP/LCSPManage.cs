@@ -41,8 +41,14 @@ namespace QJY.API
             {
                 strWhere += string.Format(" And lc. LeiBie='{0}' ", leibie);
             }
+
+            string leibie1 = context.Request["lb1"] ?? "";
+            if (leibie1 != "")
+            {
+                strWhere += string.Format(" And pd.RelatedTable='{0}' ", leibie1);
+            }
             string strContent = context.Request["Content"] ?? "";
-            strContent=strContent.TrimEnd();//去除空格
+            strContent = strContent.TrimEnd();//去除空格
             if (strContent != "")
             {
                 //strWhere += string.Format(" And ( lc.Content like '%{0}%' )", strContent);
@@ -118,7 +124,7 @@ namespace QJY.API
                         //strWhere += "  And lc.intProcessStanceid in (" + (intPro.ListTOString(',') == "" ? "0" : intPro.ListTOString(',')) + ")";
                         break;
                 }
-                dt = new SZHL_CCXJB().GetDataPager("SZHL_LCSP lc inner join Yan_WF_PD pd on pd.ID=lc.LeiBie ", "lc.*,dbo.fn_PDStatus(lc.intProcessStanceid) AS StateName,pd.ID as PDID,pd.ProcessType,pd.ProcessName,'LCSP' as ModelCode", pagecount, page, " lc.CRDate desc", strWhere, ref total);
+                dt = new SZHL_CCXJB().GetDataPager("SZHL_LCSP lc inner join Yan_WF_PD pd on pd.ID=lc.LeiBie ", "lc.*,dbo.fn_PDStatus(lc.intProcessStanceid) AS StateName,pd.ID as PDID,pd.RelatedTable, pd.ProcessType,pd.ProcessName,'LCSP' as ModelCode", pagecount, page, " lc.CRDate desc", strWhere, ref total);
                 if (dt.Rows.Count > 0)
                 {
                     dt.Columns.Add("FileList", Type.GetType("System.Object"));
@@ -304,12 +310,12 @@ namespace QJY.API
                 EndDate = DateTime.Parse(starDate).AddMonths(1).AddDays(-1).ToString("yyyy-MM-dd");
             }
 
-            strWhere += string.Format(" And lc.CRDate>='{0}' and  lc.CRDate<='{1}' ", starDate,EndDate);
+            strWhere += string.Format(" And lc.CRDate>='{0}' and  lc.CRDate<='{1}' ", starDate, EndDate);
 
             DataTable dt = new SZHL_CCXJB().GetDTByCommand("select lc.CRUser,DATEPART(YEAR,lc.CRDate) lcYear,DATEPART(MONTH,lc.CRDate) lcMonth ,pd.ProcessName,lc.ComId, COUNT(lc.ID) lcCount from SZHL_LCSP lc inner join Yan_WF_PD pd on pd.ID=lc.LeiBie where (dbo.fn_PDStatus(lc.intProcessStanceid)='已审批' or dbo.fn_PDStatus(lc.intProcessStanceid)='-1') " + strWhere + " GROUP by  lc.CRUser, DATEPART(YEAR,lc.CRDate),DATEPART(MONTH,lc.CRDate),pd.ProcessName,lc.ComId");
 
             msg.Result = dt;
-            
+
         }
 
         /// <summary>
@@ -329,7 +335,8 @@ namespace QJY.API
             {
                 strWhere += string.Format(" And lc. LeiBie='{0}' ", P1);
             }
-            else {
+            else
+            {
                 strWhere += string.Format(" And lc. LeiBie='{0}' ", 0);
             }
             //string strContent = context.Request["Content"] ?? "";
@@ -403,7 +410,7 @@ namespace QJY.API
 
             msg.Result = dt;
             msg.Result1 = total;
-            
+
 
         }
 
@@ -537,7 +544,13 @@ namespace QJY.API
                 {
                     strWhere += string.Format(" And ( wfpd.ProcessName like '%{0}%' )", strContent);
                 }
-                string strSql = string.Format(@"SELECT DISTINCT wfpd.ProcessName,wfpd.ManageUser,wfpd.ID,count(wfpi.ID) formCount,wfpd.lcstatus,wfpd.IsSuspended from Yan_WF_PD wfpd LEFT join Yan_WF_PI wfpi on wfpd.ID=wfpi.PDID where   wfpd.isTemp='1' and  {0} group by wfpd.ProcessName,wfpd.ID,wfpd.lcstatus,wfpd.IsSuspended,wfpd.ManageUser", strWhere, UserInfo.User.UserName);
+                string strLB = context.Request["LB"] ?? "";
+                strLB = strLB.TrimEnd();
+                if (strLB != "")
+                {
+                    strWhere += string.Format(" And ( wfpd.RelatedTable like '%{0}%' )", strLB);
+                }
+                string strSql = string.Format(@"SELECT DISTINCT wfpd.RelatedTable, wfpd.ProcessName,wfpd.ManageUser,wfpd.ID,count(wfpi.ID) formCount,wfpd.lcstatus,wfpd.IsSuspended from Yan_WF_PD wfpd LEFT join Yan_WF_PI wfpi on wfpd.ID=wfpi.PDID where   wfpd.isTemp='1' and  {0} group by  wfpd.RelatedTable, wfpd.ProcessName,wfpd.ID,wfpd.lcstatus,wfpd.IsSuspended,wfpd.ManageUser", strWhere, UserInfo.User.UserName);
                 msg.Result = new Yan_WF_PDB().GetDTByCommand(strSql);
             }
         }
@@ -652,6 +665,22 @@ namespace QJY.API
             string strSql = string.Format(" update Yan_WF_PD set ManageUser='{0}' where Id={1} and ComId={2}", P2, Id, UserInfo.User.ComId);
             new Yan_WF_PDB().ExsSql(strSql);
         }
+
+        /// <summary>
+        /// 获取流程类别数据
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETLCBDLB(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            string strSql = string.Format(" SELECT DISTINCT RelatedTable FROM  Yan_WF_PD WHERE ComId={0} and RelatedTable!='' and RelatedTable is not null  ", UserInfo.User.ComId);
+            msg.Result = new Yan_WF_PDB().GetDTByCommand(strSql);
+
+        }
+
 
         #endregion
 
@@ -1019,7 +1048,8 @@ namespace QJY.API
                                 }
                             }
                         }
-                        else {
+                        else
+                        {
                             dtList = new Yan_WF_TIB().GetEntities(d => d.PIID == PIID && d.EndTime != null).OrderBy(d => d.TDCODE).ToDataTable();//
                             dtList.Columns.Add("userrealname");
                             dtList.Columns.Add("state");
@@ -1041,7 +1071,7 @@ namespace QJY.API
                 else
                 {
 
-                  
+
                     if (PDID > 0)
                     {
                         Yan_WF_PD pdmodel = new Yan_WF_PDB().GetEntity(d => d.ID == PDID);
@@ -1245,46 +1275,46 @@ namespace QJY.API
 
 
         //首页流程数据
-                public void GETLCSPLIST_INDEX(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        public void GETLCSPLIST_INDEX(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            DataTable dt = new Yan_WF_PIB().GetDSH_SY(UserInfo.User);
+            //用车，出差，会议待处理
+            if (dt.Rows.Count > 0)
+            {
+                dt.Columns.Add("DATAID");
+                foreach (DataRow dr in dt.Rows)
                 {
-                    DataTable dt = new Yan_WF_PIB().GetDSH_SY(UserInfo.User);
-                    //用车，出差，会议待处理
-                    if (dt.Rows.Count > 0)
-                    {
-                        dt.Columns.Add("DATAID");
-                        foreach (DataRow dr in dt.Rows)
-                        {
-                            dr["DATAID"] = new Yan_WF_PIB().GetFormIDbyPID(dr["ModelCode"].ToString(), Int32.Parse(dr["PIID"].ToString()));
+                    dr["DATAID"] = new Yan_WF_PIB().GetFormIDbyPID(dr["ModelCode"].ToString(), Int32.Parse(dr["PIID"].ToString()));
 
-                        }
-                    }
-                    msg.Result = dt;
-                    //流程审批待处理
-                    string PIIDs = new Yan_WF_TIB().GetEntities(d => d.TaskState == 0 && d.TaskUserID == UserInfo.User.UserName && d.ComId == UserInfo.User.ComId).Select(d => d.PIID).ToList().ListTOString(',');
-                    if (PIIDs.Length > 0)
-                    {
-                        DataTable dtLcsp = new SZHL_LCSPB().GetDTByCommand(string.Format("SELECT lcsp.*,wfpd.ID as PDID,wfpd.ProcessName from SZHL_LCSP lcsp join Yan_WF_PD  wfpd  on lcsp.LeiBie=wfpd.ID where lcsp.intProcessStanceid in ({0})", PIIDs));
-                        msg.Result1 = dtLcsp;
-                    }
-                    //已处理
-                    string strSql = string.Format(@"SELECT top 8 wfpd.ProcessName,wfpi.CRUser,wfpi.CRDate,wfti.TaskState,wfti.PIID intProcessStanceid,isnull(model.ModelCode,'LCSP') ModelCode,wfpd.ID as PDID from Yan_WF_TI wfti inner join   
+                }
+            }
+            msg.Result = dt;
+            //流程审批待处理
+            string PIIDs = new Yan_WF_TIB().GetEntities(d => d.TaskState == 0 && d.TaskUserID == UserInfo.User.UserName && d.ComId == UserInfo.User.ComId).Select(d => d.PIID).ToList().ListTOString(',');
+            if (PIIDs.Length > 0)
+            {
+                DataTable dtLcsp = new SZHL_LCSPB().GetDTByCommand(string.Format("SELECT lcsp.*,wfpd.ID as PDID,wfpd.ProcessName from SZHL_LCSP lcsp join Yan_WF_PD  wfpd  on lcsp.LeiBie=wfpd.ID where lcsp.intProcessStanceid in ({0})", PIIDs));
+                msg.Result1 = dtLcsp;
+            }
+            //已处理
+            string strSql = string.Format(@"SELECT top 8 wfpd.ProcessName,wfpi.CRUser,wfpi.CRDate,wfti.TaskState,wfti.PIID intProcessStanceid,isnull(model.ModelCode,'LCSP') ModelCode,wfpd.ID as PDID from Yan_WF_TI wfti inner join   
                                                     Yan_WF_PI  wfpi on wfpi.ID=wfti.PIID 
                                                     inner join Yan_WF_PD wfpd on wfpi.PDID=wfpd.ID
                                                     left join  JH_Auth_QY_Model qymodel on wfpd.ID=qymodel.PDID and qymodel.ComId=wfpi.ComId
                                                     left join JH_Auth_Model model on qymodel.ModelID=model.ID
                                                     where  EndTime IS NOT NULL and TaskUserID='{0}' and wfti.ComId={1} and TDCODE not like '%-1' order by wfti.EndTime  DESC", UserInfo.User.UserName, UserInfo.User.ComId);
-                    DataTable dtYCL = new SZHL_LCSPB().GetDTByCommand(strSql);
-                    if (dtYCL.Rows.Count > 0)
-                    {
-                        dtYCL.Columns.Add("ID");
-                        foreach (DataRow dr in dtYCL.Rows)
-                        {
-                            dr["ID"] = new Yan_WF_PIB().GetFormIDbyPID(dr["ModelCode"].ToString(), Int32.Parse(dr["intProcessStanceid"].ToString()));
+            DataTable dtYCL = new SZHL_LCSPB().GetDTByCommand(strSql);
+            if (dtYCL.Rows.Count > 0)
+            {
+                dtYCL.Columns.Add("ID");
+                foreach (DataRow dr in dtYCL.Rows)
+                {
+                    dr["ID"] = new Yan_WF_PIB().GetFormIDbyPID(dr["ModelCode"].ToString(), Int32.Parse(dr["intProcessStanceid"].ToString()));
 
-                        }
-                    }
-                    msg.Result2 = dtYCL;
                 }
+            }
+            msg.Result2 = dtYCL;
+        }
 
         //待审核统计
         public void GETMODELDSHQTY(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
