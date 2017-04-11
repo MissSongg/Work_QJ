@@ -189,7 +189,8 @@
                     <!--<div class="weui_cells_title">{{FormCode=='LCSP'?'表单信息':'扩展信息'}}</div>-->
                     <!--<div class="weui_cells weui_cells_form" >-->
                     <div class="weui_cell" ms-repeat-item="ExtData">
-                        <div class="weui_cell_hd" ms-if="item.TableFileType!='2'"><label class="weui_label">{{item.TableFiledName}}</label></div>
+                        <!--<div class="weui_cell_hd" ms-if="item.TableFileType!='2'"><label class="weui_label">{{item.TableFiledName}}</label></div>-->
+                        <div class="weui_cell_hd" ><label class="weui_label">{{item.TableFiledName}}</label></div>
                         <div class="weui_cell_bd weui_cell_primary">
                             <input ms-if="item.TableFileType=='1'||item.TableFileType=='3'" type="text" ms-attr-placeholder="{{(item.TableFileType=='1'?'请输入':'请选择')+item.TableFiledName}}" class="szhl weui_input" ms-class-1="szhl_ui_date:item.TableFileType=='3'" ms-duplex="item.ExtendDataValue" />
                             <textarea ms-if="item.TableFileType=='2'" rows="2" class="weui_textarea  szhl" ms-attr-placeholder="请输入{{item.TableFiledName}}" ms-duplex="item.ExtendDataValue"></textarea>
