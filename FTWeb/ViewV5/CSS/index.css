@@ -44,7 +44,7 @@ label{font-weight:normal}
 .nav-list .icon-shezhi,.menu-general .icon-shezhi{position: absolute;right: 25px;top:0;text-decoration: none;cursor: pointer;color: #666;}
 .active ins.icon-shezhi{right: 35px;color: #fff;}
 /*-----右边tab通用样式-----*/
-.default-tab{min-width:400px;min-height:300px;}
+.default-tab{min-width:400px;max-width:1200px; min-height:300px;overflow-x:scroll;}
 .menu-general{background-color: #fff;height: 50px;line-height: 50px;position: relative;}
 .menu-general ul{padding:0 20px;}
 .menu-general ul li{float: left;margin-right: 30px;position: relative;cursor: pointer;}
