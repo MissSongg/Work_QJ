@@ -104,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Base\AuthManage.cs" />
+    <Compile Include="API\Base\BaseManage.cs" />
     <Compile Include="API\Base\INITManage.cs" />
     <Compile Include="API\CCXJ\CCXJManage.cs" />
     <Compile Include="API\CHAT\ChatManage.cs" />

@@ -1601,6 +1601,25 @@ namespace QJY.API
 
             return intFormID;
         }
+
+
+        /// <summary>
+        /// 判断当前用户当前流程是否可以撤回,判断是不是只有一个处理过得节点
+        /// </summary>
+        /// <param name="strUser"></param>
+        /// <param name="PIID"></param>
+        /// <returns>返回Y得时候可以撤回,返回不是Y,代表已经处理了不能撤回</returns>
+        public string isCanCancel(string strUser, int PIID)
+        {
+
+            DataTable dt = new Yan_WF_TIB().GetDTByCommand("SELECT ID FROM  dbo.Yan_WF_TI  WHERE PIID='" + PIID + "' AND TaskState='1'");
+            return dt.Rows.Count == 1 ? "Y" : "N";
+        }
+
+
+
+
+
     }
 
     public class Yan_WF_TIB : BaseEFDao<Yan_WF_TI> { }

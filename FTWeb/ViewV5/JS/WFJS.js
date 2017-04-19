@@ -96,7 +96,7 @@
                     pmodel.TASKDATA = result.Result1;
                 }
                 if (result.Result2) {//判断当前用户是否具有审批权限
-                    pmodel.iscansp = result.Result2 == "Y";
+                    pmodel.iscansp = $.parseJSON(result.Result2).ISCANSP == "Y";
                 }
                 if (result.Result3) {
                     pmodel.lctype = result.Result3;//流程类型 
@@ -224,6 +224,7 @@
         $.getJSON("/API/VIEWAPI.ashx?ACTION=XTGL_GETDRAFT", { P1: pmodel.FormCode, P2: pmodel.PDID }, function (r) {
             if (r.ErrorMsg == "") {
                 pmodel.DraftList = r.Result;
+                console.debug(r.Result)
             }
 
         })

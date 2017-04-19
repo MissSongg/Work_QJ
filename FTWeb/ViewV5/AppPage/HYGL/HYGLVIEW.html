@@ -290,7 +290,7 @@
                             model.TASKDATA = result.Result1;
                         }
                         if (result.Result2) {//判断当前用户是否具有审批权限
-                            model.iscansp = result.Result2 == "Y";
+                            model.iscansp = $.parseJSON(result.Result2).ISCANSP == "Y";
                         }
                         if (result.Result3) {
                             model.lctype = result.Result3;//流程类型

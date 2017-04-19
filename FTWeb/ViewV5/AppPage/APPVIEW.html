@@ -31,6 +31,8 @@
                     <span ms-if="title2" ms-click="seltitle(3)" ms-class-1="cur:titletype==3"><i ms-if="titletype==3" class="iconfont icon-bookmark"></i>{{title2}}</span>
                     <div class="pr20" style="float: right;">
                         <button class="btn btn-info" ms-if="isEdit=='Y'" ms-click="Edit()">编辑</button>
+                      <button class="btn btn-info" ms-if="ISCANCEL=='Y'" ms-click="CancelWF()">撤回到草稿箱</button>
+
                         <a class="btn btn-success" ms-if="isBack=='Y'" href="javascript:history.go(-1)">返回</a>
                         <a class="btn btn-info" ms-attr-href="/ViewV5/AppPage/{{FormCode}}/HtmlToWord.aspx?ID={{strId}}" target="_blank" ms-if="isExport">导出</a>
                     </div>
@@ -173,6 +175,7 @@
             shzt: "",
             isExport: false,
             isEdit: "N",
+            ISCANCEL:"N",
             plTitle: "评论",
             isEndTask: false,
             Temprender: function () {
@@ -203,6 +206,14 @@
 
                 window.location.href = "/ViewV5/AppPage/APP_ADD_WF.html?FormCode=" + str + "&id=" + model.strId + "&PIID=" + model.PIID + "&PDID=" + model.PDID;
             },
+            CancelWF: function () {//撤回表单到草稿箱
+                $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_CANCELWF", { P1: model.PIID, DataID: model.strId, ModelCode: model.FormCode, P2: model.PIMODEL.PDID }, function (result) {
+                    if (result.ErrorMsg == "") {//流程数据
+                        ComFunJS.winsuccess("操作成功,该表单已撤回到草稿箱");
+                        model.ISCANCEL = "N";
+                    }
+                }) 
+            },
             getwfdata: function () {
                 $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_GETWFDATA", { P1: model.PIID, DataID: model.strId, ModelCode: model.FormCode, P2: model.PDID }, function (result) {
                     if (result.ErrorMsg == "") {//流程数据
@@ -214,7 +225,8 @@
                             model.TASKDATA = result.Result1;
                         }
                         if (result.Result2) {//判断当前用户是否具有审批权限
-                            model.iscansp = result.Result2 == "Y";
+                            model.ISCANCEL = $.parseJSON(result.Result2).ISCANCEL;
+
                         }
                         if (result.Result3) {
                             model.lctype = result.Result3;//流程类型

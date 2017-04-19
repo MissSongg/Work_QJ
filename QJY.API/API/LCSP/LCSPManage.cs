@@ -9,10 +9,11 @@ using QJY.Data;
 using Newtonsoft.Json;
 using System.Data;
 using Senparc.Weixin.QY.Entities;
+using Newtonsoft.Json.Converters;
 
 namespace QJY.API
 {
-    public class LCSPManage : IWsService
+    public class LCSPManage : BaseManage, IWsService
     {
 
         public void ProcessRequest(HttpContext context, ref Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
@@ -955,24 +956,21 @@ namespace QJY.API
         {
             try
             {
-                string ModelCode = context.Request["ModelCode"];
-
+                msg.Result2 = "{ \"ISCANSP\":\"N\",\"ISCANCEL\":\"N\",\"ISCANEDIT\":\"Y\"}";
                 msg.Result3 = "-1";
                 msg.Result4 = "Y";
 
+
+                string ModelCode = context.Request["ModelCode"];
                 int DataID = 0;
-                int PDID = 0;
+                int PDID = -1;
                 string strDataID = context.Request["DataID"] ?? "0";
                 int.TryParse(strDataID, out DataID);
                 if (DataID == 0) //添加页面
                 {
                     if (ModelCode == "LCSP")
                     {
-                        if (P2 == "")
-                        {
-                            PDID = -1;  //无流程
-                        }
-                        else
+                        if (P2 != "")
                         {
                             PDID = int.Parse(P2);
                         }
@@ -982,11 +980,7 @@ namespace QJY.API
                         //1.获取PDID
                         string strSql = string.Format("SELECT qymodel.PDID from JH_Auth_QY_Model qymodel inner join JH_Auth_Model model on ModelID=model.ID where qymodel.ComId={0} and model.ModelCode='{1}'", UserInfo.User.ComId, ModelCode);
                         object obj = new Yan_WF_PIB().ExsSclarSql(strSql);
-                        if (obj == null || obj.ToString() == "")
-                        {
-                            PDID = -1;
-                        }
-                        else
+                        if (obj != null && obj.ToString() != "")
                         {
                             PDID = Int32.Parse(obj.ToString());
                         }
@@ -1064,7 +1058,7 @@ namespace QJY.API
                     //获取流程处理数据
                     msg.Result = PIMODEL;//PIMODEL
                     msg.Result1 = dtList;//审批数据
-                    msg.Result2 = new Yan_WF_PIB().isCanSP(UserInfo.User.UserName, int.Parse(P1));//是否能审批
+                    msg.Result2 = "{ \"ISCANSP\":\"" + new Yan_WF_PIB().isCanSP(UserInfo.User.UserName, int.Parse(P1)) + "\",\"ISCANCEL\":\"" + new Yan_WF_PIB().isCanCancel(UserInfo.User.UserName, int.Parse(P1)) + "\"}";
                     msg.Result3 = PIMODEL.PITYPE;//
                     msg.Result4 = new Yan_WF_PIB().isCanEdit(UserInfo.User.UserName, int.Parse(P1));
                 }
@@ -1089,24 +1083,13 @@ namespace QJY.API
                             msg.Result = null;
                             msg.Result1 = dtList;
                         }
-                        msg.Result2 = "N";
                         msg.Result3 = pdmodel.ProcessType;
-                        if (pdmodel.ProcessType == "-1")
-                        {
-                            msg.Result4 = "Y";
-                        }
-
                     }
                     else
                     {
                         if (DataID != 0)
                         {
                             msg.Result4 = new JH_Auth_QY_ModelB().isHasDataQX(ModelCode, DataID, UserInfo);
-                        }
-                        else
-                        {
-
-                            msg.Result4 = "Y";
                         }
 
                     }
@@ -1208,6 +1191,8 @@ namespace QJY.API
                 msg.Result = userList;
             }
         }
+
+
         /// <summary>
         /// 删除流程信息
         /// </summary>
@@ -1225,6 +1210,60 @@ namespace QJY.API
             }
         }
 
+
+
+        public void CANCELWF(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+
+
+            int DataID = 0;
+            int.TryParse(context.Request.QueryString["DataID"] ?? "0", out DataID);
+
+            int PIID = 0;
+            if (!int.TryParse(P1, out PIID))
+            {
+                msg.ErrorMsg = "数据错误";
+                return;
+            }
+
+            string strISCanCel = new Yan_WF_PIB().isCanCancel(UserInfo.User.UserName, PIID);
+            if (strISCanCel == "N")
+            {
+                msg.ErrorMsg = "该表单已处理完毕,您无法再进行撤回操作";
+                return;
+            }
+
+            int PDID = 0;
+            int.TryParse(P2, out PDID);
+            //添加草稿数据
+            SZHL_LCSP lcsp = new SZHL_LCSPB().GetEntity(d => d.ID == DataID);
+            lcsp.ID = 0;
+            DataTable dtExtData = new JH_Auth_ExtendModeB().GetExtData(UserInfo.User.ComId, "LCSP", DataID.ToString());
+            SZHL_DRAFT DRAFT = new SZHL_DRAFT();
+            DRAFT.ComId = UserInfo.User.ComId;
+            DRAFT.CRUser = UserInfo.User.UserName;
+            DRAFT.CRTime = DateTime.Now;
+            DRAFT.FormCode = "LCSP";
+            DRAFT.FormID = PDID.ToString();//存储的不是数据ID而是流程定义ID哦
+
+            IsoDateTimeConverter timeConverter = new IsoDateTimeConverter();
+            timeConverter.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+
+            DRAFT.JsonData = JsonConvert.SerializeObject(lcsp, Formatting.Indented, timeConverter).Replace("null", "\"\""); ;
+            DRAFT.ExtData = JsonConvert.SerializeObject(dtExtData, Formatting.Indented, timeConverter).Replace("null", "\"\""); ;
+            new SZHL_DRAFTB().Insert(DRAFT);
+
+
+            //删除流程相关数据
+
+
+
+            new SZHL_LCSPB().Delete(d => d.ID == DataID);
+            new Yan_WF_PIB().Delete(d => d.ID == PIID);
+            new Yan_WF_TIB().Delete(d => d.PIID == PIID);
+
+            //删除表单数据
+        }
 
 
 
@@ -1327,7 +1366,7 @@ namespace QJY.API
 
         #region 删除流程
         /// <summary>
-        /// 删除流程
+        /// 删除流程(包括使用该流程的表单和相关数据)
         /// </summary>
         /// <param name="context"></param>
         /// <param name="msg"></param>

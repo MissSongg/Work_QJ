@@ -130,7 +130,7 @@
                     psmodel.lcdata = r.Result1;
                     psmodel.lcdata.remove(psmodel.lcdata[0]);
 
-                    psmodel.iscansp = r.Result2 == "Y";//判断当前用户是否具有审批权限
+                    psmodel.iscansp = $.parseJSON(r.Result2).ISCANSP == "Y";//判断当前用户是否具有审批权限
                     psmodel.pstype = r.Result3;
 
                     if (r.Result4) {
