@@ -1612,7 +1612,7 @@ namespace QJY.API
         public string isCanCancel(string strUser, int PIID)
         {
 
-            DataTable dt = new Yan_WF_TIB().GetDTByCommand("SELECT ID FROM  dbo.Yan_WF_TI  WHERE PIID='" + PIID + "' AND TaskState='1'");
+            DataTable dt = new Yan_WF_TIB().GetDTByCommand("SELECT ID FROM  dbo.Yan_WF_TI  WHERE PIID='" + PIID + "' AND EndTime IS not null");
             return dt.Rows.Count == 1 ? "Y" : "N";
         }
 

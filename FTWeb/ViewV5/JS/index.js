@@ -28,10 +28,11 @@
             } else {
                 // model.FunData = [{ code: "RWGL", name: "任务管理", wigetpath: "RWGL/RWGLLIST", issel: true, isshow: true, order: 0 }, { code: "LCSP", name: "流程管理", wigetpath: "RWGL/RWGLLIST", issel: false, isshow: true, order: 2 }, { code: "NOTE", name: "记事本", wigetpath: "RWGL/RWGLLIST", issel: false, isshow: true, order: 3 }, { code: "KJFS", name: "快捷网址", wigetpath: "RWGL/RWGLLIST", issel: false, isshow: true, order: 4 }];
                 model.FunData.pushArray([
+                     { PageCode: "/ViewV5/TempWiget/LCSP", ExtData: "", code: "LCSP", PageName: "流程审批", issel: true, isshow: true, order: 0 },
                     { PageCode: "/ViewV5/AppPage/RWGL/RWGLLIST", ExtData: "", code: "RWGL", PageName: "任务管理", issel: true, isshow: true, order: 0 },
                     { PageCode: "/ViewV5/TempWiget/KJFS", ExtData: "", code: "KJFS", PageName: "快捷网址", issel: true, isshow: true, order: 0 },
-                    { PageCode: "/ViewV5/TempWiget/NOTE", ExtData: "", PageName: "记事本", code: "NOTE", issel: true, isshow: true, order: 0 },
-                    { PageCode: "/ViewV5/TempWiget/LCSP", ExtData: "", code: "LCSP", PageName: "流程审批", issel: true, isshow: true, order: 0 }]);
+                    { PageCode: "/ViewV5/TempWiget/NOTE", ExtData: "", PageName: "记事本", code: "NOTE", issel: true, isshow: true, order: 0 }
+                   ]);
             }
             model.ishasLeft = true;
         }
@@ -146,7 +147,7 @@
                 model.UserInfo = resultData.Result;
                 model.UserData = resultData.Result.User;
                 model.CompanyData = resultData.Result.QYinfo;
-                $(document).attr("title", model.CompanyData.QYName + "-企捷微信办公平台");//修改title值
+                $(document).attr("title", model.CompanyData.QYName + "-微信办公平台");//修改title值
                 model.GetCompanyAuth();
                 ComFunJS.setCookie('fileapi', resultData.Result.QYinfo.FileServerUrl);
             }
