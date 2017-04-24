@@ -572,4 +572,13 @@ namespace QJY.API
     {
     }
 
+
+    #region 营销模块
+    public class SZHL_YX_HDB : BaseEFDao<SZHL_YX_HD>
+    {
+    }
+    public class SZHL_YX_HD_ITEMB : BaseEFDao<SZHL_YX_HD_ITEM>
+    {
+    }
+    #endregion
 }

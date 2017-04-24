@@ -139,6 +139,11 @@ namespace QJY.API
             container.RegisterType<IWsService, KSGLManage>("KSGL".ToUpper());//考试管理
             container.RegisterType<IWsService, KCGLManage>("KCGL".ToUpper());//课程管理
 
+
+
+            //营销活动
+            container.RegisterType<IWsService, DBHDManage>("DBHD".ToUpper());//夺宝活动
+
             return container;
         }
 

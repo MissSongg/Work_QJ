@@ -91,8 +91,6 @@
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_QYIM" Width="1.5" PointX="22.75" PointY="28.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_QYIM_ITEM" Width="1.5" PointX="28.75" PointY="28.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_QYIM_LIST" Width="1.5" PointX="4.75" PointY="29.75" />
-        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_RWGL" Width="1.5" PointX="30.75" PointY="0.75" />
-        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_RWGL_ITEM" Width="1.5" PointX="6.75" PointY="30.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_TSSQ" Width="1.5" PointX="30.75" PointY="7.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_TXL" Width="1.5" PointX="30.75" PointY="11.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_TXSX" Width="1.5" PointX="30.75" PointY="15.75" />
@@ -128,6 +126,10 @@
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_PX_KCGL" Width="1.5" PointX="23.375" PointY="36.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_PX_KJGL" Width="1.5" PointX="31.375" PointY="36.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_PX_SeeTime" Width="1.5" PointX="5.375" PointY="36.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_YX_HD_ITEM" Width="1.5" PointX="35.375" PointY="36.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_YX_HD" Width="1.5" PointX="37.375" PointY="0.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_RWGL" Width="1.5" PointX="37.375" PointY="5.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_RWGL_ITEM" Width="1.5" PointX="7.375" PointY="37.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

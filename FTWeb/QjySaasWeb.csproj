@@ -141,6 +141,9 @@
     <Content Include="ViewV5\AppPage\CRM\KHLXRVIEW.html" />
     <Content Include="ViewV5\AppPage\CRM\XZLXRLIST.html" />
     <Content Include="ViewV5\AppPage\DBGL\DBGLLIST.html" />
+    <Content Include="ViewV5\AppPage\DBHD\DBHD.html" />
+    <Content Include="ViewV5\AppPage\DBHD\DBHDLIST.html" />
+    <Content Include="ViewV5\AppPage\DBHD\DBHDVIEW.html" />
     <Content Include="ViewV5\AppPage\DXGL\DXGL.html" />
     <Content Include="ViewV5\AppPage\DXGL\DXGLLIST.html" />
     <Content Include="ViewV5\AppPage\DXGL\DXGLVIEW.html" />

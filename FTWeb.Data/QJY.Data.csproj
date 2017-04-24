@@ -420,6 +420,12 @@
     <Compile Include="SZHL_YCGL_CAR.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
+    <Compile Include="SZHL_YX_HD.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_YX_HD_ITEM.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
     <Compile Include="Yan_WF_ChiTask.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>

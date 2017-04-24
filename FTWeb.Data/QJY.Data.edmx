@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="QJY_SaaSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QJY_SaaSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="FT_File">
           <Key>
             <PropertyRef Name="ID" />
@@ -1661,7 +1661,7 @@
           <Property Name="CancelDate" Type="varchar" MaxLength="200" />
           <Property Name="CRDate" Type="datetime" />
           <Property Name="CRUser" Type="varchar" MaxLength="50" />
-          <Property Name="Files" Type="varchar" MaxLength="50" />
+          <Property Name="Files" Type="varchar" MaxLength="5000" />
           <Property Name="Remark" Type="varchar" MaxLength="500" />
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="intProcessStanceid" Type="int" Nullable="false" />
@@ -2253,6 +2253,38 @@
           <Property Name="SeatNum" Type="varchar" MaxLength="50" />
           <Property Name="Remark" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="SZHL_YX_HD">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Content" Type="varchar(max)" />
+          <Property Name="Title" Type="varchar(max)" />
+          <Property Name="LeiBie" Type="varchar" MaxLength="50" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="Files" Type="varchar" MaxLength="50" />
+          <Property Name="Remark" Type="varchar" MaxLength="500" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="intProcessStanceid" Type="int" />
+          <Property Name="CRUserName" Type="varchar" MaxLength="50" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="KSDate" Type="datetime" />
+          <Property Name="JSDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SZHL_YX_HD_ITEM">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HDID" Type="int" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="GMJE" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="CTRS" Type="varchar" MaxLength="255" />
+          <Property Name="CRUser" Type="varchar" MaxLength="255" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CSXZ" Type="int" />
+          <Property Name="Remark" Type="varchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="Yan_WF_ChiTask">
           <Key>
             <PropertyRef Name="ID" />
@@ -2499,6 +2531,8 @@
           <EntitySet Name="SZHL_XZ_JL" EntityType="Self.SZHL_XZ_JL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_YCGL" EntityType="Self.SZHL_YCGL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_YCGL_CAR" EntityType="Self.SZHL_YCGL_CAR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_YX_HD" EntityType="Self.SZHL_YX_HD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_YX_HD_ITEM" EntityType="Self.SZHL_YX_HD_ITEM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Yan_WF_ChiTask" EntityType="Self.Yan_WF_ChiTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Yan_WF_DaiLi" EntityType="Self.Yan_WF_DaiLi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Yan_WF_PD" EntityType="Self.Yan_WF_PD" Schema="dbo" store:Type="Tables" />
@@ -2597,8 +2631,6 @@
           <EntitySet Name="SZHL_QYIM" EntityType="QJY_SaaSModel.SZHL_QYIM" />
           <EntitySet Name="SZHL_QYIM_ITEM" EntityType="QJY_SaaSModel.SZHL_QYIM_ITEM" />
           <EntitySet Name="SZHL_QYIM_LIST" EntityType="QJY_SaaSModel.SZHL_QYIM_LIST" />
-          <EntitySet Name="SZHL_RWGL" EntityType="QJY_SaaSModel.SZHL_RWGL" />
-          <EntitySet Name="SZHL_RWGL_ITEM" EntityType="QJY_SaaSModel.SZHL_RWGL_ITEM" />
           <EntitySet Name="SZHL_TSSQ" EntityType="QJY_SaaSModel.SZHL_TSSQ" />
           <EntitySet Name="SZHL_TXL" EntityType="QJY_SaaSModel.SZHL_TXL" />
           <EntitySet Name="SZHL_TXSX" EntityType="QJY_SaaSModel.SZHL_TXSX" />
@@ -2634,6 +2666,10 @@
           <EntitySet Name="SZHL_PX_KCGL" EntityType="QJY_SaaSModel.SZHL_PX_KCGL" />
           <EntitySet Name="SZHL_PX_KJGL" EntityType="QJY_SaaSModel.SZHL_PX_KJGL" />
           <EntitySet Name="SZHL_PX_SeeTime" EntityType="QJY_SaaSModel.SZHL_PX_SeeTime" />
+          <EntitySet Name="SZHL_YX_HD_ITEM" EntityType="QJY_SaaSModel.SZHL_YX_HD_ITEM" />
+          <EntitySet Name="SZHL_YX_HD" EntityType="QJY_SaaSModel.SZHL_YX_HD" />
+          <EntitySet Name="SZHL_RWGL" EntityType="QJY_SaaSModel.SZHL_RWGL" />
+          <EntitySet Name="SZHL_RWGL_ITEM" EntityType="QJY_SaaSModel.SZHL_RWGL_ITEM" />
         </EntityContainer>
         <EntityType Name="FT_File">
           <Key>
@@ -4285,62 +4321,6 @@
           <Property Name="Sourse" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="SZHL_RWGL">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="RWContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="RWTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="LeiBie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RWJZDate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RWFZR" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
-          <Property Name="RWCYR" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
-          <Property Name="RWStatus" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="BiaoQian" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="BeiZhu" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="IsSend" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IsComPlete" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="IsCancel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CancelDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="CRDate" Type="DateTime" Precision="3" />
-          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="intProcessStanceid" Type="Int32" />
-          <Property Name="KHFXRS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CRUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TopID" Type="Int32" />
-          <Property Name="ComId" Type="Int32" />
-          <Property Name="TaskJD" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="IsTX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="XMID" Type="Int32" />
-        </EntityType>
-        <EntityType Name="SZHL_RWGL_ITEM">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RWID" Type="Int32" />
-          <Property Name="RWUSER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RWTYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="Int32" />
-          <Property Name="RWSDate" Type="DateTime" Precision="3" />
-          <Property Name="RWEDate" Type="DateTime" Precision="3" />
-          <Property Name="ComId" Type="Int32" />
-          <Property Name="RWWCQK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="RWDBR" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="CRUser" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="CRDate" Type="DateTime" Precision="3" />
-          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="RWContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="DBPJ" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="RWBM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RWTitle" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="SHUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="RWFS" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IsTX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="SZHL_TSSQ">
           <Key>
             <PropertyRef Name="ID" />
@@ -5010,6 +4990,94 @@
           <Property Name="ComId" Type="Int32" />
           <Property Name="StartTime" Type="DateTime" Precision="3" />
           <Property Name="KCDuration" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SZHL_YX_HD_ITEM">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HDID" Type="Int32" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="GMJE" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="CTRS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CSXZ" Type="Int32" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SZHL_YX_HD">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LeiBie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intProcessStanceid" Type="Int32" />
+          <Property Name="CRUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="KSDate" Type="DateTime" Precision="3" />
+          <Property Name="JSDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SZHL_RWGL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="RWContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="RWTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LeiBie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RWJZDate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RWFZR" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="RWCYR" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="RWStatus" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BiaoQian" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BeiZhu" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsSend" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsComPlete" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IsCancel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CancelDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intProcessStanceid" Type="Int32" />
+          <Property Name="KHFXRS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CRUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TopID" Type="Int32" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="TaskJD" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsTX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="XMID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SZHL_RWGL_ITEM">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RWID" Type="Int32" />
+          <Property Name="RWUSER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RWTYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="RWSDate" Type="DateTime" Precision="3" />
+          <Property Name="RWEDate" Type="DateTime" Precision="3" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="RWWCQK" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="RWDBR" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RWContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DBPJ" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="RWBM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RWTitle" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SHUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RWFS" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IsTX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -6753,64 +6821,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SZHL_RWGL">
-            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_RWGL">
-              <MappingFragment StoreEntitySet="SZHL_RWGL">
-                <ScalarProperty Name="XMID" ColumnName="XMID" />
-                <ScalarProperty Name="IsTX" ColumnName="IsTX" />
-                <ScalarProperty Name="TaskJD" ColumnName="TaskJD" />
-                <ScalarProperty Name="ComId" ColumnName="ComId" />
-                <ScalarProperty Name="TopID" ColumnName="TopID" />
-                <ScalarProperty Name="CRUserName" ColumnName="CRUserName" />
-                <ScalarProperty Name="KHFXRS" ColumnName="KHFXRS" />
-                <ScalarProperty Name="intProcessStanceid" ColumnName="intProcessStanceid" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="Files" ColumnName="Files" />
-                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
-                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
-                <ScalarProperty Name="CancelDate" ColumnName="CancelDate" />
-                <ScalarProperty Name="IsCancel" ColumnName="IsCancel" />
-                <ScalarProperty Name="IsComPlete" ColumnName="IsComPlete" />
-                <ScalarProperty Name="IsSend" ColumnName="IsSend" />
-                <ScalarProperty Name="BeiZhu" ColumnName="BeiZhu" />
-                <ScalarProperty Name="BiaoQian" ColumnName="BiaoQian" />
-                <ScalarProperty Name="RWStatus" ColumnName="RWStatus" />
-                <ScalarProperty Name="RWCYR" ColumnName="RWCYR" />
-                <ScalarProperty Name="RWFZR" ColumnName="RWFZR" />
-                <ScalarProperty Name="RWJZDate" ColumnName="RWJZDate" />
-                <ScalarProperty Name="LeiBie" ColumnName="LeiBie" />
-                <ScalarProperty Name="RWTitle" ColumnName="RWTitle" />
-                <ScalarProperty Name="RWContent" ColumnName="RWContent" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SZHL_RWGL_ITEM">
-            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_RWGL_ITEM">
-              <MappingFragment StoreEntitySet="SZHL_RWGL_ITEM">
-                <ScalarProperty Name="IsTX" ColumnName="IsTX" />
-                <ScalarProperty Name="RWFS" ColumnName="RWFS" />
-                <ScalarProperty Name="SHUser" ColumnName="SHUser" />
-                <ScalarProperty Name="RWTitle" ColumnName="RWTitle" />
-                <ScalarProperty Name="RWBM" ColumnName="RWBM" />
-                <ScalarProperty Name="DBPJ" ColumnName="DBPJ" />
-                <ScalarProperty Name="RWContent" ColumnName="RWContent" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
-                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
-                <ScalarProperty Name="RWDBR" ColumnName="RWDBR" />
-                <ScalarProperty Name="RWWCQK" ColumnName="RWWCQK" />
-                <ScalarProperty Name="ComId" ColumnName="ComId" />
-                <ScalarProperty Name="RWEDate" ColumnName="RWEDate" />
-                <ScalarProperty Name="RWSDate" ColumnName="RWSDate" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="RWTYPE" ColumnName="RWTYPE" />
-                <ScalarProperty Name="RWUSER" ColumnName="RWUSER" />
-                <ScalarProperty Name="RWID" ColumnName="RWID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SZHL_TSSQ">
             <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_TSSQ">
               <MappingFragment StoreEntitySet="SZHL_TSSQ">
@@ -7512,6 +7522,98 @@
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="KCName" ColumnName="KCName" />
                 <ScalarProperty Name="KCID" ColumnName="KCID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_YX_HD_ITEM">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_YX_HD_ITEM">
+              <MappingFragment StoreEntitySet="SZHL_YX_HD_ITEM">
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CSXZ" ColumnName="CSXZ" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CTRS" ColumnName="CTRS" />
+                <ScalarProperty Name="GMJE" ColumnName="GMJE" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="HDID" ColumnName="HDID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_YX_HD">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_YX_HD">
+              <MappingFragment StoreEntitySet="SZHL_YX_HD">
+                <ScalarProperty Name="JSDate" ColumnName="JSDate" />
+                <ScalarProperty Name="KSDate" ColumnName="KSDate" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="CRUserName" ColumnName="CRUserName" />
+                <ScalarProperty Name="intProcessStanceid" ColumnName="intProcessStanceid" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="LeiBie" ColumnName="LeiBie" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_RWGL">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_RWGL">
+              <MappingFragment StoreEntitySet="SZHL_RWGL">
+                <ScalarProperty Name="XMID" ColumnName="XMID" />
+                <ScalarProperty Name="IsTX" ColumnName="IsTX" />
+                <ScalarProperty Name="TaskJD" ColumnName="TaskJD" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="TopID" ColumnName="TopID" />
+                <ScalarProperty Name="CRUserName" ColumnName="CRUserName" />
+                <ScalarProperty Name="KHFXRS" ColumnName="KHFXRS" />
+                <ScalarProperty Name="intProcessStanceid" ColumnName="intProcessStanceid" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CancelDate" ColumnName="CancelDate" />
+                <ScalarProperty Name="IsCancel" ColumnName="IsCancel" />
+                <ScalarProperty Name="IsComPlete" ColumnName="IsComPlete" />
+                <ScalarProperty Name="IsSend" ColumnName="IsSend" />
+                <ScalarProperty Name="BeiZhu" ColumnName="BeiZhu" />
+                <ScalarProperty Name="BiaoQian" ColumnName="BiaoQian" />
+                <ScalarProperty Name="RWStatus" ColumnName="RWStatus" />
+                <ScalarProperty Name="RWCYR" ColumnName="RWCYR" />
+                <ScalarProperty Name="RWFZR" ColumnName="RWFZR" />
+                <ScalarProperty Name="RWJZDate" ColumnName="RWJZDate" />
+                <ScalarProperty Name="LeiBie" ColumnName="LeiBie" />
+                <ScalarProperty Name="RWTitle" ColumnName="RWTitle" />
+                <ScalarProperty Name="RWContent" ColumnName="RWContent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_RWGL_ITEM">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_RWGL_ITEM">
+              <MappingFragment StoreEntitySet="SZHL_RWGL_ITEM">
+                <ScalarProperty Name="IsTX" ColumnName="IsTX" />
+                <ScalarProperty Name="RWFS" ColumnName="RWFS" />
+                <ScalarProperty Name="SHUser" ColumnName="SHUser" />
+                <ScalarProperty Name="RWTitle" ColumnName="RWTitle" />
+                <ScalarProperty Name="RWBM" ColumnName="RWBM" />
+                <ScalarProperty Name="DBPJ" ColumnName="DBPJ" />
+                <ScalarProperty Name="RWContent" ColumnName="RWContent" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="RWDBR" ColumnName="RWDBR" />
+                <ScalarProperty Name="RWWCQK" ColumnName="RWWCQK" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="RWEDate" ColumnName="RWEDate" />
+                <ScalarProperty Name="RWSDate" ColumnName="RWSDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RWTYPE" ColumnName="RWTYPE" />
+                <ScalarProperty Name="RWUSER" ColumnName="RWUSER" />
+                <ScalarProperty Name="RWID" ColumnName="RWID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
