@@ -47,14 +47,13 @@
                     </th>
                     <th>用户手机号
                     </th>
-                    <th>支付金额
+                    <th>支付金额(元)
                     </th>
                     <th>支付时间
                     </th>
                     <th>是否核销
                     </th>
-                    <th>核销时间
-                    </th>
+                  
                     <th>操作
                     </th>
                 </tr>
@@ -66,12 +65,14 @@
                     <td>{{el.name}}</td>
                     <td>{{el.mobphone}}</td>
                     <td>{{el.zfje}}</td>
-                    <td>{{el.gmdate|date("yyyy-MM-dd")}}</td>
-                      <td>{{el.zfje}}</td>
+                    <td>{{el.gmdate|date("yyyy-MM-dd HH:mm")}}</td>
                       <td>{{el.ishx}}</td>
-                      <td>{{el.hxtime}}</td>
                     <td>
-                    
+                     <span class=" btn-click">
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="核销" >
+                                <i class="iconfont icon-bianji"></i>
+                            </a>
+                        </span>
                     </td>
                 </tr>
 
