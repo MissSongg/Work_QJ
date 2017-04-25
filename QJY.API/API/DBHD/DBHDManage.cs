@@ -96,7 +96,7 @@ namespace QJY.API
             msg.Result = dtList;
             msg.Result1 = total;
         }
-      
+
         public void GETDBHDMODEL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             int id = 0;
@@ -112,14 +112,14 @@ namespace QJY.API
                     msg.Result2 = new FT_FileB().GetEntities(d => fileIds.Contains(d.ID));
 
                 }
-               
+
             }
 
 
         }
         public void ADDDBHD(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            SZHL_YX_HD  Model = JsonConvert.DeserializeObject<SZHL_YX_HD>(P1);
+            SZHL_YX_HD Model = JsonConvert.DeserializeObject<SZHL_YX_HD>(P1);
             List<SZHL_YX_HD_ITEM> itemList = JsonConvert.DeserializeObject<List<SZHL_YX_HD_ITEM>>(P2);
             if (itemList == null || itemList.Count() == 0)
             {
@@ -146,7 +146,7 @@ namespace QJY.API
                 Model.CRDate = DateTime.Now;
                 Model.CRUser = UserInfo.User.UserName;
                 Model.ComId = UserInfo.User.ComId;
-            
+
                 new SZHL_YX_HDB().Insert(Model);
                 foreach (SZHL_YX_HD_ITEM item in itemList)
                 {
@@ -174,41 +174,6 @@ namespace QJY.API
             msg.Result = Model;
         }
 
-        public void GETDBHDTJ(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
-            int page = 0;
-            int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
-            page = page == 0 ? 1 : page;
-            int total = 0;
-
-
-            int year = 0;
-            int.TryParse(P1, out year);
-            int month = 0;
-            int.TryParse(P2, out month);
-            string strWhere = "";
-            if (month > 0)
-            {
-                DateTime newData = new DateTime(year, month, 1);
-                strWhere = string.Format("  and DATEDIFF(MONTH, jfbx.BXDate,'{0}')=0 ", newData);
-            }
-            string content = context.Request["search"] ?? "";
-            content = content.TrimEnd();
-            if (content != "")
-            {
-                strWhere += string.Format("and (jfbx.ShenQingRen like '%{0}%' or jfbx.BranchName like '%{0}%')", content);
-            }
-            string strSql = string.Format(@"SELECT  jfbx.ShenQingRen,jfbx.CRUser,jfbx.BranchName,DATEPART(YEAR, jfbx.BXDate) BXYear,DATEPART(month, jfbx.BXDate) BXMonth,SUM(BXZJE) totalMoney FROM SZHL_JFBX jfbx
-                                            Left join Yan_WF_PI wfpi on intProcessStanceid=wfpi.ID WHERE jfbx.ComId={0} and  ((wfpi.Id is not null and wfpi.isComplete='Y') or wfpi.Id is null)    {1} group by jfbx.ShenQingRen,jfbx.CRUser,jfbx.BranchName,DATEPART(YEAR, jfbx.BXDate),DATEPART(month, jfbx.BXDate)", UserInfo.User.ComId, strWhere);
-            DataTable dtJFBX = new SZHL_JFBXB().GetDataPager("(" + strSql + ") as newjf", "*", pagecount, page, "BranchName,ShenQingRen", "1=1", ref total);
-            msg.Result = dtJFBX;
-            msg.Result1 = total;
-        }
-
-
-
         public void DELDBHD(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             int Id = 0;
@@ -216,6 +181,230 @@ namespace QJY.API
             new SZHL_YX_HDB().Delete(D => D.ID == Id);
             new SZHL_YX_HD_ITEMB().Delete(D => D.HDID == Id);
 
+        }
+
+
+        /// <summary>
+        /// 获取组团列表
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETHDZTLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            string strWhere = "ComId=" + UserInfo.User.ComId;
+            string strContent = context.Request["Content"] ?? "";
+            strContent = strContent.TrimEnd();
+            if (strContent != "")
+            {
+                strWhere += string.Format(" And ( ztname like '%{0}%' )", strContent);
+            }
+            //根据创建时间查询
+            string time = context.Request.QueryString["time"] ?? "";
+            if (time != "")
+            {
+                if (time == "1")   //近一周
+                {
+                    strWhere += string.Format(" And datediff(day,CRDate,getdate())<7");
+                }
+                else if (time == "2")
+                {  //近一月
+                    strWhere += string.Format(" And datediff(day,CRDate,getdate())<30");
+                }
+                else if (time == "4")
+                {  //今年
+                    strWhere += string.Format(" And datediff(year,CRDate,getdate())=0");
+                }
+                else if (time == "5")
+                {  //上一年
+                    strWhere += string.Format(" And datediff(year,CRDate,getdate())=1");
+                }
+                else if (time == "3")  //自定义时间
+                {
+                    string strTime = context.Request.QueryString["starTime"] ?? "";
+                    string endTime = context.Request.QueryString["endTime"] ?? "";
+                    if (strTime != "")
+                    {
+                        strWhere += string.Format(" And convert(varchar(10),CRDate,120) >='{0}'", strTime);
+                    }
+                    if (endTime != "")
+                    {
+                        strWhere += string.Format(" And convert(varchar(10),CRDate,120) <='{0}'", endTime);
+                    }
+                }
+            }
+            int DataID = -1;
+            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
+            if (DataID != -1)
+            {
+                strWhere += string.Format(" And  ID = '{0}'", DataID);
+            }
+
+
+            int page = 0;
+            int pagecount = 8;
+            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
+            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            page = page == 0 ? 1 : page;
+            int total = 0;
+            DataTable dtList = new SZHL_YX_HDB().GetDataPager("SZHL_YX_HD_ZT ", "*", pagecount, page, " CRDate ", strWhere, ref total);
+
+
+
+            msg.Result = dtList;
+            msg.Result1 = total;
+        }
+
+
+        /// <summary>
+        /// 获取活动客户列表
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETHDKHLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            string strWhere = "ComId=" + UserInfo.User.ComId;
+            string strContent = context.Request["Content"] ?? "";
+            strContent = strContent.TrimEnd();
+            if (strContent != "")
+            {
+                strWhere += string.Format(" And ( nickname like '%{0}%' )", strContent);
+            }
+            //根据创建时间查询
+            string time = context.Request.QueryString["time"] ?? "";
+            if (time != "")
+            {
+                if (time == "1")   //近一周
+                {
+                    strWhere += string.Format(" And datediff(day,CRDate,getdate())<7");
+                }
+                else if (time == "2")
+                {  //近一月
+                    strWhere += string.Format(" And datediff(day,CRDate,getdate())<30");
+                }
+                else if (time == "4")
+                {  //今年
+                    strWhere += string.Format(" And datediff(year,CRDate,getdate())=0");
+                }
+                else if (time == "5")
+                {  //上一年
+                    strWhere += string.Format(" And datediff(year,CRDate,getdate())=1");
+                }
+                else if (time == "3")  //自定义时间
+                {
+                    string strTime = context.Request.QueryString["starTime"] ?? "";
+                    string endTime = context.Request.QueryString["endTime"] ?? "";
+                    if (strTime != "")
+                    {
+                        strWhere += string.Format(" And convert(varchar(10),CRDate,120) >='{0}'", strTime);
+                    }
+                    if (endTime != "")
+                    {
+                        strWhere += string.Format(" And convert(varchar(10),CRDate,120) <='{0}'", endTime);
+                    }
+                }
+            }
+            int DataID = -1;
+            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
+            if (DataID != -1)
+            {
+                strWhere += string.Format(" And  ID = '{0}'", DataID);
+            }
+
+
+            int page = 0;
+            int pagecount = 8;
+            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
+            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            page = page == 0 ? 1 : page;
+            int total = 0;
+            DataTable dtList = new SZHL_YX_HDB().GetDataPager("SZHL_YX_USER ", "*", pagecount, page, " CRDate ", strWhere, ref total);
+
+
+
+            msg.Result = dtList;
+            msg.Result1 = total;
+        }
+
+
+
+
+        /// <summary>
+        /// 获取活动购买列表
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETHDGMLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            string strWhere = "ComId=" + UserInfo.User.ComId;
+            string strContent = context.Request["Content"] ?? "";
+            strContent = strContent.TrimEnd();
+            if (strContent != "")
+            {
+                strWhere += string.Format(" And ( Title like '%{0}%' )", strContent);
+            }
+            //根据创建时间查询
+            string time = context.Request.QueryString["time"] ?? "";
+            if (time != "")
+            {
+                if (time == "1")   //近一周
+                {
+                    strWhere += string.Format(" And datediff(day,CRDate,getdate())<7");
+                }
+                else if (time == "2")
+                {  //近一月
+                    strWhere += string.Format(" And datediff(day,CRDate,getdate())<30");
+                }
+                else if (time == "4")
+                {  //今年
+                    strWhere += string.Format(" And datediff(year,CRDate,getdate())=0");
+                }
+                else if (time == "5")
+                {  //上一年
+                    strWhere += string.Format(" And datediff(year,CRDate,getdate())=1");
+                }
+                else if (time == "3")  //自定义时间
+                {
+                    string strTime = context.Request.QueryString["starTime"] ?? "";
+                    string endTime = context.Request.QueryString["endTime"] ?? "";
+                    if (strTime != "")
+                    {
+                        strWhere += string.Format(" And convert(varchar(10),CRDate,120) >='{0}'", strTime);
+                    }
+                    if (endTime != "")
+                    {
+                        strWhere += string.Format(" And convert(varchar(10),CRDate,120) <='{0}'", endTime);
+                    }
+                }
+            }
+            int DataID = -1;
+            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
+            if (DataID != -1)
+            {
+                strWhere += string.Format(" And  ID = '{0}'", DataID);
+            }
+
+
+            int page = 0;
+            int pagecount = 8;
+            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
+            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            page = page == 0 ? 1 : page;
+            int total = 0;
+            DataTable dtList = new SZHL_YX_HDB().GetDataPager("SZHL_YX_HD_GM ", "*", pagecount, page, " CRDate ", strWhere, ref total);
+
+
+
+            msg.Result = dtList;
+            msg.Result1 = total;
         }
     }
 }

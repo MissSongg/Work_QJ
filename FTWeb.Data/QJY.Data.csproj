@@ -423,7 +423,19 @@
     <Compile Include="SZHL_YX_HD.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
+    <Compile Include="SZHL_YX_HD_CY.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_YX_HD_GM.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
     <Compile Include="SZHL_YX_HD_ITEM.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_YX_HD_ZT.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_YX_USER.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
     <Compile Include="Yan_WF_ChiTask.cs">

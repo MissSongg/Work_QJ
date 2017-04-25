@@ -388,6 +388,7 @@
         <EntityType Name="JH_Auth_QY">
           <Key>
             <PropertyRef Name="ComId" />
+            <PropertyRef Name="FinanceLXR" />
           </Key>
           <Property Name="ComId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CRUser" Type="varchar" MaxLength="50" />
@@ -425,10 +426,14 @@
           <Property Name="QySpace" Type="bigint" />
           <Property Name="QyExpendSpace" Type="int" />
           <Property Name="TempCode" Type="varchar" MaxLength="255" />
-          <Property Name="FinanceLXR" Type="varchar" MaxLength="50" />
+          <Property Name="FinanceLXR" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="FZR" Type="varchar" MaxLength="50" />
           <Property Name="FLXRDH" Type="varchar" MaxLength="255" />
           <Property Name="FZRDH" Type="varchar" MaxLength="255" />
+          <Property Name="wxappid" Type="varchar" MaxLength="100" />
+          <Property Name="wxappsecret" Type="varchar" MaxLength="255" />
+          <Property Name="wxmchid" Type="varchar" MaxLength="255" />
+          <Property Name="wxmchidkey" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="JH_Auth_QY_Model">
           <Key>
@@ -2271,6 +2276,42 @@
           <Property Name="KSDate" Type="datetime" />
           <Property Name="JSDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="SZHL_YX_HD_CY">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="goodscode" Type="varchar" MaxLength="50" />
+          <Property Name="userid" Type="int" />
+          <Property Name="ztid" Type="int" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="Files" Type="varchar" MaxLength="50" />
+          <Property Name="iszj" Type="varchar" MaxLength="50" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="hdid" Type="int" />
+          <Property Name="hdmxid" Type="int" />
+        </EntityType>
+        <EntityType Name="SZHL_YX_HD_GM">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="goodscode" Type="varchar" MaxLength="50" />
+          <Property Name="userid" Type="int" />
+          <Property Name="zfje" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="Files" Type="varchar" MaxLength="50" />
+          <Property Name="iscyhd" Type="varchar" MaxLength="50" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="hdid" Type="int" />
+          <Property Name="hdmxid" Type="int" />
+          <Property Name="ctrs" Type="int" />
+          <Property Name="gmdate" Type="datetime" />
+          <Property Name="ishx" Type="varchar" MaxLength="255" />
+          <Property Name="hxtime" Type="datetime" />
+        </EntityType>
         <EntityType Name="SZHL_YX_HD_ITEM">
           <Key>
             <PropertyRef Name="ID" />
@@ -2284,6 +2325,40 @@
           <Property Name="CRDate" Type="datetime" />
           <Property Name="CSXZ" Type="int" />
           <Property Name="Remark" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="SZHL_YX_HD_ZT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="fquserid" Type="int" />
+          <Property Name="ztid" Type="int" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="Files" Type="varchar" MaxLength="50" />
+          <Property Name="iskj" Type="varchar" MaxLength="50" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="hdid" Type="int" />
+          <Property Name="hdmxid" Type="int" />
+          <Property Name="fqdate" Type="datetime" />
+          <Property Name="kjtime" Type="datetime" />
+          <Property Name="dzfje" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="ztname" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="SZHL_YX_USER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="mobphone" Type="int" />
+          <Property Name="Pasd" Type="varchar" MaxLength="50" />
+          <Property Name="nickname" Type="varchar" MaxLength="50" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="Files" Type="varchar" MaxLength="50" />
+          <Property Name="openid" Type="varchar" MaxLength="500" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="name" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Yan_WF_ChiTask">
           <Key>
@@ -2532,7 +2607,11 @@
           <EntitySet Name="SZHL_YCGL" EntityType="Self.SZHL_YCGL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_YCGL_CAR" EntityType="Self.SZHL_YCGL_CAR" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_YX_HD" EntityType="Self.SZHL_YX_HD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_YX_HD_CY" EntityType="Self.SZHL_YX_HD_CY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_YX_HD_GM" EntityType="Self.SZHL_YX_HD_GM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_YX_HD_ITEM" EntityType="Self.SZHL_YX_HD_ITEM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_YX_HD_ZT" EntityType="Self.SZHL_YX_HD_ZT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_YX_USER" EntityType="Self.SZHL_YX_USER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Yan_WF_ChiTask" EntityType="Self.Yan_WF_ChiTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Yan_WF_DaiLi" EntityType="Self.Yan_WF_DaiLi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Yan_WF_PD" EntityType="Self.Yan_WF_PD" Schema="dbo" store:Type="Tables" />
@@ -2566,7 +2645,6 @@
           <EntitySet Name="JH_Auth_Log" EntityType="QJY_SaaSModel.JH_Auth_Log" />
           <EntitySet Name="JH_Auth_Menu" EntityType="QJY_SaaSModel.JH_Auth_Menu" />
           <EntitySet Name="JH_Auth_Model" EntityType="QJY_SaaSModel.JH_Auth_Model" />
-          <EntitySet Name="JH_Auth_QY" EntityType="QJY_SaaSModel.JH_Auth_QY" />
           <EntitySet Name="JH_Auth_QY_Model" EntityType="QJY_SaaSModel.JH_Auth_QY_Model" />
           <EntitySet Name="JH_Auth_QY_WXSC" EntityType="QJY_SaaSModel.JH_Auth_QY_WXSC" />
           <EntitySet Name="JH_Auth_Role" EntityType="QJY_SaaSModel.JH_Auth_Role" />
@@ -2670,6 +2748,11 @@
           <EntitySet Name="SZHL_YX_HD" EntityType="QJY_SaaSModel.SZHL_YX_HD" />
           <EntitySet Name="SZHL_RWGL" EntityType="QJY_SaaSModel.SZHL_RWGL" />
           <EntitySet Name="SZHL_RWGL_ITEM" EntityType="QJY_SaaSModel.SZHL_RWGL_ITEM" />
+          <EntitySet Name="JH_Auth_QY" EntityType="QJY_SaaSModel.JH_Auth_QY" />
+          <EntitySet Name="SZHL_YX_HD_CY" EntityType="QJY_SaaSModel.SZHL_YX_HD_CY" />
+          <EntitySet Name="SZHL_YX_HD_ZT" EntityType="QJY_SaaSModel.SZHL_YX_HD_ZT" />
+          <EntitySet Name="SZHL_YX_HD_GM" EntityType="QJY_SaaSModel.SZHL_YX_HD_GM" />
+          <EntitySet Name="SZHL_YX_USER" EntityType="QJY_SaaSModel.SZHL_YX_USER" />
         </EntityContainer>
         <EntityType Name="FT_File">
           <Key>
@@ -3050,51 +3133,6 @@
           <Property Name="PModelCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Token" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="EncodingAESKey" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="JH_Auth_QY">
-          <Key>
-            <PropertyRef Name="ComId" />
-          </Key>
-          <Property Name="ComId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CRDate" Type="DateTime" Precision="3" />
-          <Property Name="QYCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="QYName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="QYProfile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ContactUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TelPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CreateYear" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CreateMonth" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PostalCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="WebSite" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="WXUrl" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="corpId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="corpSecret" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="IsUseWX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="SystemGGId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="MsgAppID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="FileServerUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Token" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EncodingAESKey" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="DXQZ" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="LogoID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="AccountMoney" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="wxqrcode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="QySpace" Type="Int64" />
-          <Property Name="QyExpendSpace" Type="Int32" />
-          <Property Name="TempCode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FinanceLXR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="FZR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="FLXRDH" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FZRDH" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="JH_Auth_QY_Model">
           <Key>
@@ -5079,6 +5117,126 @@
           <Property Name="RWFS" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="IsTX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="JH_Auth_QY">
+          <Key>
+            <PropertyRef Name="ComId" />
+            <PropertyRef Name="FinanceLXR" />
+          </Key>
+          <Property Name="ComId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="QYCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="QYName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="QYProfile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ContactUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TelPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateYear" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateMonth" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Province" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WebSite" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="WXUrl" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="corpId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="corpSecret" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsUseWX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SystemGGId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MsgAppID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FileServerUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Token" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EncodingAESKey" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DXQZ" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LogoID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AccountMoney" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="wxqrcode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="QySpace" Type="Int64" />
+          <Property Name="QyExpendSpace" Type="Int32" />
+          <Property Name="TempCode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FinanceLXR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FZR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FLXRDH" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FZRDH" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="wxappid" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="wxappsecret" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="wxmchid" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="wxmchidkey" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SZHL_YX_HD_CY">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="goodscode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="userid" Type="Int32" />
+          <Property Name="ztid" Type="Int32" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="iszj" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="hdid" Type="Int32" />
+          <Property Name="hdmxid" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SZHL_YX_HD_ZT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="fquserid" Type="Int32" />
+          <Property Name="ztid" Type="Int32" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="iskj" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="hdid" Type="Int32" />
+          <Property Name="hdmxid" Type="Int32" />
+          <Property Name="fqdate" Type="DateTime" Precision="3" />
+          <Property Name="kjtime" Type="DateTime" Precision="3" />
+          <Property Name="dzfje" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="ztname" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SZHL_YX_HD_GM">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="goodscode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="userid" Type="Int32" />
+          <Property Name="zfje" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="iscyhd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="hdid" Type="Int32" />
+          <Property Name="hdmxid" Type="Int32" />
+          <Property Name="ctrs" Type="Int32" />
+          <Property Name="gmdate" Type="DateTime" Precision="3" />
+          <Property Name="ishx" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="hxtime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SZHL_YX_USER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="mobphone" Type="Int32" />
+          <Property Name="Pasd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nickname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="openid" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5483,52 +5641,6 @@
                 <ScalarProperty Name="ModelType" ColumnName="ModelType" />
                 <ScalarProperty Name="ModelName" ColumnName="ModelName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="JH_Auth_QY">
-            <EntityTypeMapping TypeName="QJY_SaaSModel.JH_Auth_QY">
-              <MappingFragment StoreEntitySet="JH_Auth_QY">
-                <ScalarProperty Name="FZRDH" ColumnName="FZRDH" />
-                <ScalarProperty Name="FLXRDH" ColumnName="FLXRDH" />
-                <ScalarProperty Name="FZR" ColumnName="FZR" />
-                <ScalarProperty Name="FinanceLXR" ColumnName="FinanceLXR" />
-                <ScalarProperty Name="TempCode" ColumnName="TempCode" />
-                <ScalarProperty Name="QyExpendSpace" ColumnName="QyExpendSpace" />
-                <ScalarProperty Name="QySpace" ColumnName="QySpace" />
-                <ScalarProperty Name="wxqrcode" ColumnName="wxqrcode" />
-                <ScalarProperty Name="AccountMoney" ColumnName="AccountMoney" />
-                <ScalarProperty Name="LogoID" ColumnName="LogoID" />
-                <ScalarProperty Name="DXQZ" ColumnName="DXQZ" />
-                <ScalarProperty Name="EncodingAESKey" ColumnName="EncodingAESKey" />
-                <ScalarProperty Name="Token" ColumnName="Token" />
-                <ScalarProperty Name="FileServerUrl" ColumnName="FileServerUrl" />
-                <ScalarProperty Name="MsgAppID" ColumnName="MsgAppID" />
-                <ScalarProperty Name="SystemGGId" ColumnName="SystemGGId" />
-                <ScalarProperty Name="IsUseWX" ColumnName="IsUseWX" />
-                <ScalarProperty Name="corpSecret" ColumnName="corpSecret" />
-                <ScalarProperty Name="corpId" ColumnName="corpId" />
-                <ScalarProperty Name="WXUrl" ColumnName="WXUrl" />
-                <ScalarProperty Name="WebSite" ColumnName="WebSite" />
-                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Province" ColumnName="Province" />
-                <ScalarProperty Name="CreateMonth" ColumnName="CreateMonth" />
-                <ScalarProperty Name="CreateYear" ColumnName="CreateYear" />
-                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
-                <ScalarProperty Name="Fax" ColumnName="Fax" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="TelPhone" ColumnName="TelPhone" />
-                <ScalarProperty Name="Position" ColumnName="Position" />
-                <ScalarProperty Name="ContactUser" ColumnName="ContactUser" />
-                <ScalarProperty Name="QYProfile" ColumnName="QYProfile" />
-                <ScalarProperty Name="QYName" ColumnName="QYName" />
-                <ScalarProperty Name="QYCode" ColumnName="QYCode" />
-                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
-                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
-                <ScalarProperty Name="ComId" ColumnName="ComId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7615,6 +7727,130 @@
                 <ScalarProperty Name="RWUSER" ColumnName="RWUSER" />
                 <ScalarProperty Name="RWID" ColumnName="RWID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JH_Auth_QY">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.JH_Auth_QY">
+              <MappingFragment StoreEntitySet="JH_Auth_QY">
+                <ScalarProperty Name="wxmchidkey" ColumnName="wxmchidkey" />
+                <ScalarProperty Name="wxmchid" ColumnName="wxmchid" />
+                <ScalarProperty Name="wxappsecret" ColumnName="wxappsecret" />
+                <ScalarProperty Name="wxappid" ColumnName="wxappid" />
+                <ScalarProperty Name="FZRDH" ColumnName="FZRDH" />
+                <ScalarProperty Name="FLXRDH" ColumnName="FLXRDH" />
+                <ScalarProperty Name="FZR" ColumnName="FZR" />
+                <ScalarProperty Name="FinanceLXR" ColumnName="FinanceLXR" />
+                <ScalarProperty Name="TempCode" ColumnName="TempCode" />
+                <ScalarProperty Name="QyExpendSpace" ColumnName="QyExpendSpace" />
+                <ScalarProperty Name="QySpace" ColumnName="QySpace" />
+                <ScalarProperty Name="wxqrcode" ColumnName="wxqrcode" />
+                <ScalarProperty Name="AccountMoney" ColumnName="AccountMoney" />
+                <ScalarProperty Name="LogoID" ColumnName="LogoID" />
+                <ScalarProperty Name="DXQZ" ColumnName="DXQZ" />
+                <ScalarProperty Name="EncodingAESKey" ColumnName="EncodingAESKey" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="FileServerUrl" ColumnName="FileServerUrl" />
+                <ScalarProperty Name="MsgAppID" ColumnName="MsgAppID" />
+                <ScalarProperty Name="SystemGGId" ColumnName="SystemGGId" />
+                <ScalarProperty Name="IsUseWX" ColumnName="IsUseWX" />
+                <ScalarProperty Name="corpSecret" ColumnName="corpSecret" />
+                <ScalarProperty Name="corpId" ColumnName="corpId" />
+                <ScalarProperty Name="WXUrl" ColumnName="WXUrl" />
+                <ScalarProperty Name="WebSite" ColumnName="WebSite" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="CreateMonth" ColumnName="CreateMonth" />
+                <ScalarProperty Name="CreateYear" ColumnName="CreateYear" />
+                <ScalarProperty Name="TYPE" ColumnName="TYPE" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="TelPhone" ColumnName="TelPhone" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="ContactUser" ColumnName="ContactUser" />
+                <ScalarProperty Name="QYProfile" ColumnName="QYProfile" />
+                <ScalarProperty Name="QYName" ColumnName="QYName" />
+                <ScalarProperty Name="QYCode" ColumnName="QYCode" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_YX_HD_CY">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_YX_HD_CY">
+              <MappingFragment StoreEntitySet="SZHL_YX_HD_CY">
+                <ScalarProperty Name="hdmxid" ColumnName="hdmxid" />
+                <ScalarProperty Name="hdid" ColumnName="hdid" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="iszj" ColumnName="iszj" />
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="ztid" ColumnName="ztid" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="goodscode" ColumnName="goodscode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_YX_HD_ZT">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_YX_HD_ZT">
+              <MappingFragment StoreEntitySet="SZHL_YX_HD_ZT">
+                <ScalarProperty Name="ztname" ColumnName="ztname" />
+                <ScalarProperty Name="dzfje" ColumnName="dzfje" />
+                <ScalarProperty Name="kjtime" ColumnName="kjtime" />
+                <ScalarProperty Name="fqdate" ColumnName="fqdate" />
+                <ScalarProperty Name="hdmxid" ColumnName="hdmxid" />
+                <ScalarProperty Name="hdid" ColumnName="hdid" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="iskj" ColumnName="iskj" />
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="ztid" ColumnName="ztid" />
+                <ScalarProperty Name="fquserid" ColumnName="fquserid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_YX_HD_GM">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_YX_HD_GM">
+              <MappingFragment StoreEntitySet="SZHL_YX_HD_GM">
+                <ScalarProperty Name="hxtime" ColumnName="hxtime" />
+                <ScalarProperty Name="ishx" ColumnName="ishx" />
+                <ScalarProperty Name="gmdate" ColumnName="gmdate" />
+                <ScalarProperty Name="ctrs" ColumnName="ctrs" />
+                <ScalarProperty Name="hdmxid" ColumnName="hdmxid" />
+                <ScalarProperty Name="hdid" ColumnName="hdid" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="iscyhd" ColumnName="iscyhd" />
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="zfje" ColumnName="zfje" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="goodscode" ColumnName="goodscode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_YX_USER">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_YX_USER">
+              <MappingFragment StoreEntitySet="SZHL_YX_USER">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="openid" ColumnName="openid" />
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="nickname" ColumnName="nickname" />
+                <ScalarProperty Name="Pasd" ColumnName="Pasd" />
+                <ScalarProperty Name="mobphone" ColumnName="mobphone" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
