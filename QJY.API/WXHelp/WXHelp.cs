@@ -882,6 +882,12 @@ namespace QJY.API
             }
             return bb;
         }
+
+        #region 微信公众号操作
+
+
+
+        #endregion
     }
 
     public class thModel

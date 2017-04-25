@@ -1498,6 +1498,7 @@
     <Content Include="ViewV5\web\login\bootstrap.css" />
     <Content Include="API\VIEWAPI.ashx" />
     <Content Include="API\WXAPI.ashx" />
+    <Content Include="API\WXAPI2.ashx" />
     <None Include="Properties\PublishProfiles\QiJieYun.pubxml" />
     <None Include="Properties\PublishProfiles\QJKJ.pubxml" />
     <None Include="Properties\PublishProfiles\SaasFB.pubxml" />
@@ -1542,6 +1543,9 @@
     </Compile>
     <Compile Include="API\WXAPI.ashx.cs">
       <DependentUpon>WXAPI.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="API\WXAPI2.ashx.cs">
+      <DependentUpon>WXAPI2.ashx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -24,6 +24,10 @@ namespace QjySaaSWeb
             t.Enabled = true;
             t.Start();
 
+
+            //注册微信token
+
+
         }
         public void TimerNow(object source, System.Timers.ElapsedEventArgs e)
         {

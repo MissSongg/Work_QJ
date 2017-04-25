@@ -76,7 +76,7 @@ namespace QJY.API
             container.RegisterType<IWsService, QYHDManage>("QYHD");
             #endregion
 
-            
+
             #region 短信管理
             container.RegisterType<IWsService, DXGLManage>("DXGL".ToUpper());//删除短信 
             #endregion
@@ -148,4 +148,22 @@ namespace QJY.API
         }
 
     }
+
+
+    /// <summary>
+    /// 微信公众号接口
+    /// </summary>
+    public class ServiceContainerV2
+    {
+        public static IUnityContainer Current()
+        {
+
+            IUnityContainer container = new UnityContainer();
+            container.RegisterType<IWsService2, WXManage>("WX".ToUpper());//微信操作
+
+
+            return container;
+        }
+    }
+
 }
