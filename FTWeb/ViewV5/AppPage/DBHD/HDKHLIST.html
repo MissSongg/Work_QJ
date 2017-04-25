@@ -1,4 +1,4 @@
-﻿<div ms-controller="HDKHLIST">
+﻿<div ms-controller="HDZTLIST">
     <!-- 添加按钮 -->
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
@@ -97,7 +97,7 @@
 <script>
 
     var tempindex = avalon.define({
-        $id: "HDKHLIST",
+        $id: "HDZTLIST",
         starTime: "",
         endTime: "",
         tmpListData: [],
@@ -127,7 +127,7 @@
         GetLIST: function () {
             model.page.pageindex = 1;
             tempindex.tmpListData.clear();
-            $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_GETHDZTLIST', { p: 1, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount, time: tempindex.curXJTime, starTime: tempindex.starTime, endTime: tempindex.endTime }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_GETHDKHLIST', { p: 1, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount, time: tempindex.curXJTime, starTime: tempindex.starTime, endTime: tempindex.endTime }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempindex.tmpListData = resultData.Result;
                     model.page.total = resultData.Result1;
@@ -139,7 +139,7 @@
                         skin: 'molv',
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_GETHDZTLIST', { p: e.curr, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount, time: tempindex.curXJTime, starTime: tempindex.starTime, endTime: tempindex.endTime }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_GETHDKHLIST', { p: e.curr, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount, time: tempindex.curXJTime, starTime: tempindex.starTime, endTime: tempindex.endTime }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
                                         tempindex.tmpListData = resultData.Result;
                                     }
@@ -152,5 +152,5 @@
             })
         }
     })
-    //@ sourceURL=HDKHLIST.js;
+    //@ sourceURL=HDZTLIST.js;
 </script>

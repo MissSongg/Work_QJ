@@ -142,6 +142,7 @@
     <Content Include="ViewV5\AppPage\CRM\XZLXRLIST.html" />
     <Content Include="ViewV5\AppPage\DBGL\DBGLLIST.html" />
     <Content Include="ViewV5\AppPage\DBHD\DBHD.html" />
+    <Content Include="ViewV5\AppPage\DBHD\HDKHLIST.html" />
     <Content Include="ViewV5\AppPage\DBHD\HDZTLIST.html" />
     <Content Include="ViewV5\AppPage\DBHD\HDGMLIST.html" />
     <Content Include="ViewV5\AppPage\DBHD\DBHDLIST.html" />
