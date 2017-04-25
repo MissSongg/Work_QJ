@@ -123,6 +123,7 @@
     <Compile Include="API\HYGL\HYGLManage.cs" />
     <Compile Include="API\KCGL\KCGLManage.cs" />
     <Compile Include="API\KSGL\KSGLManage.cs" />
+    <Compile Include="API\WX\WXManage.cs" />
     <Compile Include="BusinessCode\BLL.cs" />
     <Compile Include="BusinessCode\JH_Auth.cs" />
     <Compile Include="CommonCode\CatheHelp.cs" />
@@ -175,9 +176,7 @@
     <Content Include="bin\Debug\Aspose.Words.dll" />
     <Content Include="bin\Debug\FastReflectionLib.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="API\WX\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
