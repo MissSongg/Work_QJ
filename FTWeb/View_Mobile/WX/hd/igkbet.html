@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>开奖详情</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+        <link rel="stylesheet" href="css/mui.min.css">
+        <link rel="stylesheet" href="css/app.css">
+</head>
+<style type="text/css">
+.mui-card-content p{padding: 7px;border-bottom: 1px solid #ccc; }
+</style>
+<body>
+ <div class="mui-navbar">
+    <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center">
+        <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
+          <span class="mui-icon mui-icon-left-nav" style=""></span>
+        </button>
+        <h1 class="mui-center mui-title" style="margin-left: -21px;">开奖详情</h1>
+    </div>
+</div>
+<div class="marginTop5"></div>
+     <div class="title">XXXXX夺宝团</div>
+     <div class="margin17">大奖兑换码 : 4</div>
+      <p class="margin17">请中奖者尽快凭此号码兑换大奖</p>
+      <div class="border"></div>
+    <div class="actContent">
+        <div class="mui-card-content">
+            <p><i class="mui-icon-extra"></i><span class="mui-icon mui-icon-flag"></span>18747251761兑奖码:1</p>
+            <p><i class="mui-icon-extra"></i><span class="mui-icon mui-icon-flag"></span>18747251762兑奖码:2</p>
+            <p><i class="mui-icon-extra"></i><span class="mui-icon mui-icon-flag"></span>18747251763兑奖码:3</p>
+            <p class="color_win"><i class="mui-icon-extra"></i><span class="mui-icon mui-icon-flag"></span>18747251765兑奖码:4<span class="icon_win">夺宝成功</span></p>
+            <p><i class="mui-icon-extra"></i><span class="mui-icon mui-icon-flag"></span>18747251766兑奖码:5</p>
+            <p><i class="mui-icon-extra"></i><span class="mui-icon mui-icon-flag"></span>18747251767兑奖码:6</p>
+            <p><i class="mui-icon-extra"></i><span class="mui-icon mui-icon-flag"></span>18747251768兑奖码:7</p>
+            <p class="rollingbg"></p>
+        </div>
+
+    </div>
+</body>
+<style type="text/css">
+.rollingbg{background: black;height: 38px;}
+.stoproll{animation: }
+</style>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    var plength= $(".mui-card-content").children("p").length;
+    console.log(plength);
+    for (var i = 0; i < plength; i++) {
+        console.log($(".mui-card-content").children("p").index(i).html());
+    }
+   // $(".rollingbg").addClass("stoproll");
+})
+
+</script>
+</html>

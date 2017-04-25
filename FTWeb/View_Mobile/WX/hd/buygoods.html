@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>购买夺宝团码</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+        <link rel="stylesheet" href="css/mui.min.css">
+        <link rel="stylesheet" href="css/app.css">
+</head>
+<style type="text/css">
+
+</style>
+
+<body>
+    <div class="mui-navbar">
+        <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center">
+            <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
+                <span class="mui-icon mui-icon-left-nav"></span>
+            </button>
+            <h1 class="mui-center mui-title" style="margin-left: -21px;">购买夺宝团码</h1>
+        </div>
+    </div>
+    <div class="marginTop5"></div>
+    <div class="mui-content-padded">
+        <img src="images/banner1.jpg">
+        <input type="hidden" name="" id="goodId" value="goodId">
+        <p><i class="mui-icon mui-icon-flag"></i><span id="teamTitle">XXX夺宝团</span><span>(队长:18888888888888)</span></p>
+       <div class="border"></div>
+       <p class="margin17">夺宝团还差<span style="color: #b44949;margin: 5px;">1</span>人就可以开奖了，请尽快加入凭手气，夺大奖！！！</p>
+    </div>
+<div class="chooseNum title">选择数量</div>
+
+ <nav class="card">
+     <button class="decrease">-</button>
+     <input type="text" class="numCard" id="payNum" value="1">
+     <button class="increase">+</button>
+ </nav>
+
+<nav class="mui-bar mui-bar-tab">
+   <a class="btnshare"><span class="mui-tab-label">共计:<i id="totprice">100</i><i>元</i>
+   </span></a>
+    <a class="btnshare gobuy" id="goPay" href="javascript:;"><span class="mui-tab-label">去结算</span></a>
+</nav>
+</body>
+<script src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
+<script type="text/javascript">
+$(function(){
+
+     var price = $("#totprice").html();
+    //++商品
+    $(".increase").click(function(){
+        var n=$(this).prev().val();
+        var num=parseInt(n)+1;
+        if(num==0){ return;}
+         $(this).prev().val(num);
+         $("#totprice").text(price*num);
+    });
+    //--商品
+    $(".decrease").click(function(){
+        var n=$(this).next().val();
+        var num=parseInt(n)-1;
+        if(num==0){ return;}
+        $(this).next().val(num);
+        $("#totprice").text(price*num);
+    });
+
+    //去支付
+    $("#goPay").click(function(event) {
+        var teamTitle = $("#teamTitle").html();
+        console.log("1:"+teamTitle);
+        var goodId=$("#goodId").val();
+        console.log("2::"+goodId);
+        var needPay =$("#totprice").text();
+        console.log("3::"+needPay);
+        var payNum =$("#payNum").val();
+        console.log("4::"+payNum);
+        $.ajax({
+            cache: false, //禁止缓存
+            type: "POST",
+            url: "",
+            data: {
+                "teamTitle": teamTitle,
+                "goodId": goodId,
+                "needPay": needPay,
+                "payNum": payNum,
+            },
+            error: function(request) {
+                alert("Connection error");
+            },
+            success: function(data) {
+              alert("成功");
+            }
+        });
+    });
+})
+
+</script>
+</html>

@@ -1488,6 +1488,31 @@
     <Content Include="View_Mobile\UI\UI_XXFB_INFO.html" />
     <Content Include="View_Mobile\UI\UI_XXFB_LIST.html" />
     <Content Include="View_Mobile\UI\UI_YCGL_LIST.html" />
+    <Content Include="View_Mobile\WX\hd\1.html" />
+    <Content Include="View_Mobile\WX\hd\buygoods.html" />
+    <Content Include="View_Mobile\WX\hd\createteam.html" />
+    <Content Include="View_Mobile\WX\hd\css\app.css" />
+    <Content Include="View_Mobile\WX\hd\css\mui.min.css" />
+    <Content Include="View_Mobile\WX\hd\dbqb.html" />
+    <Content Include="View_Mobile\WX\hd\goods.html" />
+    <Content Include="View_Mobile\WX\hd\igkbet.html" />
+    <Content Include="View_Mobile\WX\hd\images\banner1.jpg" />
+    <Content Include="View_Mobile\WX\hd\images\banner11.jpg" />
+    <Content Include="View_Mobile\WX\hd\images\banner2.jpg" />
+    <Content Include="View_Mobile\WX\hd\images\banner3.jpg" />
+    <Content Include="View_Mobile\WX\hd\images\banner4.jpg" />
+    <Content Include="View_Mobile\WX\hd\images\listbg.png" />
+    <Content Include="View_Mobile\WX\hd\images\loginbg.jpg" />
+    <Content Include="View_Mobile\WX\hd\index.html" />
+    <Content Include="View_Mobile\WX\hd\jointeam.html" />
+    <Content Include="View_Mobile\WX\hd\js\jquery-1.12.2.min.js" />
+    <Content Include="View_Mobile\WX\hd\js\mui.min.js" />
+    <Content Include="View_Mobile\WX\hd\js\mui.pullToRefresh.js" />
+    <Content Include="View_Mobile\WX\hd\js\mui.pullToRefresh.material.js" />
+    <Content Include="View_Mobile\WX\hd\login.html" />
+    <Content Include="View_Mobile\WX\hd\myteam.html" />
+    <Content Include="View_Mobile\WX\hd\noigkbet.html" />
+    <Content Include="View_Mobile\WX\hd\shopcard.html" />
     <Content Include="View_Mobile\zhang-new-page\about-us.html" />
     <Content Include="View_Mobile\zhang-new-page\add3.html" />
     <Content Include="View_Mobile\zhang-new-page\add4.html" />
@@ -1598,6 +1623,8 @@
     <Content Include="ViewV5\JS\SZHLCommon.min.js.map">
       <DependentUpon>SZHLCommon.min.js</DependentUpon>
     </Content>
+    <Content Include="View_Mobile\WX\hd\fonts\mui-icons-extra.ttf" />
+    <Content Include="View_Mobile\WX\hd\fonts\mui.ttf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1607,6 +1634,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewV5\upload\" />
+    <Folder Include="View_Mobile\WX\hd\html\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

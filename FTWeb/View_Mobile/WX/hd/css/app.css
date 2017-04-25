@@ -1,0 +1,209 @@
+/*
+ *这是单独为hello mui准备的个性化css，可以覆盖标准mui的css定义；
+ * 在实际项目开发时，建议为App单独写一个css文件，从而实现项目的自定义皮肤功能；
+ * 
+ * */
+body { /* //  font-family: serif; */ }
+html, body { position: relative; max-width: 640px; background: #fff; font-family: serif; margin: 0px auto; }
+ul { margin: 0; padding: 0; }
+li{    list-style-type: none;}
+.width100{width: 100% !important}
+.left { float: left; }
+.right { float: right; }
+.hide{display: none}
+.clearboth{clear: both;    overflow: hidden;}
+.marginTop5{margin-top:50px;}
+.joinColor{background-color: darkred !important;}
+.gobuy{background-color: #e20c0c !important;color: white !important;}
+.margin17{margin: 17px !important;}
+.paddBottom{padding-bottom: 64px}
+.border{height: 1px;background: #ccc}
+.shopwidth{width: 62%}
+.bottom
+{
+    margin-bottom: 64px;
+}
+.bottom-1
+{
+    margin-bottom: 20px;
+}
+.bottomF{ bottom: 47px !important;}
+.mui-plus.mui-android header.mui-bar { display: none; }
+.mui-plus.mui-android .mui-bar-nav ~ .mui-content { padding: 0; }
+
+/*hm开头的表示仅为 Hello MUI示例定义*/
+.hm-description { margin: .5em 0; }
+.hm-description > li { font-size: 14px; color: #8f8f94; }
+.hbtnLogin { font-size: 20px; line-height: 40px; position: fixed; z-index: 2; top: 20px; right: 24px; display: block; width: 100px; height: 40px; text-align: center; opacity: .9; color: white; border-radius: 10px; background: #9ba4a5; }
+.tabListUl { margin: 13px; border-top: 1px solid #ccc; }
+.tabListUl > p { font-size: 18px; margin: 5px 0; }
+.tabListUl > p > i { color: #ef8133; }
+.hnlTab { font-size: 24px; line-height: 50px; clear: both; overflow: hidden; height: 50px; text-align: center; color: white; background: #1091f3; }
+.tabLeft { float: left; width: 50%; }
+.tabRight { float: left; width: 50%; }
+.activeTab { background: rgb(217, 149, 47); }
+.hnlContent { margin: 0 5px; }
+.hnlContent a { position: relative; }
+.hnlContent a >p { font-size: 16px; position: absolute; bottom: 0; width: 100%; height: 83px; margin: 5px 0; padding: 10px 0; color: white; background: url('../images/listbg.png') center no-repeat; background-size: 100%; }
+.hnlContent a img { border-radius: 10px }
+.indexJoin{    display: block;
+    background: rgba(255, 193, 7, 0.76);
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;}
+#hnlTabContent2 { display: none; }
+
+/* login */
+::-webkit-input-placeholder {    /* WebKit browsers */
+color: #f1eaea; }
+.bodybgLogin { background: url(../images/loginbg.jpg) no-repeat; background-size: cover;  }
+#loginBg { padding: 120px 20px 20px; }
+#loginBg input { margin-top: 12px; color: #fff; border: none; border-bottom: 2px solid #e8e7e7; background: none; }
+
+.marginTop { margin-top: 40px !important; }
+.btnLogin1 { line-height: 40px; display: block; clear: both; width: 80%; height: 40px; margin: 20px auto; text-align: center; opacity: .9;     color: white;
+    background: #4CAF50;}
+.btnLogin2 { line-height: 40px; display: block; clear: both; width: 80%; height: 40px; margin: 20px auto; text-align: center; opacity: .9;     color: white;
+    background: #4CAF50;}
+
+
+/* activity*/
+a.gojoin
+{    display: block;
+    width: 90%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    color: white;
+    background: rgb(20, 140, 50);
+    font-size: 20px;
+    margin: 24px auto;
+    border-radius: 10px;
+}
+.uproll
+{
+    overflow: hidden;
+
+    height: 30px;
+    margin: 10px 0;
+} 
+.notice
+{
+    line-height: 30px;
+
+    height: 30px;
+    margin: 0 10px;
+}
+#marquee p
+{
+    line-height: 30px;
+
+    height: 30px;
+    margin: 0;
+}
+.actContent
+{
+    margin: 10px !important;
+}
+.actContent > p
+{
+    padding-top: 9px;
+
+    border-top: 1px solid #ccc;
+}
+.title
+{
+    padding: 10px;
+
+    background: #f4f1f1;
+}
+.mui-table-view .mui-media-body
+{
+    margin: 10px 0;
+}
+.mui-table-view .mui-table-view-cell img.productImg
+{
+    max-width: 90px;
+    height: 84px;
+    margin-top: 12px;
+    border-radius: 7px;
+}
+
+.mui-card-content .color_win{color: darkgreen;}
+.mui-card-content p .icon_win{
+      float: right;
+    background: #19bd20;
+    padding: 3px 5px;
+    border-radius: 6px;
+    color: white;
+}
+a.btnshare{display: table-cell;
+    overflow: hidden;
+    width: 1%;
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #929292;}
+
+/* myteam */
+ul.mui-table-view>p{    margin: 0px 9px;    padding-top: 5px;}
+.mui-table-view .teamErweima{max-width: 90px;height: 90px;margin: 0 10px;border-radius: 8px;}
+.waitWinner{background-color: #b7adad;
+    color: white;
+    width: 100px;
+    border-radius: 7px;
+    text-align: center;
+    margin: 17px auto;
+    padding: 5px}
+   .mui-progressbar{
+        width: 62%;
+    margin: 15px 0;
+    float: right;}
+.getJoin{    background: #ef8133;
+    color: white !important;
+    text-align: center;
+    margin:10px !important;
+        padding: 8px;
+    border-radius: 10px;}
+.number{
+    color: #b7adad;
+    text-align: center;
+    padding: 20px 0;}
+.marquee{    margin-top: 16px; color: brown;}
+.bottomFix{background: #28b624;
+    width: 33%;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 8px;}
+/*goods*/
+p.goodssay{    border-top: 1px solid #d0d0d5;
+    margin: 10px;
+    padding-top: 10px;}
+.btn_goods{width: 40%;
+    text-align: center;
+    background: #1fcf6b;
+    padding: 10px;
+    color: white;}
+
+/* buygoods */
+.chooseNum{overflow:hidden;clear: both;}
+nav{    clear: both;
+    overflow: hidden;
+    padding: 10px;}
+nav input.numCard{    margin: 0;    text-align: center;
+    padding: 0;
+    float: left;
+    width: 46px;
+    height: 33px;}
+nav button{float: left;}
+i#totprice{color: red;font-weight:bold;}
+
+
+

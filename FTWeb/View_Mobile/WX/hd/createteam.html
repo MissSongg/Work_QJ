@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>创建开奖团</title>
+         <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+        <link rel="stylesheet" href="css/mui.min.css">
+        <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body>
+    <div class="mui-navbar">
+        <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center">
+            <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
+                <span class="mui-icon mui-icon-left-nav" style=""></span>
+            </button>
+            <h1 class="mui-center mui-title" style="margin-left: -21px;">创建开奖团</h1>
+        </div>
+    </div>
+    <div class="marginTop5"></div>
+    <form class="mui-input-group" action="myteam.html" method="post" onsubmit="return check()">
+        <img class="mui-media-object teamErweima" src="images/banner1.jpg">
+        <div class="mui-input-row">
+            <label style="width: 22%">团名:</label>
+            <input type="text" name="title" id="teamName" placeholder="请设置夺宝团团名(小于14个字符)" style="width: 78%" maxlength="15">
+        </div>
+        <p class="mui-content-padded">您购买的是100元的夺奖码，需分享二维码邀请9人即可开奖，加油哦！！！</p>
+      
+        <div class="mui-button-row paddBottom">
+            <button class="btn_goods left" type="reset">取消</button>
+            <button class="btn_goods right" type="submit">确认</button>     
+        </div>
+    </form>
+</body>
+<script src="js/mui.min.js"></script>
+</html>
