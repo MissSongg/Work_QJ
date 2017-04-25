@@ -1,8 +1,6 @@
-﻿<div ms-controller="DBHDLIST">
+﻿<div ms-controller="HDGMLIST">
     <!-- 添加按钮 -->
-    <div class="btn-add">
-        <button type="button" class="btn btn-info btn-lg" ms-click="AddView('DBHD')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加夺宝活动明细</button>
-    </div>
+
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
 
@@ -43,16 +41,19 @@
                 <tr>
                     <th class="tc">序号
                     </th>
-
-                    <th>活动标题
+                      <th>活动名称
                     </th>
-                    <th>开始时间
+                    <th>用户姓名
                     </th>
-                    <th>结束时间
+                    <th>用户手机号
                     </th>
-                    <th>申请人
+                    <th>支付金额
                     </th>
-                    <th>申请时间
+                    <th>支付时间
+                    </th>
+                    <th>是否核销
+                    </th>
+                    <th>核销时间
                     </th>
                     <th>操作
                     </th>
@@ -61,20 +62,16 @@
             <tbody>
                 <tr ms-repeat-el="tmpListData">
                     <td class=" tc">{{$index+1+page.pagecount*(page.pageindex-1)}}</td>
-                    <td class="lk">{{ComFunJS.convstr(el.Title,20) }}</td>
-                    <td>{{el.KSDate}}</td>
-                    <td>{{el.JSDate}}</td>
-                    <td>{{el.CRUser}}</td>
-                    <td>{{el.CRDate|date("yyyy-MM-dd")}}</td>
+                    <td class="lk">{{el.Title}}</td>
+                    <td>{{el.name}}</td>
+                    <td>{{el.mobphone}}</td>
+                    <td>{{el.zfje}}</td>
+                    <td>{{el.gmdate|date("yyyy-MM-dd")}}</td>
+                      <td>{{el.zfje}}</td>
+                      <td>{{el.ishx}}</td>
+                      <td>{{el.hxtime}}</td>
                     <td>
-                        <span class=" btn-click">
-                            <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-if="el.CRUser==userName" ms-click="DELDBHD(el,$event)">
-                                <i class="iconfont icon-shanchu"></i>
-                            </a>
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-if="el.CRUser==userName" ms-click="EditForm('DBHD',el.ID,'',$event)">
-                                <i class="iconfont icon-bianji"></i>
-                            </a>
-                        </span>
+                    
                     </td>
                 </tr>
 
@@ -107,7 +104,7 @@
 <script>
 
     var tempindex = avalon.define({
-        $id: "DBHDLIST",
+        $id: "HDGMLIST",
         starTime: "",
         endTime: "",
         tmpListData: [],
@@ -118,17 +115,7 @@
             ComFunJS.initForm();
         },
         DELDBHD: function (item) {
-            top.ComFunJS.winconfirm("确认要删除吗？", function () {
-                $.post('/API/VIEWAPI.ashx?Action=DBHD_DELDBHD', { "P2": item.ID }, function (result) {
-                    result = JSON.parse(result)
-                    if (result.ErrorMsg == "") {
-                        top.ComFunJS.winsuccess("删除成功");
-                        tempindex.tmpListData.remove(item);
-                    } else {
-                        top.ComFunJS.winwarning(result.ErrorMsg);
-                    }
-                })
-            })
+
         },
         SelectTime: function (type, item) {
             tempindex.curXJTime = type;
@@ -150,7 +137,7 @@
         GetLIST: function () {
             model.page.pageindex = 1;
             tempindex.tmpListData.clear();
-            $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_GETDBHDLIST', { p: 1, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount, time: tempindex.curXJTime, starTime: tempindex.starTime, endTime: tempindex.endTime }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_GETHDGMLIST', { p: 1, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount, time: tempindex.curXJTime, starTime: tempindex.starTime, endTime: tempindex.endTime }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempindex.tmpListData = resultData.Result;
                     model.page.total = resultData.Result1;
@@ -162,7 +149,7 @@
                         skin: 'molv',
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_GETDBHDLIST', { p: e.curr, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount, time: tempindex.curXJTime, starTime: tempindex.starTime, endTime: tempindex.endTime }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_GETHDGMLIST', { p: e.curr, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount, time: tempindex.curXJTime, starTime: tempindex.starTime, endTime: tempindex.endTime }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
                                         tempindex.tmpListData = resultData.Result;
                                     }
@@ -175,5 +162,5 @@
             })
         }
     })
-    //@ sourceURL=DBHDLIST.js;
+    //@ sourceURL=HDGMLIST.js;
 </script>

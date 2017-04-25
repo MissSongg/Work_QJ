@@ -24,5 +24,7 @@ namespace QJY.Data
         public int ID { get; set; }
         public Nullable<int> ComId { get; set; }
         public string name { get; set; }
+        public string code { get; set; }
+        public Nullable<System.DateTime> codetime { get; set; }
     }
 }

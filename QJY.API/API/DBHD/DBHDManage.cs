@@ -344,12 +344,12 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void GETHDGMLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            string strWhere = "ComId=" + UserInfo.User.ComId;
+            string strWhere = "HDGM.ComId=" + UserInfo.User.ComId;
             string strContent = context.Request["Content"] ?? "";
             strContent = strContent.TrimEnd();
             if (strContent != "")
             {
-                strWhere += string.Format(" And ( Title like '%{0}%' )", strContent);
+                strWhere += string.Format(" And ( HD.Title like '%{0}%' )", strContent);
             }
             //根据创建时间查询
             string time = context.Request.QueryString["time"] ?? "";
@@ -357,19 +357,19 @@ namespace QJY.API
             {
                 if (time == "1")   //近一周
                 {
-                    strWhere += string.Format(" And datediff(day,CRDate,getdate())<7");
+                    strWhere += string.Format(" And datediff(day,HDGM.CRDate,getdate())<7");
                 }
                 else if (time == "2")
                 {  //近一月
-                    strWhere += string.Format(" And datediff(day,CRDate,getdate())<30");
+                    strWhere += string.Format(" And datediff(day,HDGM.CRDate,getdate())<30");
                 }
                 else if (time == "4")
                 {  //今年
-                    strWhere += string.Format(" And datediff(year,CRDate,getdate())=0");
+                    strWhere += string.Format(" And datediff(year,HDGM.CRDate,getdate())=0");
                 }
                 else if (time == "5")
                 {  //上一年
-                    strWhere += string.Format(" And datediff(year,CRDate,getdate())=1");
+                    strWhere += string.Format(" And datediff(year,HDGM.CRDate,getdate())=1");
                 }
                 else if (time == "3")  //自定义时间
                 {
@@ -377,11 +377,11 @@ namespace QJY.API
                     string endTime = context.Request.QueryString["endTime"] ?? "";
                     if (strTime != "")
                     {
-                        strWhere += string.Format(" And convert(varchar(10),CRDate,120) >='{0}'", strTime);
+                        strWhere += string.Format(" And convert(varchar(10),HDGM.CRDate,120) >='{0}'", strTime);
                     }
                     if (endTime != "")
                     {
-                        strWhere += string.Format(" And convert(varchar(10),CRDate,120) <='{0}'", endTime);
+                        strWhere += string.Format(" And convert(varchar(10),HDGM.CRDate,120) <='{0}'", endTime);
                     }
                 }
             }
@@ -389,7 +389,7 @@ namespace QJY.API
             int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
             if (DataID != -1)
             {
-                strWhere += string.Format(" And  ID = '{0}'", DataID);
+                strWhere += string.Format(" And  HDGM.ID = '{0}'", DataID);
             }
 
 
@@ -399,7 +399,7 @@ namespace QJY.API
             int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int total = 0;
-            DataTable dtList = new SZHL_YX_HDB().GetDataPager("SZHL_YX_HD_GM ", "*", pagecount, page, " CRDate ", strWhere, ref total);
+            DataTable dtList = new SZHL_YX_HDB().GetDataPager("SZHL_YX_HD_GM  HDGM LEFT JOIN SZHL_YX_HD HD ON HDGM.HDID=HD.ID LEFT JOIN SZHL_YX_USER HDUSER ON HDGM.userid=HDUSER.ID", "HDGM.ID,HDGM.zfje,HDGM.gmdate,HDGM.ishx,HDGM.hxtime,HD.Title,HDUSER.name,HDUSER.mobphone", pagecount, page, " HDGM.CRDate ", strWhere, ref total);
 
 
 

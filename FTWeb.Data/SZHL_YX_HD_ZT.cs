@@ -26,7 +26,6 @@ namespace QJY.Data
         public Nullable<int> hdmxid { get; set; }
         public Nullable<System.DateTime> fqdate { get; set; }
         public Nullable<System.DateTime> kjtime { get; set; }
-        public Nullable<decimal> dzfje { get; set; }
         public string ztname { get; set; }
     }
 }
