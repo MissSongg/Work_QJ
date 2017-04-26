@@ -173,6 +173,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Aspose.Words.dll" />
     <Content Include="bin\Debug\Aspose.Words.dll" />
     <Content Include="bin\Debug\FastReflectionLib.dll" />
   </ItemGroup>
