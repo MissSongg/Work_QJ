@@ -49,9 +49,9 @@
                         <table class="table table-hover table-bordered" id="tab">
                             <thead style="background: #f7f7f7;">
                                 <tr>
-                                    <th width="140px">购买金额(元)</th>
-                                    <th width="140px">参团人数</th>
-                                    <th width="140px">购买次数限制</th>
+                                    <th width="100px">购买金额(元)</th>
+                                    <th width="100px">参团人数</th>
+                                    <th width="100px">购买次数限制</th>
                                     <th width="200px">奖项</th>
                                     <th width="50px" ms-if="pmodel.isedit=='Y'">操作</th>
                                 </tr>
@@ -61,25 +61,25 @@
                                     <td>{{item.GMJE}}</td>
                                     <td>{{item.CTRS}}</td>
                                     <td>{{item.CSXZ}}</td>
-                                    <td>{{item.Remark}}</td>
+                                    <td>{{item.JX}}</td>
                                     <td ms-if="pmodel.isedit=='Y'"><a class=" btn btn-warning btn-sm" ms-click="RemoveJL(item)"><i class="iconfont icon-shanchu"></i>删除</a></td>
                                 </tr>
                             </tbody>
                             <tfoot>
                                 <tr ms-if="pmodel.isedit=='Y'">
                                     <td>
-                                        <input type="text" class="form-control" ms-duplex="DBHDJL.GMJE" placeholder="请输入金额" />
+                                        <input type="text" class="form-control" ms-duplex="DBHDJL.GMJE" placeholder="购买金额" />
 
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" ms-duplex="DBHDJL.CTRS" placeholder="请输入参团人数" />
+                                        <input type="text" class="form-control" ms-duplex="DBHDJL.CTRS" placeholder="参团人数" />
 
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" ms-duplex="DBHDJL.CSXZ" placeholder="请输入次数限制" />
+                                        <input type="text" class="form-control" ms-duplex="DBHDJL.CSXZ" placeholder="次数限制" />
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" ms-duplex="DBHDJL.Remark" placeholder="请输入奖项说明" />
+                                        <input type="text" class="form-control" ms-duplex="DBHDJL.JX" placeholder="奖项说明" />
 
                                     </td>
 
@@ -143,7 +143,7 @@
             }
         },//初始化
         modelData: { "KSDate": "", "JSDate": "", "Content": "", "Files": "", "Title": "", "CRUser": ComFunJS.getnowuser() },
-        DBHDJL: { "GMJE": "", "CTRS": "", "CSXZ": "", "Remark": "" },
+        DBHDJL: { "GMJE": "", "CTRS": "", "CSXZ": "", "JX": "", "Remark": "" },
         DBHDJLLIST: [],
         //存草稿使用
         GetDraftData: function () {
@@ -157,6 +157,10 @@
 
             if (!tempmodel.DBHDJL.CTRS) {
                 top.ComFunJS.winwarning("请填写参团人数");
+                return false;
+            }
+            if (!tempmodel.DBHDJL.JX) {
+                top.ComFunJS.winwarning("请填写奖项");
                 return false;
             }
             if (!tempmodel.DBHDJL.Remark) {
@@ -175,7 +179,7 @@
 
             var dbhdModel = $.extend(false, {}, tempmodel.DBHDJL.$model);
             tempmodel.DBHDJLLIST.push(dbhdModel);
-            tempmodel.DBHDJL = { "GMJE": "", "CTRS": "", "CSXZ": "", "Remark": "" };
+            tempmodel.DBHDJL = { "GMJE": "", "CTRS": "", "CSXZ": "", "JX": "", "Remark": "" };
         },
         RemoveJL: function (item) {
             tempmodel.DBHDJLLIST.remove(item);

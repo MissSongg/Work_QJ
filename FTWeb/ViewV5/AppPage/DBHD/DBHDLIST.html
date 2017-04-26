@@ -5,7 +5,15 @@
     </div>
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
+        <div class="oh">
+            <h5 class="pull-left tr">活动状态：</h5>
+            <ul class="tab-type ft14">
+                <li><span ms-click="seltype('')">全部</span></li>
+                <li><span class="active" ms-click="seltype('N')">未结束</span></li>
+                <li ms-click="seltype('Y')"><span>已结束</span></li>
 
+            </ul>
+        </div>
         <div class="oh">
             <h5 class="pull-left tr">创建时间：</h5>
             <ul class="tab-type ft14">
@@ -111,7 +119,9 @@
         starTime: "",
         endTime: "",
         tmpListData: [],
+        seltype: function () {
 
+        },
         InitWigetData: function () {
 
             tempindex.GetLIST();

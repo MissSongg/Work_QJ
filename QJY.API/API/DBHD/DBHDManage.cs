@@ -83,14 +83,6 @@ namespace QJY.API
             int total = 0;
             DataTable dtList = new SZHL_YX_HDB().GetDataPager("SZHL_YX_HD ", "*", pagecount, page, " CRDate ", strWhere, ref total);
 
-            dtList.Columns.Add("PLList", Type.GetType("System.Object"));
-            dtList.Columns.Add("FileList", Type.GetType("System.Object"));
-            for (int i = 0; i < dtList.Rows.Count; i++)
-            {
-                dtList.Rows[i]["PLList"] = new JH_Auth_TLB().GetTL("DBHD", dtList.Rows[i]["ID"].ToString());
-                if (dtList.Rows[i]["Files"].ToString() != "")
-                    dtList.Rows[i]["FileList"] = new FT_FileB().GetEntities(" ID in (" + dtList.Rows[i]["Files"].ToString() + ")");
-            }
 
 
             msg.Result = dtList;
@@ -280,9 +272,13 @@ namespace QJY.API
             page = page == 0 ? 1 : page;
             int total = 0;
             DataTable dtList = new SZHL_YX_HDB().GetDataPager("SZHL_YX_HD_ZT ", "*", pagecount, page, " CRDate ", strWhere, ref total);
-
-
-
+            dtList.Columns.Add("ZTRYList", Type.GetType("System.Object"));
+            for (int i = 0; i < dtList.Rows.Count; i++)
+            {
+                int ZTID = int.Parse(dtList.Rows[i]["ID"].ToString());
+                string strSQL = string.Format("SELECT goodscode,mobphone,name,iszj FROM SZHL_YX_HD_CY INNER JOIN SZHL_YX_USER ON SZHL_YX_HD_CY.userid=SZHL_YX_USER.ID  WHERE SZHL_YX_HD_CY.ztid= '{0}'", ZTID);
+                dtList.Rows[i]["ZTRYList"] = new SZHL_YX_HD_CYB().GetDTByCommand(strSQL);
+            }
             msg.Result = dtList;
             msg.Result1 = total;
         }

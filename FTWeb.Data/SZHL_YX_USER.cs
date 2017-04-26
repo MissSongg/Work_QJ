@@ -14,7 +14,7 @@ namespace QJY.Data
     
     public partial class SZHL_YX_USER
     {
-        public Nullable<int> mobphone { get; set; }
+        public string mobphone { get; set; }
         public string Pasd { get; set; }
         public string nickname { get; set; }
         public Nullable<System.DateTime> CRDate { get; set; }

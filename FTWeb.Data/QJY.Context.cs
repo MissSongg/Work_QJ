@@ -145,7 +145,6 @@ namespace QJY.Data
         public virtual DbSet<SZHL_PX_KCGL> SZHL_PX_KCGL { get; set; }
         public virtual DbSet<SZHL_PX_KJGL> SZHL_PX_KJGL { get; set; }
         public virtual DbSet<SZHL_PX_SeeTime> SZHL_PX_SeeTime { get; set; }
-        public virtual DbSet<SZHL_YX_HD_ITEM> SZHL_YX_HD_ITEM { get; set; }
         public virtual DbSet<SZHL_YX_HD> SZHL_YX_HD { get; set; }
         public virtual DbSet<SZHL_RWGL> SZHL_RWGL { get; set; }
         public virtual DbSet<SZHL_RWGL_ITEM> SZHL_RWGL_ITEM { get; set; }
@@ -153,6 +152,7 @@ namespace QJY.Data
         public virtual DbSet<SZHL_YX_HD_CY> SZHL_YX_HD_CY { get; set; }
         public virtual DbSet<SZHL_YX_HD_ZT> SZHL_YX_HD_ZT { get; set; }
         public virtual DbSet<SZHL_YX_USER> SZHL_YX_USER { get; set; }
+        public virtual DbSet<SZHL_YX_HD_ITEM> SZHL_YX_HD_ITEM { get; set; }
         public virtual DbSet<SZHL_YX_HD_GM> SZHL_YX_HD_GM { get; set; }
     }
 }

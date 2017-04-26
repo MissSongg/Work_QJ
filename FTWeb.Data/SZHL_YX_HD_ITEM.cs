@@ -23,5 +23,6 @@ namespace QJY.Data
         public Nullable<System.DateTime> CRDate { get; set; }
         public Nullable<int> CSXZ { get; set; }
         public string Remark { get; set; }
+        public string JX { get; set; }
     }
 }
