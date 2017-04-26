@@ -29,5 +29,7 @@ namespace QJY.Data
         public Nullable<System.DateTime> gmdate { get; set; }
         public string ishx { get; set; }
         public Nullable<System.DateTime> hxtime { get; set; }
+        public string hxusename { get; set; }
+        public string batchnumber { get; set; }
     }
 }

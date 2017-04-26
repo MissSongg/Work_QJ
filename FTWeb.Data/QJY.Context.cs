@@ -151,8 +151,8 @@ namespace QJY.Data
         public virtual DbSet<SZHL_RWGL_ITEM> SZHL_RWGL_ITEM { get; set; }
         public virtual DbSet<JH_Auth_QY> JH_Auth_QY { get; set; }
         public virtual DbSet<SZHL_YX_HD_CY> SZHL_YX_HD_CY { get; set; }
-        public virtual DbSet<SZHL_YX_HD_GM> SZHL_YX_HD_GM { get; set; }
         public virtual DbSet<SZHL_YX_HD_ZT> SZHL_YX_HD_ZT { get; set; }
         public virtual DbSet<SZHL_YX_USER> SZHL_YX_USER { get; set; }
+        public virtual DbSet<SZHL_YX_HD_GM> SZHL_YX_HD_GM { get; set; }
     }
 }

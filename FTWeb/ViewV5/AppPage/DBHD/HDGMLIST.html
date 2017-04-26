@@ -4,6 +4,16 @@
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
 
+
+        <div class="oh">
+            <h5 class="pull-left tr">核销状态：</h5>
+            <ul class="tab-type ft14">
+                <li><span ms-click="selishx('')">全部</span></li>
+                <li><span class="active" ms-click="selishx('N')">未核销</span></li>
+                <li ms-click="selishx('Y')"><span>已核销</span></li>
+
+            </ul>
+        </div>
         <div class="oh">
             <h5 class="pull-left tr">创建时间：</h5>
             <ul class="tab-type ft14">
@@ -41,9 +51,11 @@
                 <tr>
                     <th class="tc">序号
                     </th>
-                      <th>活动名称
+                    <th>活动名称
                     </th>
                     <th>用户姓名
+                    </th>
+                    <th>商品码
                     </th>
                     <th>用户手机号
                     </th>
@@ -53,7 +65,9 @@
                     </th>
                     <th>是否核销
                     </th>
-                  
+                    <th ms-if="isHX=='Y'">核销时间
+                    </th>
+
                     <th>操作
                     </th>
                 </tr>
@@ -63,13 +77,16 @@
                     <td class=" tc">{{$index+1+page.pagecount*(page.pageindex-1)}}</td>
                     <td class="lk">{{el.Title}}</td>
                     <td>{{el.name}}</td>
+                    <td>{{el.goodscode}}</td>
+
                     <td>{{el.mobphone}}</td>
                     <td>{{el.zfje}}</td>
                     <td>{{el.gmdate|date("yyyy-MM-dd HH:mm")}}</td>
-                      <td>{{el.ishx}}</td>
+                    <td>{{el.ishx=='Y'?'是':'否'}}</td>
+                    <td ms-if="isHX=='Y'">{{el.hxtime|date("yyyy-MM-dd HH:mm")}}</td>
                     <td>
-                     <span class=" btn-click">
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="核销" >
+                        <span class=" btn-click" ms-if="el.ishx=='N'">
+                            <a class="cz-btn ft18 bj-color tip"  title="核销"  ms-click="hxitem(el)" >
                                 <i class="iconfont icon-bianji"></i>
                             </a>
                         </span>
@@ -100,6 +117,30 @@
         </div>
     </div>
 
+    <div class="modal fade" id="hxdiv" role="dialog">
+        <div class="modal-dialog" role="document" style="width: 500px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">核销商品码</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label"><span class="Required " style="color: red">*</span>商品码：{{hxdata.goodscode}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label">用户姓名：{{hxdata.name}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success" id="conaddForder" ms-click="hxitem(el)">确认核销</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -109,7 +150,13 @@
         starTime: "",
         endTime: "",
         tmpListData: [],
+        selishx: function (ishx) {
+            tempindex.isHX = ishx;
+            tempindex.GetLIST();
 
+        },
+        isHX: "N",
+        hxdata:{},//正在核销的数据
         InitWigetData: function () {
 
             tempindex.GetLIST();
@@ -138,7 +185,7 @@
         GetLIST: function () {
             model.page.pageindex = 1;
             tempindex.tmpListData.clear();
-            $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_GETHDGMLIST', { p: 1, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount, time: tempindex.curXJTime, starTime: tempindex.starTime, endTime: tempindex.endTime }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_GETHDGMLIST', { p: 1, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount, time: tempindex.curXJTime, starTime: tempindex.starTime, endTime: tempindex.endTime, ishx: tempindex.isHX }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempindex.tmpListData = resultData.Result;
                     model.page.total = resultData.Result1;
@@ -150,7 +197,7 @@
                         skin: 'molv',
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_GETHDGMLIST', { p: e.curr, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount, time: tempindex.curXJTime, starTime: tempindex.starTime, endTime: tempindex.endTime }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_GETHDGMLIST', { p: e.curr, P1: model.search.seartype, Content: model.search.searchcontent, pagecount: model.page.pagecount, time: tempindex.curXJTime, starTime: tempindex.starTime, endTime: tempindex.endTime, ishx: tempindex.isHX }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
                                         tempindex.tmpListData = resultData.Result;
                                     }
@@ -161,6 +208,18 @@
                     });
                 }
             })
+        },
+        hxitem: function (item) {
+            ComFunJS.winconfirm("确认要核销商品码“" + item.goodscode + "”吗？", function () {
+            $.getJSON('/API/VIEWAPI.ashx?Action=DBHD_HXITEM', { P1: item.ID, P2: "" }, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    ComFunJS.winsuccess("核销成功");
+                    item.ishx = 'Y';
+                    item.hxtime = resultData.Result.hxtime;
+                    $('#hxdiv').modal('hide');
+                }
+            })
+            }, function () { })
         }
     })
     //@ sourceURL=HDGMLIST.js;

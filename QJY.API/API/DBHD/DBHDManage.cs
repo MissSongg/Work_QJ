@@ -183,6 +183,30 @@ namespace QJY.API
 
         }
 
+        /// <summary>
+        /// 核销商品码
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1">购买序号</param>
+        /// <param name="P2">商品码</param>
+        /// <param name="UserInfo"></param>
+        public void HXITEM(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+
+            int Id = 0;
+            int.TryParse(P1, out Id);
+            SZHL_YX_HD_GM Model = new SZHL_YX_HD_GMB().GetEntity(d => d.ID == Id);
+            if (Model != null)
+            {
+                Model.ishx = "Y";
+                Model.hxtime = DateTime.Now;
+                Model.hxusename = UserInfo.User.UserName;
+            }
+            new SZHL_YX_HD_GMB().Update(Model);
+            msg.Result = Model;
+
+        }
 
         /// <summary>
         /// 获取组团列表
@@ -200,6 +224,12 @@ namespace QJY.API
             if (strContent != "")
             {
                 strWhere += string.Format(" And ( ztname like '%{0}%' )", strContent);
+            }
+
+            string strISKJ = context.Request["iskj"] ?? "";
+            if (strISKJ != "")
+            {
+                strWhere += string.Format(" And ( iskj = '{0}' )", strISKJ);
             }
             //根据创建时间查询
             string time = context.Request.QueryString["time"] ?? "";
@@ -351,6 +381,14 @@ namespace QJY.API
             {
                 strWhere += string.Format(" And ( HD.Title like '%{0}%' )", strContent);
             }
+
+
+            string strISHX = context.Request["ishx"] ?? "";
+            if (strISHX != "")
+            {
+                strWhere += string.Format(" And ( HDGM.ishx = '{0}' )", strISHX);
+            }
+
             //根据创建时间查询
             string time = context.Request.QueryString["time"] ?? "";
             if (time != "")
@@ -399,7 +437,7 @@ namespace QJY.API
             int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int total = 0;
-            DataTable dtList = new SZHL_YX_HDB().GetDataPager("SZHL_YX_HD_GM  HDGM LEFT JOIN SZHL_YX_HD HD ON HDGM.HDID=HD.ID LEFT JOIN SZHL_YX_USER HDUSER ON HDGM.userid=HDUSER.ID", "HDGM.ID,HDGM.zfje,HDGM.gmdate,HDGM.ishx,HDGM.hxtime,HD.Title,HDUSER.name,HDUSER.mobphone", pagecount, page, " HDGM.CRDate ", strWhere, ref total);
+            DataTable dtList = new SZHL_YX_HD_GMB().GetDataPager("SZHL_YX_HD_GM  HDGM LEFT JOIN SZHL_YX_HD HD ON HDGM.HDID=HD.ID LEFT JOIN SZHL_YX_USER HDUSER ON HDGM.userid=HDUSER.ID", "HDGM.ID,HDGM.zfje,HDGM.goodscode,HDGM.gmdate,HDGM.ishx,HDGM.hxtime,HD.Title,HDUSER.name,HDUSER.mobphone", pagecount, page, " HDGM.CRDate ", strWhere, ref total);
 
 
 
