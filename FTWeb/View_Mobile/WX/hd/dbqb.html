@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -11,7 +11,7 @@ initial-scale=1,maximum-scale=1,user-scalable=no">
 <link rel="stylesheet" href="css/app.css">
 </head>
 
-<body>
+<body ms-controller="indexview">
      <div class="mui-navbar">
         <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center">
             <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
@@ -21,7 +21,7 @@ initial-scale=1,maximum-scale=1,user-scalable=no">
         </div>
     </div>
     <div class="marginTop5"></div>
-  <div class="huodonglist">
+  <div class="huodonglist" ms-for="el in @HDData">
          <a href="#"><img src="images/banner1.jpg"></a>   
         <div class="uproll">
             <div class="notice left">中奖公告 </div>   
@@ -42,39 +42,12 @@ initial-scale=1,maximum-scale=1,user-scalable=no">
         <div class="actContent">
             <p><i class="mui-icon mui-icon-paperplane"></i>活动内容</p>
             <div class="mui-card-content">
-                <p>1.至尊年卡，全年畅玩两大经典项目，限量抢购： 原价2480元至尊年卡，店庆期间998元。限量100张（哈尼鹿小镇+糖果世界+200会员币）。</p>
-                <p> 2. 超值年卡，一天不到一元钱，全年畅玩糖果世界，线上抢购原价998糖果年卡，现价299元，限量100张（糖果世界一年内无限次畅玩，不含游戏币）。</p>
+                <p ms-html="el.Remark"></p>
             </div>
         </div>
         <a class="gojoin" href="goods.html">我要夺宝</a>
   </div>
-   <div class="huodonglist">
-         <a href="#"><img src="images/banner1.jpg"></a>   
-        <div class="uproll">
-            <div class="notice left">中奖公告 </div>   
-            <div class="box">
-             <ul>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-             </ul>
-            </div>
-        </div>
-        <div class="actContent">
-            <p><i class="mui-icon mui-icon-paperplane"></i>活动内容</p>
-            <div class="mui-card-content">
-                <p>1.至尊年卡，全年畅玩两大经典项目，限量抢购： 原价2480元至尊年卡，店庆期间998元。限量100张（哈尼鹿小镇+糖果世界+200会员币）。</p>
-                <p> 2. 超值年卡，一天不到一元钱，全年畅玩糖果世界，线上抢购原价998糖果年卡，现价299元，限量100张（糖果世界一年内无限次畅玩，不含游戏币）。</p>
-            </div>
-        </div>
-        <a class="gojoin" href="goods.html">我要夺宝</a>
-  </div>
+
     <div class="title">组团夺宝</div>
     <div class="actContent">
         <div class="mui-card-content">
@@ -96,13 +69,31 @@ initial-scale=1,maximum-scale=1,user-scalable=no">
     </nav>
     <div class="bottom"></div>
 </body>
-<script src="js/mui.min.js"></script>
 <script src="js/jquery-1.12.2.min.js"></script>
-<style type="text/css">
+<script src="js/mui.min.js"></script>
+<script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
+<script src="../../JS/ComFunJS.js"></script>
 
 
-</style>
 <script>
+
+    var model = avalon.define({
+        $id: "indexview",
+        ID: ComFunJS.getQueryString("id"),
+        HDData: [],
+        GetHDData: function () {
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETHDMXLIST", { P1: model.ID }, function (r) {
+                if (r.ErrorMsg == "") {
+                    model.HDData = r.Result;
+                }
+            })
+        }
+    });
+    avalon.ready(function () {
+        model.GetHDData();
+    })
+
+
 (function($){
  $.fn.scrollTop = function(options){
   var defaults = {

@@ -25,11 +25,11 @@ namespace QJY.API
     /// </summary>
     public class WXManage : IWsService2
     {
-        public void ProcessRequest(HttpContext context, ref Msg_Result msg, string P1, string P2, SZHL_YX_USER UserInfo)
+        public void ProcessRequest(HttpContext context, ref Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
         {
             MethodInfo methodInfo = typeof(WXManage).GetMethod(msg.Action.ToUpper());
             WXManage model = new WXManage();
-            methodInfo.FastInvoke(model, new object[] { context, msg, P1, P2, UserInfo });
+            methodInfo.FastInvoke(model, new object[] { context, msg, ComId, P1, P2, UserInfo });
         }
 
         private static TenPayV3Info _tenPayV3Info = null;
@@ -42,7 +42,7 @@ namespace QJY.API
         /// <param name="P1">code</param>
         /// <param name="P2"></param>
         /// <param name="UserInfo"></param>
-        public void GETPAYJSAPI(HttpContext context, Msg_Result msg, string P1, string P2, SZHL_YX_USER UserInfo)
+        public void GETPAYJSAPI(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
         {
 
             var qy = new JH_Auth_QYB().GetEntity(p => p.ComId == UserInfo.ComId);

@@ -571,8 +571,10 @@ namespace QJY.API
     public class SZHL_PX_SeeTimeB : BaseEFDao<SZHL_PX_SeeTime>
     {
     }
-
-
+    public class SZHL_YX_USERB : BaseEFDao<SZHL_YX_USER>
+    {
+    }
+    
     #region 营销模块
     public class SZHL_YX_HDB : BaseEFDao<SZHL_YX_HD>
     {

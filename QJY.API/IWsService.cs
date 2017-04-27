@@ -14,6 +14,6 @@ namespace QJY.API
 
     public interface IWsService2
     {
-        void ProcessRequest(HttpContext context, ref Msg_Result msg, string P1, string P2, SZHL_YX_USER UserInfo);
+        void ProcessRequest(HttpContext context, ref Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo);
     }
 }

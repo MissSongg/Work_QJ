@@ -51,8 +51,8 @@ namespace QjySaaSWeb.API
                     //根据code找到用户
 
                 }
-
-                container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), UserInfo);
+                int comid = 10334;
+                container.ProcessRequest(context, ref Model, comid, P1.TrimEnd(), P2.TrimEnd(), UserInfo);
             }
 
             IsoDateTimeConverter timeConverter = new IsoDateTimeConverter();

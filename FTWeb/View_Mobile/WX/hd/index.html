@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="css/app.css">
 </head>
 
-<body>
+<body ms-controller="indexview">
     <a class="hbtnLogin" href="login.html">注册</a>
     <div id="slider" class="mui-slider">
         <div class="mui-slider-group mui-slider-loop">
@@ -59,19 +59,19 @@
     <div class="hnlContent">
         <div id="hnlTabContent1">
             <div class="tabList">
-                <div class="tabListUl">
+                <div class="tabListUl"  ms-for="el in @HDData">
                     <p><i class="mui-icon mui-icon-paperplane"></i>活动内容</p>
                     <a href="dbqb.html">
-                        <img src="images/banner4.jpg" data-preview-src="" data-preview-group="1" />
+                        <img src="images/banner1.jpg" data-preview-src="" data-preview-group="1" />
                         <p></p>
                         <div class="mui-card-content">
-                            <p>1.至尊年卡，全年畅玩两大经典项目，限量抢购： 原价2480元至尊年卡，店庆期间998元。限量100张（哈尼鹿小镇+糖果世界+200会员币）。</p>
-                            <p> 2. 超值年卡，一天不到一元钱，全年畅玩糖果世界，线上抢购原价998糖果年卡，现价299元，限量100张（糖果世界一年内无限次畅玩，不含游戏币）。</p>
+                            <p ms-html="el.Content"></p>
+                            <!--<p> 2. 超值年卡，一天不到一元钱，全年畅玩糖果世界，线上抢购原价998糖果年卡，现价299元，限量100张（糖果世界一年内无限次畅玩，不含游戏币）。</p>-->
                         </div>
                     </a>
-                    <a class="indexJoin" href="dbqb.html">我要参与</a>
+                    <a class="indexJoin" ms-attr="{href:'dbqb.html?id='+el.ID}">我要参与</a>
                 </div>
-                <div class="tabListUl">
+                <!--<div class="tabListUl">
                     <p><i class="mui-icon mui-icon-paperplane"></i>活动内容</p>
                     <a>
                         <img src="images/banner1.jpg" data-preview-src="" data-preview-group="1" />
@@ -82,7 +82,7 @@
                         </div>
                     </a>
                     <a class="indexJoin" href="dbqb.html">我要参与</a>
-                </div>
+                </div>-->
             </div>
         </div>
         <div id="hnlTabContent2">
@@ -117,7 +117,24 @@
 
 <script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
 <script type="text/javascript" src="js/mui.min.js"></script>
+<script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
 <script>
+
+    var model = avalon.define({
+        $id: "indexview",
+        HDData: [],
+        GetHDData: function () {
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETHDLIST", function (r) {
+                if (r.ErrorMsg == "") {
+                    model.HDData = r.Result;
+                }
+            })
+        }
+    });
+    avalon.ready(function () {
+        model.GetHDData();
+    })
+
 
 var slider = mui("#slider");
 slider.slider({

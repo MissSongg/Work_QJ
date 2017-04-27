@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 	<head>
@@ -37,7 +37,7 @@
 }
 </style>
 
-<body class="bodybgLogin">
+<body class="bodybgLogin" ms-controller="loginview">
     <header class="mui-bar mui-bar-nav">
         <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
         <h1 class="mui-title">
@@ -49,135 +49,95 @@
     </header>
     <div id="loginBg">
         <div id="hnlLogin" class="mui-control-content mui-active">
-            <input type="text" id="phone" name="" placeholder="手机号" maxlength="11">
-            <input type="password" id="userPwd" name="" placeholder="密码">
+            <input type="text" id="phone" name="" placeholder="手机号" maxlength="11" ms-duplex="@UsrData.mobphone">
+            <input type="password" id="userPwd" name="" placeholder="密码" ms-duplex="@UsrData.Pasd"> 
             <!-- <a class="forgetpw right" href="#">忘记密码？</a> -->
-            <a class="btnLogin1 marginTop" href="#">登录</a>
+            <a class="btnLogin1 marginTop" ms-click="@Login()">登录</a>
         </div>
         <div class="mui-control-content" id="hnlRegist">
-            <input type="text" id="phone2" name="" placeholder="手机号" maxlength="11">
-            <input type="password" id="userPwd2" name="" placeholder="密码">
-            <input type="password" id="userPwd3" name="" placeholder="确认密码">
+            <input type="text" id="phone2" name="" placeholder="手机号" maxlength="11" ms-duplex="@RegData.mobphone">
+            <input type="password" id="userPwd2" name="" placeholder="密码" ms-duplex="@RegData.Pasd">
+            <input type="password" id="userPwd3" name="" placeholder="确认密码" ms-duplex="@RegData.Pasd1">
             <!-- <a class="forgetpw right" href="#">忘记密码？</a> -->
-            <a class="btnLogin2 marginTop" href="#">注册</a>
+            <a class="btnLogin2 marginTop" ms-click="@Reg()">注册</a>
         </div>
     </div>
 </body>
     <script src="js/mui.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
+<script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
+<script src="../../JS/ComFunJS.js"></script>
 <script>
-function checkPhone(phone) {
-    var phone = $.trim(phone);
-    if (!(/^1(3|4|5|7|8)\d{9}$/.test(phone))) {
-        alert("手机号码有误，请重填");
-        return false;
-    } else {
-        return phone;
-    }
-}
 
-function samePassword() {
-    var userPwd2 = $.trim($("#userPwd2").val()); //去空格获取密码
-    var userPwd3 = $.trim($("#userPwd3").val()); //去空格获取密码
-    if ("" == userPwd2 || "" == userPwd3) {
-        alert("请输入密码");
-        return false;
-    }
-    if (userPwd2 == userPwd3) {
-        return userPwd2;
-    } else {
-        alert("两次输入密码不一样");
-        return false;
-    }
-}
-   //alert(document.documentElement.clientHeight+"px");
-    document.getElementsByTagName('body')[0].style.height = window.innerHeight+'px'; 
-$(function() {
-  
- 
+    var model = avalon.define({
+        $id: "loginview",
+        UsrData: { "mobphone": "", "Pasd": "" },
+        RegData: { "mobphone": "", "Pasd": "", "Pasd1": "" },
+        Login: function () {
+            if (!model.UsrData.mobphone || !model.UsrData.Pasd) {
+                alert("请输入手机号和密码");
+                return;
+            }
+            //请输入手机号和密码
 
-    $(".btnLogin1").click(function() {
-        login();
-    });
-    $(".btnLogin2").click(function() {
-        regist();
-    });
-
-    function login() {
-        var phone = checkPhone($("#phone").val()); //去空格获取用户名
-        var userPwd = $("#userPwd").val(); //去空格获取密码
-        alert(userPwd);
-        if (false != phone || userPwd == "") {
-            alert("请输入手机号和密码")
-        } else {
-            checkPhone();
-            $.ajax({
-                cache: false, //禁止缓存
-                type: "POST",
-                url: "{:U('login')}",
-                data: {
-                    "phone": phone,
-                    "userPwd": userPwd
-                },
-                error: function(request) {
-                    alert("Connection error");
-                },
-                success: function(data) {
-                    if (data) {
-                        alert("登陆成功");
-
-                    } else {
-                        alert("用户名或密码错误");
-                    }
+            if (!checkPhone(model.UsrData.mobphone)) {
+                alert("手机号格式不正确");
+                return;
+            }
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_LOGIN", { P1: model.UsrData.mobphone, P2: model.UsrData.Pasd }, function (r) {
+                if (r.ErrorMsg == "") {
+                    alert("登录成功");
+                    ComFunJS.setCookie("wxuser", r.Result);
+                    window.location = "index.html";
+                } else {
+                    alert(r.ErrorMsg);
                 }
+            })
+        },
+        Reg: function () {
+            if (!model.RegData.mobphone || !model.RegData.Pasd || !model.RegData.Pasd1) {
+                alert("请输入手机号,密码和确认密码");
+                return;
+            }
+            //请输入手机号和密码
 
-            });
-        }
-
-    }
-
-    function regist() {
-        var phone2 = checkPhone($("#phone2").val());
-        if (false == phone2) {
-            return;
-        }
-        var userpwd = samePassword();
-
-        if (false == userpwd) {
-            return;
-        }
-
-        $.ajax({
-            cache: false, //禁止缓存
-            type: "POST",
-            url: "{:U('register')}",
-            data: {
-                "phone": phone2,
-                "userpwd": userpwd
-            },
-            error: function(request) {
-                alert("请刷新页面重新注册");
-            },
-            success: function(data) {
-              // debugger;
-                switch (data.status) {
-                    case 0:
-                        alert("手机号已注册");
-                        break;
-                    case 1:
-                        alert("请刷新页面重新注册");
-                        break;
-                    case 2:
-                        alert("注册成功");
-                        location.href="{:U('Activity/indiana')}?uid="+data.uid;
-                        break;
-                }
+            if (!checkPhone(model.RegData.mobphone)) {
+                alert("手机号格式不正确");
+                return;
             }
 
-        });
+            if(model.RegData.Pasd!=model.RegData.Pasd1)
+            {
+                alert("两次密码不一致");
+                return;
+            }
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_REGISTER", { P1: model.RegData.mobphone, P2: model.RegData.Pasd }, function (r) {
+                if (r.ErrorMsg == "") {
+                    alert("注册成功,请登录");
+                   
+                } else {
+                    alert(r.ErrorMsg);
+                }
+            })
+
+        }
+    })
+
+
+
+
+    function checkPhone(phone) {
+        var phone = $.trim(phone);
+        if (!(/^1(3|4|5|7|8)\d{9}$/.test(phone))) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-})
+   //alert(document.documentElement.clientHeight+"px");
+    document.getElementsByTagName('body')[0].style.height = window.innerHeight+'px'; 
+
 </script>
 
 </html>

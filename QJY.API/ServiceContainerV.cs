@@ -160,7 +160,7 @@ namespace QJY.API
 
             IUnityContainer container = new UnityContainer();
             container.RegisterType<IWsService2, WXManage>("WX".ToUpper());//微信操作
-
+            container.RegisterType<IWsService2, YXHDManage>("YXHD".ToUpper());//营销活动
 
             return container;
         }

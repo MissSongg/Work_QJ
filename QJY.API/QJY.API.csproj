@@ -124,6 +124,7 @@
     <Compile Include="API\KCGL\KCGLManage.cs" />
     <Compile Include="API\KSGL\KSGLManage.cs" />
     <Compile Include="API\WX\WXManage.cs" />
+    <Compile Include="API\ZHBG\YXHDManage.cs" />
     <Compile Include="BusinessCode\BLL.cs" />
     <Compile Include="BusinessCode\JH_Auth.cs" />
     <Compile Include="CommonCode\CatheHelp.cs" />
