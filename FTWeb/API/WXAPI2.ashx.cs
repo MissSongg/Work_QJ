@@ -44,14 +44,21 @@ namespace QjySaaSWeb.API
                 var acs = Model.Action.Split('_');
                 var container = ServiceContainerV2.Current().Resolve<IWsService2>(acs[0].ToUpper());
                 Model.Action = Model.Action.Substring(acs[0].Length + 1);
+                int comid = 10334;
 
                 SZHL_YX_USER UserInfo = new SZHL_YX_USER();
-                if (context.Request.Cookies["wxcode"] != null && context.Request.Cookies["wxcode"].ToString() != "")
+                if (context.Request.Cookies["wxuser"] != null && context.Request.Cookies["wxuser"].ToString() != "")
                 {
+                    string code = context.Request.Cookies["wxuser"].ToString();
                     //根据code找到用户
+                    var usr = new SZHL_YX_USERB().GetEntity(p => p.ComId == comid && p.code == code);
+                    if (usr != null)
+                    {
+                        UserInfo = usr;
+                    }
 
                 }
-                int comid = 10334;
+                
                 container.ProcessRequest(context, ref Model, comid, P1.TrimEnd(), P2.TrimEnd(), UserInfo);
             }
 
