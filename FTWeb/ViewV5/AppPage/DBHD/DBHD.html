@@ -163,10 +163,7 @@
                 top.ComFunJS.winwarning("请填写奖项");
                 return false;
             }
-            if (!tempmodel.DBHDJL.Remark) {
-                top.ComFunJS.winwarning("请填写备注");
-                return false;
-            }
+           
             var reg = /^\d+(?:.\d{1,2})?$/;
             if (!reg.test(tempmodel.DBHDJL.GMJE)) {
                 top.ComFunJS.winwarning("购买金额只能是数字，且最多只能两位小数");
