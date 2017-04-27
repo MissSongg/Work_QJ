@@ -124,7 +124,23 @@ namespace QJY.API
 
 
         /// <summary>
-        /// 查看参与列表
+        /// 查看组团列表
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="ComId"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETHDZTLIST(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
+        {
+            int ID = Int32.Parse(P1);
+            msg.Result = new SZHL_YX_HD_CYB().GetEntities(p => p.ComId == ComId && p.ztid == ID);
+        }
+
+
+        /// <summary>
+        /// 查看我参与的组团列表(包括发起的,参与的)
         /// </summary>
         /// <param name="context"></param>
         /// <param name="msg"></param>
@@ -135,8 +151,9 @@ namespace QJY.API
         public void GETHDCYLIST(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
         {
             int ID = Int32.Parse(P1);
-            msg.Result = new SZHL_YX_HD_CYB().GetEntities(p => p.ComId == ComId && p.ztid == ID);
+            msg.Result = new SZHL_YX_HD_CYB().GetEntities(p => p.ComId == ComId && p.userid == UserInfo.ID);
         }
+
 
         /// <summary>
         /// 发起团

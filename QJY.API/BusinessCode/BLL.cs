@@ -620,9 +620,7 @@ namespace QJY.API
     public class SZHL_YX_HD_ZTB : BaseEFDao<SZHL_YX_HD_ZT>
     {
     }
-    public class SZHL_YX_HD_CYB : BaseEFDao<SZHL_YX_HD_CY>
-    {
-    }
+
     
     #endregion
 }
