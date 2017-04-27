@@ -86,6 +86,7 @@ namespace QJY.API
             //ord.BusinessNo = sp_billno;
             //new PT_Order_HeaderB().ExsSql("UPDATE pt_order_header SET BusinessNo='" + sp_billno + "' WHERE ID='" + ord.ID + "'");
 
+            //微信支付单号
             decimal payprice = 0; //ord.SumPrice.Value;
             //当前时间 yyyyMMdd
             string date = DateTime.Now.ToString("yyyyMMdd");
@@ -130,6 +131,24 @@ namespace QJY.API
             if (errors == SslPolicyErrors.None)
                 return true;
             return false;
+        }
+
+        /// <summary>
+        /// 微信异步通知
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="ComId"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void NOTIFY(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
+        {
+            //1.更新支付状态
+
+
+
+            //2.生成商品吗
         }
     }
 }
