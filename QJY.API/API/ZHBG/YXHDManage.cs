@@ -170,6 +170,29 @@ namespace QJY.API
         }
 
 
+
+        /// <summary>
+        /// 获取当前用户的所有商品码
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="ComId"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETHDGMLIST(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
+        {
+            string strSQL = string.Format(" SELECT GM.goodscode,CY.goodscode as iscyhd, GM.ishx,CY.iszj FROM SZHL_YX_HD_GM GM LEFT  JOIN   SZHL_YX_HD_CY  CY ON GM.goodscode=CY.goodscode  WHERE GM.userid='{0}'", UserInfo.ID);
+            DataTable dtReturn = new SZHL_YX_HD_CYB().GetDTByCommand(strSQL);
+
+            msg.Result = dtReturn;
+        }
+
+
+
+
+
+
         /// <summary>
         /// 发起团
         /// </summary>

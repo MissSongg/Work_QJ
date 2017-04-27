@@ -37,7 +37,7 @@
                 <i class="mui-icon-extra"></i>
                 <span class="mui-icon mui-icon-flag"></span>
                 {{item.cyuserphone}} <span style="margin-left:10px"> 兑奖码:{{item.goodscode}}</span>  
-                <span class="icon_win" ms-if-loop="item.iszj=='Y'">夺宝成功</span>
+                <span class="icon_win" :visible="item.iszj=='Y'">夺宝成功</span>
 
             </p>
 
