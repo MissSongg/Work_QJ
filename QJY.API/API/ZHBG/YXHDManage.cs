@@ -189,6 +189,11 @@ namespace QJY.API
             int.TryParse(P2, out hdmxid);
 
             string goodscode = context.Request["goodscode"] ?? "";
+            List<string> ListGoodscode = new List<string>();
+            ListGoodscode = goodscode.SplitTOList(',');
+
+            List<SZHL_YX_HD_CY> ListCY = new List<SZHL_YX_HD_CY>();
+ 
 
             //活动明细信息
             SZHL_YX_HD_ITEM HDITEM = new SZHL_YX_HD_ITEMB().GetEntity(d => d.ID == hdmxid);
@@ -206,26 +211,24 @@ namespace QJY.API
                 return;
             }
 
-            //添加参与信息
-            SZHL_YX_HD_CY MODEL = new SZHL_YX_HD_CY();
-            MODEL.ComId = ComId;
-            MODEL.CRDate = DateTime.Now;
-            MODEL.hdid = HDITEM.HDID;
-            MODEL.hdmxid = hdmxid;
-            MODEL.goodscode = goodscode;
-            MODEL.iszj = "N";
-            MODEL.userid = UserInfo.ID;
-            MODEL.ztid = ztid;
-            new SZHL_YX_HD_CYB().Insert(MODEL);
-
-
-
-
-            //开奖
-            new SZHL_YX_HD_CYB().DBKJ(ZT, MODEL, HDITEM);
-
-
-            msg.Result = MODEL;
+            foreach (string tempgoodscode in ListGoodscode)
+            {
+                //添加参与信息
+                SZHL_YX_HD_CY MODEL = new SZHL_YX_HD_CY();
+                MODEL.ComId = ComId;
+                MODEL.CRDate = DateTime.Now;
+                MODEL.hdid = HDITEM.HDID;
+                MODEL.hdmxid = hdmxid;
+                MODEL.goodscode = tempgoodscode;
+                MODEL.iszj = "N";
+                MODEL.userid = UserInfo.ID;
+                MODEL.ztid = ztid;
+                new SZHL_YX_HD_CYB().Insert(MODEL);
+                ListCY.Add(MODEL);
+                //开奖
+                new SZHL_YX_HD_CYB().DBKJ(ZT, MODEL, HDITEM);
+            }
+            msg.Result = ListCY;
         }
     }
 }
