@@ -1584,5 +1584,5 @@ var ComFunJS = {
     },
 }
 
-ComFunJS.initsetajax();
+//ComFunJS.initsetajax();
 
