@@ -574,7 +574,7 @@ namespace QJY.API
     public class SZHL_YX_USERB : BaseEFDao<SZHL_YX_USER>
     {
     }
-    
+
     #region 营销模块
     public class SZHL_YX_HDB : BaseEFDao<SZHL_YX_HD>
     {
@@ -588,7 +588,41 @@ namespace QJY.API
     }
     public class SZHL_YX_HD_CYB : BaseEFDao<SZHL_YX_HD_CY>
     {
+        /// <summary>
+        /// 夺宝开(参与人数达到限制时随机开奖)
+        /// </summary>
+        /// <param name="ZT"></param>
+        /// <param name="CY"></param>
+        public bool DBKJ(SZHL_YX_HD_ZT ZT, SZHL_YX_HD_CY CY, SZHL_YX_HD_ITEM HDITEM)
+        {
+            bool iskj = false;
+            int CTRS = int.Parse(HDITEM.CTRS);//参团人数
+            int intCTRSNOW = new SZHL_YX_HD_CYB().GetEntities(d => d.ztid == ZT.ID).Count();
+            if (CTRS == intCTRSNOW)//当前人数达到到开奖人数
+            {
+
+                //随机选取已参与的记录更新中奖信息和组团信息
+                Random ran = new Random();
+                int intsj = ran.Next(CTRS);
+                SZHL_YX_HD_CY ZJMODEL = new SZHL_YX_HD_CYB().GetEntities(d => d.ztid == ZT.ID).ToList()[intsj];
+                ZJMODEL.iszj = "Y";
+                new SZHL_YX_HD_CYB().Update(ZJMODEL);
+
+
+                ZT.iskj = "Y";
+                ZT.kjtime = DateTime.Now;
+                new SZHL_YX_HD_ZTB().Update(ZT);
+                iskj = true;
+            }
+            return iskj;
+        }
     }
-     
+    public class SZHL_YX_HD_ZTB : BaseEFDao<SZHL_YX_HD_ZT>
+    {
+    }
+    public class SZHL_YX_HD_CYB : BaseEFDao<SZHL_YX_HD_CY>
+    {
+    }
+    
     #endregion
 }

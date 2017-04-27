@@ -121,5 +121,111 @@ namespace QJY.API
         }
 
 
+
+
+        /// <summary>
+        /// 查看参与列表
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="ComId"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETHDCYLIST(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
+        {
+            int ID = Int32.Parse(P1);
+            msg.Result = new SZHL_YX_HD_CYB().GetEntities(p => p.ComId == ComId && p.ztid == ID);
+        }
+
+        /// <summary>
+        /// 发起团
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1">活动ID</param>
+        /// <param name="P2">活动明细ID</param>
+        /// <param name="UserInfo"></param>
+        public void ADDHDGROUP(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
+        {
+
+            int hdid = 0;
+            int.TryParse(P1, out hdid);
+
+            int hdmxid = 0;
+            int.TryParse(P2, out hdmxid);
+
+            string strContent = context.Request["Content"] ?? "";
+            strContent = strContent.TrimEnd();
+
+            SZHL_YX_HD_ZT ZT = new SZHL_YX_HD_ZT();
+            ZT.ComId = ComId;
+            ZT.CRDate = DateTime.Now;
+            ZT.fqdate = DateTime.Now;
+            ZT.fquserid = UserInfo.ID;
+            ZT.hdid = hdid;
+            ZT.hdmxid = hdmxid;
+            ZT.ztname = strContent;
+            new SZHL_YX_HD_ZTB().Insert(ZT);
+            msg.Result = ZT;
+        }
+
+
+        /// <summary>
+        /// 参加团
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1">活动ID</param>
+        /// <param name="P2">活动明细ID</param>
+        /// <param name="UserInfo"></param>
+        public void JOINHDGROUP(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
+        {
+
+            int ztid = 0;
+            int.TryParse(P1, out ztid);
+
+            int hdmxid = 0;
+            int.TryParse(P2, out hdmxid);
+
+            string goodscode = context.Request["goodscode"] ?? "";
+
+            //活动明细信息
+            SZHL_YX_HD_ITEM HDITEM = new SZHL_YX_HD_ITEMB().GetEntity(d => d.ID == hdmxid);
+            if (HDITEM == null)
+            {
+                msg.ErrorMsg = "无法找到活动信息";
+                return;
+            }
+
+            //组团信息
+            SZHL_YX_HD_ZT ZT = new SZHL_YX_HD_ZTB().GetEntity(d => d.ID == ztid);
+            if (ZT == null)
+            {
+                msg.ErrorMsg = "无法找到组团信息";
+                return;
+            }
+
+            //添加参与信息
+            SZHL_YX_HD_CY MODEL = new SZHL_YX_HD_CY();
+            MODEL.ComId = ComId;
+            MODEL.CRDate = DateTime.Now;
+            MODEL.hdid = HDITEM.HDID;
+            MODEL.hdmxid = hdmxid;
+            MODEL.goodscode = goodscode;
+            MODEL.iszj = "N";
+            MODEL.userid = UserInfo.ID;
+            MODEL.ztid = ztid;
+            new SZHL_YX_HD_CYB().Insert(MODEL);
+
+
+
+
+            //开奖
+            new SZHL_YX_HD_CYB().DBKJ(ZT, MODEL, HDITEM);
+
+
+            msg.Result = MODEL;
+        }
     }
 }
