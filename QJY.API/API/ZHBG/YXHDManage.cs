@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Web;
 using FastReflectionLib;
 using QJY.Data;
+using System.Data;
 
 namespace QJY.API
 {
@@ -124,7 +125,7 @@ namespace QJY.API
 
 
         /// <summary>
-        /// 查看组团列表
+        /// 根据组团ID查看组团用户列表
         /// </summary>
         /// <param name="context"></param>
         /// <param name="msg"></param>
@@ -135,12 +136,13 @@ namespace QJY.API
         public void GETHDZTLIST(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
         {
             int ID = Int32.Parse(P1);
-            msg.Result = new SZHL_YX_HD_CYB().GetEntities(p => p.ComId == ComId && p.ztid == ID);
+            msg.Result = new SZHL_YX_HD_ZTB().GetEntities(p => p.ComId == ComId && p.ID == ID);
+            msg.Result1 = new SZHL_YX_HD_CYB().GetEntities(p => p.ComId == ComId && p.ztid == ID);
         }
 
 
         /// <summary>
-        /// 查看我参与的组团列表(包括发起的,参与的)
+        /// 我的夺宝团(包括发起的,参与的)
         /// </summary>
         /// <param name="context"></param>
         /// <param name="msg"></param>
@@ -150,8 +152,21 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void GETHDCYLIST(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
         {
-            int ID = Int32.Parse(P1);
-            msg.Result = new SZHL_YX_HD_CYB().GetEntities(p => p.ComId == ComId && p.userid == UserInfo.ID);
+
+            string strSQL = string.Format("SELECT DISTINCT ZT.ID , ZT.ztname,ZT.fquserid,ZT.hdmxid,ZT.iskj,HDITEM.CTRS,HDUSER.mobphone, '' as YZTRS,'' as  zjuserphone  FROM SZHL_YX_HD_CY  CY INNER JOIN   SZHL_YX_HD_ZT  ZT ON CY.ztid=ZT.ID  LEFT JOIN SZHL_YX_HD_ITEM  HDITEM on ZT.hdmxid=HDITEM.ID  LEFT JOIN SZHL_YX_USER  HDUSER on ZT.fquserid=HDUSER.ID WHERE userid='{0}'", UserInfo.ID);
+            DataTable dtReturn = new SZHL_YX_HD_CYB().GetDTByCommand(strSQL);
+            for (int i = 0; i < dtReturn.Rows.Count; i++)
+            {
+                int ztID = Int32.Parse(dtReturn.Rows[i]["ID"].ToString());
+                List<SZHL_YX_HD_CY> ListTemp = new SZHL_YX_HD_CYB().GetEntities(p => p.ComId == ComId && p.ztid == ztID).ToList();
+                dtReturn.Rows[i]["YZTRS"] = ListTemp.Count;
+                if (ListTemp.Where(d => d.iszj == "Y").Count() > 0)
+                {
+                    dtReturn.Rows[i]["zjuserphone"] = ListTemp.FirstOrDefault(d => d.iszj == "Y").cyuserphone;
+                }
+
+            }
+            msg.Result = dtReturn;
         }
 
 
@@ -175,6 +190,10 @@ namespace QJY.API
             string strContent = context.Request["Content"] ?? "";
             strContent = strContent.TrimEnd();
 
+            string goodscode = context.Request["goodscode"] ?? "";
+
+
+
             SZHL_YX_HD_ZT ZT = new SZHL_YX_HD_ZT();
             ZT.ComId = ComId;
             ZT.CRDate = DateTime.Now;
@@ -184,7 +203,24 @@ namespace QJY.API
             ZT.hdmxid = hdmxid;
             ZT.ztname = strContent;
             new SZHL_YX_HD_ZTB().Insert(ZT);
+
+            //发起的时候默认参加
+            SZHL_YX_HD_CY MODEL = new SZHL_YX_HD_CY();
+            MODEL.ComId = ComId;
+            MODEL.CRDate = DateTime.Now;
+            MODEL.hdid = hdid;
+            MODEL.hdmxid = hdmxid;
+            MODEL.goodscode = goodscode;
+            MODEL.iszj = "N";
+            MODEL.userid = UserInfo.ID;
+            MODEL.cyuserphone = UserInfo.mobphone;
+            MODEL.ztid = ZT.ID;
+            new SZHL_YX_HD_CYB().Insert(MODEL);
+
             msg.Result = ZT;
+
+
+
         }
 
 
@@ -210,7 +246,7 @@ namespace QJY.API
             ListGoodscode = goodscode.SplitTOList(',');
 
             List<SZHL_YX_HD_CY> ListCY = new List<SZHL_YX_HD_CY>();
- 
+
 
             //活动明细信息
             SZHL_YX_HD_ITEM HDITEM = new SZHL_YX_HD_ITEMB().GetEntity(d => d.ID == hdmxid);

@@ -25,5 +25,6 @@ namespace QJY.Data
         public Nullable<int> ComId { get; set; }
         public Nullable<int> hdid { get; set; }
         public Nullable<int> hdmxid { get; set; }
+        public string cyuserphone { get; set; }
     }
 }

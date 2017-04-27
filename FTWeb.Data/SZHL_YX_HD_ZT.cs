@@ -15,7 +15,6 @@ namespace QJY.Data
     public partial class SZHL_YX_HD_ZT
     {
         public Nullable<int> fquserid { get; set; }
-        public Nullable<int> ztid { get; set; }
         public Nullable<System.DateTime> CRDate { get; set; }
         public string CRUser { get; set; }
         public string Files { get; set; }
