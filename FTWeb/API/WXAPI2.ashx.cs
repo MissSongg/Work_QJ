@@ -47,9 +47,9 @@ namespace QjySaaSWeb.API
                 int comid = 10334;
 
                 SZHL_YX_USER UserInfo = new SZHL_YX_USER();
-                if (context.Request.Cookies["wxuser"] != null && context.Request.Cookies["wxuser"].ToString() != "")
+                if (context.Request.Cookies["wxuser"] != null && context.Request.Cookies["wxuser"].Value.ToString() != "")
                 {
-                    string code = context.Request.Cookies["wxuser"].ToString();
+                    string code = context.Request.Cookies["wxuser"].Value.ToString();
                     //根据code找到用户
                     var usr = new SZHL_YX_USERB().GetEntity(p => p.ComId == comid && p.code == code);
                     if (usr != null)
