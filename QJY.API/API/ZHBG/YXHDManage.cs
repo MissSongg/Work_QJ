@@ -126,7 +126,7 @@ namespace QJY.API
             {
                 int hdmxid = int.Parse(dr["ID"].ToString());
                 dr["GMRS"] = new SZHL_YX_HD_CYB().GetEntities(D => D.hdmxid == hdmxid).Count();
-                dr["FileList"] = new SZHL_YX_HD_CYB().GetEntities(D => D.hdmxid == hdmxid && D.iszj == "Y");
+                dr["ZJLIST"] = new SZHL_YX_HD_CYB().GetEntities(D => D.hdmxid == hdmxid && D.iszj == "Y");
               
             }
             msg.Result = dtReturn;
