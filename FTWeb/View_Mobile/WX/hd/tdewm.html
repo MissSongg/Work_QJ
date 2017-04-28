@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>团队二维码</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" href="css/mui.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<style type="text/css">
+    .mui-card-content p {
+        padding: 7px;
+        border-bottom: 1px solid #ccc;
+    }
+</style>
+   
+<body>
+    <div class="mui-navbar">
+        <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center">
+            <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
+                <span class="mui-icon mui-icon-left-nav" style=""></span>
+            </button>
+            <h1 class="mui-center mui-title" style="margin-left: -21px;">团队二维码</h1>
+        </div>
+    </div>
+    <div class="marginTop5"></div>
+    <div class="title">夺宝团</div>
+    <div class="border"></div>
+    <div class="actContent">
+        <div class="mui-card-content">
+            <div id="qrcode">
+            </div>
+
+        </div>
+
+    </div>
+</body>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script src="js/jquery-1.12.2.min.js"></script>
+<script src="js/jquery.qrcode.min.js"></script>
+   <script>
+       $(document).ready(function () {
+           $('#qrcode').qrcode({ width: 250, height: 250, correctLevel: 0, text: "http://www.baidu.com" });
+
+       });
+   </script>
+
+</html>

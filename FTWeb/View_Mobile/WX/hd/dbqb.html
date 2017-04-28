@@ -27,7 +27,7 @@ initial-scale=1,maximum-scale=1,user-scalable=no">
 
     <ul class="mui-table-view">
 
-        <li class="mui-table-view-cell mui-media"  ms-for="el in @HDData">
+        <li class="mui-table-view-cell mui-media" ms-for="el in @HDData">
 
             <img class="mui-media-object mui-pull-left" style="border-radius: 6px;" src="images/youwanbi.jpg">
             <div class="mui-media-body">
@@ -36,35 +36,21 @@ initial-scale=1,maximum-scale=1,user-scalable=no">
                 <p class="mui-ellipsis">{{el.JX}}</p>
                 <p class="mui-progressbar mui-progressbar-infinite"></p>
                 <ul class="Pro-bar-li">
-                    <li class="P-bar01"><em>493</em>已参与</li>
+                    <li class="P-bar01"><span style="color: #F60;">{{el.GMRS}}</span>人已参与</li>
                 </ul>
             </div>
-            <div class="uproll">
+            <div class="uproll" ms-visible="el.ZJLIST.length>0">
                 <div class="notice left">手气最佳 </div>
                 <div class="box">
                     <ul>
-                        <li>
-                            <p>恭喜188888888888或得年卡</p>
+                        <li ms-for="item in @el.ZJLIST">
+                            <p>恭喜{{item.cyuserphone}}或得年卡</p>
                         </li>
-                        <li>
-                            <p>恭喜188888888888或得年卡</p>
-                        </li>
-                        <li>
-                            <p>恭喜188888888888或得年卡</p>
-                        </li>
-                        <li>
-                            <p>恭喜188888888888或得年卡</p>
-                        </li>
-                        <li>
-                            <p>恭喜188888888888或得年卡</p>
-                        </li>
-                        <li>
-                            <p>恭喜188888888888或得年卡</p>
-                        </li>
+
                     </ul>
                 </div>
             </div>
-            <a class="gojoin" href="buygoods.html">我要夺宝</a>
+            <a class="gojoin" href="buygoods.html" style="    margin-top: 30px !important;">我要夺宝</a>
         </li>
     </ul>
     <nav class="mui-bar mui-bar-tab">
@@ -91,7 +77,7 @@ initial-scale=1,maximum-scale=1,user-scalable=no">
 
     var model = avalon.define({
         $id: "dnqbview",
-        ID: ComFunJS.getQueryString("id",549),
+        ID: ComFunJS.getQueryString("id", 549),
         HDData: [],
         GetHDData: function () {
             $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETHDMXLIST", { P1: model.ID }, function (r) {
@@ -106,13 +92,13 @@ initial-scale=1,maximum-scale=1,user-scalable=no">
     });
     avalon.ready(function () {
         model.GetHDData();
-     
+
     })
 
 
 </script>
 
-    
+
 <script>
     (function ($) {
         $.fn.scrollTop = function (options) {
@@ -143,7 +129,7 @@ initial-scale=1,maximum-scale=1,user-scalable=no">
 </script>
 <script>
     $(function () {
-    
+
     })
 </script>
 </html>

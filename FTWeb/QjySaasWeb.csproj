@@ -1511,12 +1511,14 @@
     <Content Include="View_Mobile\WX\hd\index.html" />
     <Content Include="View_Mobile\WX\hd\jointeam.html" />
     <Content Include="View_Mobile\WX\hd\js\jquery-1.12.2.min.js" />
+    <Content Include="View_Mobile\WX\hd\js\jquery.qrcode.min.js" />
     <Content Include="View_Mobile\WX\hd\js\jweixin-1.0.0.js" />
     <Content Include="View_Mobile\WX\hd\js\mui.min.js" />
     <Content Include="View_Mobile\WX\hd\js\mui.pullToRefresh.js" />
     <Content Include="View_Mobile\WX\hd\js\mui.pullToRefresh.material.js" />
     <Content Include="View_Mobile\WX\hd\login.html" />
     <Content Include="View_Mobile\WX\hd\myteam.html" />
+    <Content Include="View_Mobile\WX\hd\tdewm.html" />
     <Content Include="View_Mobile\WX\hd\noigkbet.html" />
     <Content Include="View_Mobile\WX\hd\shopcard.html" />
     <Content Include="View_Mobile\zhang-new-page\about-us.html" />

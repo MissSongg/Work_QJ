@@ -130,7 +130,7 @@ namespace QJY.API
               
             }
             msg.Result = dtReturn;
-            msg.Result = new SZHL_YX_HD_ITEMB().GetEntities(p => p.ComId == ComId && p.HDID == ID);
+            msg.Result1 = new SZHL_YX_HD_ITEMB().GetEntities(p => p.ComId == ComId && p.HDID == ID);
         }
 
 

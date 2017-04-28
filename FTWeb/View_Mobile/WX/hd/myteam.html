@@ -25,7 +25,7 @@
                 <img class="mui-media-object mui-pull-left teamErweima" src="images/banner1.jpg">
                 <div class="mui-media-body" style="margin: 0;">
                     <p class="waitWinner" style="margin-top: 0px;">{{el.iskj=='Y'?'已开奖':'未开奖'}}</p>
-                    <p class="mui-progressbar mui-progressbar-in" data-progress="60"><span style="transform: translate3d(-50%, 0px, 0px);"></span></p>
+                    <p class="mui-progressbar mui-progressbar-in" data-progress="60"><span  :css="{transform: 'translate3d(-'+@el.YZTRS/@el.CTRS*100 + '%, 0px, 0px)'}"></span></p>
                     <ul class="Pro-bar-li clearboth">
                         <li class="P-bar01"><em>{{el.YZTRS}}</em>已参与</li>
                         <li class="P-bar02"  ms-if="el.iskj=='N'"><em>{{el.CTRS-el.YZTRS}}</em>还差</li>
