@@ -1501,11 +1501,17 @@
     <Content Include="View_Mobile\WX\hd\images\banner2.jpg" />
     <Content Include="View_Mobile\WX\hd\images\banner3.jpg" />
     <Content Include="View_Mobile\WX\hd\images\banner4.jpg" />
+    <Content Include="View_Mobile\WX\hd\images\bgtm.png" />
+    <Content Include="View_Mobile\WX\hd\images\favicon.ico" />
+    <Content Include="View_Mobile\WX\hd\images\innerbanner1.jpg" />
+    <Content Include="View_Mobile\WX\hd\images\innerbanner2.jpg" />
     <Content Include="View_Mobile\WX\hd\images\listbg.png" />
     <Content Include="View_Mobile\WX\hd\images\loginbg.jpg" />
+    <Content Include="View_Mobile\WX\hd\images\youwanbi.jpg" />
     <Content Include="View_Mobile\WX\hd\index.html" />
     <Content Include="View_Mobile\WX\hd\jointeam.html" />
     <Content Include="View_Mobile\WX\hd\js\jquery-1.12.2.min.js" />
+    <Content Include="View_Mobile\WX\hd\js\jweixin-1.0.0.js" />
     <Content Include="View_Mobile\WX\hd\js\mui.min.js" />
     <Content Include="View_Mobile\WX\hd\js\mui.pullToRefresh.js" />
     <Content Include="View_Mobile\WX\hd\js\mui.pullToRefresh.material.js" />

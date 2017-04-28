@@ -3,22 +3,32 @@
  * 在实际项目开发时，建议为App单独写一个css文件，从而实现项目的自定义皮肤功能；
  * 
  * */
-body { /* //  font-family: serif; */ }
-html, body { position: relative; max-width: 640px; background: #fff; font-family: serif; margin: 0px auto; }
+html, body { position: relative; max-width: 640px; font-family: serif; margin: 0px auto;}
+.body{background: white}
 ul { margin: 0; padding: 0; }
 li{    list-style-type: none;}
+.headerColor{    background: #f60;
+    border-bottom: 1px solid #e35b00;}
+.headerColor h1{color: white;font-weight: bold;}
 .width100{width: 100% !important}
 .left { float: left; }
 .right { float: right; }
 .hide{display: none}
 .clearboth{clear: both;    overflow: hidden;}
-.marginTop5{margin-top:50px;}
+.marginTop2{margin-top:24px;}
+.marginTop5{margin-top:44px;}
 .joinColor{background-color: darkred !important;}
 .gobuy{background-color: #e20c0c !important;color: white !important;}
+.margin10{margin: 10px !important;}
 .margin17{margin: 17px !important;}
 .paddBottom{padding-bottom: 64px}
 .border{height: 1px;background: #ccc}
 .shopwidth{width: 62%}
+.imgGoods{padding: 10px;}
+.activebg{background: #d6cece}
+.newtitle{color: #f60;
+    font-size: 14px;
+    font-weight: bold;}
 .bottom
 {
     margin-bottom: 64px;
@@ -35,19 +45,70 @@ li{    list-style-type: none;}
 .hm-description { margin: .5em 0; }
 .hm-description > li { font-size: 14px; color: #8f8f94; }
 .hbtnLogin { font-size: 20px; line-height: 40px; position: fixed; z-index: 2; top: 20px; right: 24px; display: block; width: 100px; height: 40px; text-align: center; opacity: .9; color: white; border-radius: 10px; background: #9ba4a5; }
-.tabListUl { margin: 13px; border-top: 1px solid #ccc; }
+.tabListUl { padding: 10px;    margin: 15px 6px; border: 1px solid #DCDCDC;
+    border-radius: 5px; background: #fff; box-shadow: 1px 1px 1px #e7e7e7;
+}
+.updown{animation:updown 2s ease both; -webkit-animation:updown 2s ease both;}
+
+@-webkit-keyframes updown{
+    0% {
+    -webkit-transform: translateY(0px);
+  }
+  50% { -webkit-transform: translateY(0px);
+
+  }
+   
+  60% { -webkit-transform: translateY(-10px);
+
+  }
+      70% {
+    -webkit-transform: translateY(10px);
+  }
+  80% { -webkit-transform: translateY(-10px);
+
+  }
+  100% { -webkit-transform: none;
+  }
+}
+
+.tobig { animation:tobig .9s ease both; -webkit-animation:tobig .9s ease both;}
+ @keyframes Tobig{
+    0%{ transform:scale(0,0); opacity:0;} 
+    100%{ transform:scale(1,1); opacity:1;}
+    } 
+@-webkit-keyframes tobig{
+    0%{ transform:scale(0,0);-webkit-transform:scale(0,0);opacity:0;}
+    100%{ transform:scale(1,1);-webkit- transform:scale(1,1);opacity:1;}
+    }
+span.bgtmsm{    position: absolute;
+    background: url("../images/bgtm.png");
+    bottom: 6px;
+    color: white;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 5px;}
 .tabListUl > p { font-size: 18px; margin: 5px 0; }
 .tabListUl > p > i { color: #ef8133; }
-.hnlTab { font-size: 24px; line-height: 50px; clear: both; overflow: hidden; height: 50px; text-align: center; color: white; background: #1091f3; }
-.tabLeft { float: left; width: 50%; }
-.tabRight { float: left; width: 50%; }
-.activeTab { background: rgb(217, 149, 47); }
-.hnlContent { margin: 0 5px; }
+.hnlTab { line-height:40px; clear: both; overflow: hidden; height: 40px; text-align: center;
+    color: #666;}
+.tabLeft { float: left; width: 50%;    border-bottom-right-radius: 20px;background:#dddddd;
+    border-bottom-left-radius: 20px; }
+.tabRight { float: left; width: 50%;     border-bottom-right-radius: 20px;background:#dddddd;
+    border-bottom-left-radius: 20px;}
+.hnlTab a{color: #666;font-size: 14px;font-family: arial,微软雅黑;  }
+.activeTab {   background: #e86c36;  color: white;}
+.hnlContent { margin: 0 5px;
+    border: 1px solid #DCDCDC;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 1px 1px 1px #e7e7e7;}
 .hnlContent a { position: relative; }
 .hnlContent a >p { font-size: 16px; position: absolute; bottom: 0; width: 100%; height: 83px; margin: 5px 0; padding: 10px 0; color: white; background: url('../images/listbg.png') center no-repeat; background-size: 100%; }
 .hnlContent a img { border-radius: 10px }
-.indexJoin{    display: block;
-    background: rgba(255, 193, 7, 0.76);
+.indexJoin{    display: block;    width: 56%;
+    margin: 10px auto;
+    background: #e86c36;
     height: 45px;
     line-height: 45px;
     text-align: center;
@@ -71,18 +132,70 @@ color: #f1eaea; }
     background: #4CAF50;}
 
 
-/* activity*/
+/* dbqb*/
+.indianaContent{background: #ffe9e9;    padding:8px 30px;}
+.mui-table-view .mui-media-object {
+    line-height: 100px;
+    max-width: 100px;
+    height: 100px;
+}
+.mui-progressbar{height: 5px;}
+.mui-progressbar span{background: #f60}
+.mui-progressbar.mui-progressbar-infinite:before{background: #f60}
+
+.Pro-bar-li li.P-bar01 {
+    width: 30%;
+    text-align: left;
+}
+.Pro-bar-li li.P-bar02 {
+    width: 40%;
+    text-align: center;
+}
+.Pro-bar-li li.P-bar03{
+    width: 30%;
+    float: right;
+    text-align: right;
+}
+.Pro-bar-li li {
+    float: left;
+    color: #AEADAD;
+    font-size: 10px;
+    font-family: 宋体;
+    border: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border-radius: none;
+}
+.Pro-bar-li li.P-bar01 em {
+    color: #F60;
+}
+.Pro-bar-li li.P-bar02 em {
+    color: #777;
+}
+.Pro-bar-li li.P-bar03 em {
+    color: #2AF;
+}
+.Pro-bar-li li em {
+    display: block;
+    font-size: 10px;
+    font-family: arial;
+    height: 14px;
+    padding: 3px 0 0 0;
+    font-style: normal;
+}
 a.gojoin
 {    display: block;
     width: 90%;
     height: 50px;
     line-height: 50px;
     text-align: center;
-    color: white;
-    background: rgb(20, 140, 50);
+       color: white !important;
+    background: #f60;
     font-size: 20px;
-    margin: 24px auto;
+    margin: 5px auto !important;
     border-radius: 10px;
+    padding: 1px !important;
 }
 .uproll
 {
@@ -98,13 +211,6 @@ a.gojoin
     height: 30px;
     margin: 0 10px;
 }
-#marquee p
-{
-    line-height: 30px;
-
-    height: 30px;
-    margin: 0;
-}
 .actContent
 {
     margin: 10px !important;
@@ -118,7 +224,6 @@ a.gojoin
 .title
 {
     padding: 10px;
-
     background: #f4f1f1;
 }
 .mui-table-view .mui-media-body
@@ -152,6 +257,10 @@ a.btnshare{display: table-cell;
     color: #929292;}
 
 /* myteam */
+ul.myTeamUl{margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #DCDCDC;
+    box-shadow: 1px 1px 1px #e7e7e7;}
 ul.mui-table-view>p{    margin: 0px 9px;    padding-top: 5px;}
 .mui-table-view .teamErweima{max-width: 90px;height: 90px;margin: 0 10px;border-radius: 8px;}
 .waitWinner{background-color: #b7adad;
@@ -161,10 +270,7 @@ ul.mui-table-view>p{    margin: 0px 9px;    padding-top: 5px;}
     text-align: center;
     margin: 17px auto;
     padding: 5px}
-   .mui-progressbar{
-        width: 62%;
-    margin: 15px 0;
-    float: right;}
+   .mui-progressbar{ margin: 15px 0;}
 .getJoin{    background: #ef8133;
     color: white !important;
     text-align: center;
@@ -183,6 +289,10 @@ ul.mui-table-view>p{    margin: 0px 9px;    padding-top: 5px;}
     right: 0;
     margin: 8px;}
 /*goods*/
+.shopTitle{    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    font-size: 18px;
+    color: #545050;}
 p.goodssay{    border-top: 1px solid #d0d0d5;
     margin: 10px;
     padding-top: 10px;}
@@ -194,16 +304,19 @@ p.goodssay{    border-top: 1px solid #d0d0d5;
 
 /* buygoods */
 .chooseNum{overflow:hidden;clear: both;}
-nav{    clear: both;
+nav{    clear: both;    text-align: center;
     overflow: hidden;
     padding: 10px;}
 nav input.numCard{    margin: 0;    text-align: center;
     padding: 0;
-    float: left;
-    width: 46px;
+    width: 60px;
     height: 33px;}
-nav button{float: left;}
 i#totprice{color: red;font-weight:bold;}
+
+/* pay */
+.pphone{margin: 10px;  }
+.pphone input{margin: 0;}
+.pphone span{margin: 0;  color: #d41d1d;}
 
 
 

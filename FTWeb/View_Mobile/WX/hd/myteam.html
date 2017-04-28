@@ -11,34 +11,35 @@
 </head>
 
 <body ms-controller="teamview">
-    <div class="mui-navbar">
-        <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center">
-            <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
-                <span class="mui-icon mui-icon-left-nav"></span>
-            </button>
-            <h1 class="mui-center mui-title" style="margin-left: -21px;">我的夺宝团</h1>
-        </div>
-    </div>
+    <header class="mui-bar mui-bar-nav headerColor">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white"></a>
+        <h1 class="mui-title">我的夺宝团</h1>
+    </header>
+    <div class="marginTop2"></div>
+
     <div class="marginTop5"></div>
     <ul class="mui-table-view" ms-for="el in @ztdata">
         <p><i class="mui-icon mui-icon-flag"></i><span>{{el.ztname}}</span><span> ( 队长:{{el.mobphone}} ) </span></p>
         <li class="mui-table-view-cell mui-media">
             <div class="clearboth">
                 <img class="mui-media-object mui-pull-left teamErweima" src="images/banner1.jpg">
+                <div class="mui-media-body" style="margin: 0;">
+                    <p class="waitWinner" style="margin-top: 0px;">{{el.iskj=='Y'?'已开奖':'未开奖'}}</p>
+                    <p class="mui-progressbar mui-progressbar-in" data-progress="60"><span style="transform: translate3d(-50%, 0px, 0px);"></span></p>
+                    <ul class="Pro-bar-li clearboth">
+                        <li class="P-bar01"><em>{{el.YZTRS}}</em>已参与</li>
+                        <li class="P-bar02"  ms-if="el.iskj=='N'"><em>{{el.CTRS-el.YZTRS}}</em>还差</li>
+                        <li class="P-bar03"><em>{{el.CTRS}}</em>总需人次</li>
+                    </ul>
+                </div>
+                <div class="clearboth"></div>
 
-                <div class="waitWinner left">{{el.iskj=='Y'?'已开奖':'未开奖'}}</div>
-                <div class="number">({{el.YZTRS}}/{{el.CTRS}})</div>
-                <p class="mui-progressbar mui-progressbar-in"> <span style="transform: translate3d(10%, 0px, 0px);"   :css="{width: (@el.YZTRS/el.CTRS)*100+'%'}"></span></p>
-            </div>
-            <p class="margin17" ms-if="el.iskj=='N'">您的夺宝团还差<span style="color: #b44949; margin: 5px;">{{el.CTRS-el.YZTRS}}</span>人就可以开奖了，请尽快邀请朋友加入凭手气，夺大奖！！！</p>
-            <marquee class="marquee" ms-if="el.iskj=='Y'">恭喜{{el.zjuserphone}}人品大爆炸，抽得大奖</marquee>
-
-            <div class="btnlook">
-                <a class="getJoin left" href="noigkbet.html" ms-if="el.iskj=='N'">查看夺奖队员</a>
-                <a class="getJoin right" href="jointeam.html" ms-if="el.iskj=='N'">邀请朋友加入</a>
-
-
-                <a class="getJoin" :attr="{href:'igkbet.html?ztid='+@el.ID}"  ms-if="el.iskj=='Y'">查看中奖{{el.ID}}</a>
+                <marquee class="marquee" ms-if="el.iskj=='Y'">恭喜{{el.zjuserphone}}中奖</marquee>
+                <a :attr="{href:'igkbet.html?ztid='+@el.ID}" ms-if="el.iskj=='Y'">
+                    <div class="getJoin">查看中奖</div>
+                </a>
+                <a class="getJoin" style="width: 40%; float: left;" :attr="{href:'igkbet.html?ztid='+@el.ID}" ms-if="el.iskj=='N'">查看队员</a>
+                <a class="getJoin" style="width: 40%; float: right;" ms-if="el.iskj=='N'">拼手气</a>
 
             </div>
 
@@ -46,8 +47,10 @@
         </li>
     </ul>
 
-    <a class="getJoin bottomFix" style="background: #28b624;" href="dbqb.html">我要开团</a>
 </body>
+
+
+
 <script src="js/mui.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
 <script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
