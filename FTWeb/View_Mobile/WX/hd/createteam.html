@@ -12,13 +12,13 @@
         <link rel="stylesheet" href="css/app.css">
 </head>
 
-<body>
+<body ms-controller="teamview">
     <div class="mui-navbar">
         <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center">
             <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
                 <span class="mui-icon mui-icon-left-nav" style=""></span>
             </button>
-            <h1 class="mui-center mui-title" style="margin-left: -21px;">创建开奖团</h1>
+            <h1 class="mui-center mui-title" style="margin-left: -21px;">创建夺宝团</h1>
         </div>
     </div>
     <div class="marginTop5"></div>
@@ -26,16 +26,41 @@
         <img class="mui-media-object teamErweima" src="images/banner1.jpg">
         <div class="mui-input-row">
             <label style="width: 22%">团名:</label>
-            <input type="text" name="title" id="teamName" placeholder="请设置夺宝团团名(小于14个字符)" style="width: 78%" maxlength="15">
+            <input type="text" name="title" id="teamName" placeholder="请设置夺宝团团名(小于14个字符)" style="width: 78%" maxlength="15" ms-duplex="@TuanName">
         </div>
         <p class="mui-content-padded">您购买的是100元的夺奖码，需分享二维码邀请9人即可开奖，加油哦！！！</p>
       
         <div class="mui-button-row paddBottom">
             <button class="btn_goods left" type="button" onclick="history.back()">取消</button>
             <!--<button class="btn_goods right" type="button">确认</button>-->     
-            <a class="btn_goods right" href="myteam.html">确认</a> 
+            <a class="btn_goods right" ms-click="@GotoPay()">确认</a> 
         </div>
     </form>
 </body>
+<script src="js/jquery-1.12.2.min.js"></script>
 <script src="js/mui.min.js"></script>
+<script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
+<script src="../../JS/ComFunJS.js"></script>
+
+
+<script>
+
+    var model = avalon.define({
+        $id: "teamview",
+        ID: ComFunJS.getQueryString("id"),
+        TuanName: "",
+        GotoPay: function () {
+            if (!model.TuanName) {
+                alert("请输入夺宝团团名");
+                return;
+            }
+            if (confirm("确定要创建开奖团吗？")) {
+                window.location = "pay.html?hm=" + model.ID + "&tname=" + encodeURIComponent(model.TuanName);
+            }
+        }
+    });
+
+
+</script>
+
 </html>

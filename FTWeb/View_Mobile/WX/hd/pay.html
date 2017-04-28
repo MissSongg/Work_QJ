@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>支付</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+        <link rel="stylesheet" href="css/mui.min.css">
+        <link rel="stylesheet" href="css/app.css">
+        <script type="text/javascript">
+    //调用微信JS api 支付
+    //function jsApiCall() {
+    //    WeixinJSBridge.invoke(
+    //        'getBrandWCPayRequest', {
+    //            $jsApiParameters
+    //        },
+    //        function(res) {
+    //            WeixinJSBridge.log(res.err_msg);
+    //            alert(res.err_code + res.err_desc + res.err_msg);
+    //            var action = "{$action}";
+    //            var gid = "{$gid}";
+    //            if (action == 'create') {
+    //                location.replace("{:U('Indiana/share')}?gid=" + gid);
+
+    //            } else if (action == 'teambuy') {
+    //                location.replace("{:U('Team/team')}?gid=" + gid);
+
+
+    //            } else {
+    //                // self.location = document.referrer;
+    //                location.replace("{:U('Shop/index')}");
+    //            }
+    //        }
+    //    );
+    //}
+
+    //function callpay() {
+    //         var pphone = $("#pphone").val();
+    //        if (!(/^1(3|4|5|7|8)\d{9}$/.test(pphone))) {
+    //            alert("手机号码有误，请重填");
+    //            return false;
+    //        } else {
+    //            return pphone;
+    //        }
+     
+    //      $.ajax({
+    //        cache: false, //禁止缓存
+    //        type: "POST",
+    //        url: "{:U('test')}",
+    //        data: {
+    //            "pphone": pphone
+    //        },
+    //        error: function(request) {
+    //            alert("Connection error");
+    //        }
+    //    });
+
+
+
+    //    if (typeof WeixinJSBridge == "undefined") {
+    //        if (document.addEventListener) {
+    //            document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+    //        } else if (document.attachEvent) {
+    //            document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+    //            document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+    //        }
+    //    } else {
+    //        jsApiCall();
+    //    }
+    //}
+    </script>
+</head>
+<body class="body" ms-controller="payview">
+    
+    <header class="mui-bar mui-bar-nav headerColor">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:white"></a>
+        <h1 class="mui-title">支付</h1>
+    </header>
+    <div class="marginTop2"></div>
+    
+    <img  src="images/innerbanner1.jpg">
+    
+        <p class="title">{{@TuanName}}</p> 
+        <p style="margin: 0 15px">价格 :<span style="color:#ff0000;">{{@HDData.GMJE}}</span> 元</p>
+        <p class="pphone">
+            <input type="text" id="pphone" name="" placeholder="请输入正确手机号">
+            <span><i class="mui-icon mui-icon-info-filled"></i>请正确输入手机号，否则商家不予兑换大奖</span>
+        </p>
+    <a class="gojoin" href="javascript:;" ms-click="@CallPay()">立即支付</a>
+    <nav class="mui-bar mui-bar-tab">
+    <a class="btnshare " href="index.html">
+        <span class="mui-tab-label">首页</span>
+    </a>
+    <a class="btnshare mui-active" href="{:U('Team/index')}">
+        <span class="mui-tab-label">我的团</span>
+    </a>
+    <a class="btnshare" href="{:U('Shop/index')}">
+        <span class="mui-tab-label">我的商品</span>
+    </a>
+</nav>
+<div class="bottom"></div>
+</body>
+
+<script src="js/jquery-1.12.2.min.js"></script>
+<script src="js/mui.min.js"></script>
+<script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
+<script src="../../JS/ComFunJS.js"></script>
+<script type="text/javascript">
+
+    var model = avalon.define({
+        $id: "payview",
+        HM: ComFunJS.getQueryString("hm"),
+        TuanName: ComFunJS.getQueryString("tname"),
+        code: ComFunJS.getQueryString("code"),
+        orderid: ComFunJS.getQueryString("orderid"),
+        HDData: {},
+        json: {},
+        GetHDData: function () {
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETMXMODEL", { P1: model.HM }, function (r) {
+                if (r.ErrorMsg == "") {
+                    model.HDData = r.Result;
+                }
+            })
+        },
+        CallPay: function () {
+            if (!model.TuanName) {
+                alert("请输入夺宝团团名");
+                return;
+            }
+
+            //产生购买单
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_BUYGOODS", { P1: model.HM, P2: 1 }, function (r) {
+                if (r.ErrorMsg == "") {
+                    var orderid = r.Result;
+
+                    var redirect_uri = encodeURI(window.location + "&orderid=" + orderid + "&showwxpaytitle=1&r=" + Math.random());
+                    var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx56652205b133df19&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+                    window.location = url;
+                }
+            })
+           
+
+        }
+    }); 
+    avalon.ready(function () {
+        if (model.code && model.orderid) {
+
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETPAYJSAPI", { P1: model.orderid, P2: model.code }, function (r) {
+                if (r.error == "") {
+                    model.json = r.Result;
+                    if (typeof WeixinJSBridge == "undefined") {
+                        if (document.addEventListener) {
+                            document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                        } else if (document.attachEvent) {
+                            document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                            document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                        }
+                    } else {
+                        jsApiCall();
+                    }
+                    //jsApiCall(r.result);
+                } else {
+                    ComFunJS.close();
+                    ComFunJS.showAlert("支付错误，请重新支付");
+                }
+            })
+        }
+        model.GetHDData();
+    })
+
+
+    //调用微信JS api 支付
+    function jsApiCall() {
+        WeixinJSBridge.invoke('getBrandWCPayRequest', model.json, function (res) {
+            ComFunJS.close();
+            if (res.err_msg == "get_brand_wcpay_request:ok") {
+                window.location = "myteam.html";
+            } else {
+                alert("订单未成功支付");
+            }
+            // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+        });
+    }
+</script>
+</html>

@@ -2,77 +2,59 @@
 <html lang="en">
 <head>
     <title>我的夺宝团</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" href="css/mui.min.css">
-    <link rel="stylesheet" href="css/app.css">
+         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="stylesheet" href="css/mui.min.css">
+        <link rel="stylesheet" href="css/app.css">
 </head>
 
-<body ms-controller="teamview">
+<body>
     <header class="mui-bar mui-bar-nav headerColor">
-        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white"></a>
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color:white"></a>
         <h1 class="mui-title">我的夺宝团</h1>
     </header>
     <div class="marginTop2"></div>
+    
+<div class="marginTop5"></div>
+ <ul class="mui-table-view myTeamUl">
+                <p><i class="mui-icon mui-icon-flag"></i><span>{$vo.title}</span><span>(队长:{$vo['create_phone']})</span></p>
+                <li class="mui-table-view-cell mui-media">
+                    <if condition="$vo['status']==2">
+                        <img class="mui-media-object mui-pull-left teamErweima" src="images/banner1.jpg">
+                        <div class="mui-media-body" style="margin: 0;">
+                            <p class="waitWinner" style="margin-top: 0px;">已开奖</p>
+                            <p class="mui-progressbar mui-progressbar-in" data-progress="60"><span style="transform: translate3d(-{:progress($vo['num'],$vo['num2'])}, 0px, 0px);"></span></p>
+                            <ul class="Pro-bar-li clearboth">
+                                <li class="P-bar01"><em>{$vo['num2']}</em>已参与</li>
+                                <li class="P-bar03"><em>{$vo['num']}</em>总需人次</li>
+                            </ul>
+                        </div>
+                        <marquee class="marquee">恭喜{$vo['win_nickname']}中奖</marquee>
+                        <a href="{:U('igkbet',array('gid'=>$vo['id']))}">
+                            <div class="getJoin"> 查看中奖</div>
+                        </a>
+                        <else/>
+                        <img class="mui-media-object mui-pull-left teamErweima" src="images/youwanbi.jpg">
+                        <div class="mui-media-body" style="margin: 0;">
+                            <p class="waitWinner" style="margin-top: 0px;">待开奖</p>
+                            <p class="mui-progressbar mui-progressbar-in" data-progress="60"><span style="transform: translate3d(-{:progress($vo['num'],$vo['num2'])}, 0px, 0px);"></span></p>
+                            <ul class="Pro-bar-li clearboth">
+                                <li class="P-bar01"><em>{$vo['num2']}</em>已参与</li>
+                                <li class="P-bar02"><em>{$vo['num']-$vo['num2']}</em>还差</li>
+                                <li class="P-bar03"><em>{$vo['num']}</em>总需人次</li>
+                            </ul>
+                        </div>
+                        <div class="clearboth"></div>
+                        <a class="getJoin" style="width: 40%;float:left;" href="{:U('team',array('gid'=>$vo['id']))}">查看队员</a>
+                        <a class="getJoin" style="width: 40%;float:right;" href="{:U('teambuy',array('gid'=>$vo['id']))}">拼手气</a>
+                    </if>
+                </li>
+            </ul>
 
-    <div class="marginTop5"></div>
-    <ul class="mui-table-view" ms-for="el in @ztdata">
-        <p><i class="mui-icon mui-icon-flag"></i><span>{{el.ztname}}</span><span> ( 队长:{{el.mobphone}} ) </span></p>
-        <li class="mui-table-view-cell mui-media">
-            <div class="clearboth">
-                <img class="mui-media-object mui-pull-left teamErweima" src="images/banner1.jpg">
-                <div class="mui-media-body" style="margin: 0;">
-                    <p class="waitWinner" style="margin-top: 0px;">{{el.iskj=='Y'?'已开奖':'未开奖'}}</p>
-                    <p class="mui-progressbar mui-progressbar-in" data-progress="60"><span style="transform: translate3d(-50%, 0px, 0px);"></span></p>
-                    <ul class="Pro-bar-li clearboth">
-                        <li class="P-bar01"><em>{{el.YZTRS}}</em>已参与</li>
-                        <li class="P-bar02"  ms-if="el.iskj=='N'"><em>{{el.CTRS-el.YZTRS}}</em>还差</li>
-                        <li class="P-bar03"><em>{{el.CTRS}}</em>总需人次</li>
-                    </ul>
-                </div>
-                <div class="clearboth"></div>
-
-                <marquee class="marquee" ms-if="el.iskj=='Y'">恭喜{{el.zjuserphone}}中奖</marquee>
-                <a :attr="{href:'igkbet.html?ztid='+@el.ID}" ms-if="el.iskj=='Y'">
-                    <div class="getJoin">查看中奖</div>
-                </a>
-                <a class="getJoin" style="width: 40%; float: left;" :attr="{href:'igkbet.html?ztid='+@el.ID}" ms-if="el.iskj=='N'">查看队员</a>
-                <a class="getJoin" style="width: 40%; float: right;" ms-if="el.iskj=='N'">拼手气</a>
-
-            </div>
-
-
-        </li>
-    </ul>
-
+        
+     <a class="getJoin bottomFix" style="background: #28b624;" href="dbqb.html">我要开团</a>
 </body>
-
-
-
 <script src="js/mui.min.js"></script>
-<script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
-<script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
-<script src="../../JS/ComFunJS.js"></script>
-<script>
-
-    var model = avalon.define({
-        $id: "teamview",
-        username: ComFunJS.getCookie("wxuser"),
-        ztdata: []
-    })
-    avalon.ready(function () {
-        $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETHDCYLIST", { P1: 0 }, function (r) {
-            if (r.ErrorMsg == "") {
-                model.ztdata = r.Result;
-            } else {
-                alert(r.ErrorMsg);
-            }
-        })
-    })
-    //alert(document.documentElement.clientHeight+"px");
-    document.getElementsByTagName('body')[0].style.height = window.innerHeight + 'px';
-
-</script>
 </html>

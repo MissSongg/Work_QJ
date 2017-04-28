@@ -1,56 +1,60 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>购买夺宝团码</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-        <link rel="stylesheet" href="css/mui.min.css">
-        <link rel="stylesheet" href="css/app.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/mui.min.css">
+    <link rel="stylesheet" href="css/app.css">
 </head>
-<style type="text/css">
-
-</style>
-
-<body ms-controller="indexview">
+<body class="body" ms-controller="indexview">
     <div class="mui-navbar">
-        <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center">
+        <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center headerColor">
             <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
-                <span class="mui-icon mui-icon-left-nav"></span>
+                <span class="mui-icon mui-icon-left-nav" style="color: #fff"></span>
             </button>
-            <h1 class="mui-center mui-title" style="margin-left: -21px;">购买夺宝团码</h1>
+            <h1 class="mui-center mui-title" style="margin-left: -21px;">商品详情</h1>
         </div>
     </div>
     <div class="marginTop5"></div>
-    <div class="mui-content-padded">
-        <img src="images/banner1.jpg">
-        <input type="hidden" name="" id="goodId" value="goodId">
-        <p><i class="mui-icon mui-icon-flag"></i><span id="teamTitle">XXX夺宝团</span><span>(队长:18888888888888)</span></p>
-       <div class="border"></div>
-       <p class="margin17">夺宝团还差<span style="color: #b44949;margin: 5px;">1</span>人就可以开奖了，请尽快加入凭手气，夺大奖！！！</p>
+    <div>
+        <img class="mui-media-object" src="images/innerbanner1.jpg">
+        <div class="margin10">
+            <p>{{@HDData.JX}}</p>
+            <p>价值 : <span>{{@HDData.GMJE}}</span>元</p>
+            <p class="mui-progressbar mui-progressbar-in">
+                <span style="transform: translate3d(-10%, 0px, 0px);"></span>
+            </p>
+            <ul class="Pro-bar-li clearboth">
+                <li class="P-bar01"><em>493</em>已参与</li>
+                <!--<li class="P-bar02"><em>499</em>总需人次</li>
+                <li class="P-bar03"><em>6</em>剩余</li>-->
+            </ul>
+        </div>
     </div>
-<div class="chooseNum title">选择数量</div>
-
- <nav class="card">
-     <button class="decrease" ms-click="@Minis()">-</button>
-     <input type="text" class="numCard" id="payNum" ms-duplex="@Total">
-     <button class="increase" ms-click="@Plus()">+</button>
- </nav>
-
-<nav class="mui-bar mui-bar-tab">
-   <a class="btnshare"><span class="mui-tab-label">共计:<i id="totprice">{{@SumPrice}}</i><i>元</i>
-   </span></a>
-    <a class="btnshare gobuy" id="goPay" href="javascript:;" ms-click="@GotoPay()"><span class="mui-tab-label">去结算</span></a>
-</nav>
+    <div class="chooseNum title">选择数量</div>
+    <nav class="card">
+        <button class="decrease" ms-click="@Minis()">-</button>
+        <input type="number" class="numCard" id="payNum" ms-duplex="@Total">
+        <button class="increase" ms-click="@Plus()">+</button>
+    </nav>
+    <nav class="mui-bar mui-bar-tab">
+        <a class="btnshare">
+            <span class="mui-tab-label">
+                共计:<i id="totprice">{{@SumPrice}}</i><i>元</i>
+            </span>
+        </a>
+        <a class="btnshare gobuy" id="goPay" href="javascript:" ms-click="@GotoPay()"><span class="mui-tab-label">去结算</span></a>
+    </nav>
 </body>
 <script src="js/mui.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
 <script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
 <script src="../../JS/ComFunJS.js"></script>
 <script type="text/javascript">
+
     var model = avalon.define({
         $id: "indexview",
         HDData: {},
@@ -76,7 +80,7 @@
             })
         },
         Plus: function () {
-            model.Total += 1;
+            model.Total +=1;
             model.SumPrice = model.HDData.GMJE * model.Total;
 
         },
@@ -92,56 +96,6 @@
     })
 
 
-    //;$(function () {
-
-
-    // var price = $("#totprice").html();
-    ////++商品
-    //$(".increase").click(function(){
-    //    var n=$(this).prev().val();
-    //    var num=parseInt(n)+1;
-    //    if(num==0){ return;}
-    //     $(this).prev().val(num);
-    //     $("#totprice").text(price*num);
-    //});
-    ////--商品
-    //$(".decrease").click(function(){
-    //    var n=$(this).next().val();
-    //    var num=parseInt(n)-1;
-    //    if(num==0){ return;}
-    //    $(this).next().val(num);
-    //    $("#totprice").text(price*num);
-    //});
-
-    //去支付
-    //$("#goPay").click(function(event) {
-    //    var teamTitle = $("#teamTitle").html();
-    //    console.log("1:"+teamTitle);
-    //    var goodId=$("#goodId").val();
-    //    console.log("2::"+goodId);
-    //    var needPay =$("#totprice").text();
-    //    console.log("3::"+needPay);
-    //    var payNum =$("#payNum").val();
-    //    console.log("4::"+payNum);
-    //    $.ajax({
-    //        cache: false, //禁止缓存
-    //        type: "POST",
-    //        url: "",
-    //        data: {
-    //            "teamTitle": teamTitle,
-    //            "goodId": goodId,
-    //            "needPay": needPay,
-    //            "payNum": payNum,
-    //        },
-    //        error: function(request) {
-    //            alert("Connection error");
-    //        },
-    //        success: function(data) {
-    //          alert("成功");
-    //        }
-    //    });
-    //});
-//})
 
 </script>
 </html>
