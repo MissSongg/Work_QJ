@@ -41,9 +41,12 @@
 <script type="text/javascript" src="js/mui.min.js"></script>
 <script src="js/jquery-1.12.2.min.js"></script>
 <script src="js/jquery.qrcode.min.js"></script>
+<script src="../../JS/ComFunJS.js"></script>
    <script>
        $(document).ready(function () {
-           $('#qrcode').qrcode({ width: 250, height: 250, correctLevel: 0, text: "http://www.baidu.com" });
+           var ztid = ComFunJS.getQueryString("ztid");
+           var url = "http://www.qijiekeji.com/View_Mobile/WX/hd/jointeam.html?id=" + ztid
+           $('#qrcode').qrcode({ width: 250, height: 250, correctLevel: 0, text: url });
 
        });
    </script>
