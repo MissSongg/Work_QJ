@@ -37,6 +37,11 @@ li{    list-style-type: none;}
 {
     margin-bottom: 20px;
 }
+
+.ms-controller{
+   visibility: hidden
+}
+
 .bottomF{ bottom: 47px !important;}
 .mui-plus.mui-android header.mui-bar { display: none; }
 .mui-plus.mui-android .mui-bar-nav ~ .mui-content { padding: 0; }
