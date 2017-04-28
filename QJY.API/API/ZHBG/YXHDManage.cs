@@ -118,6 +118,18 @@ namespace QJY.API
         public void GETHDMXLIST(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
         {
             int ID = Int32.Parse(P1);
+            string strSQL = string.Format("SELECT  *  FROM SZHL_YX_HD_ITEM  WHERE HDID='{0}'", ID);
+            DataTable dtReturn = new SZHL_YX_HD_CYB().GetDTByCommand(strSQL);
+            dtReturn.Columns.Add("GMRS");
+            dtReturn.Columns.Add("ZJLIST", Type.GetType("System.Object"));
+            foreach (DataRow dr in dtReturn.Rows)
+            {
+                int hdmxid = int.Parse(dr["ID"].ToString());
+                dr["GMRS"] = new SZHL_YX_HD_CYB().GetEntities(D => D.hdmxid == hdmxid).Count();
+                dr["FileList"] = new SZHL_YX_HD_CYB().GetEntities(D => D.hdmxid == hdmxid && D.iszj == "Y");
+              
+            }
+            msg.Result = dtReturn;
             msg.Result = new SZHL_YX_HD_ITEMB().GetEntities(p => p.ComId == ComId && p.HDID == ID);
         }
 
