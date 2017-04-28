@@ -1,61 +1,72 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>夺宝奇兵</title>
-<meta name="viewport" content="width=device-width, 
+    <meta charset="utf-8">
+    <title>夺宝奇兵</title>
+    <meta name="viewport" content="width=device-width, 
 initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<link rel="stylesheet" href="css/mui.min.css">
-<link rel="stylesheet" href="css/app.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/mui.min.css">
+    <link rel="stylesheet" href="css/app.css">
 </head>
 
-<body ms-controller="indexview">
-     <div class="mui-navbar">
-        <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center">
-            <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
-                
-            </button>
-            <h1 class="mui-center mui-title" style="margin-left: -21px;">夺宝奇兵</h1>
-        </div>
-    </div>
+<body ms-controller="dnqbview">
+    <header class="mui-bar mui-bar-nav headerColor">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white"></a>
+        <h1 class="mui-title">夺宝奇兵</h1>
+    </header>
     <div class="marginTop5"></div>
-  <div class="huodonglist" ms-for="el in @HDData">
-         <a href="#"><img src="images/banner1.jpg"></a>   
-        <div class="uproll">
-            <div class="notice left">中奖公告 </div>   
-            <div class="box">
-             <ul>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-               <li>恭喜188888888888或得大奖</li>
-             </ul>
-            </div>
-        </div>
-        <div class="actContent">
-            <p><i class="mui-icon mui-icon-paperplane"></i>活动内容</p>
-            <div class="mui-card-content">
-                <p ms-html="el.JX"></p>
-            </div>
-        </div>
-        <a class="gojoin" href="goods.html">我要夺宝</a>
-  </div>
-
-    <div class="title">组团夺宝</div>
-    <div class="actContent">
+    <div class="indianaContent">
         <div class="mui-card-content">
-            <volist name="indiana_list" id="vo">
-                <p><i class="mui-icon-extra"></i><span class="mui-icon mui-icon-flag"></span>用户188888888888的抽奖团(10/10)</p>
-            </volist>
+            <p>1.至尊年卡，全年畅玩两大经典项目，限量抢购： 原价2480元至尊年卡，店庆期间998元。限量100张（哈尼鹿小镇+糖果世界+200会员币）。</p>
+            <p>2. 超值年卡，一天不到一元钱，全年畅玩糖果世界，线上抢购原价998糖果年卡，现价299元，限量100张（糖果世界一年内无限次畅玩，不含游戏币）。</p>
         </div>
     </div>
+
+
+    <ul class="mui-table-view">
+
+        <li class="mui-table-view-cell mui-media"  ms-for="el in @HDData">
+
+            <img class="mui-media-object mui-pull-left" style="border-radius: 6px;" src="images/youwanbi.jpg">
+            <div class="mui-media-body">
+                {{el.GMJE}}元
+                 
+                <p class="mui-ellipsis">{{el.JX}}</p>
+                <p class="mui-progressbar mui-progressbar-infinite"></p>
+                <ul class="Pro-bar-li">
+                    <li class="P-bar01"><em>493</em>已参与</li>
+                </ul>
+            </div>
+            <div class="uproll">
+                <div class="notice left">手气最佳 </div>
+                <div class="box">
+                    <ul>
+                        <li>
+                            <p>恭喜188888888888或得年卡</p>
+                        </li>
+                        <li>
+                            <p>恭喜188888888888或得年卡</p>
+                        </li>
+                        <li>
+                            <p>恭喜188888888888或得年卡</p>
+                        </li>
+                        <li>
+                            <p>恭喜188888888888或得年卡</p>
+                        </li>
+                        <li>
+                            <p>恭喜188888888888或得年卡</p>
+                        </li>
+                        <li>
+                            <p>恭喜188888888888或得年卡</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <a class="gojoin" href="buygoods.html">我要夺宝</a>
+        </li>
+    </ul>
     <nav class="mui-bar mui-bar-tab">
         <a class="btnshare " href="index.html">
             <span class="mui-tab-label">首页</span>
@@ -69,8 +80,9 @@ initial-scale=1,maximum-scale=1,user-scalable=no">
     </nav>
     <div class="bottom"></div>
 </body>
-<script src="js/jquery-1.12.2.min.js"></script>
 <script src="js/mui.min.js"></script>
+<script src="js/jquery-1.12.2.min.js"></script>
+
 <script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
 <script src="../../JS/ComFunJS.js"></script>
 
@@ -78,54 +90,60 @@ initial-scale=1,maximum-scale=1,user-scalable=no">
 <script>
 
     var model = avalon.define({
-        $id: "indexview",
-        ID: ComFunJS.getQueryString("id"),
+        $id: "dnqbview",
+        ID: ComFunJS.getQueryString("id",549),
         HDData: [],
         GetHDData: function () {
             $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETHDMXLIST", { P1: model.ID }, function (r) {
                 if (r.ErrorMsg == "") {
                     model.HDData = r.Result;
+                    $(".box").scrollTop({
+                        speed: 70 //数值越大 速度越慢
+                    });
                 }
             })
         }
     });
     avalon.ready(function () {
         model.GetHDData();
+     
     })
 
 
-    ;(function($){
- $.fn.scrollTop = function(options){
-  var defaults = {
-   speed:30
-   }
-  var opts = $.extend(defaults,options);
-  this.each(function(){
-   var $timer;
-   var scroll_top=0;
-   var obj = $(this);
-   var $height = obj.find("ul").height();
-   obj.find("ul").clone().appendTo(obj);
-   obj.hover(function(){
-    clearInterval($timer);
-    },function(){
-     $timer = setInterval(function(){
-      scroll_top++;
-      if(scroll_top > $height){
-       scroll_top = 0;
-      }
-      obj.find("ul").first().css("margin-top",-scroll_top);
-    },opts.speed);
-    }).trigger("mouseleave");
-   })
-  }
- })(jQuery)
+</script>
+
+    
+<script>
+    (function ($) {
+        $.fn.scrollTop = function (options) {
+            var defaults = {
+                speed: 30
+            }
+            var opts = $.extend(defaults, options);
+            this.each(function () {
+                var $timer;
+                var scroll_top = 0;
+                var obj = $(this);
+                var $height = obj.find("ul").height();
+                obj.find("ul").clone().appendTo(obj);
+                obj.hover(function () {
+                    clearInterval($timer);
+                }, function () {
+                    $timer = setInterval(function () {
+                        scroll_top++;
+                        if (scroll_top > $height) {
+                            scroll_top = 0;
+                        }
+                        obj.find("ul").first().css("margin-top", -scroll_top);
+                    }, opts.speed);
+                }).trigger("mouseleave");
+            })
+        }
+    })(jQuery)
 </script>
 <script>
-$(function(){
- $(".box").scrollTop({
-  speed:70 //数值越大 速度越慢
-  });
-})
+    $(function () {
+    
+    })
 </script>
 </html>
