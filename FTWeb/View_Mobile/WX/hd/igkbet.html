@@ -44,7 +44,7 @@
         </div>
 
     </div>
-    <a  ms-if="ztdata.iskj=='N'" class="getJoin" style="width: 40%;float:left;" href="">拉朋友进团</a>
+    <a  ms-if="ztdata.iskj=='N'" class="getJoin" style="width: 40%;float:left;">拉朋友进团</a>
 </body>
 
 <script type="text/javascript" src="js/mui.min.js"></script>
@@ -58,7 +58,10 @@
         ztdata: {},
         zjhm: "",
         ztid: ComFunJS.getQueryString("ztid"),
-        ztmxdata: []
+        ztmxdata: [],
+        jt: function () {
+            location.href = "tdewm.html?ztid=" + model.ztid;
+        }
     })
     avalon.ready(function () {
         $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETHDZTLIST", { P1: model.ztid }, function (r) {
