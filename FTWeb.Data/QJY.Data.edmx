@@ -2349,6 +2349,40 @@
           <Property Name="kjtime" Type="datetime" />
           <Property Name="ztname" Type="varchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="SZHL_YX_PAYINFO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="varchar" MaxLength="50" />
+          <Property Name="PayType" Type="varchar" MaxLength="50" />
+          <Property Name="appid" Type="varchar" MaxLength="200" />
+          <Property Name="mch_id" Type="varchar" MaxLength="200" />
+          <Property Name="device_info" Type="varchar" MaxLength="200" />
+          <Property Name="nonce_str" Type="varchar" MaxLength="200" />
+          <Property Name="sign" Type="varchar" MaxLength="200" />
+          <Property Name="result_code" Type="varchar" MaxLength="200" />
+          <Property Name="err_code" Type="varchar" MaxLength="200" />
+          <Property Name="err_code_des" Type="varchar" MaxLength="200" />
+          <Property Name="openid" Type="varchar" MaxLength="200" />
+          <Property Name="is_subscribe" Type="varchar" MaxLength="200" />
+          <Property Name="trade_type" Type="varchar" MaxLength="200" />
+          <Property Name="bank_type" Type="varchar" MaxLength="200" />
+          <Property Name="total_fee" Type="varchar" MaxLength="200" />
+          <Property Name="settlement_total_fee" Type="varchar" MaxLength="200" />
+          <Property Name="fee_type" Type="varchar" MaxLength="200" />
+          <Property Name="cash_fee" Type="varchar" MaxLength="200" />
+          <Property Name="cash_fee_type" Type="varchar" MaxLength="200" />
+          <Property Name="coupon_fee" Type="varchar" MaxLength="200" />
+          <Property Name="coupon_count" Type="varchar" MaxLength="200" />
+          <Property Name="coupon_type_n" Type="varchar" MaxLength="200" />
+          <Property Name="coupon_id_n" Type="varchar" MaxLength="200" />
+          <Property Name="coupon_fee_n" Type="varchar" MaxLength="200" />
+          <Property Name="transaction_id" Type="varchar" MaxLength="200" />
+          <Property Name="out_trade_no" Type="varchar" MaxLength="200" />
+          <Property Name="attach" Type="varchar" MaxLength="200" />
+          <Property Name="time_end" Type="varchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="SZHL_YX_USER">
           <Key>
             <PropertyRef Name="ID" />
@@ -2617,6 +2651,7 @@
           <EntitySet Name="SZHL_YX_HD_GM" EntityType="Self.SZHL_YX_HD_GM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_YX_HD_ITEM" EntityType="Self.SZHL_YX_HD_ITEM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_YX_HD_ZT" EntityType="Self.SZHL_YX_HD_ZT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_YX_PAYINFO" EntityType="Self.SZHL_YX_PAYINFO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_YX_USER" EntityType="Self.SZHL_YX_USER" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Yan_WF_ChiTask" EntityType="Self.Yan_WF_ChiTask" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Yan_WF_DaiLi" EntityType="Self.Yan_WF_DaiLi" Schema="dbo" store:Type="Tables" />
@@ -2759,6 +2794,7 @@
           <EntitySet Name="SZHL_YX_HD_CY" EntityType="QJY_SaaSModel.SZHL_YX_HD_CY" />
           <EntitySet Name="SZHL_YX_HD_ZT" EntityType="QJY_SaaSModel.SZHL_YX_HD_ZT" />
           <EntitySet Name="SZHL_YX_HD_GM" EntityType="QJY_SaaSModel.SZHL_YX_HD_GM" />
+          <EntitySet Name="SZHL_YX_PAYINFO" EntityType="QJY_SaaSModel.SZHL_YX_PAYINFO" />
         </EntityContainer>
         <EntityType Name="FT_File">
           <Key>
@@ -5248,6 +5284,40 @@
           <Property Name="wxbillnumber" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="wxbilltime" Type="DateTime" Precision="3" />
           <Property Name="wxbillstatus" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SZHL_YX_PAYINFO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PayType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="appid" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="mch_id" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="device_info" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="nonce_str" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="sign" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="result_code" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="err_code" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="err_code_des" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="openid" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="is_subscribe" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="trade_type" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="bank_type" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="total_fee" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="settlement_total_fee" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="fee_type" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="cash_fee" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="cash_fee_type" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="coupon_fee" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="coupon_count" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="coupon_type_n" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="coupon_id_n" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="coupon_fee_n" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="transaction_id" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="out_trade_no" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="attach" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="time_end" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7869,6 +7939,41 @@
                 <ScalarProperty Name="zfje" ColumnName="zfje" />
                 <ScalarProperty Name="userid" ColumnName="userid" />
                 <ScalarProperty Name="goodscode" ColumnName="goodscode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_YX_PAYINFO">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_YX_PAYINFO">
+              <MappingFragment StoreEntitySet="SZHL_YX_PAYINFO">
+                <ScalarProperty Name="time_end" ColumnName="time_end" />
+                <ScalarProperty Name="attach" ColumnName="attach" />
+                <ScalarProperty Name="out_trade_no" ColumnName="out_trade_no" />
+                <ScalarProperty Name="transaction_id" ColumnName="transaction_id" />
+                <ScalarProperty Name="coupon_fee_n" ColumnName="coupon_fee_n" />
+                <ScalarProperty Name="coupon_id_n" ColumnName="coupon_id_n" />
+                <ScalarProperty Name="coupon_type_n" ColumnName="coupon_type_n" />
+                <ScalarProperty Name="coupon_count" ColumnName="coupon_count" />
+                <ScalarProperty Name="coupon_fee" ColumnName="coupon_fee" />
+                <ScalarProperty Name="cash_fee_type" ColumnName="cash_fee_type" />
+                <ScalarProperty Name="cash_fee" ColumnName="cash_fee" />
+                <ScalarProperty Name="fee_type" ColumnName="fee_type" />
+                <ScalarProperty Name="settlement_total_fee" ColumnName="settlement_total_fee" />
+                <ScalarProperty Name="total_fee" ColumnName="total_fee" />
+                <ScalarProperty Name="bank_type" ColumnName="bank_type" />
+                <ScalarProperty Name="trade_type" ColumnName="trade_type" />
+                <ScalarProperty Name="is_subscribe" ColumnName="is_subscribe" />
+                <ScalarProperty Name="openid" ColumnName="openid" />
+                <ScalarProperty Name="err_code_des" ColumnName="err_code_des" />
+                <ScalarProperty Name="err_code" ColumnName="err_code" />
+                <ScalarProperty Name="result_code" ColumnName="result_code" />
+                <ScalarProperty Name="sign" ColumnName="sign" />
+                <ScalarProperty Name="nonce_str" ColumnName="nonce_str" />
+                <ScalarProperty Name="device_info" ColumnName="device_info" />
+                <ScalarProperty Name="mch_id" ColumnName="mch_id" />
+                <ScalarProperty Name="appid" ColumnName="appid" />
+                <ScalarProperty Name="PayType" ColumnName="PayType" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

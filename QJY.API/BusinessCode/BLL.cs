@@ -574,6 +574,10 @@ namespace QJY.API
     public class SZHL_YX_USERB : BaseEFDao<SZHL_YX_USER>
     {
     }
+    public class SZHL_YX_PAYINFOB : BaseEFDao<SZHL_YX_PAYINFO>
+    {
+    }
+    
 
     #region 营销模块
     public class SZHL_YX_HDB : BaseEFDao<SZHL_YX_HD>

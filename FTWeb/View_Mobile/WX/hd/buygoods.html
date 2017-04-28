@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -15,7 +15,7 @@
 
 </style>
 
-<body>
+<body ms-controller="indexview">
     <div class="mui-navbar">
         <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center">
             <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
@@ -35,69 +35,113 @@
 <div class="chooseNum title">选择数量</div>
 
  <nav class="card">
-     <button class="decrease">-</button>
-     <input type="text" class="numCard" id="payNum" value="1">
-     <button class="increase">+</button>
+     <button class="decrease" ms-click="@Minis()">-</button>
+     <input type="text" class="numCard" id="payNum" ms-duplex="@Total">
+     <button class="increase" ms-click="@Plus()">+</button>
  </nav>
 
 <nav class="mui-bar mui-bar-tab">
-   <a class="btnshare"><span class="mui-tab-label">共计:<i id="totprice">100</i><i>元</i>
+   <a class="btnshare"><span class="mui-tab-label">共计:<i id="totprice">{{@SumPrice}}</i><i>元</i>
    </span></a>
-    <a class="btnshare gobuy" id="goPay" href="javascript:;"><span class="mui-tab-label">去结算</span></a>
+    <a class="btnshare gobuy" id="goPay" href="javascript:;" ms-click="@GotoPay()"><span class="mui-tab-label">去结算</span></a>
 </nav>
 </body>
 <script src="js/mui.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
+<script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
+<script src="../../JS/ComFunJS.js"></script>
 <script type="text/javascript">
-$(function(){
+    var model = avalon.define({
+        $id: "indexview",
+        HDData: {},
+        SumPrice: 0,
+        Total: 1,
+        id: ComFunJS.getQueryString("id"),
+        GetHDData: function () {
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETMXMODEL", { P1: model.id }, function (r) {
+                if (r.ErrorMsg == "") {
+                    model.HDData = r.Result;
+                    model.SumPrice = r.Result.GMJE;
+                }
+            })
+        },
+        GotoPay: function () {
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_BUYGOODS", { P1: model.id, P2: model.Total }, function (r) {
+                if (r.ErrorMsg == "" && r.Result) {
+                    var orderid = r.Result;
 
-     var price = $("#totprice").html();
-    //++商品
-    $(".increase").click(function(){
-        var n=$(this).prev().val();
-        var num=parseInt(n)+1;
-        if(num==0){ return;}
-         $(this).prev().val(num);
-         $("#totprice").text(price*num);
-    });
-    //--商品
-    $(".decrease").click(function(){
-        var n=$(this).next().val();
-        var num=parseInt(n)-1;
-        if(num==0){ return;}
-        $(this).next().val(num);
-        $("#totprice").text(price*num);
-    });
+                    var redirect_uri = encodeURI("http://www.djusu.com/mobile/order/wxpay?orderid=" + orderid + "&showwxpaytitle=1");
+                    var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2253e354c2d42bda&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+                }
+            })
+        },
+        Plus: function () {
+            model.Total += 1;
+            model.SumPrice = model.HDData.GMJE * model.Total;
+
+        },
+        Minis: function () {
+            if (model.Total > 1) {
+                model.Total -= 1;
+                model.SumPrice = model.HDData.GMJE * model.Total;
+            }
+        }
+    })
+    avalon.ready(function () {
+        model.GetHDData();
+    })
+
+
+    //;$(function () {
+
+
+    // var price = $("#totprice").html();
+    ////++商品
+    //$(".increase").click(function(){
+    //    var n=$(this).prev().val();
+    //    var num=parseInt(n)+1;
+    //    if(num==0){ return;}
+    //     $(this).prev().val(num);
+    //     $("#totprice").text(price*num);
+    //});
+    ////--商品
+    //$(".decrease").click(function(){
+    //    var n=$(this).next().val();
+    //    var num=parseInt(n)-1;
+    //    if(num==0){ return;}
+    //    $(this).next().val(num);
+    //    $("#totprice").text(price*num);
+    //});
 
     //去支付
-    $("#goPay").click(function(event) {
-        var teamTitle = $("#teamTitle").html();
-        console.log("1:"+teamTitle);
-        var goodId=$("#goodId").val();
-        console.log("2::"+goodId);
-        var needPay =$("#totprice").text();
-        console.log("3::"+needPay);
-        var payNum =$("#payNum").val();
-        console.log("4::"+payNum);
-        $.ajax({
-            cache: false, //禁止缓存
-            type: "POST",
-            url: "",
-            data: {
-                "teamTitle": teamTitle,
-                "goodId": goodId,
-                "needPay": needPay,
-                "payNum": payNum,
-            },
-            error: function(request) {
-                alert("Connection error");
-            },
-            success: function(data) {
-              alert("成功");
-            }
-        });
-    });
-})
+    //$("#goPay").click(function(event) {
+    //    var teamTitle = $("#teamTitle").html();
+    //    console.log("1:"+teamTitle);
+    //    var goodId=$("#goodId").val();
+    //    console.log("2::"+goodId);
+    //    var needPay =$("#totprice").text();
+    //    console.log("3::"+needPay);
+    //    var payNum =$("#payNum").val();
+    //    console.log("4::"+payNum);
+    //    $.ajax({
+    //        cache: false, //禁止缓存
+    //        type: "POST",
+    //        url: "",
+    //        data: {
+    //            "teamTitle": teamTitle,
+    //            "goodId": goodId,
+    //            "needPay": needPay,
+    //            "payNum": payNum,
+    //        },
+    //        error: function(request) {
+    //            alert("Connection error");
+    //        },
+    //        success: function(data) {
+    //          alert("成功");
+    //        }
+    //    });
+    //});
+//})
 
 </script>
 </html>

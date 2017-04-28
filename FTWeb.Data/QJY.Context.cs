@@ -154,5 +154,6 @@ namespace QJY.Data
         public virtual DbSet<SZHL_YX_HD_CY> SZHL_YX_HD_CY { get; set; }
         public virtual DbSet<SZHL_YX_HD_ZT> SZHL_YX_HD_ZT { get; set; }
         public virtual DbSet<SZHL_YX_HD_GM> SZHL_YX_HD_GM { get; set; }
+        public virtual DbSet<SZHL_YX_PAYINFO> SZHL_YX_PAYINFO { get; set; }
     }
 }

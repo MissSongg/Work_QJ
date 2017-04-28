@@ -122,8 +122,71 @@ namespace QJY.API
         }
 
 
+        /// <summary>
+        /// 查看活动明细Model
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="ComId"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETMXMODEL(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
+        {
+            int ID = Int32.Parse(P1);
+            msg.Result = new SZHL_YX_HD_ITEMB().GetEntity(p => p.ComId == ComId && p.ID == ID);
+        }
 
 
+        /// <summary>
+        /// 购买商品
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="ComId"></param>
+        /// <param name="P1">活动明细ID</param>
+        /// <param name="P2">购买数量</param>
+        /// <param name="UserInfo"></param>
+        public void BUYGOODS(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
+        {
+            int ID = Int32.Parse(P1);
+            var item = new SZHL_YX_HD_ITEMB().GetEntity(p => p.ComId == ComId && p.ID == ID);
+            if (item == null)
+            {
+                msg.ErrorMsg = "活动错误";
+                return;
+            }
+            int total = Int32.Parse(P2);
+            if (total < 1)
+            {
+                msg.ErrorMsg = "购买数量错误";
+                return;
+            }
+
+            string batchnumber = DateTime.Now.ToString("yyyyMMddHHssmmfff");
+
+            while (total >= 1)
+            {
+                SZHL_YX_HD_GM gm = new SZHL_YX_HD_GM();
+                gm.hdid = item.HDID;
+                gm.hdmxid = item.ID;
+                gm.ComId = ComId;
+                gm.CRDate = DateTime.Now;
+                gm.userid = UserInfo.ID;
+                gm.zfje = item.GMJE;
+                gm.iscyhd = "N";
+                gm.gmdate = DateTime.Now;
+                gm.ishx = "N";
+                gm.batchnumber = batchnumber;
+
+                new SZHL_YX_HD_GMB().Insert(gm);
+
+                total -= 1;
+            }
+
+            msg.Result = batchnumber;
+
+        }
         /// <summary>
         /// 根据组团ID查看组团用户列表
         /// </summary>
