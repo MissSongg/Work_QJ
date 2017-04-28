@@ -73,6 +73,7 @@
         $id: "loginview",
         UsrData: { "mobphone": "", "Pasd": "" },
         RegData: { "mobphone": "", "Pasd": "", "Pasd1": "" },
+        rurl: ComFunJS.getQueryString("rurl"),
         Login: function () {
             if (!model.UsrData.mobphone || !model.UsrData.Pasd) {
                 alert("请输入手机号和密码");
@@ -88,7 +89,12 @@
                 if (r.ErrorMsg == "") {
                     alert("登录成功");
                     ComFunJS.setCookie("wxuser", r.Result);
-                    window.location = "index.html";
+                    if (model.rurl) {
+                        window.location = model.rurl;
+                    } else {
+                        window.location = "index.html";
+                    }
+
                 } else {
                     alert(r.ErrorMsg);
                 }

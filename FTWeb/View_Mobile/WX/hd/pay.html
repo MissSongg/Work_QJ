@@ -84,22 +84,22 @@
     
         <p class="title">{{@TuanName}}</p> 
         <p style="margin: 0 15px">价格 :<span style="color:#ff0000;">{{@HDData.GMJE}}</span> 元</p>
-        <p class="pphone">
+        <!--<p class="pphone">
             <input type="text" id="pphone" name="" placeholder="请输入正确手机号">
             <span><i class="mui-icon mui-icon-info-filled"></i>请正确输入手机号，否则商家不予兑换大奖</span>
-        </p>
+        </p>-->
     <a class="gojoin" href="javascript:;" ms-click="@CallPay()">立即支付</a>
     <nav class="mui-bar mui-bar-tab">
-    <a class="btnshare " href="index.html">
-        <span class="mui-tab-label">首页</span>
-    </a>
-    <a class="btnshare mui-active" href="{:U('Team/index')}">
-        <span class="mui-tab-label">我的团</span>
-    </a>
-    <a class="btnshare" href="{:U('Shop/index')}">
-        <span class="mui-tab-label">我的商品</span>
-    </a>
-</nav>
+        <a class="btnshare " href="index.html">
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a class="btnshare mui-active" href="myteam.html">
+            <span class="mui-tab-label">我的团</span>
+        </a>
+        <a class="btnshare" href="shopcard.html">
+            <span class="mui-tab-label">我的商品</span>
+        </a>
+    </nav>
 <div class="bottom"></div>
 </body>
 
@@ -111,14 +111,14 @@
 
     var model = avalon.define({
         $id: "payview",
-        HM: ComFunJS.getQueryString("hm"),
+        hdmx: ComFunJS.getQueryString("hdmx"),
         TuanName: ComFunJS.getQueryString("tname"),
         code: ComFunJS.getQueryString("code"),
         orderid: ComFunJS.getQueryString("orderid"),
         HDData: {},
         json: {},
         GetHDData: function () {
-            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETMXMODEL", { P1: model.HM }, function (r) {
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETMXMODEL", { P1: model.hdmx }, function (r) {
                 if (r.ErrorMsg == "") {
                     model.HDData = r.Result;
                 }
@@ -131,13 +131,15 @@
             }
 
             //产生购买单
-            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_BUYGOODS", { P1: model.HM, P2: 1 }, function (r) {
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_BUYGOODS", { P1: model.hdmx, P2: 1 }, function (r) {
                 if (r.ErrorMsg == "") {
                     var orderid = r.Result;
 
-                    var redirect_uri = encodeURI(window.location + "&orderid=" + orderid + "&showwxpaytitle=1&r=" + Math.random());
-                    var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx56652205b133df19&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
-                    window.location = url;
+                    alert("支付成功");
+                    window.location = "myteam.html";
+                    //var redirect_uri = encodeURIComponent(window.location.toString() + "&orderid=" + orderid + "&showwxpaytitle=1&rdm=" + Math.random());
+                    //var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx56652205b133df19&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+                    //window.location = url;
                 }
             })
            
@@ -145,10 +147,18 @@
         }
     }); 
     avalon.ready(function () {
+        if (!ComFunJS.getCookie("wxuser")) {
+
+            alert("请先登录")
+            window.location = "login.html";
+            return;
+        }
+
         if (model.code && model.orderid) {
 
-            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETPAYJSAPI", { P1: model.orderid, P2: model.code }, function (r) {
-                if (r.error == "") {
+            $.getJSON("/API/WXAPI2.ashx?Action=WX_GETPAYJSAPI", { P1: model.orderid, P2: model.code, tuanname: model.TuanName }, function (r) {
+                if (r.ErrorMsg == "") {
+                    alert(JSON.stringify(r.Result));
                     model.json = r.Result;
                     if (typeof WeixinJSBridge == "undefined") {
                         if (document.addEventListener) {
@@ -162,22 +172,25 @@
                     }
                     //jsApiCall(r.result);
                 } else {
-                    ComFunJS.close();
-                    ComFunJS.showAlert("支付错误，请重新支付");
+
+                    alert(r.ErrorMsg)
                 }
             })
+        } else {
+            model.GetHDData();
         }
-        model.GetHDData();
+
+
     })
 
 
     //调用微信JS api 支付
     function jsApiCall() {
         WeixinJSBridge.invoke('getBrandWCPayRequest', model.json, function (res) {
-            ComFunJS.close();
             if (res.err_msg == "get_brand_wcpay_request:ok") {
                 window.location = "myteam.html";
             } else {
+                alert(res.err_msg);
                 alert("订单未成功支付");
             }
             // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。

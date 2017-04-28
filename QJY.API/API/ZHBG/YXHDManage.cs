@@ -161,6 +161,8 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void BUYGOODS(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
         {
+            string tuanname = context.Request.QueryString["tuanname"];
+
             int ID = Int32.Parse(P1);
             var item = new SZHL_YX_HD_ITEMB().GetEntity(p => p.ComId == ComId && p.ID == ID);
             if (item == null)
@@ -175,8 +177,24 @@ namespace QJY.API
                 return;
             }
 
-            string batchnumber = DateTime.Now.ToString("yyyyMMddHHssmmfff");
+            //开团
+            int tid = 0;
+            if (string.IsNullOrEmpty(tuanname))
+            {
+                SZHL_YX_HD_ZT ZT = new SZHL_YX_HD_ZT();
+                ZT.ComId = ComId;
+                ZT.CRDate = DateTime.Now;
+                ZT.fqdate = DateTime.Now;
+                ZT.fquserid = UserInfo.ID;
+                ZT.hdid = item.HDID;
+                ZT.hdmxid = ID;
+                ZT.ztname = tuanname;
+                new SZHL_YX_HD_ZTB().Insert(ZT);
 
+                tid = ZT.ID;
+            }
+
+            string batchnumber = DateTime.Now.ToString("yyyyMMddHHssmmfff");
             while (total >= 1)
             {
                 SZHL_YX_HD_GM gm = new SZHL_YX_HD_GM();
@@ -190,8 +208,25 @@ namespace QJY.API
                 gm.gmdate = DateTime.Now;
                 gm.ishx = "N";
                 gm.batchnumber = batchnumber;
+                gm.wxbillstatus = "0";
 
                 new SZHL_YX_HD_GMB().Insert(gm);
+
+                //测试购买即支付成功
+                new SZHL_YX_HD_GMB().ExsSql("update SZHL_YX_HD_GM set wxbillstatus='',goodscode='" + gm.ID + "' where ID='" + gm.ID + "'");
+
+
+                SZHL_YX_HD_CY MODEL = new SZHL_YX_HD_CY();
+                MODEL.ComId = ComId;
+                MODEL.CRDate = DateTime.Now;
+                MODEL.hdid = item.HDID;
+                MODEL.hdmxid = ID;
+                MODEL.goodscode = gm.ID.ToString();
+                MODEL.iszj = "N";
+                MODEL.userid = UserInfo.ID;
+                MODEL.cyuserphone = UserInfo.mobphone;
+                MODEL.ztid = tid;
+                new SZHL_YX_HD_CYB().Insert(MODEL);
 
                 total -= 1;
             }

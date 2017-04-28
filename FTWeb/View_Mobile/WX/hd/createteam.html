@@ -55,11 +55,20 @@
                 return;
             }
             if (confirm("确定要创建开奖团吗？")) {
-                window.location = "pay.html?hm=" + model.ID + "&tname=" + encodeURIComponent(model.TuanName);
+                window.location = "pay.html?hdmx=" + model.ID + "&tname=" + encodeURIComponent(model.TuanName);
             }
         }
     });
+    avalon.ready(function () {
 
+        if (!ComFunJS.getCookie("wxuser")) {
+
+            alert("请先登录")
+            window.location = "login.html?rurl=" + encodeURI(window.location);
+            return;
+        }
+
+    })
 
 </script>
 

@@ -87,7 +87,8 @@ namespace QJY.API
             new SZHL_YX_HD_GMB().ExsSql("UPDATE SZHL_YX_HD_GM SET wxbillnumber='" + sp_billno + "' WHERE ComId='" + ComId + "' and batchnumber='" + P1 + "'");
 
             //微信支付单号
-            decimal payprice = 0; //ord.SumPrice.Value;
+            string ppprice = new SZHL_YX_HD_GMB().ExsSclarSql("select isnull(sum(zfje),0) from SZHL_YX_HD_GM where batchnumber='" + P1 + "'").ToString();
+            decimal payprice = decimal.Parse(ppprice); //ord.SumPrice.Value;
             //当前时间 yyyyMMdd
             string date = DateTime.Now.ToString("yyyyMMdd");
 
@@ -102,7 +103,7 @@ namespace QJY.API
                 "商品",
                 sp_billno,
                 (int)(payprice * 100),
-                HttpContext.Current.Request.UserHostAddress,
+                context.Request.UserHostAddress,
                 _tenPayV3Info.TenPayV3Notify,
                 TenPayV3Type.JSAPI,
                 openIdResult.openid,
