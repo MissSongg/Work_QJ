@@ -161,6 +161,7 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void BUYGOODS(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
         {
+            string strtid = context.Request.QueryString["tid"];
             string tuanname = context.Request.QueryString["tuanname"];
 
             int ID = Int32.Parse(P1);
@@ -179,7 +180,11 @@ namespace QJY.API
 
             //开团
             int tid = 0;
-            if (string.IsNullOrEmpty(tuanname))
+            if (!string.IsNullOrEmpty(strtid))
+            {
+                tid = Int32.Parse(strtid);
+            }
+            else if (string.IsNullOrEmpty(tuanname))
             {
                 SZHL_YX_HD_ZT ZT = new SZHL_YX_HD_ZT();
                 ZT.ComId = ComId;
@@ -280,6 +285,20 @@ namespace QJY.API
         }
 
 
+        /// <summary>
+        /// 夺宝团model
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="ComId"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETZTMODEL(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
+        {
+            msg.Result = new SZHL_YX_HD_ZTB().GetDTByCommand("select z.*,m.GMJE,m.CTRS,u.mobphone from SZHL_YX_HD_ZT z join SZHL_YX_HD_ITEM m on z.hdmxid=m.ID join SZHL_YX_USER u on z.fquserid=u.ID where z.id='" + P1 + "' ");
+
+        }
 
         /// <summary>
         /// 获取当前用户的所有商品码

@@ -18,7 +18,7 @@
 }
 </style>
 
-<body>
+<body ms-controller="teamview">
     <div class="mui-navbar">
         <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center">
             <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
@@ -30,10 +30,12 @@
     <div class="marginTop5"></div>
     <div class="mui-content-padded">
         <img src="images/banner1.jpg">
-        <p><i class="mui-icon mui-icon-flag"></i><span>XXX夺宝团</span><span>(队长:18888888888888)</span></p>
+        <p><i class="mui-icon mui-icon-flag"></i><span>{{@ztdata.ztname}}</span><span>(队长:{{@ztdata.mobphone}})</span></p>
         <p class="mui-progressbar mui-progressbar-in width100" data-progress="60"><span style="transform: translate3d(-10%, 0px, 0px);"></span></p>
                 <p class="margin17">夺宝团还差<span style="color: #b44949;margin: 5px;">1</span>人就可以开奖了，请尽快加入凭手气，夺大奖！！！</p>
-        <div class="waitWinner left">待开奖</div><a class="waitWinner joinColor right" href="goods.html">加入夺宝</a>
+        <div class="waitWinner left" ms-if="@ztdata.iskj=='N'">待开奖</div>
+        <div class="waitWinner left joinColor" ms-if="@ztdata.iskj=='Y'">已开奖</div>
+        <a class="waitWinner joinColor right" ms-attr="{href:'buygoods.html?tid='+@ztdata.ID}" ms-if="@ztdata.iskj=='N'">加入夺宝</a>
 
     </div>
     <a class="getJoin bottomFix bottomF" href="dbqb.html">我要开团</a>
@@ -48,6 +50,31 @@
             <span class="mui-tab-label">我的商品</span>
         </a>
     </nav>
+
+
+    <script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
+    <script type="text/javascript" src="js/mui.min.js"></script>
+    <script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
+    <script src="../../JS/ComFunJS.js"></script>
+    <script >
+        var model = avalon.define({
+            $id: "teamview",
+            ID: ComFunJS.getQueryString("id"),
+            ztdata: {}
+        })
+        avalon.ready(function () {
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETZTMODEL", { P1: model.ID }, function (r) {
+                if (r.ErrorMsg == "") {
+                    model.ztdata = r.Result[0];
+                } else {
+                   
+                }
+            })
+        })
+    </script>
+
 </body>
-<script type="text/javascript" src="js/mui.min.js"></script>
+
+
+
 </html>

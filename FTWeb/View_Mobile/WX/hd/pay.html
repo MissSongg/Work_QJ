@@ -88,6 +88,13 @@
             <input type="text" id="pphone" name="" placeholder="请输入正确手机号">
             <span><i class="mui-icon mui-icon-info-filled"></i>请正确输入手机号，否则商家不予兑换大奖</span>
         </p>-->
+    <div class="chooseNum title" ms-if="@tid">选择数量</div>
+    <nav class="card" ms-if="@tid">
+        <button class="decrease">-</button>
+        <input type="text" class="numCard" id="payNum" value="1">
+        <button class="increase">+</button>
+    </nav>
+
     <a class="gojoin" href="javascript:;" ms-click="@CallPay()">立即支付</a>
     <nav class="mui-bar mui-bar-tab">
         <a class="btnshare " href="index.html">
@@ -111,6 +118,7 @@
 
     var model = avalon.define({
         $id: "payview",
+        tid: ComFunJS.getQueryString("tid"),
         hdmx: ComFunJS.getQueryString("hdmx"),
         TuanName: ComFunJS.getQueryString("tname"),
         code: ComFunJS.getQueryString("code"),
@@ -177,7 +185,17 @@
                 }
             })
         } else {
-            model.GetHDData();
+            if (model.tid) {
+                $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETZTMODEL", { P1: model.tid }, function (r) {
+                    if (r.ErrorMsg == "") {
+                        model.HDData = r.Result[0];
+                        model.TuanName = r.Result[0].ztname;
+                    }
+                })
+            } else {
+                model.GetHDData();
+            }
+
         }
 
 

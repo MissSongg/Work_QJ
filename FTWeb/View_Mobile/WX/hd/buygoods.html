@@ -1,13 +1,15 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>购买夺宝团码</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" href="css/mui.min.css">
-    <link rel="stylesheet" href="css/app.css">
+          <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+        <link rel="stylesheet" href="css/mui.min.css">
+        <link rel="stylesheet" href="css/app.css">
 </head>
 <body class="body" ms-controller="indexview">
     <div class="mui-navbar">
@@ -15,42 +17,40 @@
             <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
                 <span class="mui-icon mui-icon-left-nav" style="color: #fff"></span>
             </button>
-            <h1 class="mui-center mui-title" style="margin-left: -21px;">商品详情</h1>
+            <h1 class="mui-center mui-title" style="margin-left: -21px;">加入夺宝</h1>
         </div>
     </div>
     <div class="marginTop5"></div>
     <div>
-        <img class="mui-media-object" src="images/innerbanner1.jpg">
+         <img class="mui-media-object" src="images/innerbanner1.jpg">  
         <div class="margin10">
-            <p>{{@HDData.JX}}</p>
-            <p>价值 : <span>{{@HDData.GMJE}}</span>元</p>
-            <p class="mui-progressbar mui-progressbar-in">
-                <span style="transform: translate3d(-10%, 0px, 0px);"></span>
-            </p>
-            <ul class="Pro-bar-li clearboth">
-                <li class="P-bar01"><em>493</em>已参与</li>
-                <!--<li class="P-bar02"><em>499</em>总需人次</li>
-                <li class="P-bar03"><em>6</em>剩余</li>-->
-            </ul>
+             <p>{{@HDData.ztname}}</p>
+             <p>价值 : <span>{{@HDData.GMJE}}</span>元</p>
+             <p class="mui-progressbar mui-progressbar-in">
+              <span style="transform: translate3d(-10%, 0px, 0px);"></span></p>   
+              <ul class="Pro-bar-li clearboth">
+                  <li class="P-bar01"><em>493</em>已参与</li><li class="P-bar02"><em>499</em>总需人次</li>
+                  <li class="P-bar03"><em>6</em>剩余</li>
+             </ul>
         </div>
     </div>
-    <div class="chooseNum title">选择数量</div>
-    <nav class="card">
-        <button class="decrease" ms-click="@Minis()">-</button>
-        <input type="number" class="numCard" id="payNum" ms-duplex="@Total">
-        <button class="increase" ms-click="@Plus()">+</button>
-    </nav>
-    <nav class="mui-bar mui-bar-tab">
-        <a class="btnshare">
-            <span class="mui-tab-label">
-                共计:<i id="totprice">{{@SumPrice}}</i><i>元</i>
-            </span>
-        </a>
-        <a class="btnshare gobuy" id="goPay" href="javascript:" ms-click="@GotoPay()"><span class="mui-tab-label">去结算</span></a>
-    </nav>
+<div class="chooseNum title">选择数量</div>
+
+ <nav class="card">
+     <button class="decrease" ms-click="@Minis()">-</button>
+     <input type="text" class="numCard" id="payNum" ms-duplex="@Total">
+     <button class="increase" ms-click="@Plus()">+</button>
+ </nav>
+
+<nav class="mui-bar mui-bar-tab">
+   <a class="btnshare"><span class="mui-tab-label">共计:<i id="totprice">{{@SumPrice}}</i><i>元</i>
+   </span></a>
+    <a class="btnshare gobuy" id="goPay" href="javascript:" ms-click="@GotoPay()"><span class="mui-tab-label">立即支付</span></a>
+</nav>
 </body>
-<script src="js/mui.min.js"></script>
+
 <script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
+<script src="js/mui.min.js"></script>
 <script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
 <script src="../../JS/ComFunJS.js"></script>
 <script type="text/javascript">
@@ -60,29 +60,34 @@
         HDData: {},
         SumPrice: 0,
         Total: 1,
-        id: ComFunJS.getQueryString("id"),
+        hdmxid:"",
+        tid: ComFunJS.getQueryString("tid"),
         GetHDData: function () {
-            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETMXMODEL", { P1: model.id }, function (r) {
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETZTMODEL", { P1: model.tid }, function (r) {
                 if (r.ErrorMsg == "") {
-                    model.HDData = r.Result;
-                    model.SumPrice = r.Result.GMJE;
+                    model.HDData = r.Result[0];
+                    model.SumPrice = r.Result[0].GMJE;
+                    model.hdmxid = r.Result[0].hdmxid;
                 }
             })
         },
         GotoPay: function () {
-            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_BUYGOODS", { P1: model.id, P2: model.Total }, function (r) {
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_BUYGOODS", { P1: model.hdmxid, P2: model.Total, tid: model.tid }, function (r) {
                 if (r.ErrorMsg == "" && r.Result) {
                     var orderid = r.Result;
 
-                    var redirect_uri = encodeURI("http://www.djusu.com/mobile/order/wxpay?orderid=" + orderid + "&showwxpaytitle=1");
-                    var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2253e354c2d42bda&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+                    alert("支付成功");
+                    window.location = "myteam.html";
+                    //var redirect_uri = encodeURI("http://www.djusu.com/mobile/order/wxpay?orderid=" + orderid + "&showwxpaytitle=1");
+                    //var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx2253e354c2d42bda&redirect_uri=" + redirect_uri + "&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
                 }
             })
         },
         Plus: function () {
-            model.Total +=1;
-            model.SumPrice = model.HDData.GMJE * model.Total;
-
+            if (model.Total < model.HDData.CTRS) {
+                model.Total += 1;
+                model.SumPrice = model.HDData.GMJE * model.Total;
+            }
         },
         Minis: function () {
             if (model.Total > 1) {
@@ -95,7 +100,7 @@
         model.GetHDData();
     })
 
-
+    
 
 </script>
 </html>
