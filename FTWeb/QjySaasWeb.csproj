@@ -1503,8 +1503,12 @@
     <Content Include="View_Mobile\WX\hd\images\banner4.jpg" />
     <Content Include="View_Mobile\WX\hd\images\bgtm.png" />
     <Content Include="View_Mobile\WX\hd\images\favicon.ico" />
+    <Content Include="View_Mobile\WX\hd\images\goods\th100.jpg" />
+    <Content Include="View_Mobile\WX\hd\images\goods\th20.jpg" />
+    <Content Include="View_Mobile\WX\hd\images\goods\th50.jpg" />
     <Content Include="View_Mobile\WX\hd\images\innerbanner1.jpg" />
     <Content Include="View_Mobile\WX\hd\images\innerbanner2.jpg" />
+    <Content Include="View_Mobile\WX\hd\images\jiugongge.jpg" />
     <Content Include="View_Mobile\WX\hd\images\listbg.png" />
     <Content Include="View_Mobile\WX\hd\images\loginbg.jpg" />
     <Content Include="View_Mobile\WX\hd\images\youwanbi.jpg" />

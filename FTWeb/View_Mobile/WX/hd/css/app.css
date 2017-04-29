@@ -7,7 +7,7 @@ html, body { position: relative; max-width: 640px; font-family: serif; margin: 0
 .body{background: white}
 ul { margin: 0; padding: 0; }
 li{    list-style-type: none;}
-.headerColor{    background: #f60;
+.headerColor{    background: #b40022;
     border-bottom: 1px solid #e35b00;}
 .headerColor h1{color: white;font-weight: bold;}
 .width100{width: 100% !important}
@@ -18,7 +18,7 @@ li{    list-style-type: none;}
 .marginTop2{margin-top:24px;}
 .marginTop5{margin-top:44px;}
 .joinColor{background-color: darkred !important;}
-.gobuy{background-color: #e20c0c !important;color: white !important;}
+.gobuy{background-color: #b40022 !important;color: white !important;}
 .margin10{margin: 10px !important;}
 .margin17{margin: 17px !important;}
 .paddBottom{padding-bottom: 64px}
@@ -37,11 +37,6 @@ li{    list-style-type: none;}
 {
     margin-bottom: 20px;
 }
-
-.ms-controller{
-   visibility: hidden
-}
-
 .bottomF{ bottom: 47px !important;}
 .mui-plus.mui-android header.mui-bar { display: none; }
 .mui-plus.mui-android .mui-bar-nav ~ .mui-content { padding: 0; }
@@ -111,13 +106,14 @@ span.bgtmsm{    position: absolute;
 .hnlContent a { position: relative; }
 .hnlContent a >p { font-size: 16px; position: absolute; bottom: 0; width: 100%; height: 83px; margin: 5px 0; padding: 10px 0; color: white; background: url('../images/listbg.png') center no-repeat; background-size: 100%; }
 .hnlContent a img { border-radius: 10px }
-.indexJoin{    display: block;    width: 56%;
-    margin: 10px auto;
-    background: #e86c36;
+a.indexJoin{    display: block;    width: 56%;
+    margin: 10px auto !important;
+    background: #b40022;
     height: 45px;
     line-height: 45px;
     text-align: center;
-    color: white;
+    padding: 0 !important;
+    color: white !important;
     font-size: 20px;
     font-weight: bold;
     border-radius: 10px;}
@@ -145,7 +141,7 @@ color: #f1eaea; }
     height: 100px;
 }
 .mui-progressbar{height: 5px;}
-.mui-progressbar span{background: #f60}
+.mui-progressbar span{background: #b40022}
 .mui-progressbar.mui-progressbar-infinite:before{background: #f60}
 
 .Pro-bar-li li.P-bar01 {
@@ -191,12 +187,12 @@ color: #f1eaea; }
 }
 a.gojoin
 {    display: block;
-    width: 90%;
+    width: 50%;
     height: 50px;
     line-height: 50px;
     text-align: center;
        color: white !important;
-    background: #f60;
+    background: #b40022;
     font-size: 20px;
     margin: 5px auto !important;
     border-radius: 10px;
@@ -276,7 +272,7 @@ ul.mui-table-view>p{    margin: 0px 9px;    padding-top: 5px;}
     margin: 17px auto;
     padding: 5px}
    .mui-progressbar{ margin: 15px 0;}
-.getJoin{    background: #ef8133;
+.getJoin{    background: #b40022;
     color: white !important;
     text-align: center;
     margin:10px !important;
@@ -323,5 +319,12 @@ i#totprice{color: red;font-weight:bold;}
 .pphone input{margin: 0;}
 .pphone span{margin: 0;  color: #d41d1d;}
 
-
-
+/* menber */
+.btnOnly{    text-align: center;
+    display: block;
+    padding: 10px;
+    background: #b40022;
+    color: white;
+    width: 56%;
+    border-radius: 10px;
+    margin: 10px auto;}
