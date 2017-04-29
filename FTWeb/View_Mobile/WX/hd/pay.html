@@ -139,7 +139,7 @@
             }
 
             //产生购买单
-            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_BUYGOODS", { P1: model.hdmx, P2: 1 }, function (r) {
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_BUYGOODS", { P1: model.hdmx, P2: 1, tuanname: model.TuanName }, function (r) {
                 if (r.ErrorMsg == "") {
                     var orderid = r.Result;
 

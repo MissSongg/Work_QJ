@@ -184,7 +184,7 @@ namespace QJY.API
             {
                 tid = Int32.Parse(strtid);
             }
-            else if (string.IsNullOrEmpty(tuanname))
+            else if (!string.IsNullOrEmpty(tuanname))
             {
                 SZHL_YX_HD_ZT ZT = new SZHL_YX_HD_ZT();
                 ZT.ComId = ComId;
@@ -194,6 +194,7 @@ namespace QJY.API
                 ZT.hdid = item.HDID;
                 ZT.hdmxid = ID;
                 ZT.ztname = tuanname;
+                ZT.iskj = "N";
                 new SZHL_YX_HD_ZTB().Insert(ZT);
 
                 tid = ZT.ID;
