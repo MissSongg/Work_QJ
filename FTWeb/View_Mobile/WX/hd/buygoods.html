@@ -25,15 +25,18 @@
          <img class="mui-media-object" src="images/innerbanner1.jpg">  
         <div class="margin10">
              <p>{{@HDData.ztname}}</p>
+            <p>{{@HDData.JX}}</p>
              <p>价值 : <span>{{@HDData.GMJE}}</span>元</p>
              <p class="mui-progressbar mui-progressbar-in">
               <span style="transform: translate3d(-10%, 0px, 0px);"></span></p>   
               <ul class="Pro-bar-li clearboth">
-                  <li class="P-bar01"><em>493</em>已参与</li><li class="P-bar02"><em>499</em>总需人次</li>
-                  <li class="P-bar03"><em>6</em>剩余</li>
+                  <li class="P-bar01"><em>{{@HDQty.cqty}}</em>已参与</li><li class="P-bar02"><em>{{@HDQty.allqty}}</em>总需人次</li>
+                  <li class="P-bar03"><em>{{@HDQty.lqty}}</em>剩余</li>
              </ul>
         </div>
+
     </div>
+
 <div class="chooseNum title">选择数量</div>
 
  <nav class="card">
@@ -58,6 +61,7 @@
     var model = avalon.define({
         $id: "indexview",
         HDData: {},
+        HDQty: { "allqty": 0, "cqty": 0, "lqty": 0 },
         SumPrice: 0,
         Total: 1,
         hdmxid:"",
@@ -68,6 +72,7 @@
                     model.HDData = r.Result[0];
                     model.SumPrice = r.Result[0].GMJE;
                     model.hdmxid = r.Result[0].hdmxid;
+                    model.HDQty = r.Result1;
                 }
             })
         },
@@ -84,7 +89,7 @@
             })
         },
         Plus: function () {
-            if (model.Total < model.HDData.CTRS) {
+            if (model.Total < model.HDQty.lqty) {
                 model.Total += 1;
                 model.SumPrice = model.HDData.GMJE * model.Total;
             }

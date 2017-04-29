@@ -28,7 +28,7 @@
             <label style="width: 22%">团名:</label>
             <input type="text" name="title" id="teamName" placeholder="请设置夺宝团团名(小于14个字符)" style="width: 78%" maxlength="15" ms-duplex="@TuanName">
         </div>
-        <p class="mui-content-padded">您购买的是100元的夺奖码，需分享二维码邀请9人即可开奖，加油哦！！！</p>
+        <p class="mui-content-padded">您购买的是{{@HDData.GMJE}}元的夺奖码，需分享二维码邀请{{@HDData.CTRS}}人即可开奖，加油哦！！！</p>
       
         <div class="mui-button-row paddBottom">
             <button class="btn_goods left" type="button" onclick="history.back()">取消</button>
@@ -49,6 +49,7 @@
         $id: "teamview",
         ID: ComFunJS.getQueryString("id"),
         TuanName: "",
+        HDData: {},
         GotoPay: function () {
             if (!model.TuanName) {
                 alert("请输入夺宝团团名");
@@ -67,6 +68,13 @@
             window.location = "login.html?rurl=" + encodeURI(window.location);
             return;
         }
+
+        $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETMXMODEL", { P1: model.ID }, function (r) {
+            if (r.ErrorMsg == "") {
+                model.HDData = r.Result;
+            }
+        })
+
 
     })
 

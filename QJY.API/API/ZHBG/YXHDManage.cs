@@ -178,11 +178,19 @@ namespace QJY.API
                 return;
             }
 
+
             //开团
             int tid = 0;
             if (!string.IsNullOrEmpty(strtid))
             {
                 tid = Int32.Parse(strtid);
+
+                //判断是否满员
+                //item.CTRS
+
+                //已参与
+
+
             }
             else if (!string.IsNullOrEmpty(tuanname))
             {
@@ -269,7 +277,7 @@ namespace QJY.API
         public void GETHDCYLIST(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
         {
 
-            string strSQL = string.Format("SELECT DISTINCT ZT.ID , ZT.ztname,ZT.fquserid,ZT.hdmxid,ZT.iskj,HDITEM.CTRS,HDUSER.mobphone, '' as YZTRS,'' as  zjuserphone  FROM SZHL_YX_HD_CY  CY INNER JOIN   SZHL_YX_HD_ZT  ZT ON CY.ztid=ZT.ID  LEFT JOIN SZHL_YX_HD_ITEM  HDITEM on ZT.hdmxid=HDITEM.ID  LEFT JOIN SZHL_YX_USER  HDUSER on ZT.fquserid=HDUSER.ID WHERE userid='{0}'", UserInfo.ID);
+            string strSQL = string.Format("SELECT DISTINCT ZT.ID , ZT.ztname,ZT.fquserid,ZT.hdmxid,ZT.iskj,ZT.CRDate,HDITEM.CTRS,HDUSER.mobphone, '' as YZTRS,'' as  zjuserphone  FROM SZHL_YX_HD_CY  CY INNER JOIN   SZHL_YX_HD_ZT  ZT ON CY.ztid=ZT.ID  LEFT JOIN SZHL_YX_HD_ITEM  HDITEM on ZT.hdmxid=HDITEM.ID  LEFT JOIN SZHL_YX_USER  HDUSER on ZT.fquserid=HDUSER.ID WHERE userid='{0}' order by ZT.CRDate desc", UserInfo.ID);
             DataTable dtReturn = new SZHL_YX_HD_CYB().GetDTByCommand(strSQL);
             for (int i = 0; i < dtReturn.Rows.Count; i++)
             {
@@ -297,8 +305,22 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void GETZTMODEL(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
         {
-            msg.Result = new SZHL_YX_HD_ZTB().GetDTByCommand("select z.*,m.GMJE,m.CTRS,u.mobphone from SZHL_YX_HD_ZT z join SZHL_YX_HD_ITEM m on z.hdmxid=m.ID join SZHL_YX_USER u on z.fquserid=u.ID where z.id='" + P1 + "' ");
+           DataTable dt  = new SZHL_YX_HD_ZTB().GetDTByCommand("select z.*,m.GMJE,m.CTRS,m.JX,u.mobphone from SZHL_YX_HD_ZT z join SZHL_YX_HD_ITEM m on z.hdmxid=m.ID join SZHL_YX_USER u on z.fquserid=u.ID where z.id='" + P1 + "' ");
+            msg.Result = dt;
+            //已参与
 
+            int cqty = Int32.Parse(new SZHL_YX_HD_ZTB().ExsSclarSql("select count(1) from SZHL_YX_HD_CY where ComId='" + ComId + "' and ztid='" + P1 + "' ").ToString());
+
+            int allqty = 0;
+            int lqty = 0;
+            //剩余
+            if (dt.Rows.Count > 0)
+            {
+                int CTRS = Int32.Parse(dt.Rows[0]["CTRS"].ToString());
+                allqty = CTRS;
+                lqty = CTRS - cqty;
+            }
+            msg.Result1 = new {allqty= allqty, cqty = cqty, lqty = lqty };
         }
 
         /// <summary>
