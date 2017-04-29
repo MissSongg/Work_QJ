@@ -186,10 +186,15 @@ namespace QJY.API
                 tid = Int32.Parse(strtid);
 
                 //判断是否满员
-                //item.CTRS
+                int CTRS = Int32.Parse(item.CTRS);
 
                 //已参与
-
+                int cqty = Int32.Parse(new SZHL_YX_HD_CYB().ExsSclarSql("select count(1) from SZHL_YX_HD_CY where ComId='" + ComId + "' and ztid='" + tid + "' ").ToString());
+                if(cqty >= CTRS)
+                {
+                    msg.ErrorMsg = "已满团，请重新开团";
+                    return;
+                }
 
             }
             else if (!string.IsNullOrEmpty(tuanname))
@@ -208,44 +213,55 @@ namespace QJY.API
                 tid = ZT.ID;
             }
 
-            string batchnumber = DateTime.Now.ToString("yyyyMMddHHssmmfff");
-            while (total >= 1)
+            if (total >=1)
             {
-                SZHL_YX_HD_GM gm = new SZHL_YX_HD_GM();
-                gm.hdid = item.HDID;
-                gm.hdmxid = item.ID;
-                gm.ComId = ComId;
-                gm.CRDate = DateTime.Now;
-                gm.userid = UserInfo.ID;
-                gm.zfje = item.GMJE;
-                gm.iscyhd = "N";
-                gm.gmdate = DateTime.Now;
-                gm.ishx = "N";
-                gm.batchnumber = batchnumber;
-                gm.wxbillstatus = "0";
+                string batchnumber = DateTime.Now.ToString("yyyyMMddHHssmmfff");
+                while (total >= 1)
+                {
+                    SZHL_YX_HD_GM gm = new SZHL_YX_HD_GM();
+                    gm.hdid = item.HDID;
+                    gm.hdmxid = item.ID;
+                    gm.ComId = ComId;
+                    gm.CRDate = DateTime.Now;
+                    gm.userid = UserInfo.ID;
+                    gm.zfje = item.GMJE;
+                    gm.iscyhd = "N";
+                    gm.gmdate = DateTime.Now;
+                    gm.ishx = "N";
+                    gm.batchnumber = batchnumber;
+                    gm.wxbillstatus = "0";
 
-                new SZHL_YX_HD_GMB().Insert(gm);
+                    new SZHL_YX_HD_GMB().Insert(gm);
 
-                //测试购买即支付成功
-                new SZHL_YX_HD_GMB().ExsSql("update SZHL_YX_HD_GM set wxbillstatus='',goodscode='" + gm.ID + "' where ID='" + gm.ID + "'");
+                    //测试购买即支付成功
+                    new SZHL_YX_HD_GMB().ExsSql("update SZHL_YX_HD_GM set wxbillstatus='1',goodscode='" + gm.ID + "' where ID='" + gm.ID + "'");
 
 
-                SZHL_YX_HD_CY MODEL = new SZHL_YX_HD_CY();
-                MODEL.ComId = ComId;
-                MODEL.CRDate = DateTime.Now;
-                MODEL.hdid = item.HDID;
-                MODEL.hdmxid = ID;
-                MODEL.goodscode = gm.ID.ToString();
-                MODEL.iszj = "N";
-                MODEL.userid = UserInfo.ID;
-                MODEL.cyuserphone = UserInfo.mobphone;
-                MODEL.ztid = tid;
-                new SZHL_YX_HD_CYB().Insert(MODEL);
+                    SZHL_YX_HD_CY MODEL = new SZHL_YX_HD_CY();
+                    MODEL.ComId = ComId;
+                    MODEL.CRDate = DateTime.Now;
+                    MODEL.hdid = item.HDID;
+                    MODEL.hdmxid = ID;
+                    MODEL.goodscode = gm.ID.ToString();
+                    MODEL.iszj = "N";
+                    MODEL.userid = UserInfo.ID;
+                    MODEL.cyuserphone = UserInfo.mobphone;
+                    MODEL.ztid = tid;
+                    new SZHL_YX_HD_CYB().Insert(MODEL);
 
-                total -= 1;
+                    total -= 1;
+
+                    var ZT = new SZHL_YX_HD_ZTB().GetEntity(p => p.ID == tid);
+                    var HDITEM = new SZHL_YX_HD_ITEMB().GetEntity(p => p.ID == ZT.hdmxid);
+                    new SZHL_YX_HD_CYB().DBKJ(ZT, MODEL, HDITEM);
+                }
+
+               
+
+                msg.Result = batchnumber;
             }
 
-            msg.Result = batchnumber;
+         
 
         }
         /// <summary>
