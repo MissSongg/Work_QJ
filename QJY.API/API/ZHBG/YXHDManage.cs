@@ -91,7 +91,10 @@ namespace QJY.API
             }
 
         }
-
+        public void GETUSERINFO(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
+        {
+            msg.Result = UserInfo;
+        }
         /// <summary>
         /// 活动列表
         /// </summary>
@@ -161,15 +164,28 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void BUYGOODS(HttpContext context, Msg_Result msg, int ComId, string P1, string P2, SZHL_YX_USER UserInfo)
         {
+
             string strtid = context.Request.QueryString["tid"];
             string tuanname = context.Request.QueryString["tuanname"];
 
-            int ID = Int32.Parse(P1);
-            var item = new SZHL_YX_HD_ITEMB().GetEntity(p => p.ComId == ComId && p.ID == ID);
-            if (item == null)
+            int ID = 0; //活动明细ID
+            int HDID = 0;//活动ID
+            int TID = 0; //开团ID
+            int CTRS = 0; //参团人数
+            decimal GMJE = 0; //购买金额
+
+            if (P1 != "")  //开团
             {
-                msg.ErrorMsg = "活动错误";
-                return;
+                ID = Int32.Parse(P1);
+                var item = new SZHL_YX_HD_ITEMB().GetEntity(p => p.ComId == ComId && p.ID == ID);
+                if (item == null)
+                {
+                    msg.ErrorMsg = "活动错误";
+                    return;
+                }
+                HDID = item.HDID.Value;
+                CTRS = Int32.Parse(item.CTRS);
+                GMJE = item.GMJE.Value;
             }
             int total = Int32.Parse(P2);
             if (total < 1)
@@ -179,24 +195,34 @@ namespace QJY.API
             }
 
 
-            //开团
-            int tid = 0;
+            //参团
             if (!string.IsNullOrEmpty(strtid))
             {
-                tid = Int32.Parse(strtid);
+                TID = Int32.Parse(strtid);
+                var zt = new SZHL_YX_HD_ZTB().GetEntity(p => p.ID == TID);
+                if (zt == null)
+                {
+                    msg.ErrorMsg = "团不存在或已满图，请重新开团";
+                    return;
+                }
+                ID = zt.hdmxid.Value;
+                HDID = zt.hdid.Value;
 
-                //判断是否满员
-                int CTRS = Int32.Parse(item.CTRS);
-
+                var item = new SZHL_YX_HD_ITEMB().GetEntity(p => p.ComId == ComId && p.ID == ID);
+                CTRS = Int32.Parse(item.CTRS);
+                GMJE = item.GMJE.Value;
                 //已参与
-                int cqty = Int32.Parse(new SZHL_YX_HD_CYB().ExsSclarSql("select count(1) from SZHL_YX_HD_CY where ComId='" + ComId + "' and ztid='" + tid + "' ").ToString());
+                int cqty = Int32.Parse(new SZHL_YX_HD_CYB().ExsSclarSql("select count(1) from SZHL_YX_HD_CY where ComId='" + ComId + "' and ztid='" + TID + "' ").ToString());
                 if(cqty >= CTRS)
                 {
                     msg.ErrorMsg = "已满团，请重新开团";
                     return;
                 }
 
+                
             }
+
+            //开团
             else if (!string.IsNullOrEmpty(tuanname))
             {
                 SZHL_YX_HD_ZT ZT = new SZHL_YX_HD_ZT();
@@ -204,13 +230,13 @@ namespace QJY.API
                 ZT.CRDate = DateTime.Now;
                 ZT.fqdate = DateTime.Now;
                 ZT.fquserid = UserInfo.ID;
-                ZT.hdid = item.HDID;
+                ZT.hdid = HDID;
                 ZT.hdmxid = ID;
                 ZT.ztname = tuanname;
                 ZT.iskj = "N";
                 new SZHL_YX_HD_ZTB().Insert(ZT);
 
-                tid = ZT.ID;
+                TID = ZT.ID;
             }
 
             if (total >=1)
@@ -219,12 +245,12 @@ namespace QJY.API
                 while (total >= 1)
                 {
                     SZHL_YX_HD_GM gm = new SZHL_YX_HD_GM();
-                    gm.hdid = item.HDID;
-                    gm.hdmxid = item.ID;
+                    gm.hdid = HDID;
+                    gm.hdmxid = ID;
                     gm.ComId = ComId;
                     gm.CRDate = DateTime.Now;
                     gm.userid = UserInfo.ID;
-                    gm.zfje = item.GMJE;
+                    gm.zfje = GMJE;
                     gm.iscyhd = "N";
                     gm.gmdate = DateTime.Now;
                     gm.ishx = "N";
@@ -240,18 +266,18 @@ namespace QJY.API
                     SZHL_YX_HD_CY MODEL = new SZHL_YX_HD_CY();
                     MODEL.ComId = ComId;
                     MODEL.CRDate = DateTime.Now;
-                    MODEL.hdid = item.HDID;
+                    MODEL.hdid = HDID;
                     MODEL.hdmxid = ID;
                     MODEL.goodscode = gm.ID.ToString();
                     MODEL.iszj = "N";
                     MODEL.userid = UserInfo.ID;
                     MODEL.cyuserphone = UserInfo.mobphone;
-                    MODEL.ztid = tid;
+                    MODEL.ztid = TID;
                     new SZHL_YX_HD_CYB().Insert(MODEL);
 
                     total -= 1;
 
-                    var ZT = new SZHL_YX_HD_ZTB().GetEntity(p => p.ID == tid);
+                    var ZT = new SZHL_YX_HD_ZTB().GetEntity(p => p.ID == TID);
                     var HDITEM = new SZHL_YX_HD_ITEMB().GetEntity(p => p.ID == ZT.hdmxid);
                     new SZHL_YX_HD_CYB().DBKJ(ZT, MODEL, HDITEM);
                 }

@@ -18,35 +18,48 @@
     <div class="marginTop2"></div>
 
     <div class="marginTop5"></div>
-    <ul class="mui-table-view" ms-for="el in @ztdata">
-        <p><i class="mui-icon mui-icon-flag"></i><span>{{el.ztname}}</span><span> ( 队长:{{el.mobphone}} ) </span></p>
-        <li class="mui-table-view-cell mui-media">
-            <div class="clearboth">
-                <img class="mui-media-object mui-pull-left teamErweima" src="images/banner1.jpg">
-                <div class="mui-media-body" style="margin: 0;">
-                    <p class="waitWinner" style="margin-top: 0px;">{{el.iskj=='Y'?'已开奖':'未开奖'}}</p>
-                    <p class="mui-progressbar mui-progressbar-in" data-progress="60"><span  :css="{transform: 'translate3d('+@el.YZTRS/@el.CTRS*100 + '%, 0px, 0px)'}"></span></p>
-                    <ul class="Pro-bar-li clearboth">
-                        <li class="P-bar01"><em>{{el.YZTRS}}</em>已参与</li>
-                        <li class="P-bar02"  ms-visible="el.iskj=='N'"><em>{{el.CTRS-el.YZTRS}}</em>还差</li>
-                        <li class="P-bar03"><em>{{el.CTRS}}</em>总需人次</li>
-                    </ul>
+    <div style="margin-bottom:50px;">
+        <ul class="mui-table-view" ms-for="el in @ztdata">
+            <p><i class="mui-icon mui-icon-flag"></i><span>{{el.ztname}}</span><span> ( 队长:{{el.mobphone}} ) </span></p>
+            <li class="mui-table-view-cell mui-media">
+                <div class="clearboth">
+                    <img class="mui-media-object mui-pull-left teamErweima" src="images/banner1.jpg">
+                    <div class="mui-media-body" style="margin: 0;">
+                        <p class="waitWinner" style="margin-top: 0px;">{{el.iskj=='Y'?'已开奖':'未开奖'}}</p>
+                        <p class="mui-progressbar mui-progressbar-in" data-progress="60"><span css="{transform: 'translate3d('+@el.YZTRS/@el.CTRS*100 + '%, 0px, 0px)'}"></span></p>
+                        <ul class="Pro-bar-li clearboth">
+                            <li class="P-bar01"><em>{{el.YZTRS}}</em>已参与</li>
+                            <li class="P-bar02" ms-visible="el.iskj=='N'"><em>{{el.CTRS-el.YZTRS}}</em>还差</li>
+                            <li class="P-bar03"><em>{{el.CTRS}}</em>总需人次</li>
+                        </ul>
+                    </div>
+                    <div class="clearboth"></div>
+
+                    <marquee class="marquee" ms-visible="el.iskj=='Y'">恭喜{{el.zjuserphone}}中奖</marquee>
+                    <a attr="{href:'igkbet.html?ztid='+@el.ID}" ms-visible="el.iskj=='Y'">
+                        <div class="getJoin">查看中奖</div>
+                    </a>
+                    <a class="getJoin" style="width: 40%; float: left;" attr="{href:'igkbet.html?ztid='+@el.ID}" ms-visible="el.iskj=='N'">查看队员</a>
+                    <a class="getJoin" style="width: 40%; float: right;" ms-visible="el.iskj=='N'" attr="{href:'buygoods.html?tid='+el.ID}">拼手气</a>
+
                 </div>
-                <div class="clearboth"></div>
-
-                <marquee class="marquee" ms-visible="el.iskj=='Y'">恭喜{{el.zjuserphone}}中奖</marquee>
-                <a :attr="{href:'igkbet.html?ztid='+@el.ID}" ms-visible="el.iskj=='Y'">
-                    <div class="getJoin">查看中奖</div>
-                </a>
-                <a class="getJoin" style="width: 40%; float: left;" :attr="{href:'igkbet.html?ztid='+@el.ID}" ms-visible="el.iskj=='N'">查看队员</a>
-                <a class="getJoin" style="width: 40%; float: right;" ms-visible="el.iskj=='N'" :attr="{href:'buygoods.html?tid='+el.ID}">拼手气</a>
-
-            </div>
 
 
-        </li>
-    </ul>
-
+            </li>
+        </ul>
+    </div>
+    <nav class="mui-bar mui-bar-tab">
+        <a class="btnshare " href="index.html">
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a class="btnshare mui-active" href="myteam.html">
+            <span class="mui-tab-label">我的团</span>
+        </a>
+        <a class="btnshare" href="shopcard.html">
+            <span class="mui-tab-label">我的商品</span>
+        </a>
+    </nav>
+    <div class="bottom"></div>
 </body>
 
 

@@ -4,59 +4,119 @@
 <head>
     <meta charset="UTF-8">
     <title>购买夺宝团码</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-        <link rel="stylesheet" href="css/mui.min.css">
-        <link rel="stylesheet" href="css/app.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/mui.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    <style type="text/css">
+    .mui-checkbox input[type=checkbox]:before,
+    .mui-radio input[type=radio]:before {
+        font-size: 15px
+    }
+    
+    .mui-input-group .mui-input-row input {
+        margin: 4px 0;
+    }
+    
+    .mui-input-group .mui-input-row:after {
+        background-color: white;
+    }
+    
+    .perNum {
+        float: right;
+        font-size: 12px;
+        margin: 6px;
+    }
+    
+    .mui-input-group .mui-input-row {
+        height: 32px;
+    }
+    
+    .mui-checkbox.mui-left label,
+    .mui-radio.mui-left label {
+        padding-left: 40px;
+    }
+    
+    .mui-input-group:after {
+        height: 0
+    }
+    </style>
 </head>
+
 <body class="body" ms-controller="indexview">
     <div class="mui-navbar">
         <div class="mui-navbar-inner mui-bar mui-bar-nav mui-transitioning mui-navbar-center headerColor">
             <button type="button" class="mui-left mui-action-back mui-btn mui-btn-link mui-btn-nav mui-pull-left">
                 <span class="mui-icon mui-icon-left-nav" style="color: #fff"></span>
             </button>
-            <h1 class="mui-center mui-title" style="margin-left: -21px;">加入夺宝</h1>
+            <h1 class="mui-center mui-title" style="margin-left: -21px;">商品详情</h1>
         </div>
     </div>
     <div class="marginTop5"></div>
     <div>
-         <img class="mui-media-object" src="images/innerbanner1.jpg">  
+        <img class="mui-media-object" src="images/goods/th20.jpg">
         <div class="margin10">
-             <p>{{@HDData.ztname}}</p>
-            <p>{{@HDData.JX}}</p>
-             <p>价值 : <span>{{@HDData.GMJE}}</span>元</p>
+            <p>{{@HDData.GMJE}}元</p>
+            <div class="margin10">
+                <p><span><i class="mui-icon mui-icon-flag"></i>队长:{{@usernick}}</span></p>
+                <p class="mui-progressbar mui-progressbar-in">
+                    <span style="transform: translate3d(-70, 0px, 0px);"></span></p>
+                <ul class="Pro-bar-li clearboth" ms-if="@tid">
+                    <li class="P-bar01"><em>{{@HDQty.cqty}}</em>已参与</li>
+                    <li class="P-bar02"><em>{{@HDQty.lqty}}</em>剩余</li>
+                    <li class="P-bar03"><em>{{@HDQty.allqty}}</em>总需人次</li>
+                </ul>
+                <p class="margin17">夺宝团<span style="color:#ff0000">{{@tuanname}}</span>还差<span style="color: #b44949;margin: 5px;">{{@HDQty.lqty}}</span>人就可以开奖了，请尽快加入凭手气，夺大奖！！！</p>
+            </div>
+            <div class="border"></div>
+            <div class="margin17">
+                <p style="text-align: left;" ms-html="@HDData.JX">
+
+                </p>
+                <!--<p style="text-align: left;">
+                    2. 超值年卡，一天不到一元钱，全年畅玩糖果世界，线上抢购原价998糖果年卡，现价299元，限量100张（糖果世界一年内无限次畅玩，不含游戏币）。
+                </p>-->
+            </div>
+            <!-- 如果你是扫朋友的组团邀请码进入下面隐藏 -->
+            <!--
              <p class="mui-progressbar mui-progressbar-in">
               <span style="transform: translate3d(-10%, 0px, 0px);"></span></p>   
               <ul class="Pro-bar-li clearboth">
-                  <li class="P-bar01"><em>{{@HDQty.cqty}}</em>已参与</li><li class="P-bar02"><em>{{@HDQty.allqty}}</em>总需人次</li>
-                  <li class="P-bar03"><em>{{@HDQty.lqty}}</em>剩余</li>
+                  <li class="P-bar01"><em>1</em>已参与</li><li class="P-bar02"><em>10</em>总需人次</li>
+                  <li class="P-bar03"><em>9</em>剩余</li>
              </ul>
+             -->
+            <form class="mui-input-group">
+                <!-- 如果你是扫朋友的组团邀请码进入参与拼手气显示，否则隐藏 -->
+                <div class="mui-input-row mui-radio mui-left" ms-if="@tid">
+                    <label>参与拼手气(只有扫码进人显示)</label>
+                    <input name="radio1" type="radio" checked="checked" value="1">
+                </div>
+                <div class="mui-input-row mui-radio mui-left" ms-if="!@tid">
+                    <label>创团拼手气</label>
+                    <input name="radio1" type="radio" value="2" checked>
+                </div>
+            </form>
         </div>
-
     </div>
-
-<div class="chooseNum title">选择数量</div>
-
- <nav class="card">
-     <button class="decrease" ms-click="@Minis()">-</button>
-     <input type="text" class="numCard" id="payNum" ms-duplex="@Total">
-     <button class="increase" ms-click="@Plus()">+</button>
- </nav>
-    <div style="margin-bottom:50px;"></div>
-<nav class="mui-bar mui-bar-tab">
-   <a class="btnshare"><span class="mui-tab-label">共计:<i id="totprice">{{@SumPrice}}</i><i>元</i>
+    <nav class="card" style="float: right;margin-bottom: 50px;">
+        <button class="decrease" ms-click="@Minis()">-</button>
+        <input type="text" class="numCard" id="num" ms-duplex="@Total" >
+        <button class="increase" ms-click="@Plus()">+</button><span class="perNum">/人次</span>
+    </nav>
+    <nav class="mui-bar mui-bar-tab">
+        <a class="btnshare"><span class="mui-tab-label">共计:<i id="totprice">{{@SumPrice}}</i><i>元</i>
    </span></a>
-    <a class="btnshare gobuy" id="goPay" href="javascript:" ms-click="@GotoPay()"><span class="mui-tab-label">立即支付</span></a>
-</nav>
-</body>
+        <a class="btnshare gobuy" id="goPay" href="javascript:;" ms-click="@GotoPay()"><span class="mui-tab-label">去结算</span></a>
+    </nav>
 
-<script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
-<script src="js/mui.min.js"></script>
-<script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
-<script src="../../JS/ComFunJS.js"></script>
-<script type="text/javascript">
+
+    <script type="text/javascript" src="js/jquery-1.12.2.min.js"></script>
+    <script src="js/mui.min.js"></script>
+    <script src="//cdn.bootcss.com/avalon.js/2.2.5/avalon.js"></script>
+    <script src="../../JS/ComFunJS.js"></script>
+    <script type="text/javascript">
 
     var model = avalon.define({
         $id: "indexview",
@@ -64,20 +124,39 @@
         HDQty: { "allqty": 0, "cqty": 0, "lqty": 0 },
         SumPrice: 0,
         Total: 1,
-        hdmxid:"",
+        hdmx: ComFunJS.getQueryString("hdmx"),
         tid: ComFunJS.getQueryString("tid"),
+        tuanname: ComFunJS.getQueryString("tuanname"),
+        usernick:"",
         GetHDData: function () {
-            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETZTMODEL", { P1: model.tid }, function (r) {
-                if (r.ErrorMsg == "") {
-                    model.HDData = r.Result[0];
-                    model.SumPrice = r.Result[0].GMJE;
-                    model.hdmxid = r.Result[0].hdmxid;
-                    model.HDQty = r.Result1;
-                }
-            })
+            if (model.hdmx) {
+                $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETMXMODEL", { P1: model.hdmx }, function (r) {
+                    if (r.ErrorMsg == "") {
+                        model.HDData = r.Result;
+                        model.HDQty.lqty = r.Result.CTRS;
+                        model.SumPrice = r.Result.GMJE;
+
+                        $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETUSERINFO", function (r) {
+                            model.usernick = r.Result.mobphone;
+
+                        });
+                    }
+                })
+            } else {
+                $.getJSON("/API/WXAPI2.ashx?Action=YXHD_GETZTMODEL", { P1: model.tid }, function (r) {
+                    if (r.ErrorMsg == "") {
+                        model.HDData = r.Result[0];
+                        model.SumPrice = r.Result[0].GMJE;
+                        model.hdmxid = r.Result[0].hdmxid;
+                        model.HDQty = r.Result1;
+                        model.usernick = r.Result[0].mobphone;
+                    }
+                })
+            }
         },
         GotoPay: function () {
-            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_BUYGOODS", { P1: model.hdmxid, P2: model.Total, tid: model.tid }, function (r) {
+
+            $.getJSON("/API/WXAPI2.ashx?Action=YXHD_BUYGOODS", { P1: model.hdmx, P2: model.Total, tid: model.tid, tuanname: model.tuanname }, function (r) {
                 if (r.ErrorMsg == "" && r.Result) {
                     var orderid = r.Result;
 
@@ -103,9 +182,12 @@
     })
     avalon.ready(function () {
         model.GetHDData();
+
     })
 
-    
 
-</script>
+
+    </script>
+</body>
+
 </html>
