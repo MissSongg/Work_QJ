@@ -443,7 +443,13 @@
 
                 case "statename": //审核流程，-1时不需要流程
                     {
-                        if (str == "-1") str = "";
+                        if (str == "-1")
+                        {
+                            str = "";
+                        }
+                        else if (str == "已退回") {
+                            str = "<span style='color:red;'>" + str + "</span>";
+                        }
                     }
                     break;
                 case "rwstate": //任务状态
