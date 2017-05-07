@@ -1539,6 +1539,7 @@
     <Content Include="API\WXAPI2.ashx" />
     <None Include="Properties\PublishProfiles\QiJieYun.pubxml" />
     <None Include="Properties\PublishProfiles\QJKJ.pubxml" />
+    <None Include="Properties\PublishProfiles\QJ_YX.pubxml" />
     <None Include="Properties\PublishProfiles\SaasFB.pubxml" />
     <None Include="Properties\PublishProfiles\TestFB.pubxml" />
     <None Include="Properties\Settings.settings">

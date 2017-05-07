@@ -448,7 +448,7 @@
                             str = "";
                         }
                         else if (str == "已退回") {
-                            str = "<span style='color:red;'>" + str + "</span>";
+                            str = "<span style='color:red;font-weight:bold'>" + str + "</span>";
                         }
                     }
                     break;
