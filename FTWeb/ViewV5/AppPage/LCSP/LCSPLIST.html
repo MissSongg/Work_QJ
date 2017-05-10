@@ -143,7 +143,7 @@
             tempindex.GetLIST();
         },
         addLCSP: function () {
-            top.ComFunJS.winviewform("/ViewV5/Base/APP_LCSP_SEL.html?r=" + Math.random(), "流程表单", "1000", "");
+            top.ComFunJS.winviewform("/ViewV5/AppPage/LCSP/APP_LCSP_SEL.html?r=" + Math.random(), "流程表单", "1000", "");
         },
         GetLCSP: function () {
             $.getJSON('/API/VIEWAPI.ashx?Action=LCSP_GETWFPDLIST', { P1: 1 }, function (resultData) {

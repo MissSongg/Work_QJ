@@ -208,7 +208,7 @@
                 if (item.NodeType == "START") {
                     return;
                 }
-                top.ComFunJS.winbtnwin("/ViewV5/Base/LCSZSelect.html?rytype=" + item.isSJ + "&&checkvalue=" + item.AssignedRole, "选择角色", 500, 400, {}, function (layero, index) {
+                top.ComFunJS.winbtnwin("/ViewV5/AppPage/LCSP/LCSZSelect.html?rytype=" + item.isSJ + "&&checkvalue=" + item.AssignedRole, "选择角色", 500, 400, {}, function (layero, index) {
                     var frameid = $("iframe", $(layero)).attr('id');
                     var data = ComFunJS.isIE() ? top.window.frames[frameid].getlcry() : top.window.frames[frameid].contentWindow.getlcry();
 

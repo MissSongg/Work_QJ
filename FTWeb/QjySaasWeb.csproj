@@ -210,6 +210,8 @@
     <Content Include="ViewV5\AppPage\KSGL\USERKSView.html" />
     <Content Include="ViewV5\AppPage\KSGL\USERKSDA.html" />
     <Content Include="ViewV5\AppPage\KSGL\USERKSLIST.html" />
+    <Content Include="ViewV5\AppPage\LCSP\APP_WF_LCSZ.html" />
+    <Content Include="ViewV5\AppPage\LCSP\ExtendSet.html" />
     <Content Include="ViewV5\AppPage\LCSP\LCSP.html" />
     <Content Include="ViewV5\AppPage\LCSP\LCSPLIST.html" />
     <Content Include="ViewV5\AppPage\LCSP\LCSPTJ.html" />
@@ -294,15 +296,13 @@
     <Content Include="ViewV5\AppPage\YCGL\YCGLVIEW.html" />
     <Content Include="ViewV5\Base\APP_COMMENT.html" />
     <Content Include="ViewV5\Base\APP_IMPORT.html" />
-    <Content Include="ViewV5\Base\APP_LCSP_SEL.html" />
-    <Content Include="ViewV5\Base\APP_WF_LCSZ.html" />
+    <Content Include="ViewV5\AppPage\LCSP\APP_LCSP_SEL.html" />
     <Content Include="ViewV5\Base\doc.html" />
     <Content Include="ViewV5\Base\DownFolderL.html" />
     <Content Include="ViewV5\Base\DownFolder.html" />
-    <Content Include="ViewV5\Base\ExtendSet.html" />
     <Content Include="ViewV5\Base\FileSel.html" />
     <Content Include="ViewV5\Base\FolderSel.html" />
-    <Content Include="ViewV5\Base\LCSZSelect.html" />
+    <Content Include="ViewV5\AppPage\LCSP\LCSZSelect.html" />
     <Content Include="ViewV5\Base\pdf.html" />
     <Content Include="ViewV5\Base\ppt.html" />
     <Content Include="ViewV5\Base\SelDXTemplate.html" />
