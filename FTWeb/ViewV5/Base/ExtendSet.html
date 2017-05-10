@@ -39,6 +39,7 @@
             <table class="table table-striped table-responsive table-hover">
                 <thead>
                     <tr>
+                        <th style="text-align:center">序号</th>
                         <th>字段名称</th>
                         <th>字段类型</th>
                         <th>字段选项</th>
@@ -48,6 +49,8 @@
                 </thead>
                 <tbody>
                     <tr ms-repeat-el="modelList">
+                        <td style="text-align:center">{{$index+1}}</td>
+
                         <td>{{el.TableFiledName}}</td>
                         <td>{{showtext(el.TableFileType)}}</td>
                         <td>{{el.DefaultOption}}</td>
@@ -62,6 +65,7 @@
                 </tbody>
                 <tfoot>
                     <tr id="addwf" style=" border-bottom: 1px solid #ddd;">
+                        <td></td>
                         <td><input type="text" class="form-control" ms-duplex="modelData.TableFiledName" placeholder="字段名称" maxlength="8"></td>
                         <td>
                             <select ms-duplex="modelData.TableFileType" class="form-control">
