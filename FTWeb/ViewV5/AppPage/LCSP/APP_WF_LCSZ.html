@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>企捷云</title>
+    <title></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" href="http://at.alicdn.com/t/font_1473753044_842232.css">
@@ -35,14 +35,14 @@
 <body>
     <div class="container-fluid maindiv" style="margin-top: 20px" id="dvContent" ms-controller="APP_WF_LCSZ">
 
-        <div class="row contentdv" style="margin-left:0px">
+        <div class="row contentdv" style="margin-left: 0px">
             <div class="col-xs-12 ">
                 <div class="form-group">
                     <label>流程类型</label>
                     <select class="form-control" ms-change="xglx()" id="lclx">
-                        <option value=-1>关闭流程</option>
-                        <option value=0>自由流程</option>
-                        <option value=1>固定流程</option>
+                        <option value="-1">关闭流程</option>
+                        <option value="0">自由流程</option>
+                        <option value="1">固定流程</option>
                     </select>
                 </div>
                 <div class="form-group" ms-visible="modelData.ProcessType==-1">
@@ -50,7 +50,7 @@
                 </div>
                 <div class="form-group" ms-visible="modelData.ProcessType==0">
                     <label>可选审核人</label>
-                    <input type="text" ms-duplex="modelData.Alias" class="form-control szhl_getPeoples" style="display:none;" />
+                    <input type="text" ms-duplex="modelData.Alias" class="form-control szhl_getPeoples" style="display: none;" />
                 </div>
                 <div class="ft14 pt20" ms-visible="modelData.ProcessType==1">
                     <table class="table table-striped table-responsive table-hover table-bordered">
@@ -60,33 +60,38 @@
                                 <th>节点名称</th>
                                 <th>节点类型</th>
                                 <th>节点处理人</th>
-                                <th style="width:100px">是否可编辑</th>
+                                <th style="width: 100px">是否可编辑</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ms-repeat-item="LCItemList">
                                 <td>{{item.Taskorder}}</td>
-                                <td>{{item.TaskName}}</td>
+                                <td>
+                                    <input type="text" class="form-control" ms-duplex="item.TaskName" placeholder="节点名称"></td>
                                 <td>{{GetNodeTypeName(item.NodeType)}}</td>
-                                <td ms-click="SelRole(item)"> <a href="javascript:void(0)" class="btn-link">{{item.TaskAssInfo}}</a></td>
-                                <td style="text-align:center">
+                                <td ms-click="SelRole(item)"><a href="javascript:void(0)" class="btn-link">{{item.TaskAssInfo}}</a></td>
+                                <td style="text-align: center">
                                     <div class="icheckbox_square-blue" ms-visible="!$first" ms-class-1="checked:item.isCanEdit">
                                         <!--<input type="checkbox" ms-duplex-checked="item.isCanEdit">-->
                                         <span class="iconfont icon-check ft12"></span>
                                     </div>
                                 </td>
                                 <td>
-                                    <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-if="$last" ms-click="deljd(item,$event)">
+                                    <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-if="!$first" ms-click="deljd(item,$event)">
                                         <i class="iconfont icon-shanchu"></i>
+                                    </a>
+                                    <a class="cz-btn ft18 tip" data-toggle="tooltip" title="添加" ms-if="!$last" ms-click="addzjjd(item,$index)">
+                                        <i class="iconfont icon-jiahao ft14"></i>
                                     </a>
                                 </td>
                             </tr>
                         </tbody>
                         <tfoot>
-                            <tr id="addwf" style=" border-bottom: 1px solid #ddd;">
+                            <tr id="addwf" style="border-bottom: 1px solid #ddd;">
                                 <td></td>
-                                <td><input type="text" class="form-control" ms-duplex="LCItem.TaskName" placeholder="节点名称"></td>
+                                <td>
+                                    <input type="text" class="form-control" ms-duplex="LCItem.TaskName" placeholder="节点名称"></td>
                                 <td>
                                     <select class="form-control" ms-duplex="LCItem.NodeType">
                                         <option value="NODE">中间节点</option>
@@ -96,7 +101,7 @@
                                 <td>
                                     <input type="text" class="form-control" ms-click="SelRole(LCItem)" ms-duplex="LCItem.TaskAssInfo" placeholder="节点处理人">
                                 </td>
-                                <td style="text-align:center">
+                                <td style="text-align: center">
                                     <div class="icheckbox_square-blue" id="ckb">
                                         <!--<input type="checkbox" ms-duplex-checked="LCItem.isCanEdit">-->
                                         <span class="iconfont icon-check ft12"></span>
@@ -114,25 +119,32 @@
 
                 <div class="form-group">
                     <label>默认抄送人</label>
-                    <input type="text" ms-duplex="modelData.ChaoSongUser" class="form-control szhl_getPeoples" style="display:none;" />
+                    <input type="text" ms-duplex="modelData.ChaoSongUser" class="form-control szhl_getPeoples" style="display: none;" />
                 </div>
-                <div style="text-align:center">
-                        <button type="button" class="btn btn-info btn-lg" ms-click="AddLCSZ()"><i class="iconfont icon-jiahao ft12 mr5"></i>保存数据</button>
+                <div style="text-align: center">
+                    <button type="button" class="btn btn-info btn-lg" ms-click="AddLCSZ()"><i class="iconfont icon-jiahao ft12 mr5"></i>保存数据</button>
                 </div>
 
             </div>
         </div>
     </div>
-    
-    
+
+
     <script>
-       
+
         var tempindex = avalon.define({
             $id: "APP_WF_LCSZ",
             modelData: {},
             nowmodel: top.model.SelModel,
-            LCItem: { TaskName: "提出申请", Taskorder: "", AssignedRole: "", TaskAssInfo: "", NodeType: "NODE", ProcessDefinitionID: processId, isSJ: "0", TDCODE: "", isCanEdit: false },
+            LCItem: { TaskName: "审核", Taskorder: "", AssignedRole: "", TaskAssInfo: "请选择", NodeType: "NODE", ProcessDefinitionID: processId, isSJ: "0", TDCODE: "", isCanEdit: false },
             LCItemList: [{ TaskName: "提出申请", Taskorder: "1", AssignedRole: "", TaskAssInfo: "", NodeType: "START", ProcessDefinitionID: processId, isSJ: "0", TDCODE: processId + "-1", isCanEdit: false }],//固定流程数据
+
+            addzjjd: function (item, index) {
+                tempindex.LCItemList.splice(index * 1 + 1, 0, tempindex.LCItem.$model);
+                tempindex.LCItemList.forEach(function (item, i) {
+                    item.Taskorder = i * 1 + 1
+                })
+            },
             addjd: function () {
                 if (tempindex.LCItem.TaskName == "") {
                     top.ComFunJS.winwarning("请输入节点步骤");
@@ -167,8 +179,12 @@
                     $("#addwf").css("display", "")
                 }
                 tempindex.LCItemList.remove(item);
+                tempindex.LCItemList.forEach(function (item, index) {
+                    item.Taskorder = index * 1 + 1
+                })
             },
             AddLCSZ: function () {
+                var warnmsg = "";
                 $("tbody .icheckbox_square-blue").each(function (inx) {
                     if ($(this).hasClass("checked")) {
                         tempindex.LCItemList[inx].isCanEdit = true;
@@ -185,14 +201,27 @@
                 if (!tempindex.nowmodel.PDID && tempindex.nowmodel.QYModelId) {
                     qymodelId = tempindex.nowmodel.QYModelId
                 }
+                tempindex.LCItemList.forEach(function (item, index) {
+                    if (item.TaskName == "") {
+                        warnmsg = "请完善节点步骤";
+                    }
+                    if (item.TaskAssInfo == "请选择") {
+                        warnmsg = "请完善节点处理人信息";
+                    }
+                })
+
                 if (tempindex.LCItemList[tempindex.LCItemList.size() - 1].NodeType != "END" && tempindex.modelData.ProcessType == 1) {
-                    top.ComFunJS.winwarning("没有结束节点,不能保存不完整的流程");
-                } else {
+                    warnmsg = "没有结束节点,不能保存不完整的流程";
+                }
+                if (warnmsg) {
+                    top.ComFunJS.winwarning(warnmsg);
+                }
+                else {
                     $.post("/API/VIEWAPI.ashx", { Action: "LCSP_ADDPROCESS", P1: modelValue, P2: modelValue2, qymodelId: qymodelId, modelCode: tempindex.nowmodel.modelCode },
               function (result) {
                   var err = JSON.parse(result);
                   if (err.ErrorMsg != "") {
-                      
+
                       top.ComFunJS.winwarning(err.ErrorMsg);
                   } else {
                       tempindex.modelData = err.Result;
@@ -200,11 +229,13 @@
                           top.model.SelModel.PDID = err.Result.ID;
                       }
                       top.ComFunJS.winsuccess("设置成功");
+                      location.reload();
                   }
               });
                 }
 
-            }, SelRole: function (item) {
+            },
+            SelRole: function (item) {
                 if (item.NodeType == "START") {
                     return;
                 }
@@ -268,7 +299,7 @@
                 }
             },
             xglx: function () {
-                tempindex.modelData.ProcessType = $("#lclx").val()*1;
+                tempindex.modelData.ProcessType = $("#lclx").val() * 1;
             }
         })
         avalon.ready(function () {
