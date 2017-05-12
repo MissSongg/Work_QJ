@@ -173,7 +173,7 @@
             tempindex.isLJ = $(dom).prop("checked");
         },
         SelDXTemplate: function () {
-            top.ComFunJS.winbtnwin("/ViewV5/Base/SelDXTemplate.html", "选择短信模板", 800, 540, {}, function (layero, index) {
+            top.ComFunJS.winbtnwin("/ViewV5/AppPage/DXGL/SelDXTemplate.html", "选择短信模板", 800, 540, {}, function (layero, index) {
                 var frameid = $("iframe", $(layero)).attr('id');
                 var dxglData = ComFunJS.isIE() ? top.window.frames[frameid].selmodel.GetSelModel() : top.window.frames[frameid].contentWindow.selmodel.GetSelModel();
                 if (dxglData.DataContent) {

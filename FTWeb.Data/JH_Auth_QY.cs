@@ -54,5 +54,9 @@ namespace QJY.Data
         public string FZR { get; set; }
         public string FLXRDH { get; set; }
         public string FZRDH { get; set; }
+        public string wxappid { get; set; }
+        public string wxappsecret { get; set; }
+        public string wxmchid { get; set; }
+        public string wxmchidkey { get; set; }
     }
 }

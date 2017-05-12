@@ -167,14 +167,6 @@
             })
 
         },
-        AddRole: function () {
-            top.ComFunJS.winviewform("/ViewV5/AppPage/XTGL/ROLEADD.html", "添加职务", "1000", "600");
-        },
-        EditRole: function () {
-            if (tempindex.SelRoleItem.RoleCode) {
-                top.ComFunJS.winviewform("/ViewV5/AppPage/XTGL/ROLEADD.html?rolecode=" + tempindex.SelRoleItem.RoleCode, "修改职务", "1000", "600");
-            }
-        },
         DelRole: function () {
             top.ComFunJS.winconfirm("确认要删除“" + tempindex.SelRoleItem.RoleName + "”吗？", function () {
                 $.post("/API/VIEWAPI.ashx", { Action: "XTGL_DELROLE", P1: tempindex.SelRoleItem.RoleCode },

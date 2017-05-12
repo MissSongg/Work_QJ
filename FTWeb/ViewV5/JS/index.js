@@ -72,7 +72,6 @@
         model.initobj = null;//先清空数据
         model.PageCode = item.PageCode;
         model.initobj = item.ExtData;
-        model.rdm = Math.random();
         model.page.pageindex = 1;
         model.page.total = 0;
         model.ShowColumns = [];
@@ -104,7 +103,7 @@
 
     },//刷新页面
     PageCode: "",//需要加载的模板
-    rdm: Math.random(),//随机数
+    rdm: ComFunJS.getnowdate('yyyy-mm-dd'),//随机数
     Temprender: function () {
         if (typeof (tempindex) != "undefined") {
             tempindex.InitWigetData(model.initobj);
@@ -443,7 +442,13 @@
 
                 case "statename": //审核流程，-1时不需要流程
                     {
-                        if (str == "-1") str = "";
+                        if (str == "-1")
+                        {
+                            str = "";
+                        }
+                        else if (str == "已退回") {
+                            str = "<span style='color:red;font-weight:bold'>" + str + "</span>";
+                        }
                     }
                     break;
                 case "rwstate": //任务状态

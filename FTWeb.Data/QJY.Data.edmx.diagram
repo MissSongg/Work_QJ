@@ -25,8 +25,6 @@
         <EntityTypeShape EntityType="QJY_SaaSModel.JH_Auth_Identity" Width="1.5" PointX="12.75" PointY="4.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.JH_Auth_Log" Width="1.5" PointX="12.75" PointY="7.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.JH_Auth_Menu" Width="1.5" PointX="12.75" PointY="11.75" />
-        <EntityTypeShape EntityType="QJY_SaaSModel.JH_Auth_Model" Width="1.5" PointX="0.75" PointY="13.75" />
-        <EntityTypeShape EntityType="QJY_SaaSModel.JH_Auth_QY" Width="1.5" PointX="6.75" PointY="13.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.JH_Auth_QY_Model" Width="1.5" PointX="8.75" PointY="13.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.JH_Auth_QY_WXSC" Width="1.5" PointX="14.75" PointY="0.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.JH_Auth_Role" Width="1.5" PointX="14.75" PointY="4.75" />
@@ -128,6 +126,8 @@
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_PX_KCGL" Width="1.5" PointX="23.375" PointY="36.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_PX_KJGL" Width="1.5" PointX="31.375" PointY="36.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_PX_SeeTime" Width="1.5" PointX="5.375" PointY="36.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.JH_Auth_QY" Width="1.5" PointX="35.375" PointY="36.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.JH_Auth_Model" Width="1.5" PointX="37.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

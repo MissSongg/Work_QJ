@@ -37,10 +37,10 @@
             }, function () { })
         },
         setLCSZ: function (ID) {
-            top.ComFunJS.winviewform("/ViewV5/Base/APP_WF_LCSZ.html?PDID=" + ID, "设置流程", "1000", "600");
+            top.ComFunJS.winviewform("/ViewV5/AppPage/LCSP/APP_WF_LCSZ.html?PDID=" + ID, "设置流程", "1000", "600");
         },
         setLCTEMP: function (ID) {
-            top.ComFunJS.winviewform("/ViewV5/Base/ExtendSet.html?PDID=" + ID, "设置模板", "1000", "600");
+            top.ComFunJS.winviewform("/ViewV5/AppPage/LCSP/ExtendSet.html?PDID=" + ID, "设置模板", "1000", "600");
         },
         SetColumnStatus: function (dom, item) {
             if (confirm("确定要" + $.trim($(dom).html()) + "“" + item.ProcessName + "”吗？")) {

@@ -60,7 +60,7 @@ namespace QJY.API
             branchmodel = new JH_Auth_UserB().GetEntity(d => d.pccode == PCCode);
             return branchmodel;
         }
-   
+
 
         public string GetUserRealName(int intComid, string strUserName)
         {
@@ -1130,7 +1130,7 @@ namespace QJY.API
         {
             CacheHelp.Remove("qydata");
             return base.Update(entity);
-          
+
         }
         public override bool Delete(JH_Auth_QY entity)
         {
@@ -1604,7 +1604,7 @@ namespace QJY.API
 
 
         /// <summary>
-        /// 判断当前用户当前流程是否可以撤回,判断是不是只有一个处理过得节点
+        /// 判断当前用户当前流程是否可以撤回到草稿箱,判断是不是只有一个处理过得节点,或者被退回的单据
         /// </summary>
         /// <param name="strUser"></param>
         /// <param name="PIID"></param>
@@ -1612,7 +1612,12 @@ namespace QJY.API
         public string isCanCancel(string strUser, int PIID)
         {
 
-            DataTable dt = new Yan_WF_TIB().GetDTByCommand("SELECT ID FROM  dbo.Yan_WF_TI  WHERE PIID='" + PIID + "' AND EndTime IS not null");
+            if (GetPDStatus(PIID) == "已退回")
+            {
+                return "Y";
+            }
+
+            DataTable dt = new Yan_WF_TIB().GetDTByCommand("SELECT ID FROM  dbo.Yan_WF_TI  WHERE PIID='" + PIID + "' AND EndTime IS not null  AND  TaskUserID='" + strUser + "'");
             return dt.Rows.Count == 1 ? "Y" : "N";
         }
 

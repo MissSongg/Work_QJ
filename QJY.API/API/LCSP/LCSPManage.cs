@@ -1238,7 +1238,7 @@ namespace QJY.API
             //添加草稿数据
             SZHL_LCSP lcsp = new SZHL_LCSPB().GetEntity(d => d.ID == DataID);
             lcsp.ID = 0;
-            DataTable dtExtData = new JH_Auth_ExtendModeB().GetExtData(UserInfo.User.ComId, "LCSP", DataID.ToString());
+            DataTable dtExtData = new JH_Auth_ExtendModeB().GetExtDataAll(UserInfo.User.ComId, "LCSP", DataID.ToString());
             SZHL_DRAFT DRAFT = new SZHL_DRAFT();
             DRAFT.ComId = UserInfo.User.ComId;
             DRAFT.CRUser = UserInfo.User.UserName;

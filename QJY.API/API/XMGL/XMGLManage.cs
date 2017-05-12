@@ -303,7 +303,7 @@ namespace QJY.API
 
             //发送微信消息
             WXHelp wx = new WXHelp(UserInfo.QYinfo);
-            wx.SendTH(al, TX.TXMode, "A", TX.TXUser);
+            wx.SendTH(al, TX.TXMode, "B", TX.TXUser);
         }
         #endregion
     }
