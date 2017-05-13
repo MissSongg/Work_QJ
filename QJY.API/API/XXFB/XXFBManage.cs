@@ -297,12 +297,16 @@ namespace QJY.API
                 foreach (DataRow row in dt.Rows)
                 {
                     string parentTypeName = "";
-                    DataTable parentRow = dtParentType.Where("ID in (" + row["TypePath"].ToString().Replace('-', ',') + ")").OrderBy(" ID asc ");
-                    foreach (DataRow prow in parentRow.Rows)
+                    if (!string.IsNullOrEmpty(row["TypePath"].ToString()))
                     {
-                        parentTypeName = parentTypeName + (parentTypeName != "" ? "-" : "") + prow["TypeName"];
+                        DataTable parentRow = dtParentType.Where("ID in (" + row["TypePath"].ToString().Replace('-', ',') + ")").OrderBy(" ID asc ");
+                        foreach (DataRow prow in parentRow.Rows)
+                        {
+                            parentTypeName = parentTypeName + (parentTypeName != "" ? "-" : "") + prow["TypeName"];
+                        }
+                        row["TypeName"] = parentTypeName + (parentTypeName != "" ? "-" : "") + row["TypeName"];
                     }
-                    row["TypeName"] = parentTypeName + (parentTypeName != "" ? "-" : "") + row["TypeName"];
+               
                 }
                 msg.Result = dt;
             }

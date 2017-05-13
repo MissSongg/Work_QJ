@@ -5,17 +5,17 @@
     </div>
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
-        
+
         <!-- 搜索 -->
         <div class="oh">
-            <div class="input-group ml15" style="width:295px;">
+            <div class="input-group ml15" style="width: 295px;">
                 <input type="search" class="form-control" ms-duplex="search.searchcontent" placeholder="搜索类别名称">
                 <span class="input-group-addon" ms-click="GetLIST()">搜索</span>
             </div>
         </div>
     </div>
     <!-- 展开更多选项 -->
-    <div class="add-tab ft14 tc mt20" style="display:none;">
+    <div class="add-tab ft14 tc mt20" style="display: none;">
         <span>更多筛选<i class="caret"></i></span>
     </div>
     <!-- 表格 -->
@@ -23,8 +23,7 @@
         <table class="table table-striped table-responsive table-hover">
             <thead>
                 <tr>
-                    <th class="tc">
-
+                    <th class="tc">序号
                     </th>
                     <th>名称</th>
                     <th>描述</th>
@@ -33,13 +32,12 @@
                     <th>审核通过直接发布</th>
                     <th>审核人</th>
                     <th>指定接收人范围</th>
-                    <th style="width:80px;">
-                    </th>
+                    <th style="width: 80px;"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr ms-repeat-el="ListData" >
-                    <td class="tc"></td>
+                <tr ms-repeat-el="ListData">
+                    <td class="tc">{{$index+1}}</td>
                     <td>{{el.TypeName}}</td>
                     <td>{{el.TypeDec}}</td>
                     <td>{{ComFunJS.convertuser(el.TypeManager) }}</td>
@@ -61,7 +59,10 @@
 
             </tbody>
             <tfoot>
-                <tr ms-if="isnull"><td class="tc"></td><td colspan="7">暂无数据</td></tr>
+                <tr ms-if="isnull">
+                    <td class="tc"></td>
+                    <td colspan="7">暂无数据</td>
+                </tr>
             </tfoot>
         </table>
         <div class="ui-datatable-page ft14 pl20">
@@ -69,8 +70,7 @@
             <div id="pageDiv" ms-visible="model.page.total>model.pageNum[0].num" class="pull-right"></div>
             <div class="pull-right" ms-visible="ListData.size()!=0">
                 <span>共{{model.page.total}}条记录</span>
-                <span ms-visible="model.page.total>model.pageNum[0].num">
-                    选择每页条数
+                <span ms-visible="model.page.total>model.pageNum[0].num">选择每页条数
                     <select style="height: 25px; width: 50px;" ms-change="selNum(this.value)" ms-duplex="model.page.pagecount">
                         <option ms-repeat-pg="pageNum" ms-attr-value="pg.num" ms-attr-selected="pg.num==model.page.pagecount?'selected':''">{{pg.num}}</option>
                     </select>
@@ -137,7 +137,7 @@
                     if (resultData.ErrorMsg == "") {
                         ComFunJS.winsuccess("删除成功");
                         model.ListData.remove(item);
-                    } 
+                    }
                 })
             })
         }

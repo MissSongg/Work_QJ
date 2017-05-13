@@ -1491,6 +1491,7 @@
     <Content Include="API\WXAPI.ashx" />
     <None Include="Properties\PublishProfiles\QiJieYun.pubxml" />
     <None Include="Properties\PublishProfiles\QJKJ.pubxml" />
+    <None Include="Properties\PublishProfiles\QJSignle.pubxml" />
     <None Include="Properties\PublishProfiles\SaasFB.pubxml" />
     <None Include="Properties\PublishProfiles\TestFB.pubxml" />
     <None Include="Properties\Settings.settings">
