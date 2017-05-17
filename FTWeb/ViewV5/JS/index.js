@@ -70,25 +70,30 @@
     selmenulev2: function (item) {
         model.isnull = false;
         model.initobj = null;//先清空数据
-        model.PageCode = item.PageCode;
-        model.initobj = item.ExtData;
-        model.page.pageindex = 1;
-        model.page.total = 0;
-        model.ShowColumns = [];
-        model.TypeData = [];
-        model.ListData = [];
-        model.search.seartype = '1';
-        model.search.searchcontent = '';
+        model.PageCode = "/ViewV5/Base/Loading";
 
-        if (localStorage.getItem(model.PageCode + "pagecount")) {
-            model.page.pagecount = localStorage.getItem(model.PageCode + "pagecount");
-        } else {
-            model.page.pagecount = 10;
+        gomenu = function () {
+            model.PageCode = item.PageCode;
+            if (localStorage.getItem(model.PageCode + "pagecount")) {
+                model.page.pagecount = localStorage.getItem(model.PageCode + "pagecount");
+            } else {
+                model.page.pagecount = 10;
+            }
+            model.initobj = item.ExtData;
+            model.page.pageindex = 1;
+            model.page.total = 0;
+            model.ShowColumns = [];
+            model.TypeData = [];
+            model.ListData = [];
+            model.search.seartype = '1';
+            model.search.searchcontent = '';
+
+            //清除日历样式
+            $(".datetimepicker").remove()
         }
-        //清除日历样式
-        $(".datetimepicker").remove()
-
-    },//选中二级菜单事件
+        setTimeout("gomenu()", 1000)
+    },
+    //选中二级菜单事件
     refpage: function (pagecode) {
         if (pagecode) {
             for (var i = 0; i < model.FunData.length; i++) {
