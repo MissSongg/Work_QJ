@@ -594,7 +594,7 @@ namespace QJY.API
             string type = context.Request["type"] ?? "";
             if (type == "1") //我接收的
             {
-                strWhere += string.Format(" and SHStatus=2  and (','+SZHL_XXFB.JSUser+',' LIKE '%,{0},%' or  SZHL_XXFB.JSUser='') and FBTime<'{1}'", UserInfo.User.UserName, DateTime.Now);
+                strWhere += string.Format(" and SHStatus=2  and (','+SZHL_XXFB.JSUser+',' LIKE '%,{0},%' or  SZHL_XXFB.JSUser='') and FBTime<getdate()", UserInfo.User.UserName, DateTime.Now);
             }
             else
             {//我创建的

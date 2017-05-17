@@ -1,10 +1,10 @@
-﻿
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1468998609_1288347.css">
+﻿<link rel="stylesheet" href="//at.alicdn.com/t/font_1468998609_1288347.css">
 <style>
     .szhlloading {
         -webkit-animation: rotateplane 1.2s infinite ease-in-out;
         animation: rotateplane 1.2s infinite ease-in-out;
     }
+
     @-webkit-keyframes rotateplane {
         0% {
             -webkit-transform: perspective(120px);
@@ -15,7 +15,7 @@
         }
 
         100% {
-            -webkit-transform: perspective(120px) rotateY(180deg) ;
+            -webkit-transform: perspective(120px) rotateY(180deg);
         }
     }
 
@@ -27,59 +27,51 @@
 
         50% {
             transform: perspective(120px) rotateY(0deg);
-            -webkit-transform: perspective(120px) rotateY(-180.1deg) ;
+            -webkit-transform: perspective(120px) rotateY(-180.1deg);
         }
     }
+
     .anchorBL {
-        display:none;
+        display: none;
     }
+
     .amap-logo {
         display: none !important;
     }
+
     .amap-copyright {
         display: none !important;
     }
+
     #map h3 {
         margin: 0 !important;
     }
 </style>
-<div style="background:#fbf9fe" ms-controller="MWQQD">
+<div style="background: #fbf9fe" ms-controller="MWQQD">
     <div ms-if="isHasDataQX=='Y'">
-        <!--<div class="weui_cells_title">基本信息</div>-->
-        <!--<div style="text-align:center">
-            <div class="load szhlloading" ms-click="reload()">
-                <i class="iconfont icon-weizhi " style="font-size: 2em; color: #12b8f6"></i>
-            </div>
-        </div>
-        <div style="text-align:center;padding-bottom:.5em;font-size:.5rem;">
-            {{Position}}
-        </div>-->
-        <div id="map" style="height:200px;width:100%;"></div>
+        <div id="map" style="height: 200px; width: 100%;"></div>
         <div class="weui_cells weui_cells_form">
-            
-            <!--<div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">当前位置</label></div>
-                <div class="weui_cell_bd weui_cell_primary" style="text-align:center">
-                    {{modelData.Position}}河南省大学科技园
-                </div>
-            </div>-->
+
+
             <div class="weui_cells_form">
                 <div class="weui_cell">
-                    <div class="weui_cell_hd" style="display:none;"><label class="weui_label label">签到备注</label></div>
+                    <div class="weui_cell_hd" style="display: none;">
+                        <label class="weui_label label">签到备注</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <textarea ms-duplex="modelData.QDContent" rows="3" placeholder="请输入签到备注" class="weui_textarea szhl szhl_require" ></textarea>
+                        <textarea ms-duplex="modelData.QDContent" rows="3" placeholder="请输入签到备注" class="weui_textarea szhl szhl_require"></textarea>
                     </div>
                 </div>
             </div>
             <div class="weui_cells weui_cells_form">
                 <div class="weui_cell">
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input type="text" ms-duplex="modelData.Files" class="wximgupload" style="display:none;" />
+                        <input type="text" ms-duplex="modelData.Files" class="wximgupload" style="display: none;" />
                     </div>
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">汇报人</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">汇报人</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input type="text" id="conCSR" placeholder="请选择汇报人" ms-duplex="modelData.HBUser" class="weui_input szhl szhl_getPeoples" />
                 </div>
@@ -90,7 +82,8 @@
         <!--<div class="weui_cells_title">基本信息</div>-->
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">当前位置</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">当前位置</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.Position}}
                 </div>
@@ -110,7 +103,8 @@
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">汇报人</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">汇报人</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{ComFunJS.convusers(modelData.HBUser)}}
                 </div>
@@ -303,8 +297,6 @@
         modelData: { "Position": "", "Longitude": "", "Latitude": "", "QDContent": "", "Files": "", "HBUser": "" },
         inittemp: function (strId) {
 
-            //circle.getCurrentPosition(locationResult); 
-            //map.addOverlay(circle);
 
             if (strId) {
 
@@ -350,7 +342,7 @@
                 }
 
                 ComFunJS.uploadimgnew();
-                
+
             }
             $('.btnSucc').html('<i class="fa fa-plus"></i>签到');
 

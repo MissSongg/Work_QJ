@@ -213,27 +213,7 @@
                     <!--</div>-->
                 </div>
             </div>
-            <!--<div class="list-block" style="margin: 0;" ms-if="DataID&&MobileWFData.size()>0">
-                <ul>
-                    <li>
-                        <div class="item-content ">
-                            <div class="item-inner">
-                                <div class="item-title label">审核状态</div>
-                                <div class="item-input">
-                                    <div>{{shzt()}}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-content ">
-                            <div class="item-inner">
-                                <div class="item-title label">审核进度</div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>-->
+            
             <div style="background:#fbf9fe;" ms-if="DataID&&MobileWFData.size()>0"> 
                 <div class="weui_cells weui_cells_form">
                     <div class="weui_cell">
@@ -244,19 +224,7 @@
                     </div> 
                 </div>
             </div>
-            <!--<section id="cd-timeline" class="cd-container" style="padding-top: 0; padding-bottom: 0; margin-top: 0;" ms-css-margin-bottom="iscansp?'4rem':'2rem'" ms-if="MobileWFData.size()>0">
-                <div class="cd-timeline-block" ms-repeat-item="MobileWFData" style="margin:1rem 0">
-                    <div class="cd-timeline-img cd-picture">
-                        {{$index+1}}
-                    </div>
-                    <div class="cd-timeline-content" style="padding:0;    box-shadow:none">
-                        <h5 style="margin:10px 0">{{item.title}}</h5>
-                        <p style="margin:0.4em 0">
-                            <span class="cd-date">{{item.Date}}</span> {{item.content}}
-                        </p>
-                    </div>
-                </div>
-            </section>-->
+         
             <div ms-if="TASKDATA.size()>0" ms-css-margin-bottom="iscansp?'5rem':'2rem'">
                 <!--<div class="content-block-title">审批进度</div>-->
                 <div class="card">
@@ -394,7 +362,6 @@
     <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160730"></script>
     <script src="/View_Mobile/JS/raty/jquery.raty.js?v=1.3"></script>
     <script src="/ViewV5/JS/WFJS.js?ver=20170326"></script>
-    <!--<script src="http://api.map.baidu.com/api?v=2.0&ak=tX20rXYlZWqdEcYIdkOWnmTR1jHlmjT5" type="text/javascript"></script>-->
     <script language="javascript" src="http://webapi.amap.com/maps?v=1.3&key=00fe526c7af6452674306b68a5cc8590"></script>
     <script>
         var peomodel = avalon.define({
