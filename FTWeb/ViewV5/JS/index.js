@@ -9,6 +9,7 @@
     isshowload: true,
     XXCount: 0,//消息数量
     QYGGData: [],//企业公告
+
     QYHDData: [], //企业活动
     wigetdata: [],//工作台组件数据
     initobj: "",//初始化要传给组件的数据
@@ -110,9 +111,8 @@
     PageCode: "",//需要加载的模板
     rdm: ComFunJS.getnowdate('yyyy-mm-dd'),//随机数
     Temprender: function () {
-        if (typeof (tempindex) != "undefined") {
+        if (typeof (tempindex) != "undefined" && model.PageCode != "/ViewV5/Base/Loading") {
             tempindex.InitWigetData(model.initobj);
-
             if (model.ShowColumns.size() > 0) {
                 setTimeout("model.GetExtColumns(" + model.rdm + ")", 1500);
             }

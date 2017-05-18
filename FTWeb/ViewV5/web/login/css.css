@@ -219,7 +219,7 @@ url("../font/HYQiHei-40S.otf");
 h4.th_text{font-family:"HYQHei";}*/
 
 /*-----------------------登陆*/
-.login_nav{ background-color:#fff; padding:10px;}
+.login_nav{ background-color:#fff; padding:20px;}
 .login_nav_td2{font-size:18px; color:#0b0b0b; line-height:29px; position: relative;}
 .login_nav_td2>.erweima{padding-left:25px; padding-right:5px; border-left:1px solid #dedede;}
 .erweima_pic{position: absolute; top:70px;width: 258px;height: 258px;}
