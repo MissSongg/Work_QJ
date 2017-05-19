@@ -105,8 +105,7 @@ namespace QJY.API
                 Directory.CreateDirectory(path + "/dbbackup/");
             }
             path = path + "/dbbackup/db_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".bak";
-            //string strsql = "use master;declare @name varchar(max);SELECT @name= DB_NAME(dbid) FROM master.dbo.sysprocesses WHERE status='runnable';backup database @name to disk='" + path + "';";
-            string strsql = "backup database QJY_XNY to disk='" + path + "';";
+            string strsql = "backup database QJY_Signle to disk='" + path + "';";
 
             new JH_Auth_QYB().ExsSql(strsql);
 
@@ -224,11 +223,11 @@ namespace QJY.API
             ArrayList list = new ArrayList();
 
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = CommonHelp.GetConfig("master");
+            conn.ConnectionString = new JH_Auth_QYB().GetDBString().Replace("QJY_Temp", "master").Replace("QJY_Signle","master");
             conn.Open();
             try
             {
-                SqlCommand cmd = new SqlCommand("use master; select distinct spid FROM sysprocesses ,sysdatabases Where sysprocesses.dbid=sysdatabases.dbid AND sysdatabases.Name='QJY_XNY'", conn);
+                SqlCommand cmd = new SqlCommand("use master; select distinct spid FROM sysprocesses ,sysdatabases Where sysprocesses.dbid=sysdatabases.dbid AND sysdatabases.Name='QJY_Signle'", conn);
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
@@ -247,7 +246,7 @@ namespace QJY.API
                 }
 
                 conn.Open();
-                SqlCommand cmd2 = new SqlCommand("restore database QJY_XNY from disk='" + P1 + "' with replace ;", conn);
+                SqlCommand cmd2 = new SqlCommand("restore database QJY_Signle from disk='" + P1 + "' with replace ;", conn);
                 cmd2.ExecuteNonQuery();
                 conn.Close();
 

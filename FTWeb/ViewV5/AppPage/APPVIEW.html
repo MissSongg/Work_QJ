@@ -35,6 +35,8 @@
 
                         <a class="btn btn-success" ms-if="isBack=='Y'" href="javascript:history.go(-1)">返回</a>
                         <a class="btn btn-info" ms-attr-href="/ViewV5/AppPage/{{FormCode}}/HtmlToWord.aspx?ID={{strId}}" target="_blank" ms-if="isExport">导出</a>
+                                                <a class="btn btn-info" ms-click="print()">打印</a>
+
                     </div>
                 </div>
             </div>
@@ -303,6 +305,9 @@
                 else {
                     return '';
                 }
+            },
+            print: function () {
+                window.print()
             },
             addPL: function () {
                 ComFunJS.winbtnwin("/ViewV5/Base/APP_COMMENT.html?ID=" + model.strId + "&contentdec=" + model.plTitle + "&Type=" + model.FormCode + "&r=" + Math.random(), model.plTitle, 600, 400, {}, function (layero, index) {

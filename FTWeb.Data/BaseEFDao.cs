@@ -208,6 +208,23 @@ namespace QJY.Data
             }
         }
 
+
+
+        /// <summary>
+        /// 获取链接字符串
+        /// </summary>
+        /// <param name="CommandText">Sql语句</param>
+        /// <param name="objParams">可变参数</param>
+        /// <returns></returns>
+        public string GetDBString()
+        {
+
+            using (DbContext Entities = GetDbContext())
+            {
+                string connectionString = Entities.Database.Connection.ConnectionString;
+                return connectionString;
+            }
+        }
         /// <summary>
         /// EF SQL 语句返回 dataTable
         /// </summary>

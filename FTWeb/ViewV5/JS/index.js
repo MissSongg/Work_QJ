@@ -9,7 +9,7 @@
     isshowload: true,
     XXCount: 0,//消息数量
     QYGGData: [],//企业公告
-
+    YYData:[],
     QYHDData: [], //企业活动
     wigetdata: [],//工作台组件数据
     initobj: "",//初始化要传给组件的数据
@@ -261,7 +261,11 @@
                         })
                     })
                 }
+                // YYData
+
                 model.UseYYList = resultData.Result;
+
+
                 if (resultData.Result1 == "Y") {
 
                     $(".nav-list ul li:visible").eq(1).click();
