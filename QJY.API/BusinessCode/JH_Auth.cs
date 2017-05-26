@@ -1487,6 +1487,14 @@ namespace QJY.API
                 {
                     ENDTASK(MODEL.ID, strUser, strYJView);
                     ListNextUser = AddNextTask(MODEL, strShUser);
+
+                    //循环找下一个审核人是否包含本人，如果包含则审核通过
+                    if (ListNextUser.Contains(strUser))
+                    {
+                        ListNextUser.Clear();
+                        return MANAGEWF(strUser, PIID, strYJView, ref ListNextUser, strShUser);
+                    }
+
                 }
                 return true;
             }
