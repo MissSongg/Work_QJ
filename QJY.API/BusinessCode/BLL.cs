@@ -338,25 +338,7 @@ namespace QJY.API
     public class SZHL_WQQDB : BaseEFDao<SZHL_WQQD>
     {
     }
-    public class SZHL_HYGLB : BaseEFDao<SZHL_HYGL>
-    {
-    }
-    public class SZHL_HYGL_ROOMB : BaseEFDao<SZHL_HYGL_ROOM>
-    {
-    }
-    public class SZHL_HYGL_QRB : BaseEFDao<SZHL_HYGL_QR>
-    {
-    }
-    public class SZHL_HYGL_QDB : BaseEFDao<SZHL_HYGL_QD>
-    {
-    }
-
-    public class SZHL_YCGLB : BaseEFDao<SZHL_YCGL>
-    {
-    }
-    public class SZHL_YCGL_CARB : BaseEFDao<SZHL_YCGL_CAR>
-    {
-    }
+   
     public class SZHL_JFBXB : BaseEFDao<SZHL_JFBX>
     {
         /// <summary>
@@ -391,49 +373,13 @@ namespace QJY.API
     public class SZHL_RWGL_ITEMB : BaseEFDao<SZHL_RWGL_ITEM>
     {
     }
-    public class SZHL_QYHDB : BaseEFDao<SZHL_QYHD>
-    {
-    }
-    public class SZHL_QYHD_ITEMB : BaseEFDao<SZHL_QYHD_ITEM>
-    {
-    }
+   
 
-    #region 企业活动（new）
-    public class SZHL_QYHDNB : BaseEFDao<SZHL_QYHDN>
-    {
-    }
-    public class SZHL_QYHD_OptionB : BaseEFDao<SZHL_QYHD_Option>
-    {
-    }
-    public class SZHL_QYHD_ResultB : BaseEFDao<SZHL_QYHD_Result>
-    {
-    }
-    #endregion
 
     public class JH_Auth_CommonB : BaseEFDao<JH_Auth_Common>
     {
     }
-    public class SZHL_KDGLB : BaseEFDao<SZHL_KDGL>
-    {
-    }
-    public class SZHL_KDDY_LISTB : BaseEFDao<SZHL_KDDY_LIST>
-    {
-    }
-    public class SZHL_KDDY_PZB : BaseEFDao<SZHL_KDDY_PZ>
-    {
-    }
-    public class SZHL_KDDY_CYDZB : BaseEFDao<SZHL_KDDY_CYDZ>
-    {
-    }
-    public class SZHL_DCGLB : BaseEFDao<SZHL_DCGL>
-    {
-    }
-    public class SZHL_DCGL_HEADERB : BaseEFDao<SZHL_DCGL_HEADER>
-    {
-    }
-    public class SZHL_DCGL_ITEMB : BaseEFDao<SZHL_DCGL_ITEM>
-    {
-    }
+  
     public class SZHL_TXSXB : BaseEFDao<SZHL_TXSX>
     {
     }
@@ -443,60 +389,22 @@ namespace QJY.API
     public class SZHL_TXLB : BaseEFDao<SZHL_TXL>
     {
     }
-    public class SZHL_DDGLB : BaseEFDao<SZHL_DDGL>
-    {
-    }
+
     public class SZHL_XXFB_SCKB : BaseEFDao<SZHL_XXFB_SCK>
     {
     }
     public class SZHL_GZBGB : BaseEFDao<SZHL_GZBG>
     {
     }
-    public class SZHL_HelpMenuB : BaseEFDao<SZHL_HelpMenu>
-    {
-    }
+  
     public class SZHL_NOTEB : BaseEFDao<SZHL_NOTE>
     {
     }
-    public class SZHL_WTFKB : BaseEFDao<SZHL_WTFK>
-    {
-    }
+   
     public class SZHL_XMGLB : BaseEFDao<SZHL_XMGL>
     {
     }
-    public class SZHL_CRM_KHGLB : BaseEFDao<SZHL_CRM_KHGL>
-    {
-    }
-    public class SZHL_CRM_CONTACTB : BaseEFDao<SZHL_CRM_CONTACT>
-    {
-    }
-    public class SZHL_CRM_HTGLB : BaseEFDao<SZHL_CRM_HTGL>
-    {
-    }
-    public class SZHL_TSSQB : BaseEFDao<SZHL_TSSQ>
-    {
-    }
-    public class SZHL_CRM_CPGLB : BaseEFDao<SZHL_CRM_CPGL>
-    {
-    }
-    public class SZHL_CRM_GJJLB : BaseEFDao<SZHL_CRM_GJJL>
-    {
-    }
-    public class SZHL_CRM_CARDB : BaseEFDao<SZHL_CRM_CARD>
-    {
-    }
-    public class SZHL_QYIMB : BaseEFDao<SZHL_QYIM>
-    {
-    }
-    public class SZHL_QYIM_ITEMB : BaseEFDao<SZHL_QYIM_ITEM>
-    {
-    }
-    public class SZHL_QYIM_LISTB : BaseEFDao<SZHL_QYIM_LIST>
-    {
-    }
-    public class SZHL_CRM_KDB : BaseEFDao<SZHL_CRM_KD>
-    {
-    }
+   
     public class SZHL_KQBCB : BaseEFDao<SZHL_KQBC>
     { }
     public class SZHL_KQJLB : BaseEFDao<SZHL_KQJL>
@@ -504,72 +412,17 @@ namespace QJY.API
 
     public class SZHL_XZ_JLB : BaseEFDao<SZHL_XZ_JL> { }
     public class SZHL_XZ_GZDB : BaseEFDao<SZHL_XZ_GZD> { }
-    public class SZHL_CHAT_MSGB : BaseEFDao<SZHL_CHAT_MSG> { }
-    public class SZHL_CHAT_GROUPB : BaseEFDao<SZHL_CHAT_GROUP> { }
-    public class SZHL_CHAT_GROUPUSERB : BaseEFDao<SZHL_CHAT_GROUPUSER> { }
-    public class SZHL_CHAT_MSG_GROUPB : BaseEFDao<SZHL_CHAT_MSG_GROUP> { }
-    public class SZHL_CHAT_MSG_GROUP_USERB : BaseEFDao<SZHL_CHAT_MSG_GROUP_USER> { }
 
     public class SZHL_DRAFTB : BaseEFDao<SZHL_DRAFT> { }
-    public class SZHL_DDGL_ITEMB : BaseEFDao<SZHL_DDGL_ITEM> { }
+
     public class SZHL_GZGLB : BaseEFDao<SZHL_GZGL> { }
     public class SZHL_GZGL_JCSZB : BaseEFDao<SZHL_GZGL_JCSZ> { }
     public class SZHL_GZGL_FLB : BaseEFDao<SZHL_GZGL_FL> { }
     public class SZHL_GZGL_WXYJB : BaseEFDao<SZHL_GZGL_WXYJ> { }
-    public class SZHL_KS_KSAPB : BaseEFDao<SZHL_KS_KSAP>
-    {
-    }
-    public class SZHL_KS_SJB : BaseEFDao<SZHL_KS_SJ>
-    {
-    }
-    public class SZHL_KS_SJSTB : BaseEFDao<SZHL_KS_SJST>
-    {
-    }
-    public class SZHL_KS_STB : BaseEFDao<SZHL_KS_ST>
-    {
-    }
-    public class SZHL_KS_STItemB : BaseEFDao<SZHL_KS_STItem>
-    {
-        public void SaveQuestionItem(int questionId, string itemName, string itemDec, int ComId)
-        {
 
-            SZHL_KS_STItem questionItem = new SZHL_KS_STItem();
-            questionItem.STID = questionId;
-            questionItem.ItemName = itemName;
-            questionItem.ItemDesc = itemDec.Trim();
-            questionItem.ComId = ComId;
-            new SZHL_KS_STItemB().Insert(questionItem);
-        }
-    }
-    public class SZHL_KS_SJSTGLB : BaseEFDao<SZHL_KS_SJSTGL>
-    {
-    }
-    public class SZHL_KS_SJSTGLItemB : BaseEFDao<SZHL_KS_SJSTGLItem>
-    {
-    }
-    public class SZHL_KS_TKB : BaseEFDao<SZHL_KS_TK>
-    {
-    }
-    public class SZHL_KS_TKFLB : BaseEFDao<SZHL_KS_TKFL>
-    {
-    }
-    public class SZHL_KS_USERKSB : BaseEFDao<SZHL_KS_USERKS>
-    {
-    }
-    public class SZHL_KS_USERKSItemB : BaseEFDao<SZHL_KS_USERKSItem>
-    {
-    }
-    public class SZHL_PX_KCGLB : BaseEFDao<SZHL_PX_KCGL>
-    {
-    }
-    public class SZHL_PX_KJGLB : BaseEFDao<SZHL_PX_KJGL>
-    {
-    }
-    public class SZHL_DBGLB : BaseEFDao<SZHL_DBGL>
-    {
-    }
-    public class SZHL_PX_SeeTimeB : BaseEFDao<SZHL_PX_SeeTime>
-    {
-    }
+    public class SZHL_TSSQB : BaseEFDao<SZHL_TSSQ>
+    { }
+    
+   
 
 }

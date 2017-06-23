@@ -30,13 +30,28 @@ namespace QJY.API
             Qyinfo = QY;
         }
 
-        public string GetToken()
+
+        public string GetToken(string appID = "")
         {
 
             if (Qyinfo.IsUseWX == "Y")
             {
-                AccessTokenResult Token = CommonApi.GetToken(Qyinfo.corpId.Trim(), Qyinfo.corpSecret.Trim());
-                return Token.access_token;
+                if (appID == "")
+                {
+                    AccessTokenResult Token = CommonApi.GetToken(Qyinfo.corpId.Trim(), Qyinfo.corpSecret.Trim());
+                    return Token.access_token;
+                }
+                else
+                {
+                    JH_Auth_Model Model = new JH_Auth_ModelB().GetEntities(d => d.AppID == appID).FirstOrDefault();
+                    string strcorpSecret = Qyinfo.corpSecret.Trim();
+                    if (Model != null && !string.IsNullOrEmpty(Model.Remark1))
+                    {
+                        strcorpSecret = Model.Remark1.Trim();
+                    }
+                    AccessTokenResult Token = CommonApi.GetToken(Qyinfo.corpId.Trim(), strcorpSecret);
+                    return Token.access_token;
+                }
             }
             else
             {
@@ -86,11 +101,11 @@ namespace QJY.API
 
                     if (app.AppType == "1")
                     {
-                        MassApi.SendNews(GetToken(), th.UserS.Replace(',', '|'), "", "", app.AppID, th.MODEL);
+                        MassApi.SendNews(GetToken(app.AppID.ToString()), th.UserS.Replace(',', '|'), "", "", app.AppID, th.MODEL);
                     }
                     else
                     {
-                        MassApi.SendText(GetToken(), th.UserS.Replace(',', '|'), "", "", app.AppID, th.MODEL[0].Title);
+                        MassApi.SendText(GetToken(app.AppID.ToString()), th.UserS.Replace(',', '|'), "", "", app.AppID, th.MODEL[0].Title);
                     }
                 }
             }
@@ -100,47 +115,7 @@ namespace QJY.API
             }
         }
 
-        /// <summary>
-        /// 发送通知消息
-        /// </summary>
-        /// <param name="MODEL"></param>
-        /// <param name="flag"></param>
-        /// <param name="ID"></param>
-        /// <param name="strUserS"></param>
-        private void SendCommonMSG(object o)//Article MODEL, string flag, int ID, string strUserS = "@all")
-        {
-            try
-            {
-                thModel th = (thModel)o;
-                MassApi.SendNews(GetToken(), th.UserS.Replace(',', '|'), "", "", th.authAppID, th.MODEL);
-
-            }
-            catch { }
-        }
-
-
-
-        /// <summary>
-        /// 图文消息
-        /// </summary>
-        /// <param name="Msgs"></param>
-        /// <param name="strAPPID"></param>
-        /// <param name="strUserS"></param>
-        public void SendWXMsg(List<Article> Msgs, string strAPPID, string strUserS = "@all")
-        {
-            try
-            {
-                if (strUserS == "")
-                {
-                    return;
-                }
-                if (Qyinfo.IsUseWX == "Y")
-                {
-                    MassApi.SendNews(GetToken(), strUserS, "", "", strAPPID, Msgs);
-                }
-            }
-            catch { }
-        }
+        
 
         /// <summary>
         /// 文字消息
@@ -161,7 +136,7 @@ namespace QJY.API
                 if (Qyinfo.IsUseWX == "Y")
                 {
 
-                    MassApi.SendText(GetToken(), strUserS, "", "", app.AppID, MsgText);
+                    MassApi.SendText(GetToken(app.AppID.ToString()), strUserS, "", "", app.AppID, MsgText);
                 }
             }
             catch { }
@@ -215,17 +190,8 @@ namespace QJY.API
 
         #endregion
 
-
         #region 组织机构相关
-        public string GetCodeURL(string Redurl)
-        {
-            string url = "";
-            if (Qyinfo.IsUseWX == "Y")
-            {
-                url = OAuth2Api.GetCode(Qyinfo.corpId.Trim(), Redurl, "");
-            }
-            return url;
-        }
+
         public string GetUserDataByCode(string strCode)
         {
             string UserCode = "";
@@ -312,89 +278,9 @@ namespace QJY.API
             }
             return Ret;
         }
-        public QyJsonResult WX_CreateTag(JH_Auth_Role Model)
-        {
-            QyJsonResult Ret = new QyJsonResult();
-            if (Qyinfo.IsUseWX == "Y")
-            {
-                Ret = MailListApi.CreateTag(GetToken(), Model.RoleName, Model.WXBQCode);
-            }
-            return Ret;
-        }
-        public QyJsonResult WX_UpdateTag(JH_Auth_Role Model)
-        {
-            QyJsonResult Ret = new QyJsonResult();
-            if (Qyinfo.IsUseWX == "Y")
-            {
-                int bqid = Int32.Parse(Model.WXBQCode.ToString());
-                Ret = MailListApi.UpdateTag(GetToken(), bqid, Model.RoleName);
-            }
-            return Ret;
-        }
-        public QyJsonResult WX_DelTag(int strBQCode)
-        {
-            QyJsonResult Ret = new QyJsonResult();
-            if (Qyinfo.IsUseWX == "Y")
-            {
-                Ret = MailListApi.DeleteTag(GetToken(), strBQCode);
-            }
-            return Ret;
-        }
-        public QyJsonResult WX_AddTagMember(JH_Auth_UserRole Model)
-        {
-            var role = new JH_Auth_RoleB().GetEntity(p => p.RoleCode == Model.RoleCode);
-            QyJsonResult Ret = new QyJsonResult();
-            if (Qyinfo.IsUseWX == "Y")
-            {
-                string[] userList = { Model.UserName };
-                int bqid = Int32.Parse(role.WXBQCode.ToString());
-                Ret = MailListApi.AddTagMember(GetToken(), bqid, userList, null);
-            }
-            return Ret;
-        }
-        public QyJsonResult WX_DelTagMember(int strBQCode, string[] userList)
-        {
-            QyJsonResult Ret = new QyJsonResult();
-            if (Qyinfo.IsUseWX == "Y")
-            {
-                Ret = MailListApi.DelTagMember(GetToken(), strBQCode, userList);
-            }
-            return Ret;
-        }
-        public GetTagListResult WX_GetTagList()
-        {
-            GetTagListResult Ret = new GetTagListResult();
 
-            if (Qyinfo.IsUseWX == "Y")
-            {
-                Ret = MailListApi.GetTagList(GetToken());
-            }
-            return Ret;
-        }
-        public GetTagMemberResult WX_GetTagMember(int tagid)
-        {
-            GetTagMemberResult Ret = new GetTagMemberResult();
-            if (Qyinfo.IsUseWX == "Y")
-            {
-                Ret = MailListApi.GetTagMember(GetToken(), tagid);
-            }
-            return Ret;
-        }
-        public GetMemberResult WX_GetUser(string username)
-        {
-            GetMemberResult Ret = new GetMemberResult();
-            try
-            {
-                if (Qyinfo.IsUseWX == "Y")
-                {
-                    Ret = MailListApi.GetMember(GetToken(), username);
-                }
-            }
-            catch
-            {
-            }
-            return Ret;
-        }
+
+
         public QyJsonResult WX_CreateUser(JH_Auth_User Model)
         {
             try
@@ -479,6 +365,76 @@ namespace QJY.API
         }
         #endregion
 
+        #region TAG管理
+        public QyJsonResult WX_CreateTag(JH_Auth_Role Model)
+        {
+            QyJsonResult Ret = new QyJsonResult();
+            if (Qyinfo.IsUseWX == "Y")
+            {
+                Ret = MailListApi.CreateTag(GetToken(), Model.RoleName, Model.WXBQCode);
+            }
+            return Ret;
+        }
+        public QyJsonResult WX_UpdateTag(JH_Auth_Role Model)
+        {
+            QyJsonResult Ret = new QyJsonResult();
+            if (Qyinfo.IsUseWX == "Y")
+            {
+                int bqid = Int32.Parse(Model.WXBQCode.ToString());
+                Ret = MailListApi.UpdateTag(GetToken(), bqid, Model.RoleName);
+            }
+            return Ret;
+        }
+        public QyJsonResult WX_DelTag(int strBQCode)
+        {
+            QyJsonResult Ret = new QyJsonResult();
+            if (Qyinfo.IsUseWX == "Y")
+            {
+                Ret = MailListApi.DeleteTag(GetToken(), strBQCode);
+            }
+            return Ret;
+        }
+        public QyJsonResult WX_AddTagMember(JH_Auth_UserRole Model)
+        {
+            var role = new JH_Auth_RoleB().GetEntity(p => p.RoleCode == Model.RoleCode);
+            QyJsonResult Ret = new QyJsonResult();
+            if (Qyinfo.IsUseWX == "Y")
+            {
+                string[] userList = { Model.UserName };
+                int bqid = Int32.Parse(role.WXBQCode.ToString());
+                Ret = MailListApi.AddTagMember(GetToken(), bqid, userList, null);
+            }
+            return Ret;
+        }
+        public QyJsonResult WX_DelTagMember(int strBQCode, string[] userList)
+        {
+            QyJsonResult Ret = new QyJsonResult();
+            if (Qyinfo.IsUseWX == "Y")
+            {
+                Ret = MailListApi.DelTagMember(GetToken(), strBQCode, userList);
+            }
+            return Ret;
+        }
+        public GetTagListResult WX_GetTagList()
+        {
+            GetTagListResult Ret = new GetTagListResult();
+
+            if (Qyinfo.IsUseWX == "Y")
+            {
+                Ret = MailListApi.GetTagList(GetToken());
+            }
+            return Ret;
+        }
+        public GetTagMemberResult WX_GetTagMember(int tagid)
+        {
+            GetTagMemberResult Ret = new GetTagMemberResult();
+            if (Qyinfo.IsUseWX == "Y")
+            {
+                Ret = MailListApi.GetTagMember(GetToken(), tagid);
+            }
+            return Ret;
+        }
+        #endregion
         #region 企业会话
         /// <summary>
         /// 创建会话
@@ -591,56 +547,17 @@ namespace QJY.API
         #endregion
 
 
-        #region 应用相关
-        public GetAppInfoResultNew GetAPPinfo(int agentId)
-        {
-            //因为现有版本Senparc.Weixin.QY的返回企业应用数据没有type字段,所以只好自己弄了
-            //GetAppInfoResult Ret = new GetAppInfoResult();
-            //if (Qyinfo.IsUseWX == "Y")
-            //{
-            //    Ret = AppApi.GetAppInfo(GetToken(), agentId);
-            //}
-            GetAppInfoResultNew Ret = new GetAppInfoResultNew();
-            if (Qyinfo.IsUseWX == "Y")
-            {
-                string access_token = GetToken();
-                var url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/agent/get?access_token={0}&agentid={1}",
-                   access_token, agentId);
 
-                Ret = Get.GetJson<GetAppInfoResultNew>(url);
-            }
-            return Ret;
-        }
-        public QyJsonResult SetAPPinfo(SetAppPostData data)
-        {
-            QyJsonResult Ret = new QyJsonResult();
-            if (Qyinfo.IsUseWX == "Y")
-            {
-                Ret = AppApi.SetApp(GetToken(), data);
-            }
-            return Ret;
-        }
-        public GetAppListResult GetAppList()
-        {
-            GetAppListResult Ret = new GetAppListResult();
-            if (Qyinfo.IsUseWX == "Y")
-            {
-                Ret = AppApi.GetAppList(GetToken());
-            }
-            return Ret;
-        }
-        #endregion
 
         #region 菜单相关
-        public QyJsonResult WX_WxCreateMenuNew(int agentId, string ModelCode)
+        public QyJsonResult WX_WxCreateMenuNew(int agentId, string ModelCode, ref List<Senparc.Weixin.QY.Entities.Menu.BaseButton> lm)
         {
             string strMenuURL = Qyinfo.WXUrl.TrimEnd('/') + "/View_Mobile/UI/UI_COMMON.html";
             QyJsonResult Ret = new QyJsonResult();
             if (Qyinfo.IsUseWX == "Y")
             {
-                List<Senparc.Weixin.QY.Entities.Menu.BaseButton> lm = new List<Senparc.Weixin.QY.Entities.Menu.BaseButton>();
 
-                var list = new JH_Auth_CommonB().GetEntities(p => p.ModelCode == ModelCode && p.TopID == 0 && p.Type=="1").OrderBy(p => p.Sort);
+                var list = new JH_Auth_CommonB().GetEntities(p => p.ModelCode == ModelCode && p.TopID == 0 && p.Type == "1").OrderBy(p => p.Sort);
 
                 foreach (var l in list)
                 {
@@ -771,7 +688,7 @@ namespace QJY.API
             QyJsonResult Ret = new QyJsonResult();
             if (Qyinfo.IsUseWX == "Y")
             {
-                Ret = CommonApi.CreateMenu(GetToken(), agentId, buttonData);
+                Ret = CommonApi.CreateMenu(GetToken(agentId.ToString()), agentId, buttonData);
             }
             return Ret;
         }
@@ -780,7 +697,7 @@ namespace QJY.API
             GetMenuResult Ret = new GetMenuResult();
             if (Qyinfo.IsUseWX == "Y")
             {
-                Ret = CommonApi.GetMenu(GetToken(), agentId);
+                Ret = CommonApi.GetMenu(GetToken(agentId.ToString()), agentId);
             }
             return Ret;
         }
@@ -789,7 +706,7 @@ namespace QJY.API
             QyJsonResult Ret = new QyJsonResult();
             if (Qyinfo.IsUseWX == "Y")
             {
-                Ret = CommonApi.DeleteMenu(GetToken(), agentId);
+                Ret = CommonApi.DeleteMenu(GetToken(agentId.ToString()), agentId);
             }
             return Ret;
         }

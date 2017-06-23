@@ -83,6 +83,7 @@
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
@@ -107,17 +108,10 @@
     <Compile Include="API\Base\BaseManage.cs" />
     <Compile Include="API\Base\INITManage.cs" />
     <Compile Include="API\CCXJ\CCXJManage.cs" />
-    <Compile Include="API\CHAT\ChatManage.cs" />
-    <Compile Include="API\CRM\CRMManage.cs" />
     <Compile Include="API\DBGL\DBGLManage.cs" />
-    <Compile Include="API\DCGL\DCGLManage.cs" />
     <Compile Include="API\DDGL\DDGLManage.cs" />
     <Compile Include="API\DXGL\DXGLManage.cs" />
     <Compile Include="API\GZBG\GZBGManage.cs" />
-    <Compile Include="API\HELP\HELPManage.cs" />
-    <Compile Include="API\HYGL\HYGLManage.cs" />
-    <Compile Include="API\KCGL\KCGLManage.cs" />
-    <Compile Include="API\KSGL\KSGLManage.cs" />
     <Compile Include="BusinessCode\BLL.cs" />
     <Compile Include="BusinessCode\JH_Auth.cs" />
     <Compile Include="CommonCode\CatheHelp.cs" />
@@ -126,18 +120,16 @@
     <Compile Include="CommonCode\ExtensionMethods.cs" />
     <Compile Include="CommonCode\FileHelp.cs" />
     <Compile Include="CommonCode\ImageCLass.cs" />
+    <Compile Include="CommonCode\ManagementClass.cs" />
     <Compile Include="CommonCode\Msg_Result.cs" />
     <Compile Include="CommonCode\PinYing.cs" />
+    <Compile Include="CommonCode\SystemHelp.cs" />
     <Compile Include="IWsService.cs" />
     <Compile Include="API\JFBX\JFBXManage.cs" />
     <Compile Include="API\JSAPI\JSAPI.cs" />
-    <Compile Include="API\KDDY\KDDYManage.cs" />
-    <Compile Include="API\KDGL\KDGLManage.cs" />
     <Compile Include="API\KQGL\KQGLManage.cs" />
     <Compile Include="API\LCSP\LCSPManage.cs" />
     <Compile Include="API\NOTE\NOTEManage.cs" />
-    <Compile Include="API\QYHD\QYHDManage.cs" />
-    <Compile Include="API\QYIM\QYIMManage.cs" />
     <Compile Include="API\QYWD\QYWDManage.cs" />
     <Compile Include="API\RWGL\RWGLManage.cs" />
     <Compile Include="API\TSSQ\TSSQManage.cs" />
@@ -145,11 +137,9 @@
     <Compile Include="API\TXSX\TXSXAPI.cs" />
     <Compile Include="API\TXSX\TXSXManage.cs" />
     <Compile Include="API\WQQD\WQQDManage.cs" />
-    <Compile Include="API\WTFK\WTFKManage.cs" />
     <Compile Include="API\XMGL\XMGLManage.cs" />
     <Compile Include="API\XXFB\XXFBManage.cs" />
     <Compile Include="API\XZGL\XZGLManage.cs" />
-    <Compile Include="API\YCGL\YCGLManage.cs" />
     <Compile Include="API\ZHBG\Commanage.cs" />
     <Compile Include="API\ZHGL\ZHGLManage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -158,7 +148,7 @@
     <Compile Include="WXHelp\WXHelp.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FTWeb.Data\QJY.Data.csproj">
+    <ProjectReference Include="..\QJY.Data\QJY.Data.csproj">
       <Project>{041aff14-efea-47d8-b28a-b3bbf4bbcee9}</Project>
       <Name>QJY.Data</Name>
     </ProjectReference>

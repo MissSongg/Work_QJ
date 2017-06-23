@@ -162,7 +162,7 @@ namespace QJY.API
             string userName = UserInfo.User.UserName;
             string strWhere = " 1=1 and ComId=" + UserInfo.User.ComId;
 
-            string type = context.Request.QueryString["lb"] ?? "1";
+            string type = context.Request["lb"] ?? "1";
             if (type == "1")
             {
                 strWhere += string.Format(" And CRUser='{0}'", userName);
@@ -188,7 +188,7 @@ namespace QJY.API
                 strWhere += string.Format(" And ( TXContent like '%{0}%')", strContent);
             }
             int DataID = -1;
-            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
+            int.TryParse(context.Request["ID"] ?? "-1", out DataID);//记录Id
             if (DataID != -1)
             {
                 string strIsHasDataQX = new JH_Auth_QY_ModelB().ISHASDATAREADQX("TXSX", DataID, UserInfo);
@@ -200,8 +200,8 @@ namespace QJY.API
             }
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int total = 0;
 

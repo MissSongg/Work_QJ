@@ -167,7 +167,7 @@ namespace QJY.API
                 int index = item["filename"].ToString().LastIndexOf('.');
                 string filename = item["filename"].ToString().Substring(0, index);
 
-                FT_File File = new FT_FileB().GetSameFile(item["filename"].ToString(), int.Parse(P2),UserInfo.User.ComId.Value);
+                FT_File File = new FT_FileB().GetSameFile(item["filename"].ToString(), int.Parse(P2), UserInfo.User.ComId.Value);
                 if (File == null)//相同目录下没有重复文件
                 {
                     FT_File newfile = new FT_File();
@@ -259,8 +259,16 @@ namespace QJY.API
             if (itemtype == "2")//个人文件夹
             {
                 int FolderID = int.Parse(P1);//
-                msg.Result = new FT_FolderB().GetEntities(d => d.ComId == UserInfo.User.ComId && d.PFolderID == FolderID && d.CRUser == UserInfo.User.UserName);
+                string strSQL = string.Format("SELECT FT_Folder.*,ISNULL(FT_File_UserAuth.AuthUser, '') as AuthUser from FT_Folder LEFT JOIN  FT_File_UserAuth  on FT_Folder.ID= FT_File_UserAuth.RefID where FT_Folder.ComId='{0}' and FT_Folder.PFolderID='{1}' and  FT_Folder.CRUser='{2}'", UserInfo.User.ComId, FolderID.ToString(), UserInfo.User.UserName);
+                msg.Result = new FT_FolderB().GetDTByCommand(strSQL);
                 msg.Result1 = new FT_FileB().GetEntities(d => d.ComId == UserInfo.User.ComId && d.FolderID == FolderID && d.CRUser == UserInfo.User.UserName);
+                return;
+            }
+            if (itemtype == "4")//共享文档
+            {
+                int FolderID = int.Parse(P1);//
+                msg.Result = new FT_FolderB().GetEntities(d => d.ComId == UserInfo.User.ComId && d.PFolderID == FolderID);
+                msg.Result1 = new FT_FileB().GetEntities(d => d.ComId == UserInfo.User.ComId && d.FolderID == FolderID);
                 return;
             }
             if (itemtype == "3")//我的收藏
@@ -545,49 +553,67 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void SETAUTH(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            string strAUTHUsers1 = context.Request["authusers1"] ?? "";
-            string strAUTHUsers2 = context.Request["authusers2"] ?? "";
-            string strAUTHUsers3 = context.Request["authusers3"] ?? "";
+            string strAuthUsers = P1;
             int DataID = int.Parse(P2);
+            string RefType = context.Request["REFTYPE"] ?? "0";//默认文件夹
+            new FT_File_UserAuthB().Delete(d => d.RefID == DataID && d.RefType == RefType && d.CRUser == UserInfo.User.UserName);
 
-
-            if (P1 == "file")//ViewAuthUsers
-            {
-                FT_File Model = new FT_FileB().GetEntity(d => d.ID == DataID);
-                Model.ViewAuthUsers = strAUTHUsers1;
-                new FT_FileB().Update(Model);
-
-            }
-            else//FLODER
-            {
-                FT_Folder Model = new FT_FolderB().GetEntity(d => d.ID == DataID);
-                Model.ViewAuthUsers = strAUTHUsers1;
-                Model.DownloadAuthUsers = strAUTHUsers2;
-                Model.UploadaAuthUsers = strAUTHUsers3;
-                new FT_FolderB().Update(Model);
-            }
+            FT_File_UserAuth Model = new FT_File_UserAuth();
+            Model.ComId = UserInfo.User.ComId;
+            Model.CRDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            Model.CRUser = UserInfo.User.UserName;
+            Model.AuthType = "0";//查看权限
+            Model.AuthUser = strAuthUsers;
+            Model.RefID = DataID;
+            Model.RefType = RefType;//文件夹
+            new FT_File_UserAuthB().Insert(Model);
         }
         public void CANCELAUTH(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
+            string RefType = P1;
             int DataID = int.Parse(P2);
-            if (P1 == "file")//ViewAuthUsers
-            {
-                FT_File Model = new FT_FileB().GetEntity(d => d.ID == DataID);
-                Model.ViewAuthUsers = "";
-                Model.DownloadAuthUsers = "";
+            new FT_File_UserAuthB().Delete(d => d.RefID == DataID && d.RefType == RefType && d.CRUser == UserInfo.User.UserName);
 
-                new FT_FileB().Update(Model);
-
-            }
-            else//FLODER
-            {
-                FT_Folder Model = new FT_FolderB().GetEntity(d => d.ID == DataID);
-                Model.ViewAuthUsers = "";
-                Model.DownloadAuthUsers = "";
-                Model.UploadaAuthUsers = "";
-                new FT_FolderB().Update(Model);
-            }
         }
+
+
+        /// <summary>
+        ///更具ID获取相应具有内部授权的用户
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETNBSQUSERS(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            string strUserS = "";
+            int DataID = int.Parse(P1);
+            FT_File_UserAuth MODEL = new FT_File_UserAuthB().GetEntities(d => d.RefID == DataID && d.CRUser == UserInfo.User.UserName).FirstOrDefault();
+            if (MODEL != null)
+            {
+                strUserS = MODEL.AuthUser;
+            }
+            msg.Result = strUserS;
+        }
+
+
+
+        /// <summary>
+        /// 获取内部共享来源
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETNBGXLY(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            string strSQL = " SELECT DISTINCT  FT_File_UserAuth.CRUser,JH_Auth_User.UserRealName FROM FT_File_UserAuth LEFT JOIN  JH_Auth_User ON FT_File_UserAuth.CRUser=JH_Auth_User.UserName  WHERE ','+AuthUser+','  like '%," + UserInfo.User.UserName + ",%'";
+            DataTable dtUserS = new FT_FolderB().GetDTByCommand(strSQL);
+            msg.Result = dtUserS;
+        }
+
 
         /// <summary>
         /// 获取能够查看的内部人员共享目录
@@ -599,34 +625,18 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void GETNBSHARELIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            // SELECT CRUser from FT_Folder WHERE ViewAuthUsers
-            string strWhere = string.Format("  ','+ViewAuthUsers+','  like '%," + UserInfo.User.UserName + ",%'");
-            string strSQLFLODER = string.Format(@"select * from FT_Folder  where {0} and  {1}   order by CRDate desc  ", strWhere, "CRUser='" + P1 + "'");
-            DataTable dtFLODER = new FT_FolderB().GetDTByCommand(strSQLFLODER);
-
-            string strWherefile = string.Format("  ','+FT_File.ViewAuthUsers+','  like '%," + UserInfo.User.UserName + ",%'");
-            string strSQLFILE = string.Format(@"select  FT_File.*  from FT_File left join [FT_Folder] on FT_File.FolderID=[FT_Folder].ID WHERE [FT_Folder].FolderType='2'  and  FT_File.CRUser='" + P1 + "' and  {0}   order by FT_File.CRDate desc  ", strWherefile);
-            DataTable dtFILE = new FT_FileB().GetDTByCommand(strSQLFILE);
-            msg.Result = dtFLODER;
-            msg.Result1 = dtFILE;
-        }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="msg"></param>
-        /// <param name="P1"></param>
-        /// <param name="P2"></param>
-        /// <param name="UserInfo"></param>
-        public void GETNBUSERS(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
-            // SELECT CRUser from FT_Folder WHERE ViewAuthUsers
-            string strSQLFLODER = string.Format(@"SELECT DISTINCT CRUser from FT_Folder WHERE ','+ViewAuthUsers+','  like '%," + UserInfo.User.UserName + ",%'  UNION  select DISTINCT FT_File.CRUser  from FT_File left join [FT_Folder] on FT_File.FolderID=[FT_Folder].ID WHERE [FT_Folder].FolderType='2' AND ','+FT_File.ViewAuthUsers+','  like '%," + UserInfo.User.UserName + ",%' ");
-            DataTable dtFLODER = new FT_FolderB().GetDTByCommand(strSQLFLODER);
+            string strUser = P1;
+            string strSQL = "SELECT FT_Folder.* FROM FT_File_UserAuth LEFT JOIN FT_Folder on  FT_File_UserAuth.RefID=FT_Folder.ID WHERE ','+AuthUser+','  like '%," + UserInfo.User.UserName + ",%'";
+            if (strUser != "")
+            {
+                strSQL = strSQL + "  AND FT_File_UserAuth.CRUser='" + strUser + "'  ";
+            }
+            DataTable dtFLODER = new FT_FolderB().GetDTByCommand(strSQL);
             msg.Result = dtFLODER;
         }
+
+
+
         /// <summary>
         /// 向服务器发送压缩目录命令
         /// </summary>

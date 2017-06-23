@@ -28,8 +28,8 @@ namespace QJY.API
         {
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);//页码
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int recordCount = 0;
 
@@ -184,7 +184,7 @@ namespace QJY.API
             string strWhere = string.Format(" And  ComId={0}", UserInfo.User.ComId);
 
             int month = 0;
-            int.TryParse(context.Request.QueryString["month"] ?? "0", out month);
+            int.TryParse(context.Request["month"] ?? "0", out month);
             if (month == 0)
             {
                 month = DateTime.Now.Month;
@@ -206,8 +206,8 @@ namespace QJY.API
         {
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);//页码
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int recordCount = 0;
             string strWhere = string.Format(" ComId={0}", UserInfo.User.ComId);
@@ -216,7 +216,7 @@ namespace QJY.API
                 strWhere += string.Format(" And (KQUserName like '%{0}%' OR KQBranch like '%{0}%' )", P2);
             }
             //根据创建时间查询
-            string time = context.Request.QueryString["time"] ?? "";
+            string time = context.Request["time"] ?? "";
             if (time != "")
             {
                 if (time == "1")   //近一周
@@ -229,8 +229,8 @@ namespace QJY.API
                 }
                 else if (time == "3")  //自定义时间
                 {
-                    string strTime = context.Request.QueryString["starTime"] ?? "";
-                    string endTime = context.Request.QueryString["endTime"] ?? "";
+                    string strTime = context.Request["starTime"] ?? "";
+                    string endTime = context.Request["endTime"] ?? "";
                     if (strTime != "")
                     {
                         strWhere += string.Format(" And KQDate >='{0}'", strTime + "-01");

@@ -564,7 +564,7 @@ namespace QJY.API
             string strWhere = string.Format(" ComId={0} and UserName='{1}' ", UserInfo.User.ComId, UserInfo.User.UserName);
 
             int DataID = -1;
-            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
+            int.TryParse(context.Request["ID"] ?? "-1", out DataID);//记录Id
             if (DataID != -1)
             {
                 string strIsHasDataQX = new JH_Auth_QY_ModelB().ISHASDATAREADQX("XZFF", DataID, UserInfo);
@@ -577,8 +577,8 @@ namespace QJY.API
 
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);//页码
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int recordCount = 0;
             
@@ -695,8 +695,8 @@ namespace QJY.API
         {
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);//页码
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int recordCount = 0;
             string strWhere = string.Format(" ComId={0} ", UserInfo.User.ComId, UserInfo.User.UserName);
@@ -770,11 +770,11 @@ namespace QJY.API
             int page = 0;
             int pagecount = 8;
             int.TryParse(context.Request["p"] ?? "0", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
 
             int total = 0;
-            DataTable dt = new SZHL_YCGLB().GetDataPager(tableName, tableColumn, pagecount, page, " b.DeptShort,ISNULL(u.UserOrder, 1000000) asc", strWhere, ref total);
+            DataTable dt = new JH_Auth_UserB().GetDataPager(tableName, tableColumn, pagecount, page, " b.DeptShort,ISNULL(u.UserOrder, 1000000) asc", strWhere, ref total);
             msg.Result = dt;
             msg.Result1 = total;
         }  
@@ -873,8 +873,8 @@ namespace QJY.API
 
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int total = 0;
             DataTable dt = new DataTable();

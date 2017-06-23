@@ -14,6 +14,7 @@ using System.Text;
 using System.Data.SqlClient;
 using System.Collections;
 using System.Diagnostics;
+using System.Threading;
 
 namespace QJY.API
 {
@@ -25,7 +26,6 @@ namespace QJY.API
             DBGLManage model = new DBGLManage();
             methodInfo.FastInvoke(model, new object[] { context, msg, P1, P2, UserInfo });
         }
-
         #region 数据库备份还原列表
         /// <summary>
         /// 数据库备份还原列表
@@ -80,7 +80,7 @@ namespace QJY.API
                         }
                         break;
                 }
-                dt = new SZHL_CRM_KHGLB().GetDataPager(" SZHL_DBGL ", " *,case Type when '1' then '备份' when '2' then '还原' end as TypeName ", pagecount, page, "  CRDate desc", strWhere, ref total);
+                dt = new SZHL_DBGLB().GetDataPager(" SZHL_DBGL ", " *,case Type when '1' then '备份' when '2' then '还原' end as TypeName ", pagecount, page, "  CRDate desc", strWhere, ref total);
 
                 msg.Result = dt;
                 msg.Result1 = total;
@@ -99,13 +99,14 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void DBBACKUP(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
+            string strDBName = CommonHelp.GetConfig("DBBACKNAME");
             string path = context.Server.MapPath("/");
             if (!Directory.Exists(path + "/dbbackup/"))
             {
                 Directory.CreateDirectory(path + "/dbbackup/");
             }
             path = path + "/dbbackup/db_" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".bak";
-            string strsql = "backup database QJY_Signle to disk='" + path + "';";
+            string strsql = "backup database " + strDBName + " to disk='" + path + "';";
 
             new JH_Auth_QYB().ExsSql(strsql);
 
@@ -220,14 +221,16 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void DBRESTORE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
+            string strDBName = CommonHelp.GetConfig("DBBACKNAME");
+
             ArrayList list = new ArrayList();
 
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = new JH_Auth_QYB().GetDBString().Replace("QJY_Temp", "master").Replace("QJY_Signle","master");
+            conn.ConnectionString = new JH_Auth_QYB().GetDBString().Replace(strDBName, "master");
             conn.Open();
             try
             {
-                SqlCommand cmd = new SqlCommand("use master; select distinct spid FROM sysprocesses ,sysdatabases Where sysprocesses.dbid=sysdatabases.dbid AND sysdatabases.Name='QJY_Signle'", conn);
+                SqlCommand cmd = new SqlCommand("use master; select distinct spid FROM sysprocesses ,sysdatabases Where sysprocesses.dbid=sysdatabases.dbid AND sysdatabases.Name='" + strDBName + "'", conn);
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
@@ -246,7 +249,7 @@ namespace QJY.API
                 }
 
                 conn.Open();
-                SqlCommand cmd2 = new SqlCommand("restore database QJY_Signle from disk='" + P1 + "' with replace ;", conn);
+                SqlCommand cmd2 = new SqlCommand("restore database " + strDBName + " from disk='" + P1 + "' with replace ;", conn);
                 cmd2.ExecuteNonQuery();
                 conn.Close();
 
@@ -269,29 +272,6 @@ namespace QJY.API
         }
         #endregion
 
-        #region 服务器状况
-        /// <summary>
-        /// 服务器状况
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="msg"></param>
-        /// <param name="P1"></param>
-        /// <param name="P2"></param>
-        /// <param name="UserInfo"></param>
-        public void SERVERSTATUS(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
-            PerformanceCounter cpuCounter = new PerformanceCounter();
-
-            cpuCounter.CategoryName = "Processor";
-            cpuCounter.CounterName = "% Processor Time";
-            cpuCounter.InstanceName = "_Total";
-
-            PerformanceCounter ramCounter = new PerformanceCounter("Memory", "Available MBytes");
-
-            msg.Result = cpuCounter.NextValue() + "%";
-
-            msg.Result1 = ramCounter.NextValue() + "MB";
-        }
-        #endregion
+        
     }
 }

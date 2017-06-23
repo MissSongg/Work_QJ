@@ -32,17 +32,17 @@ namespace QJY.API
         {
 
             int DataID = -1;
-            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//微信获取单个数据的ID
+            int.TryParse(context.Request["ID"] ?? "-1", out DataID);//微信获取单个数据的ID
 
 
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);//页码
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int recordCount = 0;
             string strWhere = string.Format(" bg.ComId={0} ", UserInfo.User.ComId);
-            string type = context.Request.QueryString["type"] ?? "1";
+            string type = context.Request["type"] ?? "1";
             if (type == "2")//下属报告
             {
                 //获取当前登录人负责的下属人员 
@@ -67,7 +67,7 @@ namespace QJY.API
                 strWhere += string.Format(" And (bg.RBContent like '%{0}%' OR bg.CRUserName like '%{0}%' OR bg.BranchName like '%{0}%' )", P2);
             }
             //根据创建时间查询
-            string time = context.Request.QueryString["time"] ?? "";
+            string time = context.Request["time"] ?? "";
             if (time != "")
             {
                 if (time == "1")   //近一周
@@ -80,8 +80,8 @@ namespace QJY.API
                 }
                 else if (time == "3")  //自定义时间
                 {
-                    string strTime = context.Request.QueryString["starTime"] ?? "";
-                    string endTime = context.Request.QueryString["endTime"] ?? "";
+                    string strTime = context.Request["starTime"] ?? "";
+                    string endTime = context.Request["endTime"] ?? "";
                     if (strTime != "")
                     {
                         strWhere += string.Format(" And convert(varchar(10),bg.RBDate,120) >='{0}'", strTime);
@@ -184,7 +184,7 @@ namespace QJY.API
             }
 
             int month = 0;
-            int.TryParse(context.Request.QueryString["month"] ?? "1", out month);
+            int.TryParse(context.Request["month"] ?? "1", out month);
             string strTime = new DateTime(DateTime.Now.Year, month, 1).ToShortDateString();
             string endTime = new DateTime(DateTime.Now.Year, month + 1, 1).ToShortDateString();
             strWhere += string.Format("And bg.RBDate BETWEEN '{0}' and '{1}'", strTime, endTime);
@@ -376,8 +376,8 @@ namespace QJY.API
         {
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);//页码
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int recordCount = 0;
 

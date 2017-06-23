@@ -51,20 +51,7 @@ namespace QJY.API
 
             #endregion
 
-            #region 会议管理
-            container.RegisterType<IWsService, HYGLManage>("HYGL");
-
-
-
-            #endregion
-
-
-            #region 用车管理
-            container.RegisterType<IWsService, YCGLManage>("YCGL".ToUpper());//根据部门获取用户列表
-
-
-
-            #endregion
+          
 
 
             #region JSAPI
@@ -72,9 +59,7 @@ namespace QJY.API
             #endregion
 
 
-            #region 企业活动
-            container.RegisterType<IWsService, QYHDManage>("QYHD");
-            #endregion
+            
 
             
             #region 短信管理
@@ -117,27 +102,17 @@ namespace QJY.API
 
             //记事本
             container.RegisterType<IWsService, NOTEManage>("NOTE".ToUpper());//记事本管理 
-            //问题反馈
-            container.RegisterType<IWsService, WTFKManage>("WTFK".ToUpper());//问题反馈 
-
-            //CRM
-            container.RegisterType<IWsService, CRMManage>("CRM".ToUpper());//CRM管理 
-
-            //企业回话
-            container.RegisterType<IWsService, QYIMManage>("QYIM".ToUpper());//企业会话
+        
+          
             container.RegisterType<IWsService, TSSQManage>("TSSQ".ToUpper());//同事社区
-            container.RegisterType<IWsService, KDDYManage>("KDDY".ToUpper());//快递打印
             container.RegisterType<IWsService, JFBXManage>("JFBX".ToUpper());//经费报销
             container.RegisterType<IWsService, KQGLManage>("KQGL".ToUpper());//考勤管理
-            container.RegisterType<IWsService, HELPManage>("HELP".ToUpper());//帮助中心
             container.RegisterType<IWsService, WQQDManage>("WQQD".ToUpper());//外勤签到
 
             container.RegisterType<IWsService, XZGLManage>("XZGL".ToUpper());//薪资管理
-            container.RegisterType<IWsService, CHATManage>("CHAT".ToUpper());//及时聊天
+            container.RegisterType<IWsService, DBGLManage>("DBGL".ToUpper());//数据库管理
 
-            container.RegisterType<IWsService, DBGLManage>("DBGL".ToUpper());//及时聊天
-            container.RegisterType<IWsService, KSGLManage>("KSGL".ToUpper());//考试管理
-            container.RegisterType<IWsService, KCGLManage>("KCGL".ToUpper());//课程管理
+
 
             return container;
         }

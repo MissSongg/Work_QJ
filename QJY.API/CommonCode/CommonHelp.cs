@@ -569,16 +569,16 @@ namespace QJY.API
                         new JH_Auth_QYB().Update(qy);
 
                         //记录明细
-                        SZHL_DDGL_ITEM im = new SZHL_DDGL_ITEM();
-                        im.ComId = qy.ComId;
-                        im.SerialID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
-                        im.Change = -amount;
-                        im.Balance = amcountmoney - amount;
-                        im.Memo = "短信消费";
-                        im.Status = "已消费";
-                        im.CRDate = DateTime.Now;
+                        //SZHL_DDGL_ITEM im = new SZHL_DDGL_ITEM();
+                        //im.ComId = qy.ComId;
+                        //im.SerialID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                        //im.Change = -amount;
+                        //im.Balance = amcountmoney - amount;
+                        //im.Memo = "短信消费";
+                        //im.Status = "已消费";
+                        //im.CRDate = DateTime.Now;
 
-                        new SZHL_DDGL_ITEMB().Insert(im);
+                        //new SZHL_DDGL_ITEMB().Insert(im);
                     }
 
                 }
@@ -775,24 +775,32 @@ namespace QJY.API
 
         public static void WriteLOG(string err)
         {
-            string path = HttpContext.Current.Request.MapPath("/");
-            if (!Directory.Exists(path + "/log/"))
+            try
             {
-                Directory.CreateDirectory(path + "/log/");
-            }
+                string path = HttpContext.Current.Request.MapPath("/");
+                if (!Directory.Exists(path + "/log/"))
+                {
+                    Directory.CreateDirectory(path + "/log/");
+                }
 
-            string name = DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
-            if (!File.Exists(path + "/log/" + name))
+                string name = DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
+                if (!File.Exists(path + "/log/" + name))
+                {
+                    FileInfo myfile = new FileInfo(path + "/log/" + name);
+                    FileStream fs = myfile.Create();
+                    fs.Close();
+                }
+
+                StreamWriter sw = File.AppendText(path + "/log/" + name);
+                sw.WriteLine(err + "\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                sw.Flush();
+                sw.Close();
+            }
+            catch (Exception)
             {
-                FileInfo myfile = new FileInfo(path + "/log/" + name);
-                FileStream fs = myfile.Create();
-                fs.Close();
+                
             }
-
-            StreamWriter sw = File.AppendText(path + "/log/" + name);
-            sw.WriteLine(err + "\r\n" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-            sw.Flush();
-            sw.Close();
+         
 
         }
         /// <summary>

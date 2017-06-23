@@ -58,8 +58,8 @@ namespace QJY.API
         {
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);  //页码
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);  //页码
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
 
             string strWhere = string.Format("SZHL_XXFB.ComId='{0}'  and IsSend='1' and MsgType=1 and (((SHstatus='2' and   (','+SZHL_XXFB.JSUser+',' LIKE '%,{1},%' or  SZHL_XXFB.JSUser='')) and FBTime<=getdate()) or (SHStatus=0 and SHUser='{1}')or (SHStatus=1 and SZHL_XXFB.CRUser='{1}')) ", UserInfo.User.ComId, UserInfo.User.UserName);
             if (P1 != "")
@@ -91,7 +91,7 @@ namespace QJY.API
         public void GETXXFBLISTWXSH(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             int page = 0;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
+            int.TryParse(context.Request["p"] ?? "1", out page);
             //
             string strWhere = string.Format("SZHL_XXFB.ComId='{0}'  and IsSend=1 and MsgType=1 and FBTime<=getdate() ", UserInfo.User.ComId);
 
@@ -170,8 +170,8 @@ namespace QJY.API
         {
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             int recordCount = 0;
             string strWhere = string.Format(" comId='{0}' and isDel!=1 and PTypeID!=0 ", UserInfo.User.ComId);
             string strContent = context.Request["Content"] ?? "";
@@ -580,8 +580,8 @@ namespace QJY.API
         {
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             string strWhere = string.Format("SZHL_XXFB.ComId='{0}'   and IsSend='1' and MsgType=1 ", UserInfo.User.ComId);
             if (P1 != "")
             {
@@ -618,7 +618,7 @@ namespace QJY.API
         public void GETXXFBLIST_USER(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             int page = 0;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
+            int.TryParse(context.Request["p"] ?? "1", out page);
             string strWhere = string.Format("SZHL_XXFB.ComId='{0}' and  SZHL_XXFB.CRUser='{1}' and SZHL_XXFB.MsgType=1 ", UserInfo.User.ComId, UserInfo.User.UserName);
             if (P1 != "")
             {
@@ -645,7 +645,7 @@ namespace QJY.API
         public void GETXXFBLIST_DSH(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             int page = 0;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
+            int.TryParse(context.Request["p"] ?? "1", out page);
             string strWhere = string.Format("SZHL_XXFB.ComId='{0}' and  SZHL_XXFB.SHUser='{1}' and SHStatus=0 and IsSend='1'and SZHL_XXFB.MsgType=1 ", UserInfo.User.ComId, UserInfo.User.UserName);
             if (P1 != "")
             {
@@ -745,7 +745,7 @@ namespace QJY.API
         public void GETSHXXFBLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             int page = 0;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
+            int.TryParse(context.Request["p"] ?? "1", out page);
             string strWhere = string.Format(" fgtype.IsCheck='True'  and  ','+fgtype.CheckUser+',' LIKE '%,{0},%'  and fb.ComId={1} and fb.MsgType=1", UserInfo.User.UserName, UserInfo.User.ComId);
             int recordCount = 0;
             DataTable dt = new SZHL_XXFBB().GetDataPager("SZHL_XXFB fb inner join SZHL_XXFBType fgtype on fb.TypeID=fgtype.ID", " fb.*,fgtype.TypeName,fgtype.CheckUser", 8, page, " FBTime desc", strWhere, ref recordCount);

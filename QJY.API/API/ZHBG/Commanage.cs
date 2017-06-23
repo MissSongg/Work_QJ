@@ -51,6 +51,7 @@ namespace QJY.API
             msg.ErrorMsg = "";
             if (context.Session["chkcode"] != null)
             {
+
                 if (!chkcode.ToUpper().Equals(context.Session["chkcode"].ToString()))
                 {
                     msg.ErrorMsg = "验证码不正确";
@@ -153,34 +154,9 @@ namespace QJY.API
                 string content = "您的[" + tt["QYName"].ToString() + "]公司账号已经注册成功：\r\n登录网站： \r\n管理员账号：" + tt["mobphone"].ToString() + "\r\n管理员密码：" + tt["UserPass"].ToString() + "\r\n";
                 CommonHelp.SendSMS(tt["mobphone"].ToString(), content, 0);
                 string user = context.Request["ID"] ?? "";
-                ADDKH(user, tt);
             }
         }
-        private void ADDKH(string userID, JObject tt)
-        {
-            if (string.IsNullOrWhiteSpace(userID))
-            {
-                return;
-            }
-            try
-            {
-                int ID = 0;
-                int.TryParse(userID, out ID);
-                JH_Auth_User user = new JH_Auth_UserB().GetEntity(d => d.ID == ID);
-                if (user.ComId == 10063)
-                {
-                    SZHL_CRM_KHGL khgl = new SZHL_CRM_KHGL();
-                    khgl.TelePhone = tt["mobphone"].ToString();
-                    khgl.KHName = tt["QYName"].ToString();
-                    khgl.CRDate = DateTime.Now;
-                    khgl.FZUser = user.UserName;
-                    khgl.CRUser = user.UserName;
-                    khgl.ComId = user.ComId;
-                    new SZHL_CRM_KHGLB().Insert(khgl);
-                }
-            }
-            catch (Exception) { }
-        }
+      
         public void CHECKREGISTERPHONE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             var qy2 = new JH_Auth_QYB().GetEntities(p => p.Mobile == P1.Trim());
@@ -586,7 +562,7 @@ namespace QJY.API
         {
             int ID;
             JH_Auth_User userInfo = new JH_Auth_User();
-            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out ID);
+            int.TryParse(context.Request["ID"] ?? "-1", out ID);
             msg.Result = new SZHL_XZ_GZDB().GetEntities(d => d.ID == ID).ToList();
             return;
         }

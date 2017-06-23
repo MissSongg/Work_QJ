@@ -1,0 +1,159 @@
+﻿
+using QJY.Data;
+using QJY.API;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Net;
+
+namespace QJY.WEB
+{
+    public partial class DownFile : Page
+    {
+
+        public string type
+        {
+            get { return Request["type"] ?? "file"; }
+        }
+
+        public string Name
+        {
+            get { return Request["Name"] ?? "测试文件"; }
+        }
+        public string MD5
+        {
+            get { return Request["MD5"] ?? ""; }
+        }
+        public string FileId
+        {
+            get { return Request["fileId"] ?? ""; }
+        }
+        public string szhlcode
+        {
+            get { return Request["szhlcode"] ?? ""; }
+        }
+        public string userName
+        {
+            get { return Request["user"] ?? ""; }
+        }
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+
+                JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB.UserInfo();
+                if (szhlcode != "")
+                {
+                    UserInfo = new JH_Auth_UserB().GetUserInfo(szhlcode);
+                    if (!string.IsNullOrEmpty(FileId))//如果FileID不为空
+                    {
+                        string filename = "";
+                        int fileId = int.Parse(FileId.Split(',')[0]);
+                        FT_File file = new FT_FileB().GetEntity(d => d.ID == fileId);
+
+                        if (type == "file") //默认下载文件
+                        {
+                            List<string> extends = new List<string>() { "jpg", "png", "gif", "jpeg" };
+                            if (extends.Contains(file.FileExtendName.ToLower()))
+                            {
+                                string width = Request["width"] ?? "";
+                                string height = Request["height"] ?? "";
+                                Response.AddHeader("Content-Disposition", "attachment;filename=" + file.Name);
+                                Response.ContentType = "application/octet-stream";
+                                filename = UserInfo.QYinfo.FileServerUrl + file.FileMD5;
+                                if (width + height != "")
+                                {
+                                    filename = UserInfo.QYinfo.FileServerUrl + "thumbnail/" + file.FileMD5 + (width + height != "" ? ("/" + width + "/" + height) : "");
+                                }
+                                Response.Redirect(filename);
+
+                            }
+                            else
+                            {
+                                Response.AddHeader("Content-Disposition", "attachment;filename=" + Name);
+                                Response.ContentType = "application/octet-stream";
+                                filename = UserInfo.QYinfo.FileServerUrl + file.FileMD5;
+                                Response.Redirect(filename);
+                            }
+                        }
+                        else //返回代表类型的图片
+                        {
+                            Response.AddHeader("Content-Disposition", "attachment;filename=" + Name);
+                            Response.ContentType = "application/octet-stream";
+                            filename = "/ViewV5/images/qywd/" + file.FileExtendName + ".png";
+
+                        }
+                    }
+                    else
+                    {
+                        if (type == "folder" && MD5 != "")//下载压缩文件
+                        {
+
+                            Response.AddHeader("Content-Disposition", "attachment;filename=" + Name);
+                            Response.ContentType = "application/octet-stream";
+                            string filename = UserInfo.QYinfo.FileServerUrl + "zipfile/" + MD5;
+                            Response.Redirect(filename);
+
+                        }
+                        if (type == "video" && MD5 != "")
+                        {
+                            string url = UserInfo.QYinfo.FileServerUrl + "video/" + MD5;
+                            Byte[] bytes = new WebClient().DownloadData(url);
+                            Response.OutputStream.Write(bytes, 0, bytes.Length);
+
+                        }
+                        if (type == "TX" && !string.IsNullOrEmpty(userName))//获取用户头像
+                        {
+                            JH_Auth_User userinfo = UserInfo.User;
+                            if (userinfo != null)
+                            {
+                                string filename = "";
+                                if (userinfo.UserLogoId != null)
+                                {
+                                    FT_File file = new FT_FileB().GetEntity(d => d.ID == userinfo.UserLogoId);
+                                    List<string> extends = new List<string>() { "jpg", "png", "gif", "jpeg" };
+                                    if (!extends.Contains(file.FileExtendName.ToLower()))//文件不是图片的不返回地址，此方法只用于图片查看
+                                    {
+                                        return;
+                                    }
+                                    filename = UserInfo.QYinfo.FileServerUrl + file.FileMD5;
+                                    Response.AddHeader("Content-Disposition", "attachment;filename=" + file.Name);
+                                    Response.ContentType = "application/octet-stream";
+                                }
+                                else if (!string.IsNullOrEmpty(userinfo.txurl))
+                                {
+                                    Response.AddHeader("Content-Disposition", "attachment;filename=" + Name);
+                                    Response.ContentType = "application/octet-stream";
+                                    filename = userinfo.txurl;
+
+                                }
+                                else
+                                {
+
+                                    Response.AddHeader("Content-Disposition", "attachment;filename=" + Name);
+                                    Response.ContentType = "application/octet-stream";
+                                    filename = "/ViewV5/images/tx.png";
+                                }
+                                Response.Redirect(filename);
+                                return;
+                            }
+                        }
+                    }
+
+
+
+                }
+
+
+
+
+            }
+            catch (Exception ex) { }
+            // Response.ContentType = "application/x-zip-compressed";
+        }
+    }
+}

@@ -45,7 +45,7 @@ namespace QJY.API
                 strWhere += string.Format(" And ( cc.ZhuYaoShiYou like '%{0}%' )", strContent);
             }
             int DataID = -1;
-            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
+            int.TryParse(context.Request["ID"] ?? "-1", out DataID);//记录Id
             if (DataID != -1)
             {
                 string strIsHasDataQX = new JH_Auth_QY_ModelB().ISHASDATAREADQX("CCXJ", DataID, UserInfo);
@@ -60,8 +60,8 @@ namespace QJY.API
             {
                 int page = 0;
                 int pagecount = 8;
-                int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-                int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+                int.TryParse(context.Request["p"] ?? "1", out page);
+                int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
                 page = page == 0 ? 1 : page;
                 int total = 0;
                 DataTable dt = new DataTable();
@@ -151,7 +151,7 @@ namespace QJY.API
                 strWhere += string.Format(" And ( cc.ZhuYaoShiYou like '%{0}%' )", strContent);
             }
             int month = 0;
-            int.TryParse(context.Request.QueryString["month"] ?? "1", out month);
+            int.TryParse(context.Request["month"] ?? "1", out month);
             if (month==0)
             {
                 month = DateTime.Now.Month;
@@ -198,7 +198,7 @@ namespace QJY.API
                 strWhere += string.Format(" And  cc.ZhuYaoShiYou like '%{0}%'", P2);
             }
             int page = 0;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
+            int.TryParse(context.Request["p"] ?? "1", out page);
             page = page == 0 ? 1 : page;
             int total = 0;
             string colNme = @"cc.ShenQingRen,cc.LeiBie,cc.StarTime,cc.EndTime,cc.Daycount,cc.ZhuYaoShiYou,cc.ID,cc.BranchName,zd.TypeName  , 
@@ -312,8 +312,8 @@ namespace QJY.API
         {
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int total = 0;
             string starDate = (P1 == "" ? DateTime.Now.Year.ToString() : P1) + "-";

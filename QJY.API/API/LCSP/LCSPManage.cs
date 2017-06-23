@@ -56,7 +56,7 @@ namespace QJY.API
                 strWhere += string.Format(" And ( pd.ProcessName like '%{0}%' )", strContent);
             }
             int DataID = -1;
-            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
+            int.TryParse(context.Request["ID"] ?? "-1", out DataID);//记录Id
             if (DataID != -1)
             {
                 string strIsHasDataQX = new JH_Auth_QY_ModelB().ISHASDATAREADQX("LCSP", DataID, UserInfo);
@@ -71,8 +71,8 @@ namespace QJY.API
             {
                 int page = 0;
                 int pagecount = 8;
-                int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-                int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+                int.TryParse(context.Request["p"] ?? "1", out page);
+                int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
                 page = page == 0 ? 1 : page;
                 int total = 0;
 
@@ -371,8 +371,8 @@ namespace QJY.API
 
             int page = 0;
             int pagecount = 10;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "10", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);
+            int.TryParse(context.Request["pagecount"] ?? "10", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int total = 0;
 
@@ -459,7 +459,7 @@ namespace QJY.API
 
             string strCls = string.Empty;
             strCls = "lc.ID,pd.ProcessName '流程',lc.ShenQingRen '申请人',CONVERT(varchar(100), lc.CRDate, 120) '申请时间'";
-            DataTable dt = new SZHL_CRM_KHGLB().GetDTByCommand("select " + strCls + " from SZHL_LCSP lc left join Yan_WF_PD pd on pd.ID=lc.LeiBie where " + strWhere + " order by lc.CRDate desc");
+            DataTable dt = new SZHL_LCSPB().GetDTByCommand("select " + strCls + " from SZHL_LCSP lc left join Yan_WF_PD pd on pd.ID=lc.LeiBie where " + strWhere + " order by lc.CRDate desc");
 
             if (dt.Rows.Count > 0)
             {
@@ -505,7 +505,7 @@ namespace QJY.API
                 strWhere += string.Format(" And LeiBie='{0}'", P1);
             }
             int page = 0;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
+            int.TryParse(context.Request["p"] ?? "1", out page);//页码
             page = page == 0 ? 1 : page;
             int totalCount = 0;
             DataTable dt = new Yan_WF_TDB().GetDataPager("SZHL_LCSP lc inner join  Yan_WF_PI wfpi  on lc.intProcessStanceid=wfpi.ID inner join Yan_WF_PD pd on pd.ID=lc.LeiBie ", @" lc.*, case WHEN wfpi.isComplete is null and wfpi.IsCanceled is null  THEN '正在审批' 
@@ -534,7 +534,22 @@ namespace QJY.API
             {
                 int lcs = int.Parse(P1);
                 string strSql = string.Format(@"SELECT * from Yan_WF_PD  where   lcstatus='{0}' and ComId={1} and  IsSuspended= 'Y'  and ','+ManageUser+',' like '%,{2},%'", lcs, UserInfo.User.ComId, UserInfo.User.UserName);
-                msg.Result = new Yan_WF_PDB().GetDTByCommand(strSql);
+
+                string strRoleSQL = "";
+                foreach (var item in UserInfo.UserRoleCode.Split(','))
+                {
+                    strRoleSQL = strRoleSQL + string.Format(@"SELECT * from Yan_WF_PD  where   lcstatus='{0}' and ComId={1} and  IsSuspended= 'Y'  and ','+ManageRole+',' like '%,{2},%'", lcs, UserInfo.User.ComId, item);
+                    strRoleSQL = strRoleSQL + "  UNION  ";
+                }
+                if (strRoleSQL.Length > 5)
+                {
+                    strRoleSQL = strRoleSQL.TrimEnd();
+                    strRoleSQL = strRoleSQL.Substring(0, strRoleSQL.Length - 5);
+                    strSql = strSql + " UNION " + strRoleSQL;
+                }
+                DataTable dtData = new Yan_WF_PDB().GetDTByCommand(strSql);
+                msg.Result = dtData;
+
             }
             else
             {
@@ -586,6 +601,7 @@ namespace QJY.API
                 {
                     lcsp.Tempcontent = @"<div class='form-group data-control' datatype='textarea' dataname='表单内容'><label class='col-sm-2 control-label'>表单内容</label><div class='col-sm-9'><textarea class='form-control szhl_UEEDIT' id='ueedit1'></textarea></div></div>";
                 }
+                lcsp.ManageRole.Trim(',');
                 new Yan_WF_PDB().Insert(lcsp); //添加流程表数据
 
                 string qymodelId = context.Request["qymodelId"] ?? ""; //JH_Auth_QY_Model表Id
@@ -679,6 +695,7 @@ namespace QJY.API
         {
             string strSql = string.Format(" SELECT DISTINCT RelatedTable FROM  Yan_WF_PD WHERE ComId={0} and RelatedTable!='' and RelatedTable is not null  ", UserInfo.User.ComId);
             msg.Result = new Yan_WF_PDB().GetDTByCommand(strSql);
+            msg.Result1 = new JH_Auth_RoleB().GetALLEntities();
 
         }
 
@@ -877,12 +894,7 @@ namespace QJY.API
         /// <param name="isComplete">是否最后一步Y:最后一步</param>
         public void WFComplete(string strModelCode, string strDataID, string isComplete)
         {
-            if (isComplete == "Y" && strModelCode == "HYGL")
-            {
-                MethodInfo methodInfo = typeof(HYGLManage).GetMethod("COMPLETEWFHYGL");
-                HYGLManage model = new HYGLManage();
-                methodInfo.FastInvoke(model, new object[] { strDataID });
-            }
+
         }
 
 
@@ -1217,7 +1229,7 @@ namespace QJY.API
 
 
             int DataID = 0;
-            int.TryParse(context.Request.QueryString["DataID"] ?? "0", out DataID);
+            int.TryParse(context.Request["DataID"] ?? "0", out DataID);
 
             int PIID = 0;
             if (!int.TryParse(P1, out PIID))

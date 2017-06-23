@@ -33,11 +33,11 @@ namespace QJY.API
         {
 
             int DataID = -1;
-            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//页码
+            int.TryParse(context.Request["ID"] ?? "-1", out DataID);//页码
 
 
             int page = 0;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);//页码
+            int.TryParse(context.Request["p"] ?? "1", out page);//页码
             page = page == 0 ? 1 : page;
             int recordCount = 0;
             string strWhere = string.Format(" note.ComId={0} And note.CRUser='{1}'", UserInfo.User.ComId, UserInfo.User.UserName);

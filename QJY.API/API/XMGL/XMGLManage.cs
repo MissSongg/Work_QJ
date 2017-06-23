@@ -201,7 +201,7 @@ namespace QJY.API
                 strWhere += string.Format(" And ( XMMC like '%{0}%' )", strContent);
             }
             //根据创建时间查询
-            string time = context.Request.QueryString["time"] ?? "";
+            string time = context.Request["time"] ?? "";
             if (time != "")
             {
                 if (time == "1")   //近一周
@@ -222,8 +222,8 @@ namespace QJY.API
                 }
                 else if (time == "3")  //自定义时间
                 {
-                    string strTime = context.Request.QueryString["starTime"] ?? "";
-                    string endTime = context.Request.QueryString["endTime"] ?? "";
+                    string strTime = context.Request["starTime"] ?? "";
+                    string endTime = context.Request["endTime"] ?? "";
                     if (strTime != "")
                     {
                         strWhere += string.Format(" And convert(varchar(10),xm.CRDate,120) >='{0}'", strTime);
@@ -235,7 +235,7 @@ namespace QJY.API
                 }
             }
             int DataID = -1;
-            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
+            int.TryParse(context.Request["ID"] ?? "-1", out DataID);//记录Id
             if (DataID != -1)
             {
                 string strIsHasDataQX = new JH_Auth_QY_ModelB().ISHASDATAREADQX("CRM", DataID, UserInfo);
@@ -249,8 +249,8 @@ namespace QJY.API
 
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int total = 0;
             DataTable dtList = new SZHL_XMGLB().GetDataPager("SZHL_XMGL xm left join JH_Auth_ZiDian zd on convert(varchar,YXJ)=convert(varchar,zd.ID)", "xm.* ,zd.TypeName", pagecount, page, " xm.CRDate desc,xm.Status ", strWhere, ref total);

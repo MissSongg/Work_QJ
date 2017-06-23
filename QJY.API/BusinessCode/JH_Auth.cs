@@ -362,12 +362,7 @@ namespace QJY.API
                     msg.ErrorMsg = "添加部门失败";
                     return;
                 }
-                else
-                {
-                    branch.WXBMCode = branch.DeptCode;
-                    new JH_Auth_BranchB().Update(branch);
-                }
-                //判断是否启用微信后，启用部门需要同步添加微信部门
+           
                 if (UserInfo.QYinfo.IsUseWX == "Y")
                 {
                     WXHelp bm = new WXHelp(UserInfo.QYinfo);
@@ -381,7 +376,7 @@ namespace QJY.API
                 {
                     branch.Remark1 = new JH_Auth_BranchB().GetBranchNo(UserInfo.User.ComId.Value, branch.DeptRoot);
                 }
-                if (UserInfo.QYinfo.IsUseWX == "Y")
+                if (UserInfo.QYinfo.IsUseWX == "Y" && branch.DeptRoot != -1)
                 {
                     WXHelp bm = new WXHelp(UserInfo.QYinfo);
                     bm.WX_UpdateBranch(branch);
@@ -664,184 +659,7 @@ namespace QJY.API
 
 
 
-    //菜单权限表
-    public class JH_Auth_MenuB : BaseEFDao<JH_Auth_Menu>
-    {
-        /// <summary>
-        /// 判断用户是否有该菜单的权限
-        /// </summary>
-        /// <param name="strUserName">用户名称</param>
-        /// <param name="strMenuCode">页面代码</param>
-        /// <returns></returns>
-        public bool IsHasMenuAuth(string strUserName, int intMenuCode)
-        {
-            bool IsHas = false;
-            if (new JH_Auth_MenuB().GetEntities(u => u.isMenu == "Y" && u.IsUse == "Y" && u.AuthCode == intMenuCode).Count() == 0 || new JH_Auth_MenuB().GetDTByCommand("  select  top 1 UserName  from    [vw_JH_Auth_UserAuth] where   isMenu='Y' and IsUse='Y' and UserName='" + strUserName + "' and AuthCode='" + intMenuCode + "'").Rows.Count > 0)
-            {
-                IsHas = true;
-            }
-            return IsHas;
-        }
-
-
-        /// <summary>
-        /// 获取用户一级的菜单
-        /// </summary>
-        /// <param name="strUserName">用户名</param>
-        /// <returns></returns>
-        public string GetMainMenuByUserName(string strUserName)
-        {
-            StringBuilder strMainMenu = new StringBuilder();
-            DataTable dt = new JH_Auth_MenuB().GetDTByCommand(" select *   from    [vw_JH_Auth_UserAuth] where UserName='" + strUserName + "' and PAuthCode=1 and isMenu='Y' and IsUse='Y' ORDER BY  DisplayOrder ");
-            if (dt.Rows.Count > 0)
-            {
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    strMainMenu.AppendFormat("<li id='{0}'><a href='#'><img src='{2}' title='{3}' /><h2>{4}</h2></a></li>", dt.Rows[i]["AuthCode"].ToString(), dt.Rows[i]["FileName"].ToString() != "" ? dt.Rows[i]["FileName"] : "#", string.IsNullOrEmpty(dt.Rows[i]["Ico"].ToString()) ? "../images/icon02.png" : dt.Rows[i]["Ico"].ToString(), dt.Rows[i]["AuthName"].ToString(), dt.Rows[i]["AuthName"].ToString());
-                }
-
-            }
-            return strMainMenu.ToString();
-        }
-
-
-        /// <summary>
-        /// 根据用户名，父菜单代码获取用户可以查看的子菜单
-        /// </summary>
-        /// <param name="strUserName">用户代码</param>
-        /// <param name="intPMenuCode">父菜单代码</param>
-        /// <returns></returns>
-        public string GetChiMenuByUserName(string strUserName, int intPMenuCode, DataTable ListAuth)
-        {
-            StringBuilder strMainMenu = new StringBuilder();
-            DataTable dt = ListAuth.Where("PAuthCode = " + intPMenuCode).OrderBy("DisplayOrder");
-
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                string strAuthName = dt.Rows[i]["AuthName"].ToString();
-                int intAuthCode = int.Parse(dt.Rows[i]["AuthCode"].ToString());
-
-                if (dt.Rows[i]["AuthLevel"].ToString() == "2")
-                {
-                    strMainMenu.Append("<dd><div class='title'><span><img src='/images/MVimg/Index/leftico01.png' /></span>" + strAuthName + "</div><ul class='menuson'>" + GetChiMenuByUserName(strUserName, intAuthCode, ListAuth) + "</ul></dd>");
-                }
-                if (dt.Rows[i]["AuthLevel"].ToString() == "3")
-                {
-                    string MenuUrl = dt.Rows[i]["FileName"].ToString();
-                    if (MenuUrl.Contains('?'))
-                    {
-                        MenuUrl = MenuUrl + "&";
-                    }
-                    else
-                    {
-                        MenuUrl = MenuUrl + "?";
-
-                    }
-                    strMainMenu.Append("<li hrefurl='" + MenuUrl + "MenuCode=" + intAuthCode + "' id='" + intAuthCode + "'><cite></cite><a href='#'>" + strAuthName + "</a><i></i></li>");
-                }
-            }
-
-
-            return strMainMenu.Length > 0 ? strMainMenu.ToString() : "";
-        }
-
-
-
-
-        /// <summary>
-        /// 获得所有菜单
-        /// </summary>
-        /// <param name="intPAuthCode"></param>
-        /// <returns></returns>
-        public string GetAllAuth(int intPAuthCode)
-        {
-            StringBuilder strTree = new StringBuilder();
-            var Results = new JH_Auth_MenuB().GetEntities(u => u.PAuthCode == intPAuthCode && u.isMenu == "Y");
-            if (Results.Count() > 0)
-            {
-                foreach (var item in Results)
-                {
-                    strTree.AppendFormat("{{id:'{0}',pId:'{1}',level:'{2}',name:'{3}',taburl:'{4}',isuse:'{5}',ishasbt:'{6}',menuicon:'{7}',{8},order:'{9}'}},", item.AuthCode, item.PAuthCode, item.AuthLevel, item.AuthName, item.FileName, item.IsUse, item.IsHasbt, item.Ico, item.AuthLevel < 1 ? "open:true" : "open:false", item.DisplayOrder);
-                    strTree.Append(GetAllAuth(item.AuthCode));
-                }
-            }
-            return strTree.Length > 0 ? strTree.ToString() : "";
-        }
-
-
-
-
-        /// <summary>
-        /// 删除菜单（包括子菜单）
-        /// </summary>
-        /// <param name="MenuID"></param>
-        /// <returns></returns>
-        public bool DelAllMenuByID(int MenuID)
-        {
-            try
-            {
-                List<int> ListMenu = new List<int>();
-                new JH_Auth_MenuB().GetMenuSByID(MenuID, ref ListMenu);
-                new JH_Auth_MenuB().Delete(d => ListMenu.Contains(d.AuthCode));
-                new JH_Auth_MenuB().Delete(d => d.AuthCode == MenuID);
-
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-
-        }
-
-        //获取菜单下所有子菜单（包含本身）
-        public void GetMenuSByID(int MenuID, ref List<int> ListMenuID)
-        {
-            var q = new JH_Auth_MenuB().GetEntities(d => d.PAuthCode == MenuID);
-            foreach (var item in q)
-            {
-                ListMenuID.Add(item.AuthCode);
-                GetMenuSByID(item.AuthCode, ref ListMenuID);
-            }
-        }
-
-
-        /// <summary>
-        /// 为新增菜单增加三个默认的按钮
-        /// </summary>
-        /// <param name="PModel"></param>
-        /// <returns></returns>
-        public bool addDefaultBtn(JH_Auth_Menu PModel)
-        {
-            try
-            {
-                List<string> ListBtns = new List<string> { "ADD", "EDIT", "DEL" };
-                foreach (string btnType in ListBtns)
-                {
-                    JH_Auth_Menu NewAuth = new JH_Auth_Menu();
-                    NewAuth.PAuthCode = PModel.AuthCode;
-                    NewAuth.AuthLevel = PModel.AuthLevel + 1;
-                    NewAuth.AuthName = btnType;
-                    NewAuth.FileName = btnType;
-                    NewAuth.IsUse = "Y";
-                    NewAuth.Ico = "";
-                    NewAuth.isMenu = "N";
-                    NewAuth.isSys = "Y";
-                    NewAuth.AuthDesc = "";
-                    new JH_Auth_MenuB().Insert(NewAuth);
-                }
-                return true;
-            }
-            catch (Exception)
-            {
-
-                return false;
-            }
-
-
-        }
-
-    }
+  
 
     //角色表
     public class JH_Auth_RoleB : BaseEFDao<JH_Auth_Role>
@@ -904,61 +722,6 @@ namespace QJY.API
 
     }
 
-
-    //角色权限表
-    public class JH_Auth_RoleAuthB : BaseEFDao<JH_Auth_RoleAuth>
-    {
-        /// <summary>
-        /// 获得角色的权限树
-        /// </summary>
-        /// <param name="intRoleCode"></param>
-        /// <param name="intPAuthCode"></param>
-        /// <returns></returns>
-        public string GetRoleAuth(int intRoleCode, int intPAuthCode, List<JH_Auth_Menu> ListAuth, List<JH_Auth_RoleAuth> ListAuth_Role)
-        {
-            StringBuilder strTree = new StringBuilder();
-
-            var Results = ListAuth.Where(d => d.PAuthCode == intPAuthCode);
-            var query = from q in ListAuth_Role.Where(rm => rm.RoleCode == intRoleCode)
-                        select q.AuthCode;
-            if (Results.Count() > 0)
-            {
-                foreach (var item in Results)
-                {
-                    //icon:'{6}', , item.Ico
-                    strTree.AppendFormat("{{Id:'{0}',pId:'{1}',level:'{2}',name:'{3}',taburl:'{4}',isuse:'{5}',{6},{7}}},", item.AuthCode, item.PAuthCode, item.AuthLevel, item.AuthName, item.FileName, item.IsUse, query.Contains(item.AuthCode) ? "checked:true" : "checked:false", int.Parse(item.AuthLevel.ToString()) < 2 ? "open:true" : "open:false");
-                    strTree.Append(GetRoleAuth(intRoleCode, item.AuthCode, ListAuth, ListAuth_Role));
-                }
-            }
-            return strTree.Length > 0 ? strTree.ToString() : "";
-        }
-        /// <summary>
-        /// 为角色分配菜单
-        /// </summary>
-        /// <param name="arrMenuCodes">菜单代码</param>
-        /// <param name="intRoleCode">角色代码</param>
-        /// <returns></returns>
-        public string AssignMenu(string[] arrMenuCodes, int intRoleCode, int ComId)
-        {
-            try
-            {
-                new JH_Auth_RoleAuthB().Delete(d => d.RoleCode == intRoleCode);
-                foreach (string item in arrMenuCodes)
-                {
-                    JH_Auth_RoleAuth NewRoleMenu = new JH_Auth_RoleAuth();
-                    NewRoleMenu.RoleCode = intRoleCode;
-                    NewRoleMenu.AuthCode = int.Parse(item);
-                    NewRoleMenu.ComId = ComId;
-                    new JH_Auth_RoleAuthB().Insert(NewRoleMenu);
-                }
-                return "";
-            }
-            catch
-            {
-                return "Faile";
-            }
-        }
-    }
 
 
     //用户角色表
@@ -1487,7 +1250,6 @@ namespace QJY.API
                 {
                     ENDTASK(MODEL.ID, strUser, strYJView);
                     ListNextUser = AddNextTask(MODEL, strShUser);
-
                     //循环找下一个审核人是否包含本人，如果包含则审核通过
                     if (ListNextUser.Contains(strUser))
                     {
@@ -1635,6 +1397,7 @@ namespace QJY.API
     }
 
     public class Yan_WF_TIB : BaseEFDao<Yan_WF_TI> { }
+    public class SZHL_DBGLB : BaseEFDao<SZHL_DBGL> { }
 
 
     #endregion
@@ -1751,6 +1514,8 @@ namespace QJY.API
             DataTable dtResult = new Yan_WF_PIB().GetDTByCommand(strSql);
             return dtResult;
         }
+
+     
 
     }
     public class JH_Auth_QY_WXSCB : BaseEFDao<JH_Auth_QY_WXSC>

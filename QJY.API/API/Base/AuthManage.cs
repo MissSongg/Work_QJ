@@ -133,7 +133,7 @@ namespace QJY.API
         public void GETALLBMUSERLISTNEW(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             //判断是否强制加载所有部门数据
-            string isAll = context.Request.QueryString["isAll"] ?? "";
+            string isAll = context.Request["isAll"] ?? "";
             DataTable dtBMS = new DataTable();
             int deptRoot = -1;
             //获取有权限的部门Id
@@ -468,12 +468,13 @@ namespace QJY.API
             int page = 0;
             int pagecount = 8;
             int.TryParse(context.Request["p"] ?? "0", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
 
             int total = 0;
-            DataTable dt = new SZHL_YCGLB().GetDataPager(tableName, tableColumn, pagecount, page, " b.DeptShort,ISNULL(u.UserOrder, 1000000) asc", strWhere, ref total);
+            DataTable dt = new JH_Auth_UserB().GetDataPager(tableName, tableColumn, pagecount, page, " b.DeptShort,ISNULL(u.UserOrder, 1000000) asc", strWhere, ref total);
             msg.Result = dt;
+
             msg.Result1 = Math.Ceiling(total * 1.0 / 8);
             msg.Result2 = total;
         }
@@ -833,12 +834,12 @@ namespace QJY.API
                 strWhere += string.Format(" and MsgContent like  '%{0}%'", P2);
 
             }
-            string msgType = context.Request.QueryString["msgType"] ?? "";
+            string msgType = context.Request["msgType"] ?? "";
             if (msgType != "")
             {
                 strWhere += string.Format(" and MsgType ='{0}'", msgType);
             }
-            string msgTypes = context.Request.QueryString["msgTypes"] ?? "";
+            string msgTypes = context.Request["msgTypes"] ?? "";
             if (msgTypes != "")
             {
                 msgTypes = System.Web.HttpUtility.UrlDecode(msgTypes);
@@ -847,8 +848,8 @@ namespace QJY.API
 
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);
-            int.TryParse(context.Request.QueryString["p"] ?? "0", out page);
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);
+            int.TryParse(context.Request["p"] ?? "0", out page);
             page = page == 0 ? 1 : page;
             int total = 0;
             DataTable dt = new JH_Auth_User_CenterB().GetDataPager("JH_Auth_User_Center", "MsgType,MsgModeID,MsgContent,CRDate,UserFrom,isRead,ID,wxLink,MsgLink ", pagecount, page, "isRead asc,CRDate desc", strWhere, ref total);
@@ -1600,14 +1601,7 @@ namespace QJY.API
                         HttpContext curContext = HttpContext.Current;
 
                         string strName = string.Empty;
-                        if (P1 == "KHGL")
-                        {
-                            strName = "客户";
-                        }
-                        else if (P1 == "KHLXR")
-                        {
-                            strName = "客户联系人";
-                        }
+                   
 
                         // 设置编码和附件格式
                         curContext.Response.ContentType = "application/vnd.ms-excel";
@@ -1853,7 +1847,7 @@ namespace QJY.API
         public void GETFUNCTION(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
 
-            string strSql = string.Format("select JH_Auth_Model.* from JH_Auth_QY_Model INNER JOIN JH_Auth_Model on JH_Auth_QY_Model.ModelID=JH_Auth_Model.ID  WHERE JH_Auth_QY_Model.ComId={0} and JH_Auth_QY_Model.Status=1", UserInfo.User.ComId);
+            string strSql = string.Format("select JH_Auth_Model.* from JH_Auth_QY_Model INNER JOIN JH_Auth_Model on JH_Auth_QY_Model.ModelID=JH_Auth_Model.ID  WHERE JH_Auth_QY_Model.ComId={0} and JH_Auth_QY_Model.Status=1 ORDER by ModelType", UserInfo.User.ComId);
             DataTable dt = new JH_Auth_ModelB().GetDTByCommand(strSql);
             dt.Columns.Add("FunData", Type.GetType("System.Object"));
             DataTable dtRoleFun = new JH_Auth_RoleFunB().GetDTByCommand(@"SELECT DISTINCT fun.*,rolefun.ActionCode RoleFun,rolefun.FunCode 
@@ -1990,8 +1984,8 @@ namespace QJY.API
             }
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "0", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "0", out page);
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int total = 0;
             DataTable dt = new JH_Auth_LogB().GetDataPager("JH_Auth_Log", "* ", pagecount, page, " CRDate desc ", strWhere, ref total);
@@ -2026,70 +2020,7 @@ namespace QJY.API
         #endregion
 
 
-        #region 订单管理
-        /// <summary>
-        /// 添加订单
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="msg"></param>
-        /// <param name="P1"></param>
-        /// <param name="P2"></param>
-        /// <param name="UserInfo"></param>
-        public void ADDDDGL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
-            SZHL_DDGL dcgl = JsonConvert.DeserializeObject<SZHL_DDGL>(P1);
-
-            if (!dcgl.OrderMoney.HasValue || dcgl.OrderMoney < 100)
-            {
-                msg.ErrorMsg = "订单金额错误";
-            }
-            else
-            {
-                dcgl.OrderID = DateTime.Now.ToString("yyyyMMddHHmmssfff");
-                dcgl.Status = "未支付";
-                dcgl.ComId = UserInfo.QYinfo.ComId;
-                dcgl.CRDate = DateTime.Now;
-                dcgl.CRUser = UserInfo.User.UserName;
-
-                new SZHL_DDGLB().Insert(dcgl);
-
-                msg.Result = dcgl.OrderID;
-
-            }
-
-
-        }
-        public void GETSZMX(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
-            string strWhere = " cc.ComId=" + UserInfo.User.ComId;
-            if (P1 != "")
-            {
-                strWhere += string.Format(" and cc.Memo like '%{0}%'", P1);
-            }
-            if (P2 != "")
-            {
-                if (P2 == "1") //收入
-                {
-                    strWhere += string.Format(" and cc.Change>0 ");
-                }
-                else if (P2 == "2") //支出
-                {
-                    strWhere += string.Format(" and cc.Change<0 ");
-                }
-            }
-            int page = 0;
-            int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
-            page = page == 0 ? 1 : page;
-            int total = 0;
-            DataTable dt = new SZHL_CCXJB().GetDataPager(" SZHL_DDGL_ITEM cc", "cc.*", pagecount, page, " cc.CRDate desc", strWhere, ref total);
-
-            msg.Result = dt;
-            msg.Result1 = total;
-
-        }
-        #endregion
+        
 
 
         #region  获取评论
@@ -2596,8 +2527,8 @@ namespace QJY.API
             }
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int recordCount = 0;
             DataTable dt = new JH_Auth_QYB().GetDataPager(" JH_Auth_QY ", " * ", pagecount, page, " CRDate desc ", strWhere, ref recordCount);
@@ -2635,8 +2566,8 @@ namespace QJY.API
             {
                 int page = 0;
                 int pagecount = 8;
-                int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-                int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+                int.TryParse(context.Request["p"] ?? "1", out page);
+                int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
                 page = page == 0 ? 1 : page;
                 int total = 0;
                 DataTable dt = new DataTable();

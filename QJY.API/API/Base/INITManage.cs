@@ -11,6 +11,8 @@ using Senparc.Weixin.QY.AdvancedAPIs.MailList;
 using Senparc.Weixin.Entities;
 using System.Text.RegularExpressions;
 using Senparc.Weixin.QY.AdvancedAPIs.App;
+using System.Diagnostics;
+using System.Threading;
 
 namespace QJY.API
 {
@@ -131,6 +133,7 @@ namespace QJY.API
                 msg.Result1 = "Y";
             }
             msg.Result2 = UserInfo.User.isSupAdmin;
+
         }
         #endregion
 
@@ -639,7 +642,7 @@ namespace QJY.API
                 #region 同步人员
 
                 Senparc.Weixin.QY.AdvancedAPIs.MailList.GetDepartmentMemberInfoResult yg = wx.WX_GetDepartmentMemberInfo(1);
-                List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => d.ComId == UserInfo.User.ComId).ToList();
+                List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => d.ComId == UserInfo.User.ComId && d.UserName != "administrator").ToList();
                 foreach (JH_Auth_User user in userList)
                 {
                     if (yg.userlist.Where(d => d.name == user.UserName || d.mobile == user.mobphone).Count() > 0)
@@ -1116,7 +1119,7 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void GETWXAPP(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            msg.Result = new JH_Auth_ModelB().GetEntities(d => !string.IsNullOrEmpty(d.WXUrl));
+            msg.Result = new JH_Auth_ModelB().GetEntities(d => !string.IsNullOrEmpty(d.WXUrl)).OrderBy(d=>d.ORDERID);
         }
 
 
@@ -1134,23 +1137,7 @@ namespace QJY.API
             var model = new JH_Auth_ModelB().GetEntity(p => p.ID == id);
             msg.Result1 = model;//系统应用数据
 
-            #region 获取微信应用列表
-            WXHelp WX = new WXHelp(UserInfo.QYinfo);
-            GetAppListResult AppList = WX.GetAppList();
-            List<GetAppInfoResultNew> ListQY = new List<GetAppInfoResultNew>();
-            foreach (var item in AppList.agentlist)
-            {
-                var m = new JH_Auth_ModelB().GetEntity(p => p.AppID == item.agentid);
-                if (m == null || model.AppID == item.agentid)//未绑定的应用或者当前应用绑定的应用
-                {
-                    GetAppInfoResultNew tempapp = WX.GetAPPinfo(int.Parse(item.agentid));
-                    ListQY.Add(tempapp);
-                }
-            }
-            //企业号应用数据
-            msg.Result = ListQY.Where(d => UserInfo.QYinfo.WXUrl.Contains(d.redirect_domain) && !string.IsNullOrEmpty(d.redirect_domain) && d.type.ToString() == model.AppType);
-            #endregion
-
+ 
             #region 获取应用默认菜单
             DataTable dt = new JH_Auth_CommonB().GetDTByCommand(" select * from JH_Auth_Common where ModelCode='" + model.ModelCode + "' and TopID='0' and type='1' order by Sort");
             dt.Columns.Add("Item", Type.GetType("System.Object"));
@@ -1227,7 +1214,8 @@ namespace QJY.API
                     else
                     {
                         WXHelp WX = new WXHelp(UserInfo.QYinfo);
-                        QyJsonResult rel = WX.WX_WxCreateMenuNew(Int32.Parse(model.AppID), model.ModelCode);
+                        List<Senparc.Weixin.QY.Entities.Menu.BaseButton> lm = new List<Senparc.Weixin.QY.Entities.Menu.BaseButton>();
+                        QyJsonResult rel = WX.WX_WxCreateMenuNew(Int32.Parse(model.AppID), model.ModelCode, ref lm);
                         if (rel.errmsg != "ok")
                         {
                             msg.ErrorMsg = "创建菜单失败";
@@ -1280,6 +1268,42 @@ namespace QJY.API
                 msg.ErrorMsg = "解除绑定失败";
             }
         }
+
+        #region 服务器状况
+        /// <summary>
+        /// 服务器状况
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void SERVERSTATUS(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            PerformanceCounter cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            float flCPU = 0;
+            while (flCPU == 0)
+            {
+                flCPU = cpuCounter.NextValue();
+                Thread.Sleep(500);
+            }
+            msg.Result = flCPU.ToString();// + "%";
+
+            PerformanceCounter ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+            msg.Result1 = Math.Round((ramCounter.NextValue() / 1024), 1); // + "GB";//可用内存
+
+            //物理内存
+            SystemHelp help = new SystemHelp();
+            long PhysicalMemory = help.PhysicalMemory / 1024 / 1024 / 1024;
+            msg.Result2 = Math.Round((decimal)PhysicalMemory, 1);  //GB
+
+            //已用
+            msg.Result3 = Math.Round((((help.PhysicalMemory / 1024 / 1024) - ramCounter.NextValue()) / 1024), 1);
+        }
+
+
+
+        #endregion
 
         #endregion
     }
