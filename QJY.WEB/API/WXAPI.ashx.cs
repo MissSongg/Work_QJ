@@ -372,7 +372,7 @@ namespace QJY.WEB
 
                                 //通过微信接口获取用户名
                                 WXHelp wx = new WXHelp(qy);
-                                string username = wx.GetUserDataByCode(strCode);
+                                string username = wx.GetUserDataByCode(strCode, strModelCode);
                                 if (!string.IsNullOrEmpty(username))
                                 {
                                     var jau = new JH_Auth_UserB().GetUserByUserName(qy.ComId, username);

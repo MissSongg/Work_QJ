@@ -115,7 +115,7 @@ namespace QJY.API
             }
         }
 
-        
+
 
         /// <summary>
         /// 文字消息
@@ -192,23 +192,28 @@ namespace QJY.API
 
         #region 组织机构相关
 
-        public string GetUserDataByCode(string strCode)
+        public string GetUserDataByCode(string strCode, string strModelCode)
         {
             string UserCode = "";
+            string strToken = "";
 
             try
             {
                 if (Qyinfo.IsUseWX == "Y")
                 {
+                    JH_Auth_Model Model = new JH_Auth_ModelB().GetEntities(d => d.ModelCode == strModelCode).FirstOrDefault();
+                    if (Model != null)
+                    {
+                        GetUserInfoResult OBJ = OAuth2Api.GetUserId(GetToken(Model.AppID), strCode);
+                        UserCode = OBJ.UserId;
+                    }
 
-                    GetUserInfoResult OBJ = OAuth2Api.GetUserId(GetToken(), strCode);
-                    UserCode = OBJ.UserId;
 
                 }
             }
             catch (Exception EX)
             {
-                new JH_Auth_LogB().Insert(new JH_Auth_Log() { CRDate = DateTime.Now, LogContent = "获取用户代码GetUserDataByCode" + EX.Message.ToString() });
+                new JH_Auth_LogB().Insert(new JH_Auth_Log() { CRDate = DateTime.Now, LogContent = strModelCode + "获取用户代码" + strCode + "|GetUserDataByCode" + EX.Message.ToString() });
 
             }
 
