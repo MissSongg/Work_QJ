@@ -601,7 +601,6 @@ namespace QJY.API
                 {
                     lcsp.Tempcontent = @"<div class='form-group data-control' datatype='textarea' dataname='表单内容'><label class='col-sm-2 control-label'>表单内容</label><div class='col-sm-9'><textarea class='form-control szhl_UEEDIT' id='ueedit1'></textarea></div></div>";
                 }
-                lcsp.ManageRole.Trim(',');
                 new Yan_WF_PDB().Insert(lcsp); //添加流程表数据
 
                 string qymodelId = context.Request["qymodelId"] ?? ""; //JH_Auth_QY_Model表Id
