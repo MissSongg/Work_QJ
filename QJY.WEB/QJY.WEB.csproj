@@ -112,12 +112,8 @@
     <Content Include="Global.asax" />
     <Content Include="API\VIEWAPI.ashx" />
     <Content Include="API\WXAPI.ashx" />
-    <None Include="Properties\PublishProfiles\QiJieYun.pubxml" />
-    <None Include="Properties\PublishProfiles\QJKJ.pubxml" />
     <None Include="Properties\PublishProfiles\QJSignle.pubxml" />
     <None Include="Properties\PublishProfiles\QJ_UserS.pubxml" />
-    <None Include="Properties\PublishProfiles\SaasFB.pubxml" />
-    <None Include="Properties\PublishProfiles\TestFB.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -375,6 +371,7 @@
     <Content Include="ViewV5\CSS\weixin\index.html" />
     <Content Include="ViewV5\CSS\weixin\index1.html" />
     <Content Include="ViewV5\dy.html" />
+    <Content Include="ViewV5\dyjs.js" />
     <Content Include="ViewV5\images\head.jpg" />
     <Content Include="ViewV5\images\icon-1.png" />
     <Content Include="ViewV5\images\icon-2.png" />

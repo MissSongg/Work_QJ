@@ -124,6 +124,12 @@ namespace QJY.API
                         //string tableColumn = "pd.ProcessName,'LCSP' ProName,lc.intProcessStanceid,lc.ID,lc.CRUser,lc.CRDate,lc.ShenQingRen ,  case when wfpi.IsCanceled is null then '已审批'   WHEN wfpi.IsCanceled='Y' then '已退回' END StateName,lc.Files,lc.Content ";
                         //strWhere += "  And lc.intProcessStanceid in (" + (intPro.ListTOString(',') == "" ? "0" : intPro.ListTOString(',')) + ")";
                         break;
+
+                    case "4": //抄送我的
+                        {
+                            strWhere += " And pd.ChaoSongUser ='" + userName + "'";
+                        }
+                        break;
                 }
                 dt = new SZHL_CCXJB().GetDataPager("SZHL_LCSP lc inner join Yan_WF_PD pd on pd.ID=lc.LeiBie ", "lc.*,dbo.fn_PDStatus(lc.intProcessStanceid) AS StateName,pd.ID as PDID,pd.RelatedTable, pd.ProcessType,pd.ProcessName,'LCSP' as ModelCode", pagecount, page, " lc.CRDate desc", strWhere, ref total);
                 if (dt.Rows.Count > 0)
@@ -601,6 +607,7 @@ namespace QJY.API
                 {
                     lcsp.Tempcontent = @"<div class='form-group data-control' datatype='textarea' dataname='表单内容'><label class='col-sm-2 control-label'>表单内容</label><div class='col-sm-9'><textarea class='form-control szhl_UEEDIT' id='ueedit1'></textarea></div></div>";
                 }
+                lcsp.ManageRole.Trim(',');
                 new Yan_WF_PDB().Insert(lcsp); //添加流程表数据
 
                 string qymodelId = context.Request["qymodelId"] ?? ""; //JH_Auth_QY_Model表Id

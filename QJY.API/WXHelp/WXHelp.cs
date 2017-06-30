@@ -195,8 +195,7 @@ namespace QJY.API
         public string GetUserDataByCode(string strCode, string strModelCode)
         {
             string UserCode = "";
-            string strToken = "";
-
+            strModelCode = strModelCode.Split('_')[0];
             try
             {
                 if (Qyinfo.IsUseWX == "Y")
@@ -206,9 +205,8 @@ namespace QJY.API
                     {
                         GetUserInfoResult OBJ = OAuth2Api.GetUserId(GetToken(Model.AppID), strCode);
                         UserCode = OBJ.UserId;
+
                     }
-
-
                 }
             }
             catch (Exception EX)

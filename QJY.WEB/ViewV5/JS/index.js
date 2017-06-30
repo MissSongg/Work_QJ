@@ -18,30 +18,39 @@
     FunData: [],//选中模块
     isnull: false,//是否有数据
     SelModelMenu: function (item) {
-        model.FunData.clear();
-        if (item) {
-            model.SelModel = item;
-            model.FunData.pushArray(item.FunData.$model);
-            model.ishasLeft = false;
+        var nowTime = new Date().getTime();
+        var clickTime = $("body").data("ctime");
+        if (clickTime != 'undefined' && (nowTime - clickTime < 1000) && item) {
+            console.debug('操作过于频繁，稍后再试');
+            return false;
         } else {
-            model.SelModel = null;
-            if (localStorage.getItem("WIGETDATAV5")) {
-                model.FunData.pushArray(JSON.parse(localStorage.getItem("WIGETDATAV5")));
+            $("body").data("ctime", nowTime);
+            model.FunData.clear();
+            if (item) {
+                model.SelModel = item;
+                model.FunData.pushArray(item.FunData.$model);
+                model.ishasLeft = false;
             } else {
-                // model.FunData = [{ code: "RWGL", name: "任务管理", wigetpath: "RWGL/RWGLLIST", issel: true, isshow: true, order: 0 }, { code: "LCSP", name: "流程管理", wigetpath: "RWGL/RWGLLIST", issel: false, isshow: true, order: 2 }, { code: "NOTE", name: "记事本", wigetpath: "RWGL/RWGLLIST", issel: false, isshow: true, order: 3 }, { code: "KJFS", name: "快捷网址", wigetpath: "RWGL/RWGLLIST", issel: false, isshow: true, order: 4 }];
-                model.FunData.pushArray([
-                     { PageCode: "/ViewV5/TempWiget/LCSP", ExtData: "", code: "LCSP", PageName: "流程审批", issel: true, isshow: true, order: 0 },
-                    { PageCode: "/ViewV5/AppPage/RWGL/RWGLLIST", ExtData: "", code: "RWGL", PageName: "任务管理", issel: true, isshow: true, order: 0 },
-                    { PageCode: "/ViewV5/TempWiget/KJFS", ExtData: "", code: "KJFS", PageName: "快捷网址", issel: true, isshow: true, order: 0 },
-                    { PageCode: "/ViewV5/TempWiget/NOTE", ExtData: "", PageName: "记事本", code: "NOTE", issel: true, isshow: true, order: 0 }
-                ]);
-                localStorage.setItem("WIGETDATAV5", JSON.stringify(model.FunData.$model));
+                model.SelModel = null;
+                if (localStorage.getItem("WIGETDATAV5")) {
+                    model.FunData.pushArray(JSON.parse(localStorage.getItem("WIGETDATAV5")));
+                } else {
+                    // model.FunData = [{ code: "RWGL", name: "任务管理", wigetpath: "RWGL/RWGLLIST", issel: true, isshow: true, order: 0 }, { code: "LCSP", name: "流程管理", wigetpath: "RWGL/RWGLLIST", issel: false, isshow: true, order: 2 }, { code: "NOTE", name: "记事本", wigetpath: "RWGL/RWGLLIST", issel: false, isshow: true, order: 3 }, { code: "KJFS", name: "快捷网址", wigetpath: "RWGL/RWGLLIST", issel: false, isshow: true, order: 4 }];
+                    model.FunData.pushArray([
+                         { PageCode: "/ViewV5/TempWiget/LCSP", ExtData: "", code: "LCSP", PageName: "流程审批", issel: true, isshow: true, order: 0 },
+                        { PageCode: "/ViewV5/AppPage/RWGL/RWGLLIST", ExtData: "", code: "RWGL", PageName: "任务管理", issel: true, isshow: true, order: 0 },
+                        { PageCode: "/ViewV5/TempWiget/KJFS", ExtData: "", code: "KJFS", PageName: "快捷网址", issel: true, isshow: true, order: 0 },
+                        { PageCode: "/ViewV5/TempWiget/NOTE", ExtData: "", PageName: "记事本", code: "NOTE", issel: true, isshow: true, order: 0 }
+                    ]);
+                    localStorage.setItem("WIGETDATAV5", JSON.stringify(model.FunData.$model));
 
+                }
+                model.ishasLeft = true;
             }
-            model.ishasLeft = true;
+            model.selmenulev2(model.FunData[0]);
+            $('body,html').animate({ scrollTop: 0 }, '500');
         }
-        model.selmenulev2(model.FunData[0]);
-        $('body,html').animate({ scrollTop: 0 }, '500');
+      
     },//选中最左侧事件
     SelModelXX: function () {
         model.FunData.clear();
@@ -71,31 +80,38 @@
         model.ishasLeft = false;
         model.selmenulev2(model.FunData[0]);
     },
-    selmenulev2: function (item) {
-        model.isnull = false;
-        model.initobj = null;//先清空数据
-        model.PageCode = "/ViewV5/Base/Loading";
+    selmenulev2: function (item,dom) {
+        var nowTime = new Date().getTime();
+        var clickTime = $("body").data("me2time");
+        if (clickTime != 'undefined' && (nowTime - clickTime < 1000) && dom) {
+            console.debug('操作过于频繁，稍后再试');
+            return false;
+        } else {
+            $("body").data("me2time", nowTime);
+            model.isnull = false;
+            model.initobj = null;//先清空数据
+            model.PageCode = "/ViewV5/Base/Loading";
+            gomenu = function () {
+                model.PageCode = item.PageCode;
+                if (localStorage.getItem(model.PageCode + "pagecount")) {
+                    model.page.pagecount = localStorage.getItem(model.PageCode + "pagecount");
+                } else {
+                    model.page.pagecount = 10;
+                }
+                model.initobj = item.ExtData;
+                model.page.pageindex = 1;
+                model.page.total = 0;
+                model.ShowColumns = [];
+                model.TypeData = [];
+                model.ListData = [];
+                model.search.seartype = '1';
+                model.search.searchcontent = '';
 
-        gomenu = function () {
-            model.PageCode = item.PageCode;
-            if (localStorage.getItem(model.PageCode + "pagecount")) {
-                model.page.pagecount = localStorage.getItem(model.PageCode + "pagecount");
-            } else {
-                model.page.pagecount = 10;
+                //清除日历样式
+                $(".datetimepicker").remove()
             }
-            model.initobj = item.ExtData;
-            model.page.pageindex = 1;
-            model.page.total = 0;
-            model.ShowColumns = [];
-            model.TypeData = [];
-            model.ListData = [];
-            model.search.seartype = '1';
-            model.search.searchcontent = '';
-
-            //清除日历样式
-            $(".datetimepicker").remove()
+            setTimeout("gomenu()", 1000)
         }
-        setTimeout("gomenu()", 1000)
     },
     //选中二级菜单事件
     refpage: function (pagecode) {
