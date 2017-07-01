@@ -127,7 +127,7 @@ namespace QJY.API
 
                     case "4": //抄送我的
                         {
-                            strWhere += " And pd.ChaoSongUser ='" + userName + "'";
+                            strWhere += " And exists (select Yan_WF_PI.ID from Yan_WF_PI I where I.PDID=pd.ID and CHARINDEX('" + userName + ",',I.ChaoSongUser)>0)";
                         }
                         break;
                 }

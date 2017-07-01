@@ -1,29 +1,34 @@
-﻿<div style="background:#fbf9fe" ms-controller="MJFBX">
+﻿<div style="background: #fbf9fe" ms-controller="MJFBX">
     <div ms-if="isHasDataQX=='Y'">
         <!--<div class="weui_cells_title">基本信息</div>-->
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">申请人</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">申请人</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.ShenQingRen}}
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">报销日期</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">报销日期</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input type="text" placeholder="请选择报销日期" id="BXDate" ms-duplex="modelData.BXDate" class="weui_input szhl szhl_require" />
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">关联项目</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">关联项目</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <select class="weui-select" ms-duplex="modelData.XMID">
+                        <option value="">请选择</option>
                         <option ms-repeat-item="XMData" ms-value="item.ID" ms-attr-selected="modelData.XMID==item.ID">{{item.XMMC}}</option>
                     </select>
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">标题</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">标题</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input type="text" placeholder="请输入标题" ms-duplex="modelData.JFBXTitle" class="weui_input szhl szhl_require" />
                 </div>
@@ -33,11 +38,12 @@
         <div ms-repeat-item="JFBXJLLIST" data-repeat-rendered="LoadDate">
             <div class="weui_cells_title">
                 消费记录{{$index+1}}
-                <a ms-if="$index!=0" href="javascript:void(0)" external ms-click="RemoveJL(item)" style="float:right;">删除</a>
+                <a ms-if="$index!=0" href="javascript:void(0)" external ms-click="RemoveJL(item)" style="float: right;">删除</a>
             </div>
             <div class="weui_cells weui_cells_form">
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">消费类型</label></div>
+                    <div class="weui_cell_hd">
+                        <label class="weui_label label">消费类型</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         <select ms-duplex="item.LeiBie" class="weui-select" ms-change="ChangeFL(item)">
                             <option value="">请选择</option>
@@ -46,19 +52,22 @@
                     </div>
                 </div>
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">金额</label></div>
+                    <div class="weui_cell_hd">
+                        <label class="weui_label label">金额</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         <input type="number" placeholder="请输入金额" ms-duplex="item.BXJE" class="weui_input szhl szhl_require" ms-keyup="heji(item)" />
                     </div>
                 </div>
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">时间</label></div>
+                    <div class="weui_cell_hd">
+                        <label class="weui_label label">时间</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         <input type="text" placeholder="请输入时间" ms-duplex="item.BXDate" ms-attr-id="mxtime{{$index}}" class="weui_input szhl szhl_require " />
                     </div>
                 </div>
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">是否有票</label></div>
+                    <div class="weui_cell_hd">
+                        <label class="weui_label label">是否有票</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         <label class="label-checkbox item-content" ms-click="SETIsHasFP(item)">
                             <input type="checkbox" name="ishasfp" id="ishasfp">
@@ -67,7 +76,8 @@
                     </div>
                 </div>
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">事由</label></div>
+                    <div class="weui_cell_hd">
+                        <label class="weui_label label">事由</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         <input type="text" placeholder="请输入事由" ms-duplex="item.BXContent" class="weui_input szhl szhl_require" />
                     </div>
@@ -80,13 +90,15 @@
 
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">合计</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">合计</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.BXZJE}}
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd" style="display:none;"><label class="weui_label label">描述</label></div>
+                <div class="weui_cell_hd" style="display: none;">
+                    <label class="weui_label label">描述</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <textarea ms-duplex="modelData.BXContent" rows="4" class="weui_textarea szhl" placeholder="请输入描述"></textarea>
                 </div>
@@ -96,7 +108,7 @@
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input type="text" ms-duplex="modelData.Files" class="wximgupload" style="display:none;" />
+                    <input type="text" ms-duplex="modelData.Files" class="wximgupload" style="display: none;" />
                 </div>
             </div>
         </div>
@@ -106,31 +118,36 @@
     <div ms-if="isHasDataQX=='N'">
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">申请人</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">申请人</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.ShenQingRen}}
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">报销日期</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">报销日期</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.BXDate|date('yyyy-MM-dd')}}
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">关联项目</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">关联项目</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.XMMC}}
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">标题</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">标题</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.JFBXTitle}}
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">合计</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">合计</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.BXZJE}}
                 </div>
@@ -143,31 +160,36 @@
             </div>
             <div class="weui_cells weui_cells_form">
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">消费类型</label></div>
+                    <div class="weui_cell_hd">
+                        <label class="weui_label label">消费类型</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         {{item.TypeName}}
                     </div>
                 </div>
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">金额</label></div>
+                    <div class="weui_cell_hd">
+                        <label class="weui_label label">金额</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         {{item.BXJE}}
                     </div>
                 </div>
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">时间</label></div>
+                    <div class="weui_cell_hd">
+                        <label class="weui_label label">时间</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         {{item.BXDate|date('yyyy-MM-dd')}}
                     </div>
                 </div>
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">是否有票</label></div>
+                    <div class="weui_cell_hd">
+                        <label class="weui_label label">是否有票</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         {{item.IsHasFP==1?"是":"否"}}
                     </div>
                 </div>
                 <div class="weui_cell">
-                    <div class="weui_cell_hd"><label class="weui_label label">事由</label></div>
+                    <div class="weui_cell_hd">
+                        <label class="weui_label label">事由</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         {{item.BXContent}}
                     </div>
@@ -210,7 +232,7 @@
 
                 }
             })
-            $.getJSON('/API/VIEWAPI.ashx?Action=XMGL_GETXMLIST',{}, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=XMGL_GETXMLIST', {}, function (resultData) {
                 if (resultData.ErrorMsg == "" && resultData.Result.length > 0) {
                     tempmodel.XMData = resultData.Result;
                 }
