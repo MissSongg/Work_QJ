@@ -2,7 +2,7 @@
     <div style="margin: 0 80px;">
         <div>
             <!--<div class="fg-item"><span>基本信息</span></div>-->
-            <ul class="clearfix" style="display: block;padding:0">
+            <ul class="clearfix" style="display: block; padding: 0">
                 <li class="add-item add-width fl-left">
                     <label class="add-item-label"><i>*</i>合同标题</label>
                     <div class="add-ic">
@@ -11,7 +11,7 @@
                 </li>
                 <li class="add-item add-width fl-right">
                     <label class="add-item-label"><i>*</i>负责人</label>
-                    <div class="add-ic" style="height:34px;">
+                    <div class="add-ic" style="height: 34px;">
                         <input type="text" class="form-control szhl_require szhl_getPeoples hidden" signle="Y" ms-duplex="modelData.FZR">
                     </div>
                 </li>
@@ -24,10 +24,10 @@
                 <li class="add-item add-width fl-right">
                     <label class="add-item-label">对应客户</label>
                     <div class="add-ic">
-                  
-                        <div class="input-group " style="width:100%">
+
+                        <div class="input-group " style="width: 100%">
                             <input type="text" class="form-control szhl_select ">
-                            <span class="input-group-addon" ms-if="modelData.KHID" ms-click="ClearKH()"><i class="iconfont icon-shanchu ft14 " style="color:white"></i></span>
+                            <span class="input-group-addon" ms-if="modelData.KHID" ms-click="ClearKH()"><i class="iconfont icon-shanchu ft14 " style="color: white"></i></span>
                         </div>
                     </div>
                 </li>
@@ -55,7 +55,7 @@
                 </li>
                 <li class="add-item add-width fl-right">
                     <label class="add-item-label"><i>*</i>起止时间</label>
-                    <div style="display:block;">
+                    <div style="display: block;">
                         <div class="add-ic fl-left" style="width: 45%;">
                             <input type="text" class="form-control szhl_form_date szhl_require" ms-class-1="null:modelData.ID" ms-duplex="modelData.HTStartTime">
                         </div>
@@ -82,7 +82,7 @@
         <div class="extdiv"></div>
         <div>
             <div class="fg-item"><span>详细信息</span><i id="btnOtherInfo"></i></div>
-            <ul class="clearfix" style="padding:0" id="OtherInfo">
+            <ul class="clearfix" style="padding: 0" id="OtherInfo">
                 <li class="add-item add-width fl-left">
                     <label class="add-item-label">关联产品</label>
                     <div class="add-ic">
@@ -154,58 +154,48 @@
         },
         inittemp: function (strId) {
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 16 }, function (resultData) {
-                if (resultData.ErrorMsg == "") {
-                    tempmodel.ColumnData = resultData.Result;
-                    if (tempmodel.ColumnData.size() > 0 && !tempmodel.modelData.HTType) {
-                        tempmodel.modelData.HTType = resultData.Result[0].ID;
-                    }
+                tempmodel.ColumnData = resultData.Result;
+                if (tempmodel.ColumnData.size() > 0 && !tempmodel.modelData.HTType) {
+                    tempmodel.modelData.HTType = resultData.Result[0].ID;
                 }
             })
-            
+
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 17 }, function (resultData) {
-                if (resultData.ErrorMsg == "") {
-                    tempmodel.fkfsData = resultData.Result;
-                    
-                }
+                tempmodel.fkfsData = resultData.Result;
+
             })
             $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETCPALL', function (resultData) {
-                if (resultData.ErrorMsg == "") {
-                    tempmodel.cplistData = resultData.Result;
-                }
+                tempmodel.cplistData = resultData.Result;
             })
             if (strId) {
                 //编辑加载数据
                 $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETHTMODEL', { P1: strId }, function (resultData) {
-                    if (resultData.ErrorMsg == "") {
-                        tempmodel.modelData = resultData.Result;
-                        if (tempmodel.modelData.HTStartTime && tempmodel.modelData.HTStartTime.length > 10) {
-                            tempmodel.modelData.HTStartTime = tempmodel.modelData.HTStartTime.substring(0, 10);
-                        }
-                        if (tempmodel.modelData.HTEndTime && tempmodel.modelData.HTEndTime.length > 10) {
-                            tempmodel.modelData.HTEndTime = tempmodel.modelData.HTEndTime.substring(0, 10);
-                        }
-                        if (tempmodel.modelData.QYDate && tempmodel.modelData.QYDate.length > 10) {
-                            tempmodel.modelData.QYDate = tempmodel.modelData.QYDate.substring(0, 10);
-                        }
-                        setTimeout("ComFunJS.initForm()", 500)
-                        
-                        $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETALLKH', {}, function (resultData) {
-                            if (resultData.ErrorMsg == "") {
-                                tempmodel.khData = resultData.Result;
-                                tempmodel.kh();
-                            }
-                        })
+                    tempmodel.modelData = resultData.Result;
+                    if (tempmodel.modelData.HTStartTime && tempmodel.modelData.HTStartTime.length > 10) {
+                        tempmodel.modelData.HTStartTime = tempmodel.modelData.HTStartTime.substring(0, 10);
                     }
+                    if (tempmodel.modelData.HTEndTime && tempmodel.modelData.HTEndTime.length > 10) {
+                        tempmodel.modelData.HTEndTime = tempmodel.modelData.HTEndTime.substring(0, 10);
+                    }
+                    if (tempmodel.modelData.QYDate && tempmodel.modelData.QYDate.length > 10) {
+                        tempmodel.modelData.QYDate = tempmodel.modelData.QYDate.substring(0, 10);
+                    }
+                    setTimeout("ComFunJS.initForm()", 500)
+
+                    $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETALLKH', {}, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            tempmodel.khData = resultData.Result;
+                            tempmodel.kh();
+                        }
+                    })
                 })
             } else {
                 $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETALLKH', {}, function (resultData) {
-                    if (resultData.ErrorMsg == "") {
-                        tempmodel.khData = resultData.Result;
-                        if (tempmodel.khid) {
-                            tempmodel.modelData.KHID = tempmodel.khid;
-                        }
-                        tempmodel.kh();
+                    tempmodel.khData = resultData.Result;
+                    if (tempmodel.khid) {
+                        tempmodel.modelData.KHID = tempmodel.khid;
                     }
+                    tempmodel.kh();
                 })
 
                 pmodel.isDraft = true;
@@ -215,7 +205,7 @@
         SaveData: function (callback, btdom) {
             //realvalue
             $.post("/API/VIEWAPI.ashx?ACTION=CRM_ADDHT", { P1: JSON.stringify(tempmodel.modelData.$model) }, function (result) {
-                return callback.call(this, $.parseJSON(result));
+                return callback.call(this, result);
             });
         },
         kh: function () {
@@ -236,12 +226,7 @@
                     eventadd: function (val) {
                         if (val) {
                             $.getJSON('/API/VIEWAPI.ashx?Action=CRM_ADDKHBYNAME', { P1: val }, function (resultData) {
-                                if (resultData.ErrorMsg == "") {
-                                    tabsel.extaddrow(resultData.Result)
-                                }
-                                else {
-                                    ComFunJS.winwarning(resultData.ErrorMsg);
-                                }
+                                tabsel.extaddrow(resultData.Result)
                             })
                         }
                     }

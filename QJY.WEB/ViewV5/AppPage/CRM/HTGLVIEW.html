@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>合同详情</title>
+    <title></title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,13 +40,13 @@
                     <span class="item-tit">附件</span>
                     <div class="fj clearfix mt10">
                         <div class="pull-left" ms-repeat-file="tpData">
-                            <img ms-if="ComFunJS.isPic(file.FileExtendName)" ms-class="img-rounded:ComFunJS.isPic(file.FileExtendName)" ms-on-click="viewfile(file)" ms-attr-src="/ViewV5/Base/DownFile.aspx?fileId={{file.ID}}&width=45&height=45" ms-attr-imgyt="/ViewV5/Base/DownFile.aspx?fileId={{file.ID}}" style="cursor:zoom-in;border-radius:2px" />
+                            <img ms-if="ComFunJS.isPic(file.FileExtendName)" ms-class="img-rounded:ComFunJS.isPic(file.FileExtendName)" ms-on-click="viewfile(file)" ms-attr-src="{{ComFunJS.getfile(file.ID)}}&width=45&height=45" ms-attr-imgyt="{{ComFunJS.getfile(file.ID)}}" style="cursor:zoom-in;border-radius:2px" />
                             <img ms-click="viewfile(file)" style="height:45px;width:45px" ms-if="!ComFunJS.isPic(file.FileExtendName)" ms-attr-src="/ViewV5/images/qywd/{{file.FileExtendName}}.png" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'" />
                             <div class="fj-cont c999 ft12">
                                 <p class="word-break">{{file.Name}}.{{file.FileExtendName}}<span>({{Math.round(file.FileSize/1024)}}kb)</span></p>
                                 <p class="mt5">
                                     <a ms-attr-href="{{file.YLUrl}}" ms-if="file.YLUrl" target="_blank">预览</a>
-                                    <a ms-attr-href="'/ViewV5/Base/DownFile.aspx?MD5='+file.FileMD5">下载</a>
+                                    <a ms-attr-href="{{ComFunJS.getfile(file.ID)}}">下载</a>
                                 </p>
                             </div>
                         </div>
@@ -83,14 +83,14 @@
                                     <!--<p class="c999">{{item.GJZT}}</p>-->
                                     <div class="fj clearfix mt10" ms-if="item.FileList&&item.FileList.size()!=0">
                                         <div class="pull-left" ms-repeat-file="item.FileList">
-                                            <img ms-if="ComFunJS.isPic(file.FileExtendName)" ms-class="img-rounded:ComFunJS.isPic(file.FileExtendName)" ms-on-click="viewfile(file)" ms-attr-src="/ViewV5/Base/DownFile.aspx?fileId={{file.ID}}&width=45&height=45" ms-attr-imgyt="/ViewV5/Base/DownFile.aspx?fileId={{file.ID}}" style="cursor:zoom-in;border-radius:2px" />
+                                            <img ms-if="ComFunJS.isPic(file.FileExtendName)" ms-class="img-rounded:ComFunJS.isPic(file.FileExtendName)" ms-on-click="viewfile(file)" ms-attr-src="{{ComFunJS.getfile(file.ID)}}&width=45&height=45" ms-attr-imgyt="{{ComFunJS.getfile(file.ID)}}"  style="cursor:zoom-in;border-radius:2px" />
 
                                             <img ms-click="viewfile(file)" style="height:45px;width:45px" ms-if="!ComFunJS.isPic(file.FileExtendName)" ms-attr-src="/ViewV5/images/qywd/{{file.FileExtendName}}.png" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'" />
                                             <div class="fj-cont c999 ft12">
                                                 <p class="word-break">{{file.Name}}.{{file.FileExtendName}}<span>({{Math.round(file.FileSize/1024)}}kb)</span></p>
                                                 <p class="mt5">
                                                     <a ms-attr-href="{{file.YLUrl}}" ms-if="file.YLUrl" target="_blank">预览</a>
-                                                    <a ms-attr-href="'/ViewV5/Base/DownFile.aspx?MD5='+file.FileMD5">下载</a>
+                                                    <a ms-attr-href="{{ComFunJS.getfile(file.ID)}}">下载</a>
                                                 </p>
                                             </div>
                                         </div>
@@ -136,11 +136,9 @@
                 if (model.strId) {
                     //编辑加载数据
                     $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETHTLIST', { P1: "all", ID: model.strId }, function (resultData) {
-                        if (resultData.ErrorMsg == "") {
                             model.modelData = resultData.Result[0];
                             model.tpData = resultData.Result[0].FileList;
                             setTimeout(" ComFunJS.initForm()", 500);
-                        }
                     })
                 }
             },

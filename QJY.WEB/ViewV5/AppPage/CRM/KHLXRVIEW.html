@@ -33,11 +33,9 @@
                 if (model.strId) {
                     //编辑加载数据
                     $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETKHLXRLIST', { P1: "all", ID: model.strId }, function (resultData) {
-                        if (resultData.ErrorMsg == "") {
                             model.modelData=resultData.Result[0];
                             model.tpData = resultData.Result[0].FileList;
                             setTimeout(" ComFunJS.initForm()", 500);
-                        }
                     })
                 }
             }

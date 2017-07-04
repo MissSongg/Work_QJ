@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>企捷云</title>
+    <title></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" href="http://at.alicdn.com/t/font_1468812105_88105.css">
@@ -131,7 +131,6 @@
                 tempindex.page.pageindex = 1;
                 tempindex.tmpListData.clear();
                 $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETKHLXRLIST', { p: 1, P1: tempindex.search.seartype, pagecount: tempindex.page.pagecount, Content: tempindex.searchcontent }, function (resultData) {
-                    if (resultData.ErrorMsg == "") {
                         tempindex.tmpListData = resultData.Result;
                         tempindex.page.total = resultData.Result1;
                         if (tempindex.tmpListData.size() == 0) { tempindex.isnull = true; } else { tempindex.isnull = false; }
@@ -143,15 +142,12 @@
                             jump: function (e) { //触发分页后的回调
                                 if (e.curr != tempindex.page.pageindex) {
                                     $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETKHLXRLIST', { p: e.curr, P1: tempindex.search.seartype, pagecount: tempindex.page.pagecount, Content: tempindex.searchcontent }, function (resultData) {
-                                        if (resultData.ErrorMsg == "") {
                                             tempindex.tmpListData = resultData.Result;
-                                        }
                                     })
                                     tempindex.page.pageindex = e.curr;
                                 }
                             }
                         });
-                    }
                 })
             },
             xzel: {},

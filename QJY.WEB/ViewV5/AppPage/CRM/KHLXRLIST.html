@@ -136,13 +136,10 @@
             }
             top.ComFunJS.winconfirm("确认要删除吗", function () {
                 $.post('/API/VIEWAPI.ashx?Action=CRM_DELKHLXR', { "P1": item.ID }, function (result) {
-                    result = JSON.parse(result)
-                    if (result.ErrorMsg == "") {
+                   
                         top.ComFunJS.winsuccess("删除成功");
                         tempindex.tmpListData.remove(item);
-                    } else {
-                        top.ComFunJS.winwarning(result.ErrorMsg);
-                    }
+                  
                 })
             }, function () { })
         },
@@ -150,7 +147,6 @@
             model.page.pageindex = 1;
             tempindex.tmpListData.clear();
             $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETKHLXRLIST', { p: 1, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
-                if (resultData.ErrorMsg == "") {
                     tempindex.tmpListData = resultData.Result;
                     if (tempindex.tmpListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
                     model.page.total = resultData.Result1;
@@ -162,15 +158,12 @@
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
                                 $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETKHLXRLIST', { p: e.curr, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
-                                    if (resultData.ErrorMsg == "") {
                                         tempindex.tmpListData = resultData.Result;
-                                    }
                                 })
                                 model.page.pageindex = e.curr;
                             }
                         }
                     });
-                }
             })
         },
         drKHLXR: function () {

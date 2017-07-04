@@ -143,13 +143,9 @@
             }
             top.ComFunJS.winconfirm("确认要删除客户吗，删除后客户下的联系人、合同、跟进记录都将删除", function () {
                 $.post('/API/VIEWAPI.ashx?Action=CRM_DELKHGL', { "P1": item.ID }, function (result) {
-                    result = JSON.parse(result)
-                    if (result.ErrorMsg == "") {
                         top.ComFunJS.winsuccess("删除成功");
                         tempindex.tmpListData.remove(item);
-                    } else {
-                        top.ComFunJS.winwarning(result.ErrorMsg);
-                    }
+                   
                 })
             }, function () { })
         },
@@ -190,7 +186,6 @@
             model.page.pageindex = 1;
             tempindex.tmpListData.clear();
             $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETKHGLLIST', { p: 1, P1: model.search.seartype, Content: model.search.searchcontent, lb: tempindex.curKHType, P2: tempindex.curKHType1 + "_" + tempindex.curKHType2 + "_" + tempindex.curKHType3 + "_" + tempindex.curKHType4, pagecount: model.page.pagecount }, function (resultData) {
-                if (resultData.ErrorMsg == "") {
                     tempindex.tmpListData = resultData.Result;
                     if (tempindex.tmpListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
                     model.page.total = resultData.Result1;
@@ -202,15 +197,12 @@
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
                                 $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETKHGLLIST', { p: e.curr, P1: model.search.seartype, Content: model.search.searchcontent, lb: tempindex.curKHType, P2: tempindex.curKHType1 + "_" + tempindex.curKHType2 + "_" + tempindex.curKHType3 + "_" + tempindex.curKHType4, pagecount: model.page.pagecount }, function (resultData) {
-                                    if (resultData.ErrorMsg == "") {
                                         tempindex.tmpListData = resultData.Result;
-                                    }
                                 })
                                 model.page.pageindex = e.curr;
                             }
                         }
                     });
-                }
             })
         },
         drKH: function () {

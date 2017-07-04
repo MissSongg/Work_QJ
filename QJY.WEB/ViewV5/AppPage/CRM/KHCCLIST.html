@@ -117,7 +117,6 @@
                 tempindex.page.pageindex = 1;
                 tempindex.ListData.clear();
                 $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETKHGLLIST', { p: 1, P1: 0, Content: tempindex.search.searchcontent, pagecount: tempindex.page.pagecount }, function (resultData) {
-                    if (resultData.ErrorMsg == "") {
                         tempindex.ListData = resultData.Result;
                         if (tempindex.ListData.size() == 0) { tempindex.isnull = true; } else { tempindex.isnull = false; }
                         tempindex.page.total = resultData.Result1;
@@ -129,15 +128,12 @@
                             jump: function (e) { //触发分页后的回调
                                 if (e.curr != tempindex.page.pageindex) {
                                     $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETKHGLLIST', { p: e.curr, P1: 0, Content: tempindex.search.searchcontent, pagecount: tempindex.page.pagecount }, function (resultData) {
-                                        if (resultData.ErrorMsg == "") {
                                             tempindex.ListData = resultData.Result;
-                                        }
                                     })
                                     tempindex.page.pageindex = e.curr;
                                 }
                             }
                         });
-                    }
                 })
             },
             FnFormat: function (str, fmt) { //格式化

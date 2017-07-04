@@ -147,7 +147,6 @@
             }
             tempmodel.SaveData(function (result1) {
                 if ($.trim(result1.ErrorMsg) == "") {
-
                     //如果MODELCODE有流程,开始流程数据
                     $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_STARTWF", { P1: pmodel.FormCode, P2: $("#conshr").val(), PDID: pmodel.PDID, DATAID: result1.Result.ID, LCTYPE: pmodel.lctype }, function (result) {
                         if ($.trim(result.ErrorMsg) == "") {
@@ -170,7 +169,6 @@
                     pmodel.SaveExtData(result1.Result.ID);
                     //删除草稿
                     pmodel.DelDraft();
-                    localStorage.removeItem(pmodel.FormCode);
                 }
                 else {
                     if (pmodel.isPC) {
@@ -187,7 +185,6 @@
         //保存扩展数据
         if (pmodel.ExtData.size() > 0) {
             $.post("/API/VIEWAPI.ashx?ACTION=XTGL_UPDATEEXTDATA", { P1: pmodel.FormCode, P2: DATAID, ExtData: JSON.stringify(pmodel.ExtData.$model) }, function (result) {
-                var result = $.parseJSON(result)
             })
         }
     },

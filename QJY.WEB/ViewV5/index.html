@@ -64,21 +64,21 @@
                                 <table class="table noborder" style="margin-bottom: 0">
                                     <tr>
                                         <td style="border: 0">
-                                            <img class="skintp" style="width: 120px; height: 60px" src="/ViewV5/images/skin/skin1.png" />
+                                            <img class="skintp" style="width: 120px; height: 70px" src="/ViewV5/images/skin/skin1.png" />
                                         </td>
                                         <td style="border: 0">
-                                            <img class="skintp" style="width: 120px; height: 60px" src="/ViewV5/images/skin/skin2.png" />
+                                            <img class="skintp" style="width: 120px; height: 70px" src="/ViewV5/images/skin/skin2.png" />
                                         </td>
                                         <td style="border: 0">
-                                            <img class="skintp" style="width: 120px; height: 60px" src="/ViewV5/images/skin/skin3.png" />
+                                            <img class="skintp" style="width: 120px; height: 70px" src="/ViewV5/images/skin/skin3.png" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="border: 0">
-                                            <img class="skintp" style="width: 120px; height: 60px" src="/ViewV5/images/skin/skin4.png" />
+                                            <img class="skintp" style="width: 120px; height: 70px" src="/ViewV5/images/skin/skin4.png" />
                                         </td>
                                         <td style="border: 0">
-                                            <img class="skintp" style="width: 120px; height: 60px" src="/ViewV5/images/skin/skin5.png" />
+                                            <img class="skintp" style="width: 120px; height: 70px" src="/ViewV5/images/skin/skin5.png" />
                                         </td>
 
                                     </tr>
@@ -425,7 +425,7 @@
             $("#dvskin").bind("click", function (event) {
                 event.stopPropagation();
             })
-            var skinurl = "/ViewV5/images/skin/skin4.png";
+            var skinurl = "/ViewV5/images/skin/skin1.png";
             if (localStorage.getItem("skin")) {
                 skinurl = localStorage.getItem("skin");
             }
@@ -434,6 +434,7 @@
                 localStorage.setItem("skin", $(this).attr("src"));
                 $("body").css("background", "url('" + $(this).attr("src") + "')");
             })
+            $("body").css("background-position", "center center").css("background-size", "cover");
 
             var opacity = "97";
             if (localStorage.getItem("opacity")) {

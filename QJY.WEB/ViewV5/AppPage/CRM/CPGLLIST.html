@@ -131,27 +131,23 @@
             model.page.pageindex = 1;
             tempindex.tmpListData.clear();
             $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETCPLIST', { p: 1, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent, lb: tempindex.curXJType }, function (resultData) {
-                if (resultData.ErrorMsg == "") {
-                    tempindex.tmpListData = resultData.Result;
-                    model.page.total = resultData.Result1;
-                    if (tempindex.tmpListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
-                    laypage({
-                        cont: 'pageDiv', //容器。值支持id名、原生dom对象，jquery对象。
-                        pages: Math.ceil(parseInt(resultData.Result1) * 1.0 / model.page.pagecount), //通过后台拿到的总页数
-                        curr: 1, //初始化当前页
-                        skin: 'molv',
-                        jump: function (e) { //触发分页后的回调
-                            if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETCPLIST', { p: e.curr, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent, lb: tempindex.curXJType }, function (resultData) {
-                                    if (resultData.ErrorMsg == "") {
-                                        tempindex.tmpListData = resultData.Result;
-                                    }
-                                })
-                                model.page.pageindex = e.curr;
-                            }
+                tempindex.tmpListData = resultData.Result;
+                model.page.total = resultData.Result1;
+                if (tempindex.tmpListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
+                laypage({
+                    cont: 'pageDiv', //容器。值支持id名、原生dom对象，jquery对象。
+                    pages: Math.ceil(parseInt(resultData.Result1) * 1.0 / model.page.pagecount), //通过后台拿到的总页数
+                    curr: 1, //初始化当前页
+                    skin: 'molv',
+                    jump: function (e) { //触发分页后的回调
+                        if (e.curr != model.page.pageindex) {
+                            $.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETCPLIST', { p: e.curr, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent, lb: tempindex.curXJType }, function (resultData) {
+                                tempindex.tmpListData = resultData.Result;
+                            })
+                            model.page.pageindex = e.curr;
                         }
-                    });
-                }
+                    }
+                });
             })
         },
         dcCP: function () {
