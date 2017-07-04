@@ -49,7 +49,7 @@ namespace QJY.API
                 strWhere += string.Format(" And pd.RelatedTable='{0}' ", leibie1);
             }
             string strContent = context.Request["Content"] ?? "";
-            strContent = strContent.TrimEnd();//去除空格
+            strContent = strContent.Trim();//去除空格
             if (strContent != "")
             {
                 //strWhere += string.Format(" And ( lc.Content like '%{0}%' )", strContent);
