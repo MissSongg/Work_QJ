@@ -232,11 +232,11 @@ namespace QJY.API
 
 
 
-       
 
 
 
-        
+
+
 
         #region 初始化模块类型数据
         public void INITMODELTYPE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
@@ -640,8 +640,9 @@ namespace QJY.API
                 #endregion
 
                 #region 同步人员
+                JH_Auth_Branch branchModel = new JH_Auth_BranchB().GetEntity(d => d.DeptRoot == -1 && d.ComId == UserInfo.User.ComId);
 
-                Senparc.Weixin.QY.AdvancedAPIs.MailList.GetDepartmentMemberInfoResult yg = wx.WX_GetDepartmentMemberInfo(1);
+                Senparc.Weixin.QY.AdvancedAPIs.MailList.GetDepartmentMemberInfoResult yg = wx.WX_GetDepartmentMemberInfo(branchModel.WXBMCode.Value);
                 List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => d.ComId == UserInfo.User.ComId && d.UserName != "administrator").ToList();
                 foreach (JH_Auth_User user in userList)
                 {
@@ -815,11 +816,12 @@ namespace QJY.API
 
                     }
                 }
-
                 #endregion
 
                 #region 更新人员
-                Senparc.Weixin.QY.AdvancedAPIs.MailList.GetDepartmentMemberInfoResult yg = wx.WX_GetDepartmentMemberInfo(1);
+                JH_Auth_Branch branchModel = new JH_Auth_BranchB().GetEntity(d => d.DeptRoot == -1 && d.ComId == UserInfo.User.ComId);
+
+                Senparc.Weixin.QY.AdvancedAPIs.MailList.GetDepartmentMemberInfoResult yg = wx.WX_GetDepartmentMemberInfo(branchModel.WXBMCode.Value);
                 foreach (var u in yg.userlist)
                 {
                     var user = new JH_Auth_UserB().GetUserByUserName(UserInfo.QYinfo.ComId, u.userid);
@@ -1004,21 +1006,12 @@ namespace QJY.API
         {
             try
             {
-                #region 更新二维码logo
-                //new AuthManage().GETAUTHINFO(context, msg, P1, P2, UserInfo);
-                //GetAuthInfoResult gair = msg.Result;
-                //JH_Auth_QY jaq = new JH_Auth_QYB().GetEntity(p => p.ComId == UserInfo.QYinfo.ComId);
-                //if (gair != null && gair.auth_corp_info != null && gair.auth_corp_info.corpid != null)
-                //{
-                //    jaq.corpId = gair.auth_corp_info.corpid;
-                //    jaq.wxqrcode = gair.auth_corp_info.corp_wxqrcode;
-                //    new JH_Auth_QYB().Update(jaq);
-                //    msg.Result = jaq;
-                //}
-                #endregion
+
+                JH_Auth_Branch branchModel = new JH_Auth_BranchB().GetEntity(d => d.DeptRoot == -1 && d.ComId == UserInfo.User.ComId);
+
                 #region 同步用户关注状态
                 WXHelp wx = new WXHelp(UserInfo.QYinfo);
-                GetDepartmentMemberInfoResult yg = wx.WX_GetDepartmentMemberInfo(1);
+                GetDepartmentMemberInfoResult yg = wx.WX_GetDepartmentMemberInfo(branchModel.WXBMCode.Value);
 
                 if (yg != null && yg.userlist != null)
                 {
@@ -1119,7 +1112,7 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void GETWXAPP(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            msg.Result = new JH_Auth_ModelB().GetEntities(d => !string.IsNullOrEmpty(d.WXUrl)).OrderBy(d=>d.ORDERID);
+            msg.Result = new JH_Auth_ModelB().GetEntities(d => !string.IsNullOrEmpty(d.WXUrl)).OrderBy(d => d.ORDERID);
         }
 
 
@@ -1137,7 +1130,7 @@ namespace QJY.API
             var model = new JH_Auth_ModelB().GetEntity(p => p.ID == id);
             msg.Result1 = model;//系统应用数据
 
- 
+
             #region 获取应用默认菜单
             DataTable dt = new JH_Auth_CommonB().GetDTByCommand(" select * from JH_Auth_Common where ModelCode='" + model.ModelCode + "' and TopID='0' and type='1' order by Sort");
             dt.Columns.Add("Item", Type.GetType("System.Object"));
