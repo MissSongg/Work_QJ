@@ -53,7 +53,9 @@ namespace QJY.API
             if (strContent != "")
             {
                 //strWhere += string.Format(" And ( lc.Content like '%{0}%' )", strContent);
-                strWhere += string.Format(" And ( pd.ProcessName like '%{0}%' )", strContent);
+                strWhere += string.Format(" And ( pd.ProcessName like '%{0}%' or EXISTS( select * from JH_Auth_ExtendMode T1 join JH_Auth_ExtendData T2 on T1.ID = T2.ExtendModeID where T1.TableName = 'LCSP' and T1.PDID = pd.ID and T2.DataID = lc.ID and T2.ExtendDataValue like '%{1}%' ))", strContent, strContent);
+
+                //strWhere += " or ()";
             }
             int DataID = -1;
             int.TryParse(context.Request["ID"] ?? "-1", out DataID);//记录Id
