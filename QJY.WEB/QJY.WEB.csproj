@@ -388,8 +388,6 @@
     <Content Include="ViewV5\CSS\weixin\index.css" />
     <Content Include="ViewV5\CSS\weixin\index.html" />
     <Content Include="ViewV5\CSS\weixin\index1.html" />
-    <Content Include="ViewV5\dy.html" />
-    <Content Include="ViewV5\dyjs.js" />
     <Content Include="ViewV5\images\head.jpg" />
     <Content Include="ViewV5\images\icon-1.png" />
     <Content Include="ViewV5\images\icon-2.png" />
