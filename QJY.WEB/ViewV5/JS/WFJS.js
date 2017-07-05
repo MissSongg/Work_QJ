@@ -79,7 +79,7 @@
             });
         });
 
-        
+
 
         //获取草稿
         pmodel.GetDraftData();
@@ -231,7 +231,7 @@
         if (el.JsonData) {
             if (pmodel.FormCode == "JFBX") {
                 tempmodel.SetDraftData(JSON.parse(el.JsonData));
-            }else if (pmodel.FormCode == "QYHD") {
+            } else if (pmodel.FormCode == "QYHD") {
                 tempmodel.SetDraftData(JSON.parse(el.JsonData));
             } else {
                 tempmodel.modelData = JSON.parse(el.JsonData);
@@ -255,10 +255,8 @@
             ID = pmodel.DraftData.ID;
         }
         $.getJSON("/API/VIEWAPI.ashx?ACTION=XTGL_DELDRAFT", { P1: ID }, function (r) {
-            if (r.ErrorMsg == "") {
-                if (el) {
-                    pmodel.DraftList.remove(el);
-                }
+            if (el) {
+                pmodel.DraftList.remove(el);
             }
 
         })
@@ -360,7 +358,7 @@
                 setTimeout("top.model.refpage()", 1000)
             }
             setTimeout("parent.layer.closeAll()", 1000)
-   
+
         } else {
 
             if (ComFunJS.getQueryString("mpid")) {
@@ -392,17 +390,21 @@
         })
     },
     transferform: function () {//转审
-        if ($("#conshr1").val()) {
-            $.post("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF", { P1: pmodel.PIID, P2: pmodel.spReason, SHUser: $("#conshr1").val(), ID: pmodel.DataID, formcode: pmodel.FormCode }, function (result) {
-                if ($.trim(result.ErrorMsg) == "") {
-                    top.ComFunJS.winsuccess("转审成功");
-                    pmodel.refiframe();
-                }
-            });
-        } else {
+        if (pmodel.nowuser == $("#conshr1").val()) {
+            top.ComFunJS.winwarning("您不能转审给自己哦");
+            return;
+        }
+        if (!$("#conshr1").val()) {
             top.ComFunJS.winwarning("请选择审核人");
             $("table").show();
+            return;
         }
+        $.post("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF", { P1: pmodel.PIID, P2: pmodel.spReason, SHUser: $("#conshr1").val(), ID: pmodel.DataID, formcode: pmodel.FormCode }, function (result) {
+            top.ComFunJS.winsuccess("转审成功");
+            pmodel.refiframe();
+        });
+
+
     },
     qx: function () {
         parent.layer.closeAll();

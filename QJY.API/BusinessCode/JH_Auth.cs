@@ -362,7 +362,7 @@ namespace QJY.API
                     msg.ErrorMsg = "添加部门失败";
                     return;
                 }
-           
+
                 if (UserInfo.QYinfo.IsUseWX == "Y")
                 {
                     WXHelp bm = new WXHelp(UserInfo.QYinfo);
@@ -659,7 +659,7 @@ namespace QJY.API
 
 
 
-  
+
 
     //角色表
     public class JH_Auth_RoleB : BaseEFDao<JH_Auth_Role>
@@ -1250,8 +1250,8 @@ namespace QJY.API
                 {
                     ENDTASK(MODEL.ID, strUser, strYJView);
                     ListNextUser = AddNextTask(MODEL, strShUser);
-                    //循环找下一个审核人是否包含本人，如果包含则审核通过
-                    if (ListNextUser.Contains(strUser))
+                    //循环找下一个审核人是否包含本人，如果包含则审核通过,排除自由流程
+                    if (ListNextUser.Contains(strUser) && MODEL.TDCODE != "-1")
                     {
                         ListNextUser.Clear();
                         return MANAGEWF(strUser, PIID, strYJView, ref ListNextUser, strShUser);
@@ -1515,7 +1515,7 @@ namespace QJY.API
             return dtResult;
         }
 
-     
+
 
     }
     public class JH_Auth_QY_WXSCB : BaseEFDao<JH_Auth_QY_WXSC>
