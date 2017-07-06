@@ -232,6 +232,7 @@
           <Property Name="FunOrder" Type="int" />
           <Property Name="PageCode" Type="varchar" MaxLength="500" />
           <Property Name="ExtData" Type="varchar" MaxLength="50" />
+          <Property Name="isiframe" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="JH_Auth_GUANZHU">
           <Key>
@@ -1416,7 +1417,6 @@
           <EntitySet Name="JH_Auth_Common" EntityType="QJY_SaaSModel.JH_Auth_Common" />
           <EntitySet Name="JH_Auth_ExtendData" EntityType="QJY_SaaSModel.JH_Auth_ExtendData" />
           <EntitySet Name="JH_Auth_ExtendMode" EntityType="QJY_SaaSModel.JH_Auth_ExtendMode" />
-          <EntitySet Name="JH_Auth_Function" EntityType="QJY_SaaSModel.JH_Auth_Function" />
           <EntitySet Name="JH_Auth_GUANZHU" EntityType="QJY_SaaSModel.JH_Auth_GUANZHU" />
           <EntitySet Name="JH_Auth_Log" EntityType="QJY_SaaSModel.JH_Auth_Log" />
           <EntitySet Name="JH_Auth_Model" EntityType="QJY_SaaSModel.JH_Auth_Model" />
@@ -1471,6 +1471,7 @@
           <EntitySet Name="Yan_WF_TI" EntityType="QJY_SaaSModel.Yan_WF_TI" />
           <EntitySet Name="SZHL_DBGL" EntityType="QJY_SaaSModel.SZHL_DBGL" />
           <EntitySet Name="Yan_WF_PD" EntityType="QJY_SaaSModel.Yan_WF_PD" />
+          <EntitySet Name="JH_Auth_Function" EntityType="QJY_SaaSModel.JH_Auth_Function" />
         </EntityContainer>
         <EntityType Name="FT_File">
           <Key>
@@ -1681,24 +1682,6 @@
           <Property Name="PDID" Type="Int32" />
           <Property Name="CRUser" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
           <Property Name="CRDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="JH_Auth_Function">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ComId" Type="Int32" />
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ModelID" Type="Int32" />
-          <Property Name="PageName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="PageUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="CRUser" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="CRDate" Type="DateTime" Precision="3" />
-          <Property Name="ActionData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="IsInit" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="FunOrder" Type="Int32" />
-          <Property Name="PageCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="ExtData" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="JH_Auth_GUANZHU">
           <Key>
@@ -2797,6 +2780,25 @@
           <Property Name="ManageUser" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ManageRole" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="JH_Auth_Function">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModelID" Type="Int32" />
+          <Property Name="PageName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PageUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="ActionData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsInit" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FunOrder" Type="Int32" />
+          <Property Name="PageCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ExtData" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isiframe" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3020,25 +3022,6 @@
                 <ScalarProperty Name="TableFiledName" ColumnName="TableFiledName" />
                 <ScalarProperty Name="TableFiledColumn" ColumnName="TableFiledColumn" />
                 <ScalarProperty Name="TableName" ColumnName="TableName" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ComId" ColumnName="ComId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="JH_Auth_Function">
-            <EntityTypeMapping TypeName="QJY_SaaSModel.JH_Auth_Function">
-              <MappingFragment StoreEntitySet="JH_Auth_Function">
-                <ScalarProperty Name="ExtData" ColumnName="ExtData" />
-                <ScalarProperty Name="PageCode" ColumnName="PageCode" />
-                <ScalarProperty Name="FunOrder" ColumnName="FunOrder" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="IsInit" ColumnName="IsInit" />
-                <ScalarProperty Name="ActionData" ColumnName="ActionData" />
-                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
-                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
-                <ScalarProperty Name="PageUrl" ColumnName="PageUrl" />
-                <ScalarProperty Name="PageName" ColumnName="PageName" />
-                <ScalarProperty Name="ModelID" ColumnName="ModelID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ComId" ColumnName="ComId" />
               </MappingFragment>
@@ -4190,6 +4173,26 @@
                 <ScalarProperty Name="Alias" ColumnName="Alias" />
                 <ScalarProperty Name="RelatedTable" ColumnName="RelatedTable" />
                 <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JH_Auth_Function">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.JH_Auth_Function">
+              <MappingFragment StoreEntitySet="JH_Auth_Function">
+                <ScalarProperty Name="isiframe" ColumnName="isiframe" />
+                <ScalarProperty Name="ExtData" ColumnName="ExtData" />
+                <ScalarProperty Name="PageCode" ColumnName="PageCode" />
+                <ScalarProperty Name="FunOrder" ColumnName="FunOrder" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="IsInit" ColumnName="IsInit" />
+                <ScalarProperty Name="ActionData" ColumnName="ActionData" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="PageUrl" ColumnName="PageUrl" />
+                <ScalarProperty Name="PageName" ColumnName="PageName" />
+                <ScalarProperty Name="ModelID" ColumnName="ModelID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ComId" ColumnName="ComId" />
               </MappingFragment>

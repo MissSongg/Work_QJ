@@ -715,7 +715,7 @@ namespace QJY.API
 
         public DataTable GetModelFun(int ComId, string RoleCode, string strModeID)
         {
-            DataTable dt = new JH_Auth_UserRoleB().GetDTByCommand("SELECT  DISTINCT JH_Auth_Function.ID, JH_Auth_Function.ModelID,JH_Auth_Function.PageName,JH_Auth_Function.ExtData,JH_Auth_Function.PageUrl,JH_Auth_Function.FunOrder,JH_Auth_Function.PageCode FROM JH_Auth_RoleFun INNER JOIN JH_Auth_Function ON JH_Auth_RoleFun.FunCode=JH_Auth_Function.ID WHERE RoleCode IN (" + RoleCode + ")  AND ModelID='" + strModeID + "' AND  JH_Auth_RoleFun.ComId=" + ComId + " and (JH_Auth_Function.ComId=" + ComId + " or JH_Auth_Function.ComId=0)  order by JH_Auth_Function.FunOrder");
+            DataTable dt = new JH_Auth_UserRoleB().GetDTByCommand("SELECT  DISTINCT JH_Auth_Function.ID, JH_Auth_Function.ModelID,JH_Auth_Function.PageName,JH_Auth_Function.ExtData,JH_Auth_Function.PageUrl,JH_Auth_Function.FunOrder,JH_Auth_Function.PageCode,JH_Auth_Function.isiframe FROM JH_Auth_RoleFun INNER JOIN JH_Auth_Function ON JH_Auth_RoleFun.FunCode=JH_Auth_Function.ID WHERE RoleCode IN (" + RoleCode + ")  AND ModelID='" + strModeID + "' AND  JH_Auth_RoleFun.ComId=" + ComId + " and (JH_Auth_Function.ComId=" + ComId + " or JH_Auth_Function.ComId=0)  order by JH_Auth_Function.FunOrder");
             return dt;
         }
 

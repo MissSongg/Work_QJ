@@ -20,7 +20,7 @@
     <script src="/ViewV5/JS/layer/extend/layer.ext.js"></script>
     <script src="/ViewV5/JS/laypage/laypage.js"></script>
     <script src="/ViewV5/JS/toastr.js"></script>
-    <!--<script src="/ViewV5/JS/avalon1.47.js"></script>-->
+    <script src="/ViewV5/JS/avalon1.47.js"></script>
     <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160915"></script>
     <script>
         $(document).on("click", ".icheckbox_square-blue", function () {
@@ -29,7 +29,6 @@
         var processId = top.model.SelModel.PDID;
         if (!processId || processId == -1) {
             processId = ComFunJS.getQueryString("PDID");
-            if (processId) { document.write("<script src='/ViewV5/JS/avalon1.47.js'><\/script>"); }
         }
     </script>
 </head>
@@ -107,8 +106,8 @@
                     tempindex.modelData.TableName = "LCSP";
                 }
                 else{
-                    if (model.SelModel) {
-                        tempindex.modelData.TableName = model.SelModel.ModelCode;
+                    if (top.model.SelModel) {
+                        tempindex.modelData.TableName = top.model.SelModel.ModelCode;
                     }
                 }
 

@@ -252,7 +252,6 @@
     <Content Include="ViewV5\AppPage\LCSP\APP_LCSP_SEL.html" />
     <Content Include="ViewV5\AppPage\LCSP\APP_WF_LCSZ.html" />
     <Content Include="ViewV5\AppPage\LCSP\ExtendSet.html" />
-    <Content Include="ViewV5\AppPage\LCSP\LCSP.html" />
     <Content Include="ViewV5\AppPage\LCSP\LCSPLIST.html" />
     <Content Include="ViewV5\AppPage\LCSP\LCSPTJ.html" />
     <Content Include="ViewV5\AppPage\LCSP\LCSPTJLIST.html" />

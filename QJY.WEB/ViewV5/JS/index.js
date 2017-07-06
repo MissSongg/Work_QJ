@@ -7,6 +7,7 @@
     UserInfo: {},//用户缓存数据
     CompanyData: {},//企业信息
     isshowload: true,
+    isiframe: "N",
     XXCount: 0,//消息数量
     QYGGData: [],//企业公告
     YYData: [],
@@ -50,7 +51,7 @@
             model.selmenulev2(model.FunData[0]);
             $('body,html').animate({ scrollTop: 0 }, '500');
         }
-      
+
     },//选中最左侧事件
     SelModelXX: function () {
         model.FunData.clear();
@@ -80,51 +81,62 @@
         model.ishasLeft = false;
         model.selmenulev2(model.FunData[0]);
     },
-    selmenulev2: function (item,dom) {
-        var nowTime = new Date().getTime();
-        var clickTime = $("body").data("me2time");
-        if (clickTime != 'undefined' && (nowTime - clickTime < 1000) && dom) {
-            console.debug('操作过于频繁，稍后再试');
-            return false;
+    selmenulev2: function (item, dom) {
+        model.isiframe = item.isiframe;
+        if (model.isiframe == 'Y') {
+            $("#main").attr("src", item.PageCode + ".html").css("min-height", (window.innerHeight - 150) + 'px');
         } else {
-            $("body").data("me2time", nowTime);
-            model.isnull = false;
-            model.initobj = null;//先清空数据
-            model.PageCode = "/ViewV5/Base/Loading";
-            gomenu = function () {
-                model.PageCode = item.PageCode;
-                if (localStorage.getItem(model.PageCode + "pagecount")) {
-                    model.page.pagecount = localStorage.getItem(model.PageCode + "pagecount");
-                } else {
-                    model.page.pagecount = 10;
-                }
-                model.initobj = item.ExtData;
-                model.page.pageindex = 1;
-                model.page.total = 0;
-                model.ShowColumns = [];
-                model.TypeData = [];
-                model.ListData = [];
-                model.search.seartype = '1';
-                model.search.searchcontent = '';
+            var nowTime = new Date().getTime();
+            var clickTime = $("body").data("me2time");
+            if (clickTime != 'undefined' && (nowTime - clickTime < 1000) && dom) {
+                console.debug('操作过于频繁，稍后再试');
+                return false;
+            } else {
+                $("body").data("me2time", nowTime);
+                model.isnull = false;
+                model.initobj = null;//先清空数据
+                model.PageCode = "/ViewV5/Base/Loading";
+                gomenu = function () {
+                    model.PageCode = item.PageCode;
+                    if (localStorage.getItem(model.PageCode + "pagecount")) {
+                        model.page.pagecount = localStorage.getItem(model.PageCode + "pagecount");
+                    } else {
+                        model.page.pagecount = 10;
+                    }
+                    model.initobj = item.ExtData;
+                    model.page.pageindex = 1;
+                    model.page.total = 0;
+                    model.ShowColumns = [];
+                    model.TypeData = [];
+                    model.ListData = [];
+                    model.search.seartype = '1';
+                    model.search.searchcontent = '';
 
-                //清除日历样式
-                $(".datetimepicker").remove()
+                    //清除日历样式
+                    $(".datetimepicker").remove()
+                }
+                setTimeout("gomenu()", 500)
             }
-            setTimeout("gomenu()", 1000)
         }
+
     },
     //选中二级菜单事件
     refpage: function (pagecode) {
-        if (pagecode) {
-            for (var i = 0; i < model.FunData.length; i++) {
-                if (model.FunData[i].PageCode.indexOf(pagecode) > -1) {
-                    model.selmenulev2(model.FunData[i]);
-                    return;
-                }
-            }
+        if (model.isiframe=='Y') {
+            $('#main').attr('src', $('#main').attr('src'));
         } else {
-            model.refpage(model.PageCode)
+            if (pagecode) {
+                for (var i = 0; i < model.FunData.length; i++) {
+                    if (model.FunData[i].PageCode.indexOf(pagecode) > -1) {
+                        model.selmenulev2(model.FunData[i]);
+                        return;
+                    }
+                }
+            } else {
+                model.refpage(model.PageCode)
+            }
         }
+      
 
     },//刷新页面
     initwork: function () {
@@ -149,7 +161,7 @@
             top.ComFunJS.winsuccess("操作成功");
         }
     },//设置当前模块到控制台
-    PageCode: "",//需要加载的模板
+    PageCode: "/ViewV5/Base/Loading",//需要加载的模板
     rdm: ComFunJS.getnowdate('yyyy-mm-dd'),//随机数
     Temprender: function () {
         if (typeof (tempindex) != "undefined" && model.PageCode != "/ViewV5/Base/Loading") {

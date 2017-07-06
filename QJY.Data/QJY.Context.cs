@@ -37,7 +37,6 @@ namespace QJY.Data
         public virtual DbSet<JH_Auth_Common> JH_Auth_Common { get; set; }
         public virtual DbSet<JH_Auth_ExtendData> JH_Auth_ExtendData { get; set; }
         public virtual DbSet<JH_Auth_ExtendMode> JH_Auth_ExtendMode { get; set; }
-        public virtual DbSet<JH_Auth_Function> JH_Auth_Function { get; set; }
         public virtual DbSet<JH_Auth_GUANZHU> JH_Auth_GUANZHU { get; set; }
         public virtual DbSet<JH_Auth_Log> JH_Auth_Log { get; set; }
         public virtual DbSet<JH_Auth_Model> JH_Auth_Model { get; set; }
@@ -92,5 +91,6 @@ namespace QJY.Data
         public virtual DbSet<Yan_WF_TI> Yan_WF_TI { get; set; }
         public virtual DbSet<SZHL_DBGL> SZHL_DBGL { get; set; }
         public virtual DbSet<Yan_WF_PD> Yan_WF_PD { get; set; }
+        public virtual DbSet<JH_Auth_Function> JH_Auth_Function { get; set; }
     }
 }

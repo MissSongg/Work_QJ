@@ -27,5 +27,6 @@ namespace QJY.Data
         public Nullable<int> FunOrder { get; set; }
         public string PageCode { get; set; }
         public string ExtData { get; set; }
+        public string isiframe { get; set; }
     }
 }

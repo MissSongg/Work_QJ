@@ -85,7 +85,7 @@
                                 </table>
 
 
-                                <div class="form-group" style="margin-top:15px">
+                                <div class="form-group" style="margin-top: 15px">
                                     <label class="col-xs-3 control-label">透明度</label>
                                     <input type="hidden" class="single-slider" value="0" />
                                 </div>
@@ -181,14 +181,18 @@
                                 <li ms-repeat-el="model.FunData" ms-class-1="active:el.PageName==model.FunData[0].PageName" ms-click="selmenulev2(el,this)" ms-visible="el.isshow"><a>{{el.PageName}}</a><i ms-if="el.PageName=='微信企业号'" style="position: absolute; right: -19px; top: -10px;">
                                     <img src="/ViewV5/images/tuijian.gif" /></i></li>
                             </ul>
-                            <ins style="position: absolute; right: 55px; text-decoration: none; cursor: pointer; color: #666; font-size: 18px;" class="iconfont icon-shezhi tip" ms-click="setwork('')" ms-if="!ishasLeft" data-toggle="tooltip" title="添加到工作台" data-placement="bottom"></ins>
+                            <ins style="position: absolute; right: 55px; text-decoration: none; cursor: pointer; color: #666; font-size: 18px;" class="iconfont icon-shezhi tip" ms-click="setwork('')" ms-if="!ishasLeft&&isiframe!='Y'" data-toggle="tooltip" title="添加到工作台" data-placement="bottom"></ins>
                             <ins style="position: absolute; right: 25px; text-decoration: none; cursor: pointer; color: #666; font-size: 22px;" class="iconfont icon-shuaxin tip" ms-click="refpage('')" ms-if="!ishasLeft" data-toggle="tooltip" title="刷新" data-placement="bottom"></ins>
                             <ins class="iconfont icon-shezhi tblue tip" data-toggle="modal" data-target="#DragSort" ms-if="ishasLeft" data-toggle="tooltip" title="设置工作台"></ins>
 
 
                         </div>
                         <!-- 下边内容 -->
-                        <div ms-visible="isshowload" class="main-content ft16 mt10 pt20 c666 box-shadow clearfix" ms-include-src="PageCode+'.html?r='+model.rdm" data-include-rendered='Temprender'>
+                        <div ms-visible="isshowload&&isiframe!='Y'" class="main-content ft16 mt10 pt20 c666 box-shadow clearfix" ms-include-src="PageCode+'.html?r='+model.rdm" data-include-rendered='Temprender'>
+                       
+                        </div>
+                        <div class="iframecontent ft16 mt10 c666 box-shadow clearfix" ms-if="isiframe=='Y'">
+                            <iframe marginwidth="0" class="tabiframe" marginheight="0" frameborder="0" scrolling="no" height="100%" id="main" name="main" width="100%" style="min-height:500px" ></iframe>
                         </div>
                         <div class="index-right" ms-if="ishasLeft">
                             <!-- 考勤 -->
