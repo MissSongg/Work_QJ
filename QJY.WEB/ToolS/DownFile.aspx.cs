@@ -108,7 +108,8 @@ namespace QJY.WEB
                         }
                         if (type == "TX" && !string.IsNullOrEmpty(userName))//获取用户头像
                         {
-                            JH_Auth_User userinfo = UserInfo.User;
+                            var userinfo = new JH_Auth_UserB().GetEntity(p => p.UserName == userName); //抓取当前用户信息
+                            //JH_Auth_User userinfo = UserInfo.User;
                             if (userinfo != null)
                             {
                                 string filename = "";
