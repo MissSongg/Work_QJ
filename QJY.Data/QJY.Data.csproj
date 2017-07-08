@@ -171,6 +171,21 @@
     <Compile Include="SZHL_CCXJ.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
+    <Compile Include="SZHL_CRM_CONTACT.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_CRM_CPGL.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_CRM_GJJL.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_CRM_HTGL.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_CRM_KHGL.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
     <Compile Include="SZHL_DBGL.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
@@ -193,6 +208,18 @@
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
     <Compile Include="SZHL_GZGL_WXYJ.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_HYGL.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_HYGL_QD.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_HYGL_QR.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_HYGL_ROOM.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
     <Compile Include="SZHL_JFBX.cs">
@@ -250,6 +277,12 @@
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
     <Compile Include="SZHL_XZ_JL.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_YCGL.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_YCGL_CAR.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
     <Compile Include="Yan_WF_ChiTask.cs">

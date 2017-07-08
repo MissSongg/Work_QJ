@@ -78,25 +78,7 @@
                             <div style="clear:both"></div>
                         </div>
                         <div class="card-content" ms-visible="el.isfold">
-                            <!--<div class="card-content-inner list-cont-inner">
-                                <span style="color:gray">报告时间：</span> {{el.RBDate|date("yyyy年MM月dd日")}}
-                            </div>
-                            <div class="card-content-inner list-cont-inner" >
-                                <span style="color:gray">工作内容：</span>
-                                <span class="break-word">{{el.RBContent|html}}</span>
-                            </div>
-                            <div class="card-content-inner list-cont-inner" ms-if="el.RBWCQK">
-                                <span style="color:gray">完成情况：</span>
-                                <span class="break-word">{{el.RBWCQK|html}}</span>
-                            </div>
-                            <div class="card-content-inner" style="padding-top: 0; padding-bottom: 0.1rem;" ms-if="el.Files">
-                                <ul class="filelist">
-                                    <li ms-repeat-file="el.FileList">
-                                        <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="/ToolS/DownFile.aspx?fileId={{file.ID}}" />
-                                        <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}</span>
-                                    </li>
-                                </ul>
-                            </div>-->
+                           
                             <div class="card-item">
                                 <span class="c999 title-item">报告时间：</span>
                                 <span>{{el.RBDate|date("yyyy年MM月dd日")}}</span>
@@ -115,26 +97,7 @@
                                     <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}</span>
                                 </li>
                             </ul>
-                            <!--<div class="list-block media-list">
-                                <ul>
-                                    <li ms-repeat-pl="el.PLList">
-                                        <div class="item-content">
-                                            <div class="item-media" style="display:block">
-                                                <img ms-src="/ToolS/DownFile.aspx?type=TX&user={{pl.CRUser}}" style="border-radius: 3px;width:34px;height:30px" onerror="javascript: this.src = '/Upload/TX/def.jpg'">
-                                                <span style="display: block; font-size: .6rem; text-align: center; color:gray">{{pl.CRUserName}}</span>
-                                            </div>
-                                            <div class="item-inner" style=" padding-top: .4rem;">
 
-                                                <div class="item-subtitle" style="color: #5f646e; font-size: .7rem; white-space: normal;">{{ComFunJS.bqhContent(pl.MSGContent)|html}}</div>
-                                                <div class="item-title-row" style="font-size: .6rem; margin-top: 5px;">
-                                                    <div class="item-title" style="color:gray">{{$.timeago(pl.CRDate)}}</div><span></span>
-                                                    <div class="item-after pfdv">{{pf(pl.Points)|html}}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>-->
                             <div ms-visible="el.PLList.size()>0">
                                 <div class="lookright-box">
                                     <div class="menu-general">
@@ -208,11 +171,7 @@
                     <div class="preloader"></div>
                 </div>
             </div>
-            <!--<span class="animated fadeInUp" ms-if="DataID=='-1'" ms-click="addGZBG()" id="plus_btn" style="z-index:99998;opacity:.9"><img src="../images/plus_icon.png"></span>
-            <span class="animated fadeIn" ms-if="DataID=='-1'" ms-click="changefold()" id="plus_list" style="z-index:99998;opacity:.9"><img ms-attr-src="'../images/'+(isfold?'rwglss':'rwglzk')+'.png'"></span>
-            <span class="animated fadeIn" ms-if="DataID!='-1'" ms-click="viewall()" id="plus_list" style="z-index:99998;opacity:.9"><img src="/View_Mobile/Images/rwglss.png"></span>
-            <span class="animated fadeInUp" ms-if="DataID=='-1'" ms-click="addGZBG()" id="plus_list" style="z-index:99998;opacity:.9"><img src="../images/plus-serch.png"></span>-->
-            <div class="right-panel">
+                     <div class="right-panel">
                 <ul>
                     <li ms-if="DataID=='-1'">
 

@@ -227,6 +227,7 @@
     <Content Include="ViewV5\AppPage\CRM\KHLXRLIST.html" />
     <Content Include="ViewV5\AppPage\CRM\KHLXRVIEW.html" />
     <Content Include="ViewV5\AppPage\CRM\XZLXRLIST.html" />
+    <Content Include="ViewV5\AppPage\CRM\ZDCRMLIST.html" />
     <Content Include="ViewV5\AppPage\DBGL\DBGLLIST.html" />
     <Content Include="ViewV5\AppPage\DXGL\DXGL.html" />
     <Content Include="ViewV5\AppPage\DXGL\DXGLLIST.html" />
@@ -1282,6 +1283,33 @@
     <Content Include="View_Mobile\UI\BASE\APP_MOBILE_APPLIST.html" />
     <Content Include="View_Mobile\UI\BASE\APP_MOBIL_WF.html" />
     <Content Include="View_Mobile\UI\BASE\APP_VIEW.html" />
+    <Content Include="View_Mobile\UI\CRM\css\base.css" />
+    <Content Include="View_Mobile\UI\CRM\css\default.css" />
+    <Content Include="View_Mobile\UI\CRM\css\reset.css" />
+    <Content Include="View_Mobile\UI\CRM\images\bg-account.jpg" />
+    <Content Include="View_Mobile\UI\CRM\images\bg.png" />
+    <Content Include="View_Mobile\UI\CRM\images\c-cp.png" />
+    <Content Include="View_Mobile\UI\CRM\images\c-ht.png" />
+    <Content Include="View_Mobile\UI\CRM\images\c-kh.png" />
+    <Content Include="View_Mobile\UI\CRM\images\c-lxr.png" />
+    <Content Include="View_Mobile\UI\CRM\images\c-sj.png" />
+    <Content Include="View_Mobile\UI\CRM\images\pic-cp.png" />
+    <Content Include="View_Mobile\UI\CRM\images\pic-ht.png" />
+    <Content Include="View_Mobile\UI\CRM\images\pic-kh.png" />
+    <Content Include="View_Mobile\UI\CRM\images\pic-lxr.png" />
+    <Content Include="View_Mobile\UI\CRM\images\pic-pmp.png" />
+    <Content Include="View_Mobile\UI\CRM\images\pic-sj.png" />
+    <Content Include="View_Mobile\UI\CRM\images\plus_icon.png" />
+    <Content Include="View_Mobile\UI\CRM\images\tx.jpg" />
+    <Content Include="View_Mobile\UI\CRM\index.html" />
+    <Content Include="View_Mobile\UI\CRM\js\jquery.js" />
+    <Content Include="View_Mobile\UI\CRM\js\TouchSlide.1.1.js" />
+    <Content Include="View_Mobile\UI\CRM\UI_CPGL_LIST.html" />
+    <Content Include="View_Mobile\UI\CRM\UI_GJJL_LIST.html" />
+    <Content Include="View_Mobile\UI\CRM\UI_HTGL_LIST.html" />
+    <Content Include="View_Mobile\UI\CRM\UI_KHGL_LIST.html" />
+    <Content Include="View_Mobile\UI\CRM\UI_KHLXR_LIST.html" />
+    <Content Include="View_Mobile\UI\CRM\UI_KHMP_LIST.html" />
     <Content Include="View_Mobile\UI\KQQD.html" />
     <Content Include="View_Mobile\UI\RLZY\css\base.css" />
     <Content Include="View_Mobile\UI\RLZY\css\default.css" />
@@ -1307,11 +1335,16 @@
     <Content Include="View_Mobile\UI\RLZY\list.html" />
     <Content Include="View_Mobile\UI\TEMP\Loading.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MCCXJ.html" />
+    <Content Include="View_Mobile\UI\TEMP\MODEL\MCPGL.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MDXGL.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MGJJL.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MGZBG.html" />
+    <Content Include="View_Mobile\UI\TEMP\MODEL\MHTGJ.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MHTGL.html" />
+    <Content Include="View_Mobile\UI\TEMP\MODEL\MHYGL.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MJFBX.html" />
+    <Content Include="View_Mobile\UI\TEMP\MODEL\MKHGL.html" />
+    <Content Include="View_Mobile\UI\TEMP\MODEL\MKHLXR.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MKQQD.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MLCSP.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MQYHD.html" />
@@ -1320,6 +1353,7 @@
     <Content Include="View_Mobile\UI\TEMP\MODEL\MTXSX.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MWQQD.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MXMGL.html" />
+    <Content Include="View_Mobile\UI\TEMP\MODEL\MYCGL.html" />
     <Content Include="View_Mobile\UI\TEMP\TEMP_INDEX_KH.html" />
     <Content Include="View_Mobile\UI\TEMP\TEMP_INDEX_MSG.html" />
     <Content Include="View_Mobile\UI\TEMP\TEMP_INDEX_TXL.html" />
@@ -1449,6 +1483,9 @@
     <Content Include="View_Mobile\JS\raty\fonts\raty.woff" />
     <Content Include="ViewV5\JS\chosen\bower.json" />
     <Content Include="ViewV5\JS\chosen\package.json" />
+    <Content Include="ViewV5\AppPage\CRM\CRM_合同_导入模板.xls" />
+    <Content Include="ViewV5\AppPage\CRM\CRM_客户_导入模板.xls" />
+    <Content Include="ViewV5\AppPage\CRM\CRM_客户联系人_导入模板.xls" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

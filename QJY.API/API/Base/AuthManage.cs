@@ -1847,7 +1847,7 @@ namespace QJY.API
         public void GETFUNCTION(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
 
-            string strSql = string.Format("select JH_Auth_Model.* from JH_Auth_QY_Model INNER JOIN JH_Auth_Model on JH_Auth_QY_Model.ModelID=JH_Auth_Model.ID  WHERE JH_Auth_QY_Model.ComId={0} and JH_Auth_QY_Model.Status=1 ORDER by ModelType", UserInfo.User.ComId);
+            string strSql = string.Format("select JH_Auth_Model.* from JH_Auth_QY_Model INNER JOIN JH_Auth_Model on JH_Auth_QY_Model.ModelID=JH_Auth_Model.ID  WHERE JH_Auth_QY_Model.ComId={0} and JH_Auth_QY_Model.Status=1 and JH_Auth_Model.PModelCode<>'' ORDER by ModelType", UserInfo.User.ComId);
             DataTable dt = new JH_Auth_ModelB().GetDTByCommand(strSql);
             dt.Columns.Add("FunData", Type.GetType("System.Object"));
             DataTable dtRoleFun = new JH_Auth_RoleFunB().GetDTByCommand(@"SELECT DISTINCT fun.*,rolefun.ActionCode RoleFun,rolefun.FunCode 

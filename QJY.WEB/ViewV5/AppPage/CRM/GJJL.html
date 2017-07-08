@@ -89,8 +89,8 @@
         modelData: { "KHID": "", "Status": "", "Date": "", "Details": "", "Type": "", "IsTX": "N", "TXDate": "", "Remark": "", "CYUser": "", "Files": "" },
         SaveData: function (callback) {
             $.post("/API/VIEWAPI.ashx?ACTION=CRM_ADDGJJL", { P1: JSON.stringify(tempmodel.modelData.$model), gjtype: "KHGL" }, function (result) {
-                return callback.call(result);
+                return callback.call(this, result);
             });
         }
-    });
+    });//@ sourceURL=GJJL.js;
 </script>

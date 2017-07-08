@@ -44,23 +44,15 @@ namespace QJY.API
 
             #endregion
 
-
             #region 流程审批
             container.RegisterType<IWsService, LCSPManage>("LCSP".ToUpper());//
 
 
             #endregion
 
-          
-
-
             #region JSAPI
             container.RegisterType<IWsService, JSAPI>("JSSDK".ToUpper());
             #endregion
-
-
-            
-
             
             #region 短信管理
             container.RegisterType<IWsService, DXGLManage>("DXGL".ToUpper());//删除短信 
@@ -79,11 +71,6 @@ namespace QJY.API
             container.RegisterType<IWsService, GZBGManage>("GZBG");
 
             #endregion
-
-
-
-
-
 
 
             #region 文档管理
@@ -111,6 +98,10 @@ namespace QJY.API
 
             container.RegisterType<IWsService, XZGLManage>("XZGL".ToUpper());//薪资管理
             container.RegisterType<IWsService, DBGLManage>("DBGL".ToUpper());//数据库管理
+
+
+
+            container.RegisterType<IWsService, CRMManage>("CRM".ToUpper());//数据库管理
 
 
 

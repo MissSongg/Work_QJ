@@ -92,5 +92,16 @@ namespace QJY.Data
         public virtual DbSet<SZHL_DBGL> SZHL_DBGL { get; set; }
         public virtual DbSet<Yan_WF_PD> Yan_WF_PD { get; set; }
         public virtual DbSet<JH_Auth_Function> JH_Auth_Function { get; set; }
+        public virtual DbSet<SZHL_CRM_CONTACT> SZHL_CRM_CONTACT { get; set; }
+        public virtual DbSet<SZHL_CRM_CPGL> SZHL_CRM_CPGL { get; set; }
+        public virtual DbSet<SZHL_CRM_GJJL> SZHL_CRM_GJJL { get; set; }
+        public virtual DbSet<SZHL_CRM_HTGL> SZHL_CRM_HTGL { get; set; }
+        public virtual DbSet<SZHL_CRM_KHGL> SZHL_CRM_KHGL { get; set; }
+        public virtual DbSet<SZHL_HYGL> SZHL_HYGL { get; set; }
+        public virtual DbSet<SZHL_HYGL_QD> SZHL_HYGL_QD { get; set; }
+        public virtual DbSet<SZHL_HYGL_QR> SZHL_HYGL_QR { get; set; }
+        public virtual DbSet<SZHL_HYGL_ROOM> SZHL_HYGL_ROOM { get; set; }
+        public virtual DbSet<SZHL_YCGL> SZHL_YCGL { get; set; }
+        public virtual DbSet<SZHL_YCGL_CAR> SZHL_YCGL_CAR { get; set; }
     }
 }

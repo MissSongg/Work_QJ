@@ -295,9 +295,7 @@ namespace QJY.API
     #endregion
 
 
-
-
-    #region 业务模块
+    #region 综合办公
 
     public class JH_Auth_TLB : BaseEFDao<JH_Auth_TL>
     {
@@ -317,7 +315,7 @@ namespace QJY.API
             return dtList;
         }
     }
-    #endregion
+   
     public class SZHL_XXFBTypeB : BaseEFDao<SZHL_XXFBType>
     {
     }
@@ -422,7 +420,46 @@ namespace QJY.API
 
     public class SZHL_TSSQB : BaseEFDao<SZHL_TSSQ>
     { }
-    
-   
 
+
+    public class SZHL_HYGLB : BaseEFDao<SZHL_HYGL>
+    {
+    }
+    public class SZHL_HYGL_ROOMB : BaseEFDao<SZHL_HYGL_ROOM>
+    {
+    }
+    public class SZHL_HYGL_QRB : BaseEFDao<SZHL_HYGL_QR>
+    {
+    }
+    public class SZHL_HYGL_QDB : BaseEFDao<SZHL_HYGL_QD>
+    {
+    }
+
+    public class SZHL_YCGLB : BaseEFDao<SZHL_YCGL>
+    {
+    }
+    public class SZHL_YCGL_CARB : BaseEFDao<SZHL_YCGL_CAR>
+    {
+    }
+    #endregion
+
+    #region CRM
+    public class SZHL_CRM_KHGLB : BaseEFDao<SZHL_CRM_KHGL>
+    {
+    }
+    public class SZHL_CRM_CONTACTB : BaseEFDao<SZHL_CRM_CONTACT>
+    {
+    }
+    public class SZHL_CRM_HTGLB : BaseEFDao<SZHL_CRM_HTGL>
+    {
+    }
+ 
+    public class SZHL_CRM_CPGLB : BaseEFDao<SZHL_CRM_CPGL>
+    {
+    }
+    public class SZHL_CRM_GJJLB : BaseEFDao<SZHL_CRM_GJJL>
+    {
+    }
+
+    #endregion
 }

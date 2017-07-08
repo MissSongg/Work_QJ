@@ -1007,7 +1007,7 @@ namespace QJY.API
                 }
                 return "";
             }
-            catch
+            catch (Exception ex)
             {
                 return "导出失败！";
             }

@@ -470,7 +470,7 @@
         }
     },
     ReSetShow: function (el) { //控制扩展字段展示
-        if (el) {
+        if (el && model.SelModel) {
             if (model.SelModel.ModelCode != 'LCSP' && el.type != "link") {
                 el.IsSel = !el.IsSel;
                 localStorage.setItem(model.SelModel.ModelCode + "ShowColumns", JSON.stringify(model.ShowColumns));

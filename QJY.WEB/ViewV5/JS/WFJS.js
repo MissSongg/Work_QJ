@@ -466,8 +466,8 @@
     },
     init: function () {
         if (pmodel.FormCode.indexOf("_") > 0) {
-            pmodel.FormCode = pmodel.FormCode.split('_')[1];
             pmodel.PathCode = pmodel.FormCode.split('_')[0] + '/' + pmodel.FormCode.split('_')[1];
+            pmodel.FormCode = pmodel.FormCode.split('_')[1];
         } else {
             pmodel.PathCode = pmodel.FormCode + '/' + pmodel.FormCode;
         }

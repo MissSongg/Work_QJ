@@ -108,10 +108,13 @@
     <Compile Include="API\Base\BaseManage.cs" />
     <Compile Include="API\Base\INITManage.cs" />
     <Compile Include="API\CCXJ\CCXJManage.cs" />
+    <Compile Include="API\CRM\CRMManage.cs" />
     <Compile Include="API\DBGL\DBGLManage.cs" />
     <Compile Include="API\DDGL\DDGLManage.cs" />
     <Compile Include="API\DXGL\DXGLManage.cs" />
     <Compile Include="API\GZBG\GZBGManage.cs" />
+    <Compile Include="API\HYGL\HYGLManage.cs" />
+    <Compile Include="API\YCGL\YCGLManage.cs" />
     <Compile Include="BusinessCode\BLL.cs" />
     <Compile Include="BusinessCode\JH_Auth.cs" />
     <Compile Include="CommonCode\CatheHelp.cs" />
