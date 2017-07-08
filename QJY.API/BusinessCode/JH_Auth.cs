@@ -365,8 +365,14 @@ namespace QJY.API
 
                 if (UserInfo.QYinfo.IsUseWX == "Y")
                 {
+                 
                     WXHelp bm = new WXHelp(UserInfo.QYinfo);
-                    bm.WX_CreateBranch(branch);
+                    int branid = bm.WX_CreateBranch(branch);
+                    branch.WXBMCode = branid;
+                    new JH_Auth_BranchB().Update(branch);
+
+
+
                 }
                 msg.Result = branch;
             }

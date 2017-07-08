@@ -261,6 +261,7 @@
     <Content Include="ViewV5\AppPage\LCSP\LCSZSelect.html" />
     <Content Include="ViewV5\AppPage\LCSP\PDSZ.html" />
     <Content Include="ViewV5\AppPage\LCSP\PROCESS.html" />
+    <Content Include="ViewV5\AppPage\Loading.html" />
     <Content Include="ViewV5\AppPage\QYWD\FolderSel.html" />
     <Content Include="ViewV5\AppPage\QYWD\QYSC.html" />
     <Content Include="ViewV5\AppPage\QYWD\QYWDGX.html" />

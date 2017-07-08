@@ -202,10 +202,6 @@
             Edit: function (ID) {
                 var str = model.FormCode;
                 if (tempindex.PCode) { str = tempindex.PCode + "_" + str; }
-                //top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=" + str + "&id=" + model.strId + "&PIID=" + model.PIID + "&PDID=" + model.PDID, model.title, "1000");
-                //var index = top.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                //top.layer.close(index);
-
                 window.location.href = "/ViewV5/AppPage/APP_ADD_WF.html?FormCode=" + str + "&id=" + model.strId + "&PIID=" + model.PIID + "&PDID=" + model.PDID;
             },
             CancelWF: function () {//撤回表单到草稿箱

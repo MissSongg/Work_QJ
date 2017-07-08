@@ -1,7 +1,7 @@
 ﻿var pmodel = avalon.define({
     $id: "APP_ADD",
     nowuser: ComFunJS.getnowuser(),//当前用户
-    PathCode: "",
+    PathCode: "Loading",
     FormCode: ComFunJS.getQueryString("FormCode"),
     DataID: ComFunJS.getQueryString("ID", ""),//数据ID
     PIID: ComFunJS.getQueryString("PIID"),//流程ID
@@ -20,69 +20,57 @@
     pmtitle: "表单",//手机端标题
     rdm: Math.random(),
     render: function () {
-
         if (!pmodel.isPC) {
             $("table").hide();
         }
-
-        if (tempmodel) {
+        if (typeof (tempmodel) != "undefined" && tempmodel) {
             if (pmodel.DataID) {
                 tempmodel.inittemp(pmodel.DataID);
             } else {
-                //pmodel.isHasDataQX = "Y";
                 tempmodel.inittemp();
             }
             if (pmodel.isPC && parent.layer) {//调整标题
                 var index = parent.layer.getFrameIndex(window.name)
                 parent.layer.title(tempmodel.name, index)
-                if ($("#btnOtherInfo").length > 0) {
-                    $("#btnOtherInfo").html("展开"); $('#OtherInfo').hide();//控制详细信息是否隐藏显示
-                    $("#btnOtherInfo").click(function () {
-                        $('#OtherInfo').toggle();
-                        this.innerHTML = (this.innerHTML == '收起' ? '展开' : '收起');
-                    });
-                }
             } else {
                 pmodel.pmtitle = tempmodel.name;
                 document.title = tempmodel.name;
                 $("table").show();
             }
-        }
-        avalon.templateCache = null;
-        pmodel.getwfdata(function () {
-            if (pmodel.lctype == 0) {//不是自定义流程审批获取审核人用FormCode,否则用pmodel.PIID或者pmodel.PDID
-                pmodel.getSHUser();//如果有流程,则获取审核人
-            }
+            avalon.templateCache = null;
+            pmodel.getwfdata(function () {
+                if (pmodel.lctype == 0) {//不是自定义流程审批获取审核人用FormCode,否则用pmodel.PIID或者pmodel.PDID
+                    pmodel.getSHUser();//如果有流程,则获取审核人
+                }
 
-            //获取扩展数据
-            $.getJSON("/API/VIEWAPI.ashx?ACTION=XTGL_GETEXTDATA", { P1: pmodel.FormCode, P2: pmodel.DataID, PDID: pmodel.PDID }, function (result) {
-                if (result.ErrorMsg == "") {
-                    if (!pmodel.DataID) {
-                        $(result.Result).each(function (inx, itm) {
-                            itm.ExtendDataValue = itm.DefaultValue;
-                        })
-                    }
-                    pmodel.ExtData = result.Result;
-
-                    if (pmodel.ExtData.size() > 0) {
-                        if ($(".extdiv").length > 1) {
-                            $(".extdiv").each(function () {
-                                if ($(this).width() == 0) {
-                                    $(this).remove();
-                                }
+                //获取扩展数据
+                $.getJSON("/API/VIEWAPI.ashx?ACTION=XTGL_GETEXTDATA", { P1: pmodel.FormCode, P2: pmodel.DataID, PDID: pmodel.PDID }, function (result) {
+                    if (result.ErrorMsg == "") {
+                        if (!pmodel.DataID) {
+                            $(result.Result).each(function (inx, itm) {
+                                itm.ExtendDataValue = itm.DefaultValue;
                             })
                         }
-                        $(".extdiv").append($("#extdiv"));
+                        pmodel.ExtData = result.Result;
+
+                        if (pmodel.ExtData.size() > 0) {
+                            if ($(".extdiv").length > 1) {
+                                $(".extdiv").each(function () {
+                                    if ($(this).width() == 0) {
+                                        $(this).remove();
+                                    }
+                                })
+                            }
+                            $(".extdiv").append($("#extdiv"));
+                        }
+                        setTimeout("ComFunJS.initForm()", 500)
                     }
-                    setTimeout("ComFunJS.initForm()", 500)
-                }
+                });
             });
-        });
+            //获取草稿
+            pmodel.GetDraftData();
+        }
 
-
-
-        //获取草稿
-        pmodel.GetDraftData();
 
     },
     getwfdata: function (callback) {
@@ -220,7 +208,6 @@
         $.getJSON("/API/VIEWAPI.ashx?ACTION=XTGL_GETDRAFT", { P1: pmodel.FormCode, P2: pmodel.PDID }, function (r) {
             if (r.ErrorMsg == "") {
                 pmodel.DraftList = r.Result;
-                console.debug(r.Result)
             }
 
         })
@@ -476,16 +463,20 @@
             zt = '已退回';
         }
         return zt;
+    },
+    init: function () {
+        if (pmodel.FormCode.indexOf("_") > 0) {
+            pmodel.FormCode = pmodel.FormCode.split('_')[1];
+            pmodel.PathCode = pmodel.FormCode.split('_')[0] + '/' + pmodel.FormCode.split('_')[1];
+        } else {
+            pmodel.PathCode = pmodel.FormCode + '/' + pmodel.FormCode;
+        }
     }
 })
 
 avalon.ready(function () {
-    if (pmodel.FormCode.indexOf("_") > 0) {
-        pmodel.PathCode = pmodel.FormCode.split('_')[0];
-        pmodel.FormCode = pmodel.FormCode.split('_')[1];
-    } else {
-        pmodel.PathCode = pmodel.FormCode;
-    }
+    setTimeout("pmodel.init()",500)
+  
 })
 
 //微信预览图片

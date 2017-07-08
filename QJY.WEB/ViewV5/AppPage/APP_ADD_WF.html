@@ -8,7 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>APP添加页面</title>
+    <title></title>
     <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
     <link href="/ViewV5/CSS/BootOver.css" rel="stylesheet" />
@@ -269,7 +269,7 @@
 </head>
 <body ms-controller="APP_ADD" ms-keypress="jptj(event,$(this))">
     <div class="container-fluid" style="margin-top: 20px; margin-bottom: 150px">
-        <div ms-include-src="/ViewV5/AppPage/{{PathCode}}/{{FormCode}}.html" data-include-rendered='render'></div>
+        <div ms-include-src="/ViewV5/AppPage/{{PathCode}}.html" data-include-rendered='render'></div>
         <div ms-if="ExtData.size()>0" id="extdiv">
             <div>
                 <!--<div class="fg-item"><span>{{FormCode=='LCSP'?'表单信息':'扩展信息'}}</span></div>-->

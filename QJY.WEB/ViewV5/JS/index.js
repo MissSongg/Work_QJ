@@ -447,7 +447,7 @@
     pageNum: [{ "num": 10 }, { "num": 20 }, { "num": 30 }, { "num": 50 }, { "num": 100 }],
     GetExtColumns: function (str) {  //获取扩展字段
 
-        if (model.SelModel.ModelCode && model.rdm == str) {
+        if (model.SelModel&& model.rdm == str) {
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETEXTENDFIELD', { P1: model.SelModel.ModelCode }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     $(resultData.Result).each(function (idx, itm) {
