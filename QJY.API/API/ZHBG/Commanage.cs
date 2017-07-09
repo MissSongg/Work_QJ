@@ -156,13 +156,58 @@ namespace QJY.API
                 string user = context.Request["ID"] ?? "";
             }
         }
-      
+
         public void CHECKREGISTERPHONE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             var qy2 = new JH_Auth_QYB().GetEntities(p => p.Mobile == P1.Trim());
             if (qy2.Count() > 0)
             {
                 msg.ErrorMsg = "此手机已注册企业，请更换手机号继续注册";
+            }
+        }
+
+
+
+        public void REGISTERYS(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+
+            string strXM = P2;
+            string strPhone = P1;
+            JH_Auth_User user1 = new JH_Auth_UserB().GetUserByUserName(10334, P1);
+            if (user1 != null)
+            {
+                msg.ErrorMsg = "用户已存在";
+                return;
+            }
+            JH_Auth_User user = new JH_Auth_User();
+            user.UserName = strPhone;
+            user.mobphone = strPhone;
+            user.UserRealName = P2;
+            user.UserPass = CommonHelp.GetMD5("abc123");
+            user.ComId = 10334;
+            user.BranchCode = 1728;
+            user.CRDate = DateTime.Now;
+            user.CRUser = "administrator";
+            user.logindate = DateTime.Now;
+            user.IsUse = "Y";
+            if (!new JH_Auth_UserB().Insert(user))
+            {
+                msg.ErrorMsg = "添加用户失败";
+            }
+            else
+            {
+
+                JH_Auth_QY QY = new JH_Auth_QYB().GetEntity(d => d.ComId == 10334);
+                WXHelp wx = new WXHelp(QY);
+                wx.WX_CreateUser(user);
+
+                //添加默认员工角色
+                JH_Auth_UserRole Model = new JH_Auth_UserRole();
+                Model.UserName = user.UserName;
+                Model.RoleCode = 1219;
+                Model.ComId = user.ComId;
+                new JH_Auth_UserRoleB().Insert(Model);
+
             }
         }
         /// <summary>

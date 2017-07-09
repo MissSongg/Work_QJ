@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 /* CSS Document */
 body, ul, dl, dd, dt, ol, li, p, h1, h2, h3, h4, h5, h6, textarea, form, select, fieldset, table, td, div, input {margin:0;padding:0;-webkit-text-size-adjust: none}
 h1, h2, h3, h4, h5, h6{font-size:36px;}
@@ -24,7 +24,7 @@ a {outline-style:none;color:#535353;text-decoration:none}
 
 .page2{ background-color:#F0F0F0; padding-top:10%; margin-top:10%; padding-bottom:5%;}
 
-.page3{ padding:10% 0;}
+.page3{ padding:10% 0;} 
 .sec_tab { width:80%; margin:0 auto; overflow:hidden; margin-top:5%;}
 .sec_tab li{ width:25%; float:left; font-size:12px;}
 .sec_tab li span{ width:90%; border:1px solid #E9E9E9; display:inline-block; padding:5px 0; color:#CBCBCB; border-radius:100px;}
@@ -55,7 +55,7 @@ a {outline-style:none;color:#535353;text-decoration:none}
 .input_focus .tips{color: #b3bbcc;display: block;left: 117px;}
 .J_form_button{ width:80%; color:#fff; background:#dd6600; border-radius:10px; display:block; line-height:30px; font-size:18px; margin:0 auto;margin-top:5%; border:none;}
 
-.ts{font-size:12px; width:90%; border:1px dashed #E7E7E7; margin:0 auto; background:#fff; color:#999; line-height:18px; margin-top:5%}
+.ts{font-size:12px;  border:1px dashed #E7E7E7; margin:0 auto; background:#fff; color:#999; line-height:18px; margin-top:5%}
 .ts span{ padding:5px 10px; display:block}
 
 

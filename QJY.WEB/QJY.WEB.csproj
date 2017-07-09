@@ -112,6 +112,7 @@
     <Content Include="Global.asax" />
     <Content Include="API\VIEWAPI.ashx" />
     <Content Include="API\WXAPI.ashx" />
+    <Content Include="ViewV5\images\qrcode.png" />
     <Content Include="WZWeb\CSS\bootstrap.css" />
     <Content Include="WZWeb\CSS\dialog.css" />
     <Content Include="WZWeb\CSS\font-awesome.min.css" />
@@ -128,6 +129,7 @@
     <Content Include="WZWeb\images\qq-icon-bg.png" />
     <Content Include="WZWeb\images\qq.png" />
     <Content Include="WZWeb\images\qrcode.jpg" />
+    <Content Include="WZWeb\images\qrcode.png" />
     <Content Include="WZWeb\images\slider-arrow.png" />
     <Content Include="WZWeb\images\top_bg_pro.jpg" />
     <Content Include="WZWeb\images\totop-icon.png" />
@@ -135,6 +137,7 @@
     <Content Include="WZWeb\images\version_dot_alt.png" />
     <Content Include="WZWeb\images\version_line.png" />
     <Content Include="WZWeb\images\weixing-icon.png" />
+    <Content Include="WZWeb\images\zhuce.png" />
     <Content Include="WZWeb\images\zs_2.png" />
     <Content Include="WZWeb\images\zs_3.png" />
     <Content Include="WZWeb\images\zs_4.png" />
@@ -148,6 +151,7 @@
     <Content Include="WZWeb\mob\images\index.png" />
     <Content Include="WZWeb\mob\images\index1.png" />
     <Content Include="WZWeb\mob\images\page3.png" />
+    <Content Include="WZWeb\mob\images\qrcode.png" />
     <Content Include="WZWeb\mob\images\yd1.png" />
     <Content Include="WZWeb\mob\images\yd10.png" />
     <Content Include="WZWeb\mob\images\yd11.png" />

@@ -13,10 +13,10 @@
 <body>
     <div style="max-width: 600px; margin: 0 auto">
         <div class="page0 page" style="position: relative">
-          
-             
-              
-           <img src="images/index1.png" width="100%">
+
+
+
+            <img src="images/index1.png" width="100%">
         </div>
         <div class="page1 page" style="margin-top: 10%">
             <p class="bt_cont" style="margin-bottom: 3%">更多应用，按需随意组合</p>
@@ -134,10 +134,10 @@
                 </div>
             </div>
         </div>
-        <div style="background-color: #f0f0f0; padding-bottom: 60px;">
+        <div style="padding-bottom: 60px;">
 
-            <div class="ts"><span><b style="color: #f77e32">提示：</b>根据提示注册即可</span></div>
-            <div class="main_content">
+            <div class="ts"><span><b style="color: #f77e32">提示：</b>注册成功并扫码关注后即可进入演示企业号（需要使用绑定微信的手机号才能注册哦）</span></div>
+            <div class="main_content"  id="divzc">
                 <div class=""></div>
                 <form>
                     <div class="form_content">
@@ -163,15 +163,19 @@
                     </div>
                 </form>
             </div>
+            <div class="main_content" id="divsu" style="text-align:center;display:none">
+                <img src="images/qrcode.png" alt="Alternate Text" />
+                <p  style="color:cornflowerblue">注册成功,长按扫描关注企业号<br/>PC端登陆地址:qj.qijiekeji.com<br/>登陆账号:<span id="dluser"></span> 默认登陆密码abc123</p>
+            </div>
+
         </div>
         <div style="text-align: center; font-size: 12px; background: #333; color: #ccc; padding: 10px 0;">
             企捷科技<br />
-            <a href="../../index.html" style="color: #ccc">www.qijiekeji.com</a>
+            <a href="www.qijiekeji.com" style="color: #ccc">www.qijiekeji.com</a>
         </div>
     </div>
     <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
     <script src="/ViewV5/JS/jquery.md5.js"></script>
-    <script src="/ViewV5/JS/SZHLCommon.js"></script>
     <script type="text/javascript">
         $(".sec_tab li span").each(function (i) {
             $(this).click(function () {
@@ -187,21 +191,13 @@
             if ($(".input_focus").length + $(".input_error").length > 0) {
                 return false;
             }
-
-            var inputData = { "QYName": $("#company").val(), "UserPass": $("#password").val(), "mobphone": $("#Phone").val(), "QYCode": $("#qyym").val(), "xm": $("#xm").val() };
-            $.post("/API/VIEWAPI.ashx?Action=Commanage_REGISTERNEW&r=" + Math.random(), { "P1": JSON.stringify(inputData), ID: ComFunJS.getQueryString("ID") }, function (data) {
-                var data = $.parseJSON(data);
-                if (data.ErrorMsg == "") {
-                    $("#lblCompany").text(inputData.QYName);
-                    //$("#lblQYYM").text(inputData.QYCode + ".qijieyun.com");
-                    //$("#lblQYYM").attr("href", "http://" + inputData.QYCode + ".qijieyun.com/web/login.html?type=admin");
-                    $("#loginbtn").attr("href", "http://www.qijieyun.com/web/login.html");
-                    $("#lblMobile").text(inputData.mobphone);
-                    $(".main_content").eq(0).hide();
-                    $(".main_content").eq(1).show();
-                }
-                else {
-
+            $.post("/API/VIEWAPI.ashx?Action=Commanage_REGISTERYS&r=" + Math.random(), { "P1": $("#Phone").val(), P2: $("#xm").val(), ID:"" }, function (data) {
+                if ($.parseJSON(data).ErrorMsg == "") {
+                    $("#dluser").text($("#Phone").val())
+                    $("#divzc").hide();
+                    $("#divsu").show();
+                } else {
+                    alert($.parseJSON(data).ErrorMsg)
                 }
             })
 
