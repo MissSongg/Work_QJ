@@ -167,12 +167,6 @@ namespace QJY.API
         public void ADDLCSP(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             SZHL_LCSP lcsp = JsonConvert.DeserializeObject<SZHL_LCSP>(P1);
-            //if (lcsp.Content.Trim() == "")
-            //{
-            //    msg.ErrorMsg = "内容不能为空";
-            //    return;
-            //}
-
             if (P2 != "") // 处理微信上传的图片
             {
                 string fids = CommonHelp.ProcessWxIMG(P2, "LCSP", UserInfo);
@@ -844,7 +838,7 @@ namespace QJY.API
                         content = UserInfo.User.UserRealName + "审批完成了您发起的" + PD.ProcessName + "表单";
                         strTXUser = PI.CRUser;
                         funName = "LCSP_CHECKB";
-                        //发送消息给传送人 
+                        //发送消息给抄送人 
                         if (!string.IsNullOrEmpty(PD.ChaoSongUser))
                         {
                             SZHL_TXSX CSTX = new SZHL_TXSX();
