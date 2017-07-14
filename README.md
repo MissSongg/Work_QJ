@@ -1,5 +1,5 @@
     一. 源码描述 企捷微信企业号协同办公平台（以下简称为本系统）是基于微信企业号而建立的协同办公平台。
-        演示地址 www.qijiekeji.com 演示账户:administror,密码123456 
+        演示地址 www.qijiekeji.com 演示账户:administraor,密码123456 
     二. 平台特点
         1. 系统采用纯HTML+Ashx开发，好处就不用多说了，终于可以摆脱控件那一大堆要命的东西了
         2. 不管是微信端还是PC端，前端采用现在流行的MVC框架(avalon,这个类似大名鼎鼎的angularjs)和Jquery配合开发，简直不能更酸爽了
