@@ -172,6 +172,7 @@
     <Content Include="WZWeb\mob\js\jquery-1.11.1.min.js" />
     <Content Include="WZWeb\mob\js\jquery.touchSwipe.min.js" />
     <Content Include="WZWeb\mob\success.html" />
+    <None Include="Properties\PublishProfiles\FB.pubxml" />
     <None Include="Properties\PublishProfiles\QJSignle.pubxml" />
     <None Include="Properties\PublishProfiles\QJ_UserS.pubxml" />
     <None Include="Properties\Settings.settings">
