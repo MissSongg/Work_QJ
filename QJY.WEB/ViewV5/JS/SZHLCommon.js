@@ -1278,6 +1278,7 @@ $(function () {
                 }
                 if (data.ErrorMsg) {
                     top.ComFunJS.winwarning(data.ErrorMsg)
+                    return;
                 }
                 fn.success(data, textStatus);
             },
@@ -1311,6 +1312,7 @@ $(function () {
                 }
                 if (data.ErrorMsg) {
                     top.ComFunJS.winwarning(data.ErrorMsg)
+                    return;
                 }
                 fn.success(data, textStatus);
             },
