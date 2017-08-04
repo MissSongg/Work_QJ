@@ -113,6 +113,7 @@
     <Content Include="API\VIEWAPI.ashx" />
     <Content Include="API\WXAPI.ashx" />
     <Content Include="ViewV5\images\qrcode.png" />
+    <Content Include="View_Mobile\JS\avalon1.47.js" />
     <Content Include="WZWeb\CSS\bootstrap.css" />
     <Content Include="WZWeb\CSS\dialog.css" />
     <Content Include="WZWeb\CSS\font-awesome.min.css" />

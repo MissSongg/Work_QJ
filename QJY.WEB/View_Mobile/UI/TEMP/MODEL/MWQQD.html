@@ -214,74 +214,7 @@
         infoWindow.open(map, new AMap.LngLat(lngX, latY));
     }
 
-    //var map = new BMap.Map("map");
-    //var circle = new BMap.Geolocation();
-    //var tempGeocoder = new BMap.Geocoder();
-
-    //function locationResult(geolocationResult) {
-    //    var Status = this.getStatus()
-    //    if (Status == 0)//检索成功。对应数值“0”。
-    //    {
-    //        map.clearOverlays();//清空原来的标注
-    //        tempmodel.modelData.Longitude = geolocationResult.point.lng;
-    //        tempmodel.modelData.Latitude = geolocationResult.point.lat;
-
-    //        var gpsPoint = new BMap.Point(geolocationResult.point.lng, geolocationResult.point.lat);
-
-    //        map.centerAndZoom(geolocationResult.point, 15);
-    //        var marker = new BMap.Marker(gpsPoint);  // 创建标注，为要查询的地址对应的经纬度
-    //        map.addOverlay(marker);
-
-    //        map.addControl(new BMap.NavigationControl());
-
-    //        var address = '';
-    //        address += geolocationResult.address.province;
-    //        if (geolocationResult.address.province != geolocationResult.address.city) {
-    //            address += geolocationResult.address.city;
-    //        }
-    //        address += geolocationResult.address.district;
-    //        address += geolocationResult.address.street;
-    //        address += geolocationResult.address.street_number;
-
-    //        tempmodel.modelData.Position = address;
-    //        tempmodel.Position = address;
-    //        //tempGeocoder.getLocation(geolocationResult.point, locationResultcallback, { poiRadius: 500, numPois: 5 }); //
-
-
-    //        var convertor = new BMap.Convertor();
-    //        var pointArr = [];
-    //        pointArr.push(gpsPoint);
-    //        convertor.translate(pointArr, 1, 5, translateCallback);
-
-    //        $(".load").toggleClass("szhlloading");
-    //    }
-    //    else {
-    //        tempmodel.Position = "定位失败,请重试！";
-    //        $(".load").toggleClass("szhlloading");
-    //    }
-    //}
-    //function translateCallback(data) {
-    //    var marker = new BMap.Marker(data.points[0]);  // 创建标注，为要查询的地址对应的经纬度
-    //    map.addOverlay(marker);
-    //}
-    //function locationResultcallback(GeocoderResult) {
-
-    //    var yyy = GeocoderResult.surroundingPois;
-    //    if (GeocoderResult.surroundingPois.length > 0) {
-    //        var address2 = GeocoderResult.surroundingPois[0].title;
-    //        if (address2) {
-    //            tempmodel.modelData.Position = address2;
-    //            tempmodel.Position = address2;
-    //        }
-    //        else {
-    //            tempmodel.Position = "定位失败,请重试！";
-    //        }
-    //    }
-    //    else {
-    //        tempmodel.Position = "定位失败,请重试！";
-    //    }
-    //    $(".load").toggleClass("szhlloading");
-    //}
+   
 
     var tempmodel = avalon.define({
         $id: "MWQQD",

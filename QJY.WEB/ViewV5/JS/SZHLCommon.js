@@ -581,7 +581,7 @@
     },//确认框
     winviewform: function (url, title, width, height, callbact) {
         var width = width || $("body").width() * 2 / 3;
-        var height = height || $(window).height() - 40; //$("body").height();
+        var height = height || $(window).height() - 140; //$("body").height();
         var optionwin = {
             type: 2,
             fix: true, //不固定
