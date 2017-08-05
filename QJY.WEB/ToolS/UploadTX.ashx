@@ -1,1 +1,1 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="UploadTX.ashx.cs" Class="UploadTX" %>
+﻿<%@ WebHandler Language="C#" CodeBehind="UploadTX.ashx.cs" Class="QJY.WEB.UploadTX" %>

@@ -11,10 +11,12 @@ using QJY.Data;
 using QJY.API;
 using System.Net;
 
-
+namespace QJY.WEB
+{
     /// <summary>
     /// UploadFiles 的摘要说明
     /// </summary>
+
     public class UploadTX : IHttpHandler, IRequiresSessionState
     {
 
@@ -114,7 +116,7 @@ using System.Net;
             }
 
         }
-        public void SaveTXFile(HttpContext cxt, HttpPostedFile file,string fileName, ref string  fileid)
+        public void SaveTXFile(HttpContext cxt, HttpPostedFile file, string fileName, ref string fileid)
         {
             if (cxt.Request.Cookies["szhlcode"] != null && cxt.Request.Cookies["szhlcode"].ToString() != "")
             {
@@ -140,7 +142,7 @@ using System.Net;
                 new JH_Auth_UserB().Update(usermodel.User);
             }
         }
-        public string SaveFile(string uploadUrl, HttpPostedFile file,string fileName)
+        public string SaveFile(string uploadUrl, HttpPostedFile file, string fileName)
         {
             try
             {
@@ -276,3 +278,4 @@ using System.Net;
         }
     }
 
+}
