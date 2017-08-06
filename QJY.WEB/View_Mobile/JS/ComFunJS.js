@@ -821,22 +821,37 @@ var ComFunJS = {
                 wx.chooseImage({
                     success: function (res) {
                         $(res.localIds).each(function (index) {
+                            if (window.__wxjs_is_wkwebview) {
+                                wx.getLocalImgData({
+                                    localId: res.localIds[index],
+                                    success: function (resimg) {
+                                        var serverId = res.localIds[index]; // 返回图片的服务器端ID
+                                        var localData = resimg.localData;
+                                        var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + localData + ')" src="' + localData + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
+                                        $html.appendTo($("#imglist"));
+                                        $html.find("i").bind("click", function (event) {
+                                            event.stopPropagation();
+                                            $html.remove();
+                                        })
+                                    }
+                                })
+                            }
+                            else {
+                                wx.uploadImage({
+                                    localId: res.localIds[index], // 需要上传的图片的本地ID，由chooseImage接口获得
+                                    isShowProgressTips: 1,// 默认为1，显示进度提示
+                                    success: function (s_res) {
+                                        var serverId = res.localIds[index]; // 返回图片的服务器端ID
+                                        var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + res.localIds[index] + ')" src="' + res.localIds[index] + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
+                                        $html.appendTo($("#imglist"));
+                                        $html.find("i").bind("click", function (event) {
+                                            event.stopPropagation();
+                                            $html.remove();
+                                        })
+                                    }
+                                });
+                            }
 
-                            wx.uploadImage({
-                                localId: res.localIds[index], // 需要上传的图片的本地ID，由chooseImage接口获得
-                                isShowProgressTips: 1,// 默认为1，显示进度提示
-                                success: function (s_res) {
-                                    var serverId = s_res.serverId; // 返回图片的服务器端ID
-
-                                    var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + res.localIds[index] + ')" src="' + res.localIds[index] + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
-
-                                    $html.appendTo($("#imglist"));
-                                    $html.find("i").bind("click", function (event) {
-                                        event.stopPropagation();
-                                        $html.remove();
-                                    })
-                                }
-                            });
 
 
                         })
@@ -977,7 +992,7 @@ var ComFunJS = {
         $(tpdata).each(function (index, ele) {
             var html = '';
             if (ComFunJS.xstp(ele.FileExtendName)) {
-                html = '<li itemid="' + ele.ID + '" class="imgxl tpli"><div class="item-media"><img class="mall_pcp" onclick="ComFunJS.viewbigimg(this,2)" src="' + ComFunJS.getfile(ele.ID)+ '" style="width:44px;height:44px;"></div></li>';
+                html = '<li itemid="' + ele.ID + '" class="imgxl tpli"><div class="item-media"><img class="mall_pcp" onclick="ComFunJS.viewbigimg(this,2)" src="' + ComFunJS.getfile(ele.ID) + '" style="width:44px;height:44px;"></div></li>';
             }
             else {
                 html = '<li itemid="' + ele.ID + '" class="imgxl tpli" ><div class="item-media"><img onclick="ComFunJS.viewfile(' + ele.YLUrl + ')" src="/View_Mobile/Images/qywd/' + ele.FileExtendName + '.png" onerror="javascript: this.src = \'/View_Mobile/Images/qywd/file.png\'" style="width:44px;height:44px;"></div></li>';
