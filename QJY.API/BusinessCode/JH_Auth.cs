@@ -242,6 +242,7 @@ namespace QJY.API
             userCenter.MsgLink = GetMsgLink(ModelCode, type, Id.ToString(), PIID, UserInfo.User.ComId.Value);
             userCenter.wxLink = GetWXMsgLink(ModelCode, type, Id.ToString(), UserInfo.QYinfo);
             userCenter.isCS = IsCS;
+            userCenter.Remark = PIID.ToString();
             string sendUser = "";
             List<string> jsrs = JSR.Split(',').Distinct().ToList();//去重接收人
             foreach (string people in jsrs)
@@ -951,7 +952,7 @@ namespace QJY.API
         /// <param name="strAPPCode"></param>
         /// <param name="strSHR"></param>
         /// <returns>返回创建的第一个任务</returns>
-        public Yan_WF_TI StartWF(Yan_WF_PD PD, string strModelCode, string userName, string strSHR, ref List<string> ListNextUser)
+        public Yan_WF_TI StartWF(Yan_WF_PD PD, string strModelCode, string userName, string strSHR, string strCSR, ref List<string> ListNextUser)
         {
 
             //创建流程实例
@@ -963,7 +964,7 @@ namespace QJY.API
             PI.CRUser = userName;
             PI.CRDate = DateTime.Now;
             PI.PITYPE = PD.ProcessType;
-            PI.ChaoSongUser = PD.ChaoSongUser;
+            PI.ChaoSongUser = strCSR;
             new Yan_WF_PIB().Insert(PI);
             //创建流程实例
             Yan_WF_TI TI = new Yan_WF_TI();

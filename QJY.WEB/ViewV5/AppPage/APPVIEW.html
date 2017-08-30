@@ -35,7 +35,7 @@
 
                         <a class="btn btn-success" ms-if="isBack=='Y'" href="javascript:history.go(-1)">返回</a>
                         <a class="btn btn-info" ms-attr-href="/ViewV5/AppPage/{{FormCode}}/HtmlToWord.aspx?ID={{strId}}" target="_blank" ms-if="isExport">导出</a>
-                                                <a class="btn btn-info" ms-click="print()">打印</a>
+                        <a class="btn btn-info" ms-click="print()">打印</a>
 
                     </div>
                 </div>
@@ -76,14 +76,43 @@
                     </div>
                 </div>
                 <div class="detail-item" ms-if="TASKDATA.size()!=0">
+                    <span class="item-tit">抄送人</span>
+                    <div class="item-con">{{ComFunJS.convertuser(PIMODEL.ChaoSongUser)}}</div>
+                </div>
+                <div class="detail-item" ms-if="TASKDATA.size()!=0">
                     <span class="item-tit">审核状态</span>
                     <div class="item-con">{{shzt}}</div>
                 </div>
+
                 <div class="detail-item" ms-if="TASKDATA.size()!=0">
                     <span class="item-tit">审核流程</span>
                 </div>
-                <div class="detail-item" style="padding: 0; margin: 20px 0; overflow-x: auto;" ms-if="TASKDATA.size()!=0">
+                <div class="detail-item" style="padding: 0; margin: 10px 0; overflow-x: auto; margin-bottom: 0px" ms-if="TASKDATA.size()!=0">
                     <div class="lcspstep"></div>
+                </div>
+                <div class="" ms-if="CSQKData.size()!=0">
+                    <div>
+                        <table class="table table-bordered table-condensed table-hover table-striped">
+
+                            <thead>
+                                <tr>
+                                    <td style="text-align: center" ms-attr-colspan="CSQKData.size()+1">抄送接收状况</td>
+                                </tr>
+                                <tr>
+                                    <th>抄送人</th>
+                                    <td ms-repeat-el="CSQKData">{{ComFunJS.convertuser(el.UserTO)}}</td>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>接收抄送时间</th>
+                                    <td ms-repeat-el="CSQKData">{{el.ReadDate?el.ReadDate:"暂未接收"}}</td>
+                                    <!--   |date("yyyy-MM-dd HH:ss")-->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="pl20 mb10">
@@ -164,6 +193,7 @@
             tpData: [],
             plData: [],
             ispl: '',
+            CSQKData: [],//抄送人接收情况数据
             nowuser: ComFunJS.getnowuser(),
             PathCode: "",
             FormCode: "",
@@ -185,6 +215,7 @@
                     tempindex.InitWigetData(model.strId);
                 }
                 avalon.templateCache = null;
+
             },
             seltitle: function (type) {
                 model.titletype = type;
@@ -236,7 +267,9 @@
                         if (result.Result4) {
                             model.isEdit = result.Result4;//流程类型
                         }
-
+                        if (result.Result6) {
+                            model.CSQKData = result.Result6;//流程类型
+                        }
                         model.LoadWFData();
                     }
                 })

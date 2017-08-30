@@ -1,19 +1,23 @@
-﻿
-<div class="form-horizontal" ms-controller="LCSP">
+﻿<div class="form-horizontal" ms-controller="LCSP">
     <div style="padding: 0 80px;">
         <div>
             <!--<div class="fg-item"><span>基本信息</span></div>-->
             <ul class="clearfix" style="display: block; padding: 0">
                 <li class="add-item add-widthall ">
-                    <label class="add-item-label" style="margin-right:10px;">流程名称</label>
-                    <span class="add-ic">
-                        {{LeiBieText}}
+                    <label class="add-item-label" style="margin-right: 10px;">流程名称:</label>
+                    <span class="add-ic">{{LeiBieText}}
                     </span>
                 </li>
                 <li class="add-item add-widthall">
-                    <label class="add-item-label" style="margin-right:10px;">申请人</label>
+                    <label class="add-item-label" style="margin-right: 10px;">申请人:</label>
+                    <span class="add-ic">{{modelData.ShenQingRen}}
+                    </span>
+
+                </li>
+                <li class="add-item add-widthall" style="width: 65%">
+                    <label class="add-item-label" style="margin-right: 10px;">流程抄送人员:</label>
                     <span class="add-ic">
-                        {{modelData.ShenQingRen}}
+                        <input type="text" ms-duplex="CSUser" class="form-control szhl_getPeoples" />
                     </span>
 
                 </li>
@@ -46,17 +50,19 @@
         iswf: true,//是否属于流程表单
         inittemp: function (strId) {
             //加载初始化数据
-
+            if (pmodel.PDMODEL) {
+                tempmodel.CSUser = pmodel.PDMODEL.ChaoSongUser
+            }
             $.getJSON('/API/VIEWAPI.ashx?Action=LCSP_GETLCSPMODEL', { P1: strId, P2: tempmodel.PDID }, function (resultData) {
-                    if (strId) {
-                        tempmodel.modelData = resultData.Result;
+                if (strId) {
+                    tempmodel.modelData = resultData.Result;
 
-                    } else {
-                        tempmodel.modelData.LeiBie = resultData.Result1.ID;//流程名称
-                        pmodel.isDraft = true;
-                    }
-                    tempmodel.LeiBieText = resultData.Result1.ProcessName;
-                    setTimeout("ComFunJS.initForm()", 500);
+                } else {
+                    tempmodel.modelData.LeiBie = resultData.Result1.ID;//流程名称
+                    pmodel.isDraft = true;
+                }
+                tempmodel.LeiBieText = resultData.Result1.ProcessName;
+                setTimeout("ComFunJS.initForm()", 500);
             })
         },//初始化
         SaveData: function (callback) {

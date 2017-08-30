@@ -8,8 +8,11 @@
     PDID: ComFunJS.getQueryString("PDID"),//流程配置ID
     ExtData: [],//扩展数据
     PIMODEL: {},//流程数据
+    PDMODEL: {},//流程数据
     TASKDATA: [],//任务数据
     USERDATA: [],//可选审核人数据
+    CSUser: "",//抄送人
+    CSQKData: "",//抄送人接收情况数据
     iscansp: false,//是否有处理单据权限
     isedit: "N",//是否是流程中得可编辑状态
     isHasDataQX: "N",//是否有修改数据得权限（只有当数据创建人是当前人并且是普通表单时才为Y）
@@ -76,8 +79,14 @@
     getwfdata: function (callback) {
         $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_GETWFDATA", { P1: pmodel.PIID, DataID: pmodel.DataID, ModelCode: pmodel.FormCode, P2: pmodel.PDID }, function (result) {
             if (result.ErrorMsg == "") {//流程数据
+                if (result.Result5) { //流程定义数据
+                    pmodel.PDMODEL = result.Result5;
+                    pmodel.CSUser = pmodel.PDMODEL.ChaoSongUser;
+
+                }
                 if (result.Result) {
                     pmodel.PIMODEL = result.Result;
+                    pmodel.CSUser = pmodel.PIMODEL.ChaoSongUser;
                 }
                 if (result.Result1)//任务数据
                 {
@@ -98,6 +107,10 @@
                         pmodel.isHasDataQX = "Y";
                     }
                 }
+                if (true) {
+                    pmodel.CSQKData == result.Result6;
+                }
+             
                 pmodel.LoadWFData();
                 return callback.call(this);
             }
@@ -136,7 +149,7 @@
             tempmodel.SaveData(function (result1) {
                 if ($.trim(result1.ErrorMsg) == "") {
                     //如果MODELCODE有流程,开始流程数据
-                    $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_STARTWF", { P1: pmodel.FormCode, P2: $("#conshr").val(), PDID: pmodel.PDID, DATAID: result1.Result.ID, LCTYPE: pmodel.lctype }, function (result) {
+                    $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_STARTWF", { P1: pmodel.FormCode, P2: $("#conshr").val(), PDID: pmodel.PDID, DATAID: result1.Result.ID, LCTYPE: pmodel.lctype, csr: pmodel.CSUser }, function (result) {
                         if ($.trim(result.ErrorMsg) == "") {
                             top.ComFunJS.winsuccess("操作成功");
                             if (tempmodel && $.isFunction(tempmodel.Complate)) {
@@ -358,7 +371,7 @@
 
     },
     managetask: function () { //固定流程的处理
-        $.post("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF", { P1: pmodel.PIID, P2: pmodel.spReason, ID: pmodel.DataID, formcode: pmodel.FormCode }, function (result) {
+        $.post("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF", { P1: pmodel.PIID, P2: pmodel.spReason, ID: pmodel.DataID, formcode: pmodel.FormCode, csr: pmodel.CSUser }, function (result) {
             if ($.trim(result.ErrorMsg) == "") {
                 top.ComFunJS.winsuccess("处理成功");
 
@@ -475,8 +488,8 @@
 })
 
 avalon.ready(function () {
-    setTimeout("pmodel.init()",500)
-  
+    setTimeout("pmodel.init()", 500)
+
 })
 
 //微信预览图片

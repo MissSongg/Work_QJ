@@ -725,6 +725,8 @@ namespace QJY.API
             {
                 string strModelCode = P1;
                 string LCTYPE = context.Request["LCTYPE"] ?? "";
+                string strCSR = context.Request["csr"] ?? "";
+
 
                 int PDID = 0;
                 int.TryParse(context.Request["PDID"] ?? "0", out PDID);
@@ -752,7 +754,7 @@ namespace QJY.API
                 string strTZR = P2;//审核人
 
                 List<string> ListNextUser = new List<string>();//获取下一任务的处理人
-                Yan_WF_TI TI = PIB.StartWF(PD, strModelCode, UserInfo.User.UserName, P2, ref ListNextUser);
+                Yan_WF_TI TI = PIB.StartWF(PD, strModelCode, UserInfo.User.UserName, P2, strCSR, ref ListNextUser);
 
 
 
@@ -811,6 +813,7 @@ namespace QJY.API
             try
             {
                 string strShUser = context.Request["SHUser"] ?? "";
+                string strCSUser = context.Request["csr"] ?? "";
                 string modelcode = context.Request["formcode"] ?? "";
 
                 int PID = int.Parse(P1);
@@ -822,9 +825,18 @@ namespace QJY.API
                 Yan_WF_PIB PIB = new Yan_WF_PIB();
                 if (PIB.isCanSP(UserInfo.User.UserName, PID) == "Y")//先判断用户能不能处理此流程
                 {
+
+
+
                     List<string> ListNextUser = new List<string>();
-                    new Yan_WF_PIB().MANAGEWF(UserInfo.User.UserName, PID, P2, ref ListNextUser, strShUser);//处理任务
-                    Yan_WF_PI PI = new Yan_WF_PIB().GetEntity(d => d.ID == PID);
+                    PIB.MANAGEWF(UserInfo.User.UserName, PID, P2, ref ListNextUser, strShUser);//处理任务
+                    Yan_WF_PI PI = PIB.GetEntity(d => d.ID == PID);
+
+                    //更新抄送人
+                    PI.ChaoSongUser = strCSUser;
+                    PIB.Update(PI);
+                    //更新抄送人
+
                     Yan_WF_PD PD = new Yan_WF_PDB().GetEntity(d => d.ID == PI.PDID.Value);
 
                     string content = new JH_Auth_UserB().GetUserRealName(UserInfo.QYinfo.ComId, PI.CRUser) + "发起了" + PD.ProcessName + "表单,等待您审阅";
@@ -834,12 +846,12 @@ namespace QJY.API
                     string strIsComplete = ListNextUser.Count() == 0 ? "Y" : "N";//结束流程,找不到人了
                     if (strIsComplete == "Y")//找不到下家就结束流程,并且给流程发起人发送消息
                     {
-                        new Yan_WF_PIB().ENDWF(PID);
+                        PIB.ENDWF(PID);
                         content = UserInfo.User.UserRealName + "审批完成了您发起的" + PD.ProcessName + "表单";
                         strTXUser = PI.CRUser;
                         funName = "LCSP_CHECKB";
                         //发送消息给抄送人 
-                        if (!string.IsNullOrEmpty(PD.ChaoSongUser))
+                        if (!string.IsNullOrEmpty(PI.ChaoSongUser))
                         {
                             SZHL_TXSX CSTX = new SZHL_TXSX();
                             CSTX.Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -849,9 +861,9 @@ namespace QJY.API
                             CSTX.intProcessStanceid = PID;
                             CSTX.CRUserRealName = UserInfo.User.UserRealName;
                             CSTX.MsgID = DATAID.ToString();
-                            CSTX.TXContent = new JH_Auth_UserB().GetEntity(p => p.ComId == PI.ComId && p.UserName == PI.CRUser).UserRealName + "抄送一个" + PD.ProcessName + "，请您查阅";
+                            CSTX.TXContent = new JH_Auth_UserB().GetEntity(p => p.ComId == PI.ComId && p.UserName == PI.CRUser).UserRealName + "抄送一个" + PD.ProcessName + "，请您查阅接收";
                             CSTX.ISCS = "Y";
-                            CSTX.TXUser = PD.ChaoSongUser;
+                            CSTX.TXUser = PI.ChaoSongUser;
                             CSTX.TXMode = modelcode;
                             CSTX.CRUser = UserInfo.User.UserName;
                             TXSX.TXSXAPI.AddALERT(CSTX); //时间为发送时间
@@ -870,8 +882,6 @@ namespace QJY.API
                     TX.TXUser = strTXUser;
                     TX.TXMode = modelcode;
                     TXSX.TXSXAPI.AddALERT(TX); //时间为发送时间
-
-
 
                     WFComplete(modelcode, DATAID.ToString(), strIsComplete);
 
@@ -1078,8 +1088,10 @@ namespace QJY.API
                     msg.Result2 = "{ \"ISCANSP\":\"" + new Yan_WF_PIB().isCanSP(UserInfo.User.UserName, int.Parse(P1)) + "\",\"ISCANCEL\":\"" + new Yan_WF_PIB().isCanCancel(UserInfo.User.UserName, int.Parse(P1)) + "\"}";
                     msg.Result3 = PIMODEL.PITYPE;//
                     msg.Result4 = new Yan_WF_PIB().isCanEdit(UserInfo.User.UserName, int.Parse(P1));
+
+                    msg.Result6 = new JH_Auth_User_CenterB().GetEntities("Remark = " + PIID.ToString() + " AND isCS='Y'");
                 }
-                else
+                else    //新增流程
                 {
 
 
@@ -1099,8 +1111,10 @@ namespace QJY.API
                             dtList.Rows[0]["state"] = "1";
                             msg.Result = null;
                             msg.Result1 = dtList;
+                            
                         }
                         msg.Result3 = pdmodel.ProcessType;
+                        msg.Result5 = pdmodel;
                     }
                     else
                     {

@@ -19,5 +19,9 @@ namespace QJY.API
         public dynamic Result2 { get; set; }
         public dynamic Result3 { get; set; }
         public dynamic Result4 { get; set; }
+        public dynamic Result5 { get; set; }
+        public dynamic Result6 { get; set; }
+
+
     }
 }
