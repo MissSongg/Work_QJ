@@ -12,7 +12,7 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
     <link href="/ViewV5/CSS/BootOver.css" rel="stylesheet" />
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_1469599389_244136.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_eedtp7mde99q9f6r.css">
     <link href="/ViewV5/JS/chosen/chosen.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -270,7 +270,7 @@
 <body ms-controller="APP_ADD" ms-keypress="jptj(event,$(this))">
     <div class="container-fluid" style="margin-top: 20px; margin-bottom: 150px">
         <div ms-include-src="/ViewV5/AppPage/{{PathCode}}.html" data-include-rendered='render'></div>
-        <div ms-if="ExtData.size()>0" id="extdiv">
+        <div ms-if="ExtData.size()>0" id="extdiv" >
             <div>
                 <!--<div class="fg-item"><span>{{FormCode=='LCSP'?'表单信息':'扩展信息'}}</span></div>-->
                 <ul class="clearfix" style="padding: 0" id="ExtDiv">
@@ -291,6 +291,16 @@
                 </ul>
             </div>
         </div>
+        <ul class="clearfix" style="display: block; padding: 0 80px" ms-if="TASKDATA.size()!=0">
+
+            <li class="add-item add-widthall" style="width: 65%">
+                <label class="add-item-label" style="margin-right: 10px;">流程抄送人员:</label>
+                <span class="add-ic">
+                    <input type="text" ms-duplex="CSUser" class="form-control szhl_getPeoples" />
+                </span>
+
+            </li>
+        </ul>
     </div>
 
 

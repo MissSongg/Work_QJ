@@ -145,6 +145,15 @@ var urlData = [];
 
 var ComFunJS = {
     yuming: "",
+    seelp: function (numberMillis) {
+        var now = new Date();
+        var exitTime = now.getTime() + numberMillis;
+        while (true) {
+            now = new Date();
+            if (now.getTime() > exitTime)
+                return;
+        }
+    },
     getQueryString: function (name, defauval) {//获取URL参数,如果获取不到，返回默认值，如果没有默认值，返回空格
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         var r = window.location.search.substr(1).match(reg);
@@ -825,14 +834,29 @@ var ComFunJS = {
                                 wx.getLocalImgData({
                                     localId: res.localIds[index],
                                     success: function (resimg) {
-                                        var serverId = res.localIds[index]; // 返回图片的服务器端ID
-                                        var localData = resimg.localData;
-                                        var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + localData + ')" src="' + localData + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
-                                        $html.appendTo($("#imglist"));
-                                        $html.find("i").bind("click", function (event) {
-                                            event.stopPropagation();
-                                            $html.remove();
-                                        })
+                                        ComFunJS.seelp(1000)//不得不加，不然苹果没法上传一次性多张图片
+                                        var localData = resimg.localData;// 返回图片本地数据
+                                        wx.uploadImage({
+                                            localId: res.localIds[index], // 需要上传的图片的本地ID，由chooseImage接口获得
+                                            isShowProgressTips: 1,// 默认为1，显示进度提示
+                                            success: function (s_res) {
+                                                var serverId = s_res.serverId; // 返回图片的服务器端ID
+                                                var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + localData + ')" src="' + localData + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
+                                                $html.appendTo($("#imglist"));
+                                                $html.find("i").bind("click", function (event) {
+                                                    event.stopPropagation();
+                                                    $html.remove();
+                                                })
+                                            }
+                                        });
+                                        //var serverId = res.localIds[index]; 
+                                        //var localData = resimg.localData;// 返回图片本地数据
+                                        //var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + localData + ')" src="' + localData + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
+                                        //$html.appendTo($("#imglist"));
+                                        //$html.find("i").bind("click", function (event) {
+                                        //    event.stopPropagation();
+                                        //    $html.remove();
+                                        //})
                                     }
                                 })
                             }
@@ -841,7 +865,7 @@ var ComFunJS = {
                                     localId: res.localIds[index], // 需要上传的图片的本地ID，由chooseImage接口获得
                                     isShowProgressTips: 1,// 默认为1，显示进度提示
                                     success: function (s_res) {
-                                        var serverId = res.localIds[index]; // 返回图片的服务器端ID
+                                        var serverId =s_res.serverId ; // 返回图片的服务器端ID
                                         var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + res.localIds[index] + ')" src="' + res.localIds[index] + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
                                         $html.appendTo($("#imglist"));
                                         $html.find("i").bind("click", function (event) {

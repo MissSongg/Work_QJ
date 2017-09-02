@@ -12,7 +12,7 @@
     TASKDATA: [],//任务数据
     USERDATA: [],//可选审核人数据
     CSUser: "",//抄送人
-    CSQKData: "",//抄送人接收情况数据
+    CSQKData: [],//抄送人接收情况数据
     iscansp: false,//是否有处理单据权限
     isedit: "N",//是否是流程中得可编辑状态
     isHasDataQX: "N",//是否有修改数据得权限（只有当数据创建人是当前人并且是普通表单时才为Y）
@@ -107,8 +107,8 @@
                         pmodel.isHasDataQX = "Y";
                     }
                 }
-                if (true) {
-                    pmodel.CSQKData == result.Result6;
+                if (result.Result6) {
+                    pmodel.CSQKData = result.Result6;
                 }
              
                 pmodel.LoadWFData();
@@ -369,6 +369,12 @@
             }
         }
 
+    },
+    showcsdata: function () {
+        var $dom = $("#csdata").html();
+        ComFunJS.AlertMsg($dom, function () {
+            ComFunJS.closeAll();
+        })
     },
     managetask: function () { //固定流程的处理
         $.post("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF", { P1: pmodel.PIID, P2: pmodel.spReason, ID: pmodel.DataID, formcode: pmodel.FormCode, csr: pmodel.CSUser }, function (result) {
