@@ -65,7 +65,7 @@ namespace QJY.API
             }
 
 
-            JH_Auth_QY qyModel = new JH_Auth_QY();
+            JH_Auth_QY qyModel = new JH_Auth_QYB().GetALLEntities().First();
             password = CommonHelp.GetMD5(password);
             JH_Auth_User userInfo = new JH_Auth_User();
 
@@ -168,6 +168,19 @@ namespace QJY.API
 
 
 
+        public void REGISTERYSOLD(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+
+            JH_Auth_QY QY = new JH_Auth_QYB().GetEntity(d => d.ComId == 10334);
+            QY.CRDate = DateTime.Now.AddYears(-2);
+            QY.QYProfile = QY.FileServerUrl;
+            QY.FileServerUrl = "";
+            QY.IsUseWX = "N";
+            new JH_Auth_QYB().Update(QY);
+            msg.Result = QY;
+
+        }
+
         public void REGISTERYS(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
 
@@ -220,32 +233,32 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void SENDCHKMSG(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            if (!string.IsNullOrEmpty(P1))
-            {
-                string code = CommonHelp.numcode(4);
-                try
-                {
-                    string type = context.Request["type"] ?? "";
-                    string content = "";
-                    switch (type)
-                    {
-                        case "changeadmin":
-                            content = "您更换超级管理员的验证码为：" + code + "，如非本人操作，请忽略本短信";
-                            break;
-                        default:
-                            content = "注册验证码：" + code + "，如非本人操作，请忽略本短信";
-                            break;
+            //if (!string.IsNullOrEmpty(P1))
+            //{
+            //    string code = CommonHelp.numcode(4);
+            //    try
+            //    {
+            //        string type = context.Request["type"] ?? "";
+            //        string content = "";
+            //        switch (type)
+            //        {
+            //            case "changeadmin":
+            //                content = "您更换超级管理员的验证码为：" + code + "，如非本人操作，请忽略本短信";
+            //                break;
+            //            default:
+            //                content = "注册验证码：" + code + "，如非本人操作，请忽略本短信";
+            //                break;
 
-                    }
+            //        }
 
-                    CommonHelp.SendSMS(P1, content, 0);
-                    msg.Result = CommonHelp.GetMD5(code);
-                }
-                catch
-                {
-                    msg.ErrorMsg = "发送验证码失败";
-                }
-            }
+            //        CommonHelp.SendSMS(P1, content, 0);
+            //        msg.Result = CommonHelp.GetMD5(code);
+            //    }
+            //    catch
+            //    {
+            //        msg.ErrorMsg = "发送验证码失败";
+            //    }
+            //}
         }
         /// <summary>
         /// 验证企业名称
@@ -310,76 +323,76 @@ namespace QJY.API
         public void CHECKPHONE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
 
-            string ComId = context.Request["comId"] ?? "";
-            int id = 0;
-            int.TryParse(ComId, out id);
-            if (id > 0)
-            {
-                List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => d.mobphone == P2 && d.ComId == id).ToList();
-                JH_Auth_User user = new JH_Auth_UserB().GetEntity(d => d.mobphone == P2 && d.ComId == id);
-                if (userList.Count != 1)
-                {
-                    msg.ErrorMsg = "此手机号无效";
-                }
-            }
-            else
-            {
-                List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => d.mobphone == P2).ToList();
-                if (userList.Count == 0)
-                {
-                    msg.ErrorMsg = "此手机号无效";
-                }
-                else if (userList.Count > 1)
-                {
-                    msg.ErrorMsg = "-1";
-                }
-            }
+            //string ComId = context.Request["comId"] ?? "";
+            //int id = 0;
+            //int.TryParse(ComId, out id);
+            //if (id > 0)
+            //{
+            //    List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => d.mobphone == P2 && d.ComId == id).ToList();
+            //    JH_Auth_User user = new JH_Auth_UserB().GetEntity(d => d.mobphone == P2 && d.ComId == id);
+            //    if (userList.Count != 1)
+            //    {
+            //        msg.ErrorMsg = "此手机号无效";
+            //    }
+            //}
+            //else
+            //{
+            //    List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => d.mobphone == P2).ToList();
+            //    if (userList.Count == 0)
+            //    {
+            //        msg.ErrorMsg = "此手机号无效";
+            //    }
+            //    else if (userList.Count > 1)
+            //    {
+            //        msg.ErrorMsg = "-1";
+            //    }
+            //}
 
         }
         //找回密码验证二级域名
         public void FINDYZQYYM(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            if (!string.IsNullOrEmpty(P1))
-            {
-                if (P1.ToLower() == "www" || P1.ToLower() == "saas") //www及saas不让用户注册
-                {
-                    msg.ErrorMsg = "二级域名无效";
-                    return;
-                }
-                var qy = new JH_Auth_QYB().GetEntity(p => p.QYCode == P1);
-                if (qy == null)
-                {
-                    msg.ErrorMsg = "二级域名不存在";
-                }
-                else
-                {
-                    msg.Result = qy.ComId;
-                }
-            }
+            //if (!string.IsNullOrEmpty(P1))
+            //{
+            //    if (P1.ToLower() == "www" || P1.ToLower() == "saas") //www及saas不让用户注册
+            //    {
+            //        msg.ErrorMsg = "二级域名无效";
+            //        return;
+            //    }
+            //    var qy = new JH_Auth_QYB().GetEntity(p => p.QYCode == P1);
+            //    if (qy == null)
+            //    {
+            //        msg.ErrorMsg = "二级域名不存在";
+            //    }
+            //    else
+            //    {
+            //        msg.Result = qy.ComId;
+            //    }
+            //}
         }
         public void FINDPASSWORD(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            string userpass = context.Request["pass"];
-            if (P1 == "1")
-            {
-                string ComId = context.Request["ComId"];
-                int qyId = 0;
-                int.TryParse(ComId, out qyId);
-                JH_Auth_QY qymodel = new JH_Auth_QYB().GetEntity(d => d.ComId == qyId);
-                if (qymodel != null)
-                {
-                    JH_Auth_User userInfo = new JH_Auth_UserB().GetEntity(d => d.mobphone == P2 && d.ComId == qymodel.ComId);
-                    userInfo.UserPass = CommonHelp.GetMD5(userpass);
-                    new JH_Auth_UserB().Update(userInfo);
-                    msg.Result = qymodel.QYCode;
-                }
-            }
-            else
-            {
-                JH_Auth_User userInfo = new JH_Auth_UserB().GetEntity(d => d.mobphone == P2);
-                userInfo.UserPass = CommonHelp.GetMD5(userpass);
-                new JH_Auth_UserB().Update(userInfo);
-            }
+            //string userpass = context.Request["pass"];
+            //if (P1 == "1")
+            //{
+            //    string ComId = context.Request["ComId"];
+            //    int qyId = 0;
+            //    int.TryParse(ComId, out qyId);
+            //    JH_Auth_QY qymodel = new JH_Auth_QYB().GetEntity(d => d.ComId == qyId);
+            //    if (qymodel != null)
+            //    {
+            //        JH_Auth_User userInfo = new JH_Auth_UserB().GetEntity(d => d.mobphone == P2 && d.ComId == qymodel.ComId);
+            //        userInfo.UserPass = CommonHelp.GetMD5(userpass);
+            //        new JH_Auth_UserB().Update(userInfo);
+            //        msg.Result = qymodel.QYCode;
+            //    }
+            //}
+            //else
+            //{
+            //    JH_Auth_User userInfo = new JH_Auth_UserB().GetEntity(d => d.mobphone == P2);
+            //    userInfo.UserPass = CommonHelp.GetMD5(userpass);
+            //    new JH_Auth_UserB().Update(userInfo);
+            //}
         }
         #endregion
 
