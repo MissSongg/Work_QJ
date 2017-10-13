@@ -8,7 +8,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <!-- Google Web Fonts -->
-
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.5.8/css/sm.min.css">
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.5.8/css/sm-extend.min.css">
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1468636506_6208553.css">
@@ -16,6 +15,9 @@
     <link href="/View_Mobile/UI/CRM/css/reset.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="/View_Mobile/UI/CRM/css/default.css">
     <style>
+                .ms-controller, .ms-important, [ms-controller], [ms-important] {
+            visibility: hidden;
+        }
         .bar-tab {
             bottom: 0;
             width: 100%;
@@ -128,7 +130,7 @@
                             <li ms-repeat-user="DeptUser" ms-visible="(searstr&&(user.UserRealName.indexOf(searstr)!=-1||user.mobphone.indexOf(searstr)!=-1))||!searstr" ms-click="chekuser(user)">
                                 <div class="item-content">
                                     <div class="item-media">
-                                        <img ms-attr-src="{{ComFunJS.getfile()+'type=TX&user='+user.UserName}}" style="width:44px;height:44px;" class="border3">
+                                        <img ms-attr-src="{{ComFunJS.getfile()+'&type=TX&user='+user.UserName}}" style="width:44px;height:44px;" class="border3">
                                     </div>
                                     <div class="item-inner">
                                         <div class="item-title-row">

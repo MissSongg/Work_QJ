@@ -23,6 +23,24 @@
         .szhl_getPeoples {
             display: none;
         }
+
+        .modal {
+            top: 100px;
+        }
+
+        .modal-backdrop {
+            background-color: transparent;
+            display: none;
+        }
+
+
+        /*Webkit and Opera*/
+       /*@media screen and (-webkit-min-device-pixel-ratio:0)  {
+            .modal-backdrop {
+                background-color: #000;
+                display: block !important;
+            }
+        }*/
     </style>
 </head>
 <body ms-controller="IndexV5" ondblclick="return false;">
@@ -189,10 +207,9 @@
                         </div>
                         <!-- 下边内容 -->
                         <div ms-visible="isshowload&&isiframe!='Y'" class="main-content ft16 mt10 pt20 c666 box-shadow clearfix" ms-include-src="PageCode+'.html?r='+model.rdm" data-include-rendered='Temprender'>
-                       
                         </div>
                         <div class="iframecontent ft16 mt10 c666 box-shadow clearfix" ms-if="isiframe=='Y'">
-                            <iframe marginwidth="0" class="tabiframe" marginheight="0" frameborder="0" scrolling="no" height="100%" id="main" name="main" width="100%" style="min-height:500px" ></iframe>
+                            <iframe marginwidth="0" class="tabiframe" marginheight="0" frameborder="0" scrolling="no" height="100%" id="main" name="main" width="100%" style="min-height: 500px"></iframe>
                         </div>
                         <div class="index-right" ms-if="ishasLeft">
                             <!-- 考勤 -->
