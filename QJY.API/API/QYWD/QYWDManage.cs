@@ -259,9 +259,11 @@ namespace QJY.API
             if (itemtype == "2")//个人文件夹
             {
                 int FolderID = int.Parse(P1);//
-                string strSQL = string.Format("SELECT FT_Folder.*,ISNULL(FT_File_UserAuth.AuthUser, '') as AuthUser from FT_Folder LEFT JOIN  FT_File_UserAuth  on FT_Folder.ID= FT_File_UserAuth.RefID where FT_Folder.ComId='{0}' and FT_Folder.PFolderID='{1}' and  FT_Folder.CRUser='{2}'", UserInfo.User.ComId, FolderID.ToString(), UserInfo.User.UserName);
+                string strSQL = string.Format("SELECT FT_Folder.*,ISNULL(FT_File_UserAuth.AuthUser, '') as AuthUser from FT_Folder LEFT JOIN  FT_File_UserAuth  on FT_Folder.ID= FT_File_UserAuth.RefID  and FT_File_UserAuth.RefType='0' where FT_Folder.ComId='{0}' and FT_Folder.PFolderID='{1}' and  FT_Folder.CRUser='{2}'", UserInfo.User.ComId, FolderID.ToString(), UserInfo.User.UserName);
                 msg.Result = new FT_FolderB().GetDTByCommand(strSQL);
-                msg.Result1 = new FT_FileB().GetEntities(d => d.ComId == UserInfo.User.ComId && d.FolderID == FolderID && d.CRUser == UserInfo.User.UserName);
+
+                string strSQLFile = string.Format("SELECT FT_File.*,ISNULL(FT_File_UserAuth.AuthUser, '') as AuthUser from FT_File LEFT JOIN  FT_File_UserAuth  on FT_File.ID= FT_File_UserAuth.RefID  and FT_File_UserAuth.RefType='1' where FT_File.ComId='{0}' and FT_File.FolderID='{1}' and  FT_File.CRUser='{2}' ", UserInfo.User.ComId, FolderID.ToString(), UserInfo.User.UserName);
+                msg.Result1 = new FT_FileB().GetDTByCommand(strSQLFile);
                 return;
             }
             if (itemtype == "4")//共享文档
@@ -555,7 +557,7 @@ namespace QJY.API
         {
             string strAuthUsers = P1;
             int DataID = int.Parse(P2);
-            string RefType = context.Request["REFTYPE"] ?? "0";//默认文件夹
+            string RefType = context.Request["REFTYPE"] == "file" ? "1" : "0";//默认文件夹
             new FT_File_UserAuthB().Delete(d => d.RefID == DataID && d.RefType == RefType && d.CRUser == UserInfo.User.UserName);
 
             FT_File_UserAuth Model = new FT_File_UserAuth();
@@ -570,7 +572,7 @@ namespace QJY.API
         }
         public void CANCELAUTH(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            string RefType = P1;
+            string RefType = context.Request["REFTYPE"] == "file" ? "1" : "0";//默认文件夹
             int DataID = int.Parse(P2);
             new FT_File_UserAuthB().Delete(d => d.RefID == DataID && d.RefType == RefType && d.CRUser == UserInfo.User.UserName);
 
@@ -626,13 +628,23 @@ namespace QJY.API
         public void GETNBSHARELIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             string strUser = P1;
-            string strSQL = "SELECT FT_Folder.* FROM FT_File_UserAuth LEFT JOIN FT_Folder on  FT_File_UserAuth.RefID=FT_Folder.ID WHERE ','+AuthUser+','  like '%," + UserInfo.User.UserName + ",%'";
+            string strSQL = "SELECT FT_Folder.* FROM FT_File_UserAuth LEFT JOIN FT_Folder on  FT_File_UserAuth.RefID=FT_Folder.ID WHERE ','+AuthUser+','  like '%," + UserInfo.User.UserName + ",%' and FT_File_UserAuth.RefType='0'";
             if (strUser != "")
             {
                 strSQL = strSQL + "  AND FT_File_UserAuth.CRUser='" + strUser + "'  ";
             }
+
+            string strSQLFile = "SELECT FT_File.* FROM FT_File_UserAuth LEFT JOIN FT_File on  FT_File_UserAuth.RefID=FT_File.ID  WHERE ','+AuthUser+','  like '%," + UserInfo.User.UserName + ",%' and FT_File_UserAuth.RefType='1'";
+            if (strUser != "")
+            {
+                strSQLFile = strSQLFile + "  AND FT_File_UserAuth.CRUser='" + strUser + "'  ";
+            }
             DataTable dtFLODER = new FT_FolderB().GetDTByCommand(strSQL);
+            DataTable dtFile = new FT_FileB().GetDTByCommand(strSQLFile);
+
             msg.Result = dtFLODER;
+            msg.Result1 = dtFile;
+
         }
 
 

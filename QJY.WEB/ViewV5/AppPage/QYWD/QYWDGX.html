@@ -48,37 +48,75 @@
     .imageYL {
         cursor: zoom-in;
     }
+
+    .folder-list {
+        list-style: none;
+        padding-left: 30px;
+        font-size: 16px;
+        -webkit-user-select: none; /* for Chrome */
+        -moz-user-select: none; /* for Firefox */
+        user-select: none;
+    }
+
+        .folder-list li {
+            float: left;
+            margin: 10px;
+            padding: 10px;
+        }
+
+
+            .folder-list li:hover {
+                background-color: #23c6c8;
+                border-radius: 2px;
+            }
+
+    .foldersel {
+        background-color: #f5f5f5;
+    }
 </style>
 <script src="/ViewV5/JS/timego.js"></script>
 
 <div ms-controller="APP_QYWDGX">
-    <div class="tab-filter-type">
-        <div class="oh">
-            <h5 class="pull-left tr">共享来源：</h5>
-            <ul class="tab-type ft14">
-                <li ms-click="SelectLYType('')"><span class="active">全部</span></li>
-                <li ms-repeat-el="gxlydata" ms-click="SelectLYType(el.CRUser)"><span>{{el.UserRealName}}</span></li>
-            </ul>
-        </div>
-    </div>
-    <div class="padding20">
+
+    <div class="padding20" style="display: none">
         <div class="btn-add">
             <button type="button" class="btn btn-info" ms-click="downloaditem()"><i class="iconfont icon-xiazai ft12 mr5"></i>下载</button>
         </div>
-        <div class="input-group" style="width: 295px; display: none">
+        <div class="input-group" style="width: 295px;">
             <input type="search" class="form-control" placeholder="输入文件名或后缀搜索" ms-duplex="searchContent">
             <span class="input-group-addon" ms-click="getSearchFile()">搜索</span>
         </div>
     </div>
     <div>
         <ol class="breadcrumb">
+            <li ms-click="model.refpage('')"><a class="text-primary">共享文件</a></li>
+            <li ms-click="SelectLYType(seluser)"><a class="text-primary">{{ComFunJS.convertuser(seluser)}}</a></li>
             <li ms-repeat-path="Pathdata" ms-class="active:path.active" ms-click="gopath(path)"><a ms-class="text-primary:!path.active">{{path.Name}}</a></li>
         </ol>
     </div>
     <div id="tab">
-        <div class="default-tab ft14" style="display: block">
+        <div ms-if="showtype=='0'">
+            <ul style="padding-left: 10px;" class="folder-list">
+                <li ms-repeat-el="gxlydata" ms-click="SelectLYType(el.CRUser)">
+                    <div style="text-align: center">
+                        <img src="/ViewV5/images/qywd/file1.png" class="img70 mr5">
+                    </div>
+                    <div style="text-align: center; margin-top: 10px">
+                        <span class="spanwz">{{el.UserRealName}}</span>
+
+                    </div>
+
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="default-tab ft14" ms-if="showtype=='1'">
             <table class="table table-hover">
-                <caption style="padding-left: 12px; color: cornflowerblue">已选中{{tempindex.SelItemData.size()}}</caption>
+                <caption style="padding-left: 12px; color: cornflowerblue">
+                    已选中{{tempindex.SelItemData.size()}} 
+            <button type="button" class="btn btn-info" ms-click="downloaditem()" style="margin-left: 5PX"><i class="iconfont icon-xiazai ft12 mr5"></i>下载</button>
+                </caption>
                 <thead>
 
                     <tr>
@@ -154,23 +192,33 @@
         $id: "APP_QYWDGX",
         name: "文档中心",
         itemtype: "4",//共享文档
+        showtype: "0",
+        seluser: "",//共享来源
         InitWigetData: function (para) {
             $.getJSON('/API/VIEWAPI.ashx?Action=QYWD_GETNBGXLY', {
             }, function (resultData) {//P1为个人文件夹
                 tempindex.gxlydata = resultData.Result;
-                tempindex.SelectLYType('');
             })
         },
-        Pathdata: [{
-            ID: 1, Name: "共享文件", FolderType: 1, Remark: 1, PFolderID: "0", FolderLev: "0", active: true
-        }],
+        Pathdata: [],
         gxlydata: [],
         SelectLYType: function (username) {
+            tempindex.Pathdata.clear();
+            tempindex.showtype = "1";
             $.getJSON('/API/VIEWAPI.ashx?Action=QYWD_GETNBSHARELIST', {
                 P1: username
             }, function (resultData) {//P1为个人文件夹
+                resultData.Result.forEach(function (item) {
+                    item.issel = false;
+                    item.type = "folder";
+                })
+                resultData.Result1.forEach(function (item) {
+                    item.issel = false;
+                    item.type = "file";
+                })
                 tempindex.FolderList = resultData.Result;
-                tempindex.FileList = [];
+                tempindex.FileList = resultData.Result1;
+                tempindex.seluser = username;
                 tempindex.Pathdata.splice(1, tempindex.Pathdata.length - 1)
             })
 

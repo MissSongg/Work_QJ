@@ -18,14 +18,16 @@
             color: #12b8f6;
             font-size: 12px;
         }
-          .link-logo {
-            background: url(/ViewV5/images/qywd/hand.png) no-repeat;
-            margin-top: -10px;
-            display: block;
-            height: 16px;
-            width: 40px;
-            position: absolute;
-        }
+
+    .link-logo {
+        background: url(/ViewV5/images/qywd/hand.png) no-repeat;
+        margin-top: -10px;
+        display: block;
+        height: 16px;
+        width: 40px;
+        position: absolute;
+    }
+
     #qh li {
         float: left;
         width: 50%;
@@ -106,7 +108,7 @@
                         <td ms-click="enterFolder(folder,$event)" class="trdata">
                             <div>
                                 <img src="/ViewV5/images/qywd/file1.png" class="img40 mr5">
-                                  <span class="link-logo"  ms-if="folder.AuthUser"></span>
+                                <span class="link-logo" ms-if="folder.AuthUser"></span>
 
                                 {{folder.Name}}
                                 <!--<i  ms-if="folder.AuthUser" class="iconfont icon-xxfb tip" data-toggle="tooltip" title="提醒共享人" style="margin-left:10px;" ms-click="addtx(folder,$event)"></i>-->
@@ -126,7 +128,10 @@
                         </td>
                         <td>
                             <div>
-                                <img ms-attr-filename="file.name" ms-attr-src="getsrc(file)" ms-click="viewitem(file)" ms-attr-imgyt="{{ComFunJS.getfile(file.ID)}}" ms-class-1="imageYL:ComFunJS.isPic(file.FileExtendName)" class="img40 mr5" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'">{{file.Name}}
+                                <img ms-attr-filename="file.name" ms-attr-src="getsrc(file)" ms-click="viewitem(file)" ms-attr-imgyt="{{ComFunJS.getfile(file.ID)}}" ms-class-1="imageYL:ComFunJS.isPic(file.FileExtendName)" class="img40 mr5" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'">
+                                <span class="link-logo" ms-if="file.AuthUser"></span>
+
+                                {{file.Name}}
                             </div>
                         </td>
                         <td class="tl">
@@ -305,7 +310,7 @@
             </div>
         </div>
     </div>
-        <div class="modal fade" id="WJTX" tabindex="-1" role="dialog"
+    <div class="modal fade" id="WJTX" tabindex="-1" role="dialog"
         aria-labelledby="WJTXLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -705,7 +710,8 @@
             if (tempindex.SelItemData.size() == 1) {
                 $.post('/API/VIEWAPI.ashx?Action=QYWD_SETAUTH', {
                     P1: $("#squsers").val(),
-                    "P2": tempindex.SelItemData[0].ID
+                    "P2": tempindex.SelItemData[0].ID,
+                    "REFTYPE": tempindex.SelItemData.$model[0].type
                 }, function (result) {
                     if (result.ErrorMsg == "") {
                         top.ComFunJS.winsuccess("授权成功");
@@ -722,7 +728,9 @@
         cancelshouquan: function () {
             $.post('/API/VIEWAPI.ashx?Action=QYWD_CANCELAUTH', {
                 P1: "0",
-                P2: tempindex.SelItemData[0].ID
+                P2: tempindex.SelItemData[0].ID,
+                "REFTYPE": tempindex.SelItemData.$model[0].type
+
             }, function (result) {
                 if (result.ErrorMsg == "") {
                     top.ComFunJS.winsuccess("取消成功");
