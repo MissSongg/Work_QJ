@@ -146,10 +146,12 @@ namespace QJY.API
                 if (item["type"].ToString() == "file")
                 {//删除文件
                     new FT_FileB().Delete(d => d.ID.ToString() == item["ID"].ToString() && d.ComId == UserInfo.User.ComId);
+                    new FT_File_UserAuthB().Delete(d => d.RefID.ToString() == item["ID"].ToString() && d.ComId == UserInfo.User.ComId && d.RefType == "1");
                 }
                 else
                 {//删除目录
                     new FT_FolderB().DelWDTree(int.Parse(item["ID"].ToString()), UserInfo.User.ComId.Value);
+                    new FT_File_UserAuthB().Delete(d => d.RefID.ToString() == item["ID"].ToString() && d.ComId == UserInfo.User.ComId && d.RefType == "0");
 
                 }
             }
@@ -635,7 +637,7 @@ namespace QJY.API
             }
 
             string strSQLFile = "SELECT FT_File.* FROM FT_File_UserAuth LEFT JOIN FT_File on  FT_File_UserAuth.RefID=FT_File.ID  WHERE ','+AuthUser+','  like '%," + UserInfo.User.UserName + ",%' and FT_File_UserAuth.RefType='1'";
-            if (strUser != "")
+            if (strUser != "")  
             {
                 strSQLFile = strSQLFile + "  AND FT_File_UserAuth.CRUser='" + strUser + "'  ";
             }
