@@ -1373,7 +1373,7 @@ namespace QJY.API
 
             JH_Auth_Model QYModel = new JH_Auth_ModelB().GetEntity(d => d.ModelCode == strModeCode);
             string strSQL = string.Format("SELECT ID FROM " + QYModel.RelTable + " WHERE  intProcessStanceid='{0}'", PID);
-            intFormID = int.Parse(new Yan_WF_PDB().ExsSclarSql(strSQL).ToString());
+            intFormID = int.Parse(new Yan_WF_PDB().ExsSclarSql(strSQL) == null ? "0" : new Yan_WF_PDB().ExsSclarSql(strSQL).ToString());
 
             return intFormID;
         }

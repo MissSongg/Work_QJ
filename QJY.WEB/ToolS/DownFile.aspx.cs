@@ -45,10 +45,10 @@ namespace QJY.WEB
             try
             {
 
-                JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB.UserInfo();
+                JH_Auth_QY QYMODEL = new JH_Auth_QYB().GetALLEntities().FirstOrDefault();
+
                 if (szhlcode != "")
                 {
-                    UserInfo = new JH_Auth_UserB().GetUserInfo(szhlcode);
                     if (!string.IsNullOrEmpty(FileId))//如果FileID不为空
                     {
                         string filename = "";
@@ -64,10 +64,10 @@ namespace QJY.WEB
                                 string height = Request["height"] ?? "";
                                 Response.AddHeader("Content-Disposition", "attachment;filename=" + file.Name);
                                 Response.ContentType = "application/octet-stream";
-                                filename = UserInfo.QYinfo.FileServerUrl + file.FileMD5;
+                                filename = QYMODEL.FileServerUrl + file.FileMD5;
                                 if (width + height != "")
                                 {
-                                    filename = UserInfo.QYinfo.FileServerUrl + "thumbnail/" + file.FileMD5 + (width + height != "" ? ("/" + width + "/" + height) : "");
+                                    filename = QYMODEL.FileServerUrl + "thumbnail/" + file.FileMD5 + (width + height != "" ? ("/" + width + "/" + height) : "");
                                 }
                                 Response.Redirect(filename);
 
@@ -76,7 +76,7 @@ namespace QJY.WEB
                             {
                                 Response.AddHeader("Content-Disposition", "attachment;filename=" + Name);
                                 Response.ContentType = "application/octet-stream";
-                                filename = UserInfo.QYinfo.FileServerUrl + file.FileMD5;
+                                filename = QYMODEL.FileServerUrl + file.FileMD5;
                                 Response.Redirect(filename);
                             }
                         }
@@ -95,13 +95,13 @@ namespace QJY.WEB
 
                             Response.AddHeader("Content-Disposition", "attachment;filename=" + Name);
                             Response.ContentType = "application/octet-stream";
-                            string filename = UserInfo.QYinfo.FileServerUrl + "zipfile/" + MD5;
+                            string filename = QYMODEL.FileServerUrl + "zipfile/" + MD5;
                             Response.Redirect(filename);
 
                         }
                         if (type == "video" && MD5 != "")
                         {
-                            string url = UserInfo.QYinfo.FileServerUrl + "video/" + MD5;
+                            string url = QYMODEL.FileServerUrl + "video/" + MD5;
                             Byte[] bytes = new WebClient().DownloadData(url);
                             Response.OutputStream.Write(bytes, 0, bytes.Length);
 
@@ -121,7 +121,7 @@ namespace QJY.WEB
                                     {
                                         return;
                                     }
-                                    filename = UserInfo.QYinfo.FileServerUrl + file.FileMD5;
+                                    filename = QYMODEL.FileServerUrl + file.FileMD5;
                                     Response.AddHeader("Content-Disposition", "attachment;filename=" + file.Name);
                                     Response.ContentType = "application/octet-stream";
                                 }
