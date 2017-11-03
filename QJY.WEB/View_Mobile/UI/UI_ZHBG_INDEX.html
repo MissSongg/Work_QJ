@@ -9,7 +9,8 @@
     <title>综合办公</title>
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.5.8/css/sm.min.css">
     <link href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.css" rel="stylesheet" />
-
+        <link href="/View_Mobile/js/layer/need/layer.css" rel="stylesheet" />
+    <script src="/View_Mobile/js/layer/layer.m.js"></script>
     <link href="/View_Mobile/CSS/reset.css" rel="stylesheet" type="text/css">
     <link href="/View_Mobile/CSS/base.css?ver=1" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="/View_Mobile/CSS/animate.css">
@@ -61,7 +62,7 @@
                     <li>
                         <div class="item-content" style="padding-left: .1rem;">
                             <div class="item-media" style="padding-bottom: 0; padding-top: 0;">
-                                <img ms-src="{{ComFunJS.getfile(userData.QYinfo.LogoID)}}" style="border-radius: 1rem; height: 1.6rem;" onerror="javascript: this.src = '/images/MVimg/Index/CompanyLogo.png'">
+                                <img ms-src="{{ComFunJS.getfile(userData.QYinfo.LogoID)}}" style="border-radius: .1rem; height: 1.6rem;" onerror="javascript: this.src = '/images/MVimg/Index/CompanyLogo.png'">
                             </div>
                             <div class="item-inner" style="padding-bottom: 0; padding-top: 0; margin-left: .55rem;">
                                 <div class="item-inner" style="padding-bottom: 0; padding-top: 0;">
@@ -125,14 +126,14 @@
 
                 <div class="card-header no-border">
                     <div class="facebook-avatar">
-                        <img ms-src="{{ComFunJS.getfile()+'&type=TX&user='el.UserFrom}}" style="border-radius: 3px; width: 34px; height: 34px"></div>
+                        <img ms-attr-src="{{ComFunJS.getfile()+'&type=TX&user='+el.UserFrom}}" style="border-radius: 3px; width: 34px; height: 34px"></div>
                     <div class="facebook-date" style="font-size: 0.6rem">{{ComFunJS.convusers(el.UserFrom)}}</div>
                     <div class="facebook-date" style="font-size: 0.6rem">{{$.timeago(el.CRDate)}}</div>
                 </div>
                 <div class="card-content" style="margin-top: 0px">
                     <div class="card-content-inner" style="padding-bottom: 0.3rem; color: #5f646e; padding-top: 0.2rem; font-size: 0.6rem">{{el.MsgContent|html}}</div>
                 </div>
-                <div class="card-footer no-border" style="padding: 0;">
+                <div class="card-footer no-border" style="padding: 0;background-color:transparent">
                     <a href="#" ms-click="vieww(el)"><i class="fa fa-play-circle"></i>&nbsp;点击查看&nbsp;</a>
                     <a href="#" ms-if="el.isRead==0" ms-click="vieww(el,1)"><i class="fa fa-bell-slash"></i>&nbsp;设为已读&nbsp;</a>
 
@@ -156,7 +157,7 @@
         //ComFunJS.delCookie("szhlcode")
         //if (ComFunJS.getCookie("szhlcode") == null) {
         //    ComFunJS.setCookie("szhlcode", "1234567890", 7);
-        //    ComFunJS.setCookie("wxusername", "18539901135", 7);
+        //    ComFunJS.setCookie("username", "18539901135", 7);
         //}
         var model = avalon.define({
             $id: "WORKINDEX",
@@ -260,6 +261,25 @@
                     $(".header").show('normal');
                     model.contentcode = "TEMP_INDEX_WORK";
                 }
+            })
+            $.getJSON("/API/VIEWAPI.ashx?action=XTGL_WXINIT&r=" + Math.random(), { }, function (r) {
+                //el.loading("hide");
+                if (r.ErrorMsg == "") {
+                    var returnmsg = [];
+                    var usersarr = r.Result;
+                    $(usersarr).each(function (index, ele) {
+                        returnmsg.push({ 'UserName': ele.UserName, 'UserRealName': ele.UserRealName, 'mobphone': ele.mobphone });
+                    })
+                    window.localStorage.setItem("alluserinfo", JSON.stringify(returnmsg));
+                }
+                if (r.ErrorMsg == "WXTIMEOUT") {
+                    //微信端超时处理
+                    ComFunJS.delCookie("szhlcode");
+                    ComFunJS.delCookie("username");
+                    window.location.href = window.location.href + "&&r=" + Math.random()
+                }
+
+
             })
 
             $(document).on('infinite', '.infinite-scroll-bottom', function (e) {

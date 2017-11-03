@@ -172,7 +172,7 @@
         });
 
         function setwatermark() {
-            var curuser = ComFunJS.convuser(ComFunJS.getCookie("wxusername"));
+            var curuser = ComFunJS.convuser(ComFunJS.getCookie("username"));
             if (curuser && model.modelData.IsSecret.toLowerCase() == "true") {
                 watermark({ watermark_txt: curuser, watermark_y: $(".header").height() + 20, watermark_page_width: $("#details").width(), watermark_page_height: $("#details").height() });
 

@@ -134,7 +134,7 @@ namespace QJY.WEB
                 {
                     Model.ErrorMsg = strAction + "接口调用失败,请检查日志";
                     Model.Result = ex.ToString();
-                    new JH_Auth_LogB().InsertLog(strAction, Model.ErrorMsg, ex.ToString(), UserName, "", 0, strIP);
+                    new JH_Auth_LogB().InsertLog(strAction, Model.ErrorMsg + ex.StackTrace.ToString(), ex.ToString(), UserName, "", 0, strIP);
 
                 }
             }

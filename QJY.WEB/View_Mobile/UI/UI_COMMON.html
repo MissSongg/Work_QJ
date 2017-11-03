@@ -13,20 +13,19 @@
         //});
 
         window.localStorage.removeItem("alluserinfo");
-
         var funcode = ComFunJS.getQueryString("funcode");
         var code = ComFunJS.getQueryString("code");
         var corpId = ComFunJS.getQueryString("corpId");
 
         $(function () {
-            if (ComFunJS.getCookie("szhlcode") && ComFunJS.getCookie("wxusername")) {  //缓存的用户名，直接跳到对应的地址
+            if (ComFunJS.getCookie("szhlcode") && ComFunJS.getCookie("username")) {  //缓存的用户名，直接跳到对应的地址
                 $.getJSON("/API/WXAPI.ashx?action=isexist&r=" + Math.random(), { "corpid": corpId }, function (r) {
                     if (r.ErrorMsg == "") {
                         getRURL(funcode);
                     }
                     else {
                         ComFunJS.delCookie("szhlcode");
-                        ComFunJS.delCookie("wxusername");
+                        ComFunJS.delCookie("username");
                         hqsq();
                     }
                 })
@@ -43,7 +42,7 @@
                     //el.loading("hide");
                     if (r.ErrorMsg == "") {
                         ComFunJS.setCookie("szhlcode", r.Result, 7);
-                        ComFunJS.setCookie("wxusername", r.Result1, 7);
+                        ComFunJS.setCookie("username", r.Result1, 7);
                         getRURL(funcode);
                     } else {
                         window.location.replace('/View_Mobile/UI/UI_ERROR.html?r=' + Math.random() + "&msg=很抱歉，您没有权限!!!" + r.ErrorMsg + r.Result + r.Result1);
@@ -104,7 +103,7 @@
                 if (r.ErrorMsg == "WXTIMEOUT") {
                     //微信端超时处理
                     ComFunJS.delCookie("szhlcode");
-                    ComFunJS.delCookie("wxusername");
+                    ComFunJS.delCookie("username");
                     window.location.href = window.location.href + "&&r=" + Math.random()
                 }
 

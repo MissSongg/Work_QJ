@@ -228,6 +228,11 @@ var ComFunJS = {
         });
 
     },//成功提示
+    showload: function () {
+          layer.open({
+              type: 2
+          });
+    },//成功提示
     winwarning: function (msg) {
         layer.open({
             content: msg,
@@ -1256,10 +1261,10 @@ var ComFunJS = {
         })
     },//微信选择用户插件
     getnowuser: function () {
-        return ComFunJS.getCookie("wxusername") || ComFunJS.getCookie("username");
+        return  ComFunJS.getCookie("username");
     },//获取当前用户名
     getnowuserobj: function () {
-        return ComFunJS.convuserobj(ComFunJS.getnowuser("wxusername"));
+        return ComFunJS.convuserobj(ComFunJS.getnowuser("username"));
     },//获取当前用户对象
     convuserobj: function (str) {
         var obj = {};
@@ -1601,7 +1606,7 @@ var ComFunJS = {
     initsetajax: function (isload) { /// 配置AJAX
         $(document).on('ajaxStart', function () {
             if (!isload) {
-                $.showPreloader();
+                ComFunJS.showload()
             }
         })
         $(document).on('ajaxSuccess', function (e, jqXHR, s, data) {
@@ -1619,11 +1624,11 @@ var ComFunJS = {
                     ComFunJS.winwarning(data.ErrorMsg);
                 }
             } catch (e) {
-                $.hidePreloader();
+                ComFunJS.closeAll()
             }
         })
         $(document).on('ajaxStop', function () {
-            $.hidePreloader();
+            ComFunJS.closeAll()
         })
         $(document).on('ajaxError', function (event, xhr, options, exc) {
             ComFunJS.winwarning("请求失败！")

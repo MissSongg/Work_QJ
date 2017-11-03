@@ -547,7 +547,7 @@
                         if (resultData.Result.JLUser) {
                             var JLUserList = resultData.Result.JLUser.split(',');
 
-                            var un = ComFunJS.getCookie("wxusername");
+                            var un = ComFunJS.getCookie("username");
                             if (JLUserList.indexOf(un) != -1 || resultData.Result.FQUser.split(',').indexOf(un) != -1) {
                                 tempmodel.isjl = "1";
                             }

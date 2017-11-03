@@ -849,7 +849,7 @@ namespace QJY.API
                         PIB.ENDWF(PID);
                         content = UserInfo.User.UserRealName + "审批完成了您发起的" + PD.ProcessName + "表单";
                         strTXUser = PI.CRUser;
-                        funName = "LCSP_CHECKB";
+                        funName = "LCSP_CHECK";
                         //发送消息给抄送人 
                         if (!string.IsNullOrEmpty(PI.ChaoSongUser))
                         {
@@ -857,7 +857,7 @@ namespace QJY.API
                             CSTX.Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                             CSTX.APIName = "LCSP";
                             CSTX.ComId = UserInfo.User.ComId;
-                            CSTX.FunName = "LCSP_CHECKB";
+                            CSTX.FunName = "LCSP_CHECK";
                             CSTX.intProcessStanceid = PID;
                             CSTX.CRUserRealName = UserInfo.User.UserRealName;
                             CSTX.MsgID = DATAID.ToString();
@@ -943,7 +943,7 @@ namespace QJY.API
                         TX.Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                         TX.APIName = "LCSP";
                         TX.ComId = UserInfo.User.ComId;
-                        TX.FunName = "LCSP_CHECKB";
+                        TX.FunName = "LCSP_CHECK";
                         TX.intProcessStanceid = PID;
                         TX.CRUserRealName = UserInfo.User.UserRealName;
                         TX.MsgID = ID.ToString();
@@ -1304,11 +1304,6 @@ namespace QJY.API
         public void LCSP_CHECK(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             SendCommonMsg(P1, "A");
-
-        }
-        public void LCSP_CHECKB(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
-            SendCommonMsg(P1, "B");
 
         }
         public void SendCommonMsg(string P1, string type)
