@@ -1050,6 +1050,101 @@ namespace QJY.API
             return ipAddr;
         }
 
+        public static bool ProcessSqlStr(string Str, int type)
+        {
+            string SqlStr = "";
+            if (type == 1)  //Post方法提交  
+            {
+                SqlStr = "script|iframe|xp_loginconfig|xp_fixeddrives|Xp_regremovemultistring|Xp_regread|Xp_regwrite|xp_cmdshell|xp_dirtree|exec|insert|select|delete|update|count(|substring(|mid(|master|truncate|char(|declare|replace(|varchar(|cast(";
+            }
+            else if (type == 2) //Get方法提交  
+            {
+                SqlStr = "'|script|iframe|xp_loginconfig|xp_fixeddrives|Xp_regremovemultistring|Xp_regread|Xp_regwrite|xp_cmdshell|xp_dirtree|exec|insert|select|delete|update|count(|*|asc(|chr(|substring(|mid(|master|truncate|char(|declare|replace(|;|varchar(|cast(";
+            }
+            else if (type == 3) //Cookie提交  
+            {
+                SqlStr = "script|iframe|xp_loginconfig|xp_fixeddrives|Xp_regremovemultistring|Xp_regread|Xp_regwrite|xp_cmdshell|xp_dirtree|exec|insert|select|delete|update|count(|asc(|chr(|substring(|mid(|master|truncate|char(|declare";
+            }
+            else  //默认Post方法提交  
+            {
+                SqlStr = "script|iframe|xp_loginconfig|xp_fixeddrives|Xp_regremovemultistring|Xp_regread|Xp_regwrite|xp_cmdshell|xp_dirtree|exec|insert|select|delete|update|count(|asc(|chr(|substring(|mid(|master|truncate|char(|declare|replace(";
+            }
+
+            bool ReturnValue = true;
+            try
+            {
+                if (Str != "")
+                {
+                    string[] anySqlStr = SqlStr.ToUpper().Split('|'); ;
+                    foreach (string ss in anySqlStr)
+                    {
+                        if (Str.ToUpper().IndexOf(ss) >= 0)
+                        {
+                            ReturnValue = false;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                ReturnValue = false;
+            }
+            return ReturnValue;
+        }
+
+
+
+        public string checkconetst(HttpContext context)
+        {
+            string strCheckString = "";
+            string getkeys = "";
+            if (context.Request.Form != null)
+            {
+                for (int i = 0; i < HttpContext.Current.Request.Form.Count; i++)
+                {
+                    getkeys = context.Request.Form.Keys[i];
+                    if (!CommonHelp.ProcessSqlStr(context.Request.Form[getkeys], 1))
+                    {
+                        if (context.Request.Form[getkeys].ToString().Length>20)
+                        {
+                            strCheckString = context.Request.Form[getkeys].ToString();
+
+                        }
+                    }
+                }
+            }
+            if (context.Request.QueryString != null)
+            {
+                for (int i = 0; i < HttpContext.Current.Request.QueryString.Count; i++)
+                {
+                    getkeys = context.Request.QueryString.Keys[i];
+                    if (!CommonHelp.ProcessSqlStr(context.Request.QueryString[getkeys], 1))
+                    {
+                        if (context.Request.QueryString[getkeys].ToString().Length > 20)
+                        {
+                            strCheckString = context.Request.QueryString[getkeys].ToString();
+                        }
+                    }
+                }
+
+            }
+            if (context.Request.Cookies != null)
+            {
+                for (int i = 0; i < context.Request.Cookies.Count; i++)
+                {
+                    getkeys = context.Request.Cookies.AllKeys[i];
+                    if (!ProcessSqlStr(context.Request.Cookies[getkeys].Value, 3))
+                    {
+                        if (context.Request.Cookies[getkeys].ToString().Length > 20)
+                        {
+                            //System.Web.HttpContext.Current.Response.Redirect("/ViewV5/APP_WARN.html?type=2&msg=检测到敏感字符");
+                            strCheckString = context.Request.Cookies[getkeys].ToString();
+                        }
+                    }
+                }
+            }
+            return strCheckString;
+        }
     }
 
 

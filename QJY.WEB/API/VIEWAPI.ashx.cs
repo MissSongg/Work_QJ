@@ -38,81 +38,78 @@ namespace QJY.WEB
             string authcode = context.Request.Headers["Authorization"] ?? "";
 
             string strIP = CommonHelp.getIP(context);//用户IP
-
             int intTimeOut = 60;//用户超时间隔时间即szhlcode失效时间
-            if (P1.IndexOf("<script>") > -1)
-            {
-                P1 = P1.Replace("<script>", "&gt;script&lt;");
-            }
-            if (P2.IndexOf("<script>") > -1)
-            {
-                P2 = P2.Replace("<script>", "&gt;script&lt;");
-            }
-            if (P1.IndexOf("<script/>") > -1)
-            {
-                P1 = P1.Replace("<script/>", "&gt;script/&lt;");
-            }
-            if (P2.IndexOf("<script/>") > -1)
-            {
-                P2 = P2.Replace("<script/>", "&gt;script/&lt;");
-            }
             Msg_Result Model = new Msg_Result() { Action = strAction.ToUpper(), ErrorMsg = "" };
 
             if (!string.IsNullOrEmpty(strAction))
             {
                 try
                 {
-                    #region 必须登录执行接口
-                    Model.ErrorMsg = "";
-
-                    var bl = true;
-                    var acs = Model.Action.Split('_');
-                    if (Model.Action.IndexOf("_") > 0)
+                    string strCheckString = new CommonHelp().checkconetst(context);
+                    if (strCheckString != "")
                     {
-                        if (acs[0].ToUpper() == "Commanage".ToUpper())
-                        {
-                            bl = false;
-                            var container = ServiceContainerV.Current().Resolve<IWsService>(acs[0].ToUpper());
-                            Model.Action = acs[1];
-                            container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), new JH_Auth_UserB.UserInfo());
-                            int cid = 0;
-                            string un = string.Empty;
-                            if (Model.Result4 != null)
-                            {
-                                JH_Auth_User UserInfo = Model.Result4;
-                                cid = UserInfo.ComId.Value;
-                                un = UserInfo.UserRealName;
-                            }
-
-                        }
+                        Model.ErrorMsg = strAction + "有敏感字符串";
+                        new JH_Auth_LogB().InsertLog(strAction, Model.ErrorMsg, strCheckString, UserName, "", 0, strIP);
                     }
-                    if (bl)
+                    else
                     {
-                        if (szhlcode != "")//如果存在TOKEN,根据TOKEN找到用户信息，并根据权限执行具体ACTION
+                        #region 必须登录执行接口
+                        Model.ErrorMsg = "";
+
+                        var bl = true;
+                        var acs = Model.Action.Split('_');
+                        if (Model.Action.IndexOf("_") > 0)
                         {
-                            string strSZHLCode = szhlcode;
-                            //通过Code获取用户名，然后执行接口方法
-                            var container = ServiceContainerV.Current().Resolve<IWsService>(acs[0].ToUpper());
-                            JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB().GetUserInfo(strSZHLCode);
-                            if (UserInfo.User.logindate == null)
+                            if (acs[0].ToUpper() == "Commanage".ToUpper())
                             {
-                                UserInfo.User.logindate = DateTime.Now;
-                            }
-                            TimeSpan ts = new TimeSpan(UserInfo.User.logindate.Value.Ticks).Subtract(new TimeSpan(DateTime.Now.Ticks)).Duration();
-                            if (UserInfo != null)
-                            {
-                                if (ts.TotalMinutes > intTimeOut)  // 超过五分钟了,超时了哦;
+                                bl = false;
+                                var container = ServiceContainerV.Current().Resolve<IWsService>(acs[0].ToUpper());
+                                Model.Action = acs[1];
+                                container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), new JH_Auth_UserB.UserInfo());
+                                int cid = 0;
+                                string un = string.Empty;
+                                if (Model.Result4 != null)
                                 {
-                                    UserInfo.User.pccode = "";
-                                    new JH_Auth_UserB().Update(UserInfo.User);//清除PCCode
-                                    Model.ErrorMsg = "WXTIMEOUT";
+                                    JH_Auth_User UserInfo = Model.Result4;
+                                    cid = UserInfo.ComId.Value;
+                                    un = UserInfo.UserRealName;
+                                }
+
+                            }
+                        }
+                        if (bl)
+                        {
+                            if (szhlcode != "")//如果存在TOKEN,根据TOKEN找到用户信息，并根据权限执行具体ACTION
+                            {
+                                string strSZHLCode = szhlcode;
+                                //通过Code获取用户名，然后执行接口方法
+                                var container = ServiceContainerV.Current().Resolve<IWsService>(acs[0].ToUpper());
+                                JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB().GetUserInfo(strSZHLCode);
+                                if (UserInfo.User.logindate == null)
+                                {
+                                    UserInfo.User.logindate = DateTime.Now;
+                                }
+                                TimeSpan ts = new TimeSpan(UserInfo.User.logindate.Value.Ticks).Subtract(new TimeSpan(DateTime.Now.Ticks)).Duration();
+                                if (UserInfo != null)
+                                {
+                                    if (ts.TotalMinutes > intTimeOut)  // 超过五分钟了,超时了哦;
+                                    {
+                                        UserInfo.User.pccode = "";
+                                        new JH_Auth_UserB().Update(UserInfo.User);//清除PCCode
+                                        Model.ErrorMsg = "WXTIMEOUT";
+                                    }
+                                    else
+                                    {
+                                        Model.Action = Model.Action.Substring(acs[0].Length + 1);
+                                        container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), UserInfo);
+                                        new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserInfo.User.UserName, UserInfo.User.UserRealName, UserInfo.QYinfo.ComId, strIP);
+                                        new JH_Auth_UserB().UpdateloginDate(UserInfo.User.ComId.Value, UserInfo.User.UserName);//更新用户最近的操作时间
+                                    }
+
                                 }
                                 else
                                 {
-                                    Model.Action = Model.Action.Substring(acs[0].Length + 1);
-                                    container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), UserInfo);
-                                    new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserInfo.User.UserName, UserInfo.User.UserRealName, UserInfo.QYinfo.ComId, strIP);
-                                    new JH_Auth_UserB().UpdateloginDate(UserInfo.User.ComId.Value, UserInfo.User.UserName);//更新用户最近的操作时间
+                                    Model.ErrorMsg = "NOSESSIONCODE";
                                 }
 
                             }
@@ -120,14 +117,10 @@ namespace QJY.WEB
                             {
                                 Model.ErrorMsg = "NOSESSIONCODE";
                             }
-
                         }
-                        else
-                        {
-                            Model.ErrorMsg = "NOSESSIONCODE";
-                        }
+                        #endregion
                     }
-                    #endregion
+
 
                 }
                 catch (Exception ex)

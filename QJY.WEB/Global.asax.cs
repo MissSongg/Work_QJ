@@ -48,9 +48,7 @@ namespace QJY.WEB
 
         }
 
-        protected void Application_BeginRequest(object sender, EventArgs e)
-        {
-        }
+     
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)
         {
@@ -77,5 +75,8 @@ namespace QJY.WEB
             HttpWebResponse ResponseDataXS = CommonHelp.CreateHttpResponse(strUrl, null, 0, "", null, "GET");
             string Returndata = new StreamReader(ResponseDataXS.GetResponseStream(), Encoding.UTF8).ReadToEnd();
         }
+
+
+    
     }
 }

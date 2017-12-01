@@ -112,6 +112,7 @@
     <Content Include="Global.asax" />
     <Content Include="API\VIEWAPI.ashx" />
     <Content Include="API\WXAPI.ashx" />
+    <Content Include="ViewV5\APP_WARN.html" />
     <Content Include="ViewV5\images\qrcode.png" />
     <Content Include="View_Mobile\CSS\login.css" />
     <Content Include="View_Mobile\JS\avalon1.47.js" />
