@@ -26,8 +26,8 @@
     <script src="/ViewV5/JS/layer/layer.js"></script>
     <script src="/ViewV5/JS/avalon1.47.js"></script>
     <script src="/ViewV5/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
-    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160925"></script>
-    <script src="/ViewV5/JS/WFJS.js?ver=20170326"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20170925"></script>
+    <script src="/ViewV5/JS/WFJS.js?ver=20171226"></script>
     <script src="/ViewV5/JS/YSteps/Steps.js"></script>
     <script src="/ViewV5/JS/chosen/chosen.jquery.min.js"></script>
 
@@ -325,9 +325,8 @@
                         <span class="input-group-btn">
                             <button class="btn btn-danger btnqx" ms-click="qx()" style="width: 120px; height: 40px;">取消</button>
                             <button class="btn btn-success btnSucc" style="width: 120px; height: 40px; margin-left: 2px;" ms-click="SaveData(this,false)"><i class="fa fa-spinner fa-spin" style="display: none"></i>提交信息</button>
-                            <!--<button class="btn btn-info" ms-if="lctype==0||lctype==1" style="width: 120px; height: 40px;margin-left:2px;" ms-click="SaveDraft(this)" >存草稿</button>-->
                             <div class="btn-group dropup" style="margin-left: 2px;" ms-if="isDraft">
-                                <button type="button" class="btn btn-info" style="width: 100px; height: 40px;" ms-click="SaveDraft(this)">存草稿</button>
+                                <button type="button" class="btn btn-info" style="width: 100px; height: 40px;" ms-click="SaveDraft()">存草稿</button>
                                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 40px; background-color: #1595C5;" ms-visible="DraftList.size()>0">
                                     <span class="caret"></span>
                                     <span class="sr-only"></span>

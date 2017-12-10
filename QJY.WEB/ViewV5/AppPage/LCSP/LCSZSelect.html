@@ -96,25 +96,25 @@
     </style>
 </head>
 <body ms-controller="LCSZSelect">
-    <div class="container-fluid" style="margin:10px" id="dvContent">
+    <div class="container-fluid" style="margin: 10px" id="dvContent">
         <div class="radio radio-success">
             <input type="radio" id="ckLeader" name="conLCRY" value="1" ms-duplex-string="rytype">
-            <label for="ckLeader"> 直属上级 </label>
+            <label for="ckLeader">直属上级 </label>
         </div>
         <div class="radio radio-success">
             <input type="radio" id="ckSelf" name="conLCRY" value="2" ms-duplex-string="rytype">
-            <label for="ckSelf"> 流程发起人 </label>
+            <label for="ckSelf">流程发起人 </label>
         </div>
         <div class="radio radio-success">
             <input type="radio" id="ckPeople" name="conLCRY" value="3" ms-duplex-string="rytype">
-            <label for="ckPeople"> 指定人员 </label>
+            <label for="ckPeople">指定人员 </label>
         </div>
-        <div class="form-group" ms-visible="rytype==3" style="width:90%">
+        <div class="form-group" ms-visible="rytype==3" style="width: 90%">
             <input type="text" class="form-control szhl_getPeoples" ms-duplex="ZDUser" />
         </div>
         <div class="radio radio-success">
             <input type="radio" id="ckRole" name="conLCRY" value="0" ms-duplex-string="rytype">
-            <label for="ckRole"> 指定角色 </label>
+            <label for="ckRole">指定角色 </label>
         </div>
         <table class="table table-bordered table-hover table-striped" id="khgl" ms-visible="rytype==0">
             <thead>
@@ -138,7 +138,7 @@
     </div>
     <script src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
     <script src="/ViewV5/JS/avalon1.47.js"></script>
-    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160915"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20171215"></script>
     <script>
         var model = avalon.define({
             $id: "LCSZSelect",
@@ -149,7 +149,7 @@
             selBM: {},//已选择部门
 
             GetRoleList: function (el) {
-                $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETROLE',{}, function (resultData) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETROLE', {}, function (resultData) {
                     if (resultData.ErrorMsg == "") {
                         resultData.Result.forEach(function (el) {
                             if (model.rytype == 0 && el.RoleCode == model.checkval) {
@@ -191,21 +191,22 @@
         avalon.ready(function () {
             if (model.rytype == "3") {
                 model.ZDUser = model.checkval;
-            } 
+            }
             ComFunJS.initForm();
             model.GetRoleList();
         })
         function getlcry() {//获取选择的人员
             var LCName = "";
             var RoleCode = "";
+
             var data = { 'RoleCode': RoleCode, 'LCName': LCName, 'LCtype': model.rytype };
             if (model.rytype == "0") {
                 model.SelRoles.forEach(function (item) {
                     data.RoleCode = data.RoleCode + item.RoleCode + ",";
                     data.LCName = data.LCName + item.RoleName + ",";
                 })
-                data.LCName = data.LCName.substr(0, data.LCName.length - 1);
-                data.RoleCode = data.RoleCode.substr(0, data.RoleCode.length - 1);
+                data.LCName = ComFunJS.trim(data.LCName);
+                data.RoleCode = ComFunJS.trim(data.RoleCode);
             }
             if (model.rytype == "1") {
                 data.LCName = "直属上级";

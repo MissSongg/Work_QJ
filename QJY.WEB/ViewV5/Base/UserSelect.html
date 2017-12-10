@@ -135,15 +135,15 @@
     </style>
 </head>
 <body ms-controller="UserSelect">
-    <div class="container-fluid " style="margin:10px" id="dvContent">
-        <div style="width:300px;position:absolute;" ms-if="!model.userType">
+    <div class="container-fluid " style="margin: 10px" id="dvContent">
+        <div style="width: 300px; position: absolute;" ms-if="!model.userType">
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">组织机构</a></li>
                 <li role="presentation"><a href="#rolepanel" aria-controls="rolepanel" role="tab" data-toggle="tab">所有角色</a></li>
                 <li role="presentation"><a href="#usergroup" aria-controls="usergroup" role="tab" data-toggle="tab">自定义分组</a></li>
             </ul>
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active fade in" id="home" style="padding-top:20px">
+                <div role="tabpanel" class="tab-pane active fade in" id="home" style="padding-top: 20px">
                     <ul id="tree" class="ztree"></ul>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="rolepanel">
@@ -156,27 +156,27 @@
                             <a target="_blank" ms-attr-title="item.DataContent">
                                 <span id="treeRole_1_ico" class="button ico_docu"></span><span id="treeRole_1_span">{{item.DataContent}}</span>
                             </a>
-                            <span ms-click="DelUserGroup(item,$event)" style="font-size:12px;margin-left:10px;color:red; cursor:pointer">删除</span>
+                            <span ms-click="DelUserGroup(item,$event)" style="font-size: 12px; margin-left: 10px; color: red; cursor: pointer">删除</span>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="row" ms-css-margin="!model.userType?'0 0 0  311px':''">
-            <div class="formtitle" style="margin-bottom:5px"> <span>已选人员</span><input type="button" value="保存自定义分组" class="btn btn-sm btn-success pull-right" ms-if="SelUsers.size()>0" data-toggle="modal" data-target="#UserGroupModal"  /></div>
-            <div class="panel-body" style="padding:0;max-height:100px;overflow:auto">
-                <div class="pCard" ms-repeat-seluser="SelUsers" style="min-width:80px">
+            <div class="formtitle" style="margin-bottom: 5px"><span>已选人员</span><input type="button" value="保存自定义分组" class="btn btn-sm btn-success pull-right" ms-if="SelUsers.size()>0" data-toggle="modal" data-target="#UserGroupModal" /></div>
+            <div class="panel-body" style="padding: 0; max-height: 100px; overflow: auto">
+                <div class="pCard" ms-repeat-seluser="SelUsers" style="min-width: 80px">
                     <span class="badge" ms-click="DelSelUser(seluser)">X</span>
-                    <div class="pName" style="padding-top:5px">{{seluser.UserRealName}}</div>
+                    <div class="pName" style="padding-top: 5px">{{seluser.UserRealName}}</div>
                 </div>
-                
+
             </div>
-            <div class="formtitle" style="margin-bottom:5px;"> <span>{{selBM}}({{QueryUsers.size()}})<font ms-if="isSignle=='N'"><i class="fa fa-square  isel selall" ms-click="SelUserAll(this)" style="margin-left:10px"></i>全选</font></span></div>
+            <div class="formtitle" style="margin-bottom: 5px;"><span>{{selBM}}({{QueryUsers.size()}})<font ms-if="isSignle=='N'"><i class="fa fa-square  isel selall" ms-click="SelUserAll(this)" style="margin-left:10px"></i>全选</font></span></div>
             <!-- List group -->
-            <div class="panel-body" style="padding:0;min-height:40px">
-                <div class="pCard float-shadow" ms-repeat-user="QueryUsers" ms-click="SelUser(user,this)" style="padding-right:10px;min-width:80px">
+            <div class="panel-body" style="padding: 0; min-height: 40px">
+                <div class="pCard float-shadow" ms-repeat-user="QueryUsers" ms-click="SelUser(user,this)" style="padding-right: 10px; min-width: 80px">
                     <span class="usersel"><i class="fa isel fa-check-square " ms-if="user.issel"></i></span>
-                    <div class="pName" style="padding-top:5px">{{user.UserRealName}}</div>
+                    <div class="pName" style="padding-top: 5px">{{user.UserRealName}}</div>
                 </div>
             </div>
         </div>
@@ -208,7 +208,7 @@
     <script type="text/javascript" src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
     <script src="/ViewV5/CSS/bootstrap3.3.5/js/bootstrap.js"></script>
     <script src="/ViewV5/JS/avalon1.47.js"></script>
-    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160915"></script>
+    <script src="/ViewV5/JS/SZHLCommon.js?jsver=20171215"></script>
     <script src="/ViewV5/JS/zTree_v3/js/jquery.ztree.core-3.5.js"></script>
     <script src="/ViewV5/JS/zTree_v3/js/jquery.ztree.excheck-3.5.js"></script>
     <script>
@@ -221,7 +221,7 @@
             isSignle: ComFunJS.getQueryString("issignle") ? ComFunJS.getQueryString("issignle") : "N",
             checkval: top.$("body").data("checkvalue") ? top.$("body").data("checkvalue") : "",
             userType: ComFunJS.getQueryString("userType") ? ComFunJS.getQueryString("userType") : "",
-            typeid: ComFunJS.getQueryString("typeid") ? ComFunJS.getQueryString("typeid") : "", 
+            typeid: ComFunJS.getQueryString("typeid") ? ComFunJS.getQueryString("typeid") : "",
             isAll: ComFunJS.getQueryString("isall"), //是否加载所有人，N:根据当前用户所在部门加载，Y:加载所有人员
             selBM: "",//已选择部门
             SelUser: function (item, dom) {
@@ -232,7 +232,7 @@
                     })
 
                 }
-                if (model.isSignle == "N"&&item.issel) {
+                if (model.isSignle == "N" && item.issel) {
                     $(".selall").removeClass("fa-check-square").addClass("fa-square")
                 }
                 item.issel = !item.issel;
@@ -361,7 +361,7 @@
                         onClick: model.zTreeOnClickRole
                     }
                 };
-                $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETROLE',{}, function (msg) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETROLE', {}, function (msg) {
                     zTreeObjRole = $.fn.zTree.init($("#treeRole"), setting, eval(msg.Result));
                 });
             }, zTreeOnClickRole: function (event, treeId, treeNode) {
@@ -434,9 +434,9 @@
                 })
             }
         })
-        avalon.ready(function () { 
-            if (model.userType && model.typeid)
-            {
+        avalon.ready(function () {
+            model.checkval = ComFunJS.trim(model.checkval)
+            if (model.userType && model.typeid) {
                 $.getJSON('/API/VIEWAPI.ashx?Action=' + model.userType + '_GET' + model.userType + 'USERLIST', { P1: model.typeid }, function (resultData) {
                     if (resultData.ErrorMsg == "") {
                         resultData.Result.forEach(function (el) {
@@ -448,13 +448,13 @@
                             })
                         })
                         model.QueryUsers.clear();
-                        model.QueryUsers = resultData.Result; 
+                        model.QueryUsers = resultData.Result;
                     }
                 })
             }
             else {
                 model.getUserTree();
-                model.GetRoleList(); 
+                model.GetRoleList();
                 model.GetUserGroup();
             }
         })
@@ -469,9 +469,9 @@
                     phone = phone + item.mobphone + ","
                 }
             })
-            userid = userid.substr(0, userid.length - 1);
-            username = username.substr(0, username.length - 1);
-            phone = phone.substr(0, phone.length - 1);
+            userid = ComFunJS.trim(userid);
+            username = ComFunJS.trim(username);
+            phone = ComFunJS.trim(phone);
             var people = { 'userid': userid, 'username': username, 'phone': phone };
             return people;
 

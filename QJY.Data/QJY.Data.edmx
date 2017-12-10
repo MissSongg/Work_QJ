@@ -824,6 +824,7 @@
           <Property Name="CRUser" Type="varchar" MaxLength="200" />
           <Property Name="CRTime" Type="datetime" />
           <Property Name="ExtData" Type="varchar(max)" />
+          <Property Name="DataID" Type="int" />
         </EntityType>
         <EntityType Name="SZHL_DXGL">
           <Key>
@@ -1030,7 +1031,7 @@
           <Property Name="BXZJE" Type="decimal" Precision="18" Scale="2" />
           <Property Name="CRDate" Type="datetime" />
           <Property Name="CRUser" Type="varchar" MaxLength="50" />
-          <Property Name="Files" Type="varchar" MaxLength="50" />
+          <Property Name="Files" Type="varchar" MaxLength="500" />
           <Property Name="Remark" Type="varchar" MaxLength="500" />
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="intProcessStanceid" Type="int" Nullable="false" />
@@ -1716,7 +1717,6 @@
           <EntitySet Name="JH_Auth_YYLog" EntityType="QJY_SaaSModel.JH_Auth_YYLog" />
           <EntitySet Name="JH_Auth_ZiDian" EntityType="QJY_SaaSModel.JH_Auth_ZiDian" />
           <EntitySet Name="SZHL_CCXJ" EntityType="QJY_SaaSModel.SZHL_CCXJ" />
-          <EntitySet Name="SZHL_DRAFT" EntityType="QJY_SaaSModel.SZHL_DRAFT" />
           <EntitySet Name="SZHL_DXGL" EntityType="QJY_SaaSModel.SZHL_DXGL" />
           <EntitySet Name="SZHL_GZBG" EntityType="QJY_SaaSModel.SZHL_GZBG" />
           <EntitySet Name="SZHL_GZGL" EntityType="QJY_SaaSModel.SZHL_GZGL" />
@@ -1761,6 +1761,7 @@
           <EntitySet Name="SZHL_HYGL_ROOM" EntityType="QJY_SaaSModel.SZHL_HYGL_ROOM" />
           <EntitySet Name="SZHL_YCGL" EntityType="QJY_SaaSModel.SZHL_YCGL" />
           <EntitySet Name="SZHL_YCGL_CAR" EntityType="QJY_SaaSModel.SZHL_YCGL_CAR" />
+          <EntitySet Name="SZHL_DRAFT" EntityType="QJY_SaaSModel.SZHL_DRAFT" />
         </EntityContainer>
         <EntityType Name="FT_File">
           <Key>
@@ -2406,19 +2407,6 @@
           <Property Name="BranchNo" Type="Int32" />
           <Property Name="ComId" Type="Int32" />
         </EntityType>
-        <EntityType Name="SZHL_DRAFT">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ComId" Type="Int32" />
-          <Property Name="FormCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="FormID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="JsonData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CRUser" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="CRTime" Type="DateTime" Precision="3" />
-          <Property Name="ExtData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="SZHL_DXGL">
           <Key>
             <PropertyRef Name="ID" />
@@ -2539,7 +2527,7 @@
           <Property Name="BXZJE" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="CRDate" Type="DateTime" Precision="3" />
           <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Files" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="intProcessStanceid" Type="Int32" Nullable="false" />
@@ -3355,6 +3343,20 @@
           <Property Name="SeatNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="SZHL_DRAFT">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="FormCode" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FormID" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="JsonData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CRTime" Type="DateTime" Precision="3" />
+          <Property Name="ExtData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DataID" Type="Int32" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4035,20 +4037,6 @@
                 <ScalarProperty Name="LeiBie" ColumnName="LeiBie" />
                 <ScalarProperty Name="BranchName" ColumnName="BranchName" />
                 <ScalarProperty Name="ShenQingRen" ColumnName="ShenQingRen" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SZHL_DRAFT">
-            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_DRAFT">
-              <MappingFragment StoreEntitySet="SZHL_DRAFT">
-                <ScalarProperty Name="ExtData" ColumnName="ExtData" />
-                <ScalarProperty Name="CRTime" ColumnName="CRTime" />
-                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
-                <ScalarProperty Name="JsonData" ColumnName="JsonData" />
-                <ScalarProperty Name="FormID" ColumnName="FormID" />
-                <ScalarProperty Name="FormCode" ColumnName="FormCode" />
-                <ScalarProperty Name="ComId" ColumnName="ComId" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5029,6 +5017,21 @@
                 <ScalarProperty Name="CarNum" ColumnName="CarNum" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ComId" ColumnName="ComId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_DRAFT">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_DRAFT">
+              <MappingFragment StoreEntitySet="SZHL_DRAFT">
+                <ScalarProperty Name="DataID" ColumnName="DataID" />
+                <ScalarProperty Name="ExtData" ColumnName="ExtData" />
+                <ScalarProperty Name="CRTime" ColumnName="CRTime" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="JsonData" ColumnName="JsonData" />
+                <ScalarProperty Name="FormID" ColumnName="FormID" />
+                <ScalarProperty Name="FormCode" ColumnName="FormCode" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

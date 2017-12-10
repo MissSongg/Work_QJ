@@ -64,7 +64,7 @@
     <script src="../JS/jquery-1.11.2.min.js" type="text/javascript"></script>
     <script src="../JS/laypage/laypage.js"></script>
     <script src="../JS/avalon.js"></script>
-    <script src="../JS/SZHLCommon.js?jsver=20160915"></script>
+    <script src="../JS/SZHLCommon.js?jsver=20170915"></script>
 
     <script type="text/javascript">
         //$(".crm-tab .fa").check(function(){
@@ -134,16 +134,16 @@
                 })
             },
             Add: function (FormCode) {
-                top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=" + FormCode, '添加表单', "1000", "");
+                top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?vsr=2017&FormCode=" + FormCode, '添加表单', "1000", "");
             },
             View: function (ID, PIID) {
-                top.ComFunJS.winviewformright2("/ViewV5/AppPage/APPView.html?FormCode=" + model.PathCode + "_" + model.FormCode + "&ID=" + ID + "&PIID=" + PIID + "&r=" + Math.random(), '详细信息', "1000", "");
+                top.ComFunJS.winviewformright2("/ViewV5/AppPage/APPView.html?vsr=2017&FormCode=" + model.PathCode + "_" + model.FormCode + "&ID=" + ID + "&PIID=" + PIID + "&r=" + Math.random(), '详细信息', "1000", "");
             },
             ViewForm: function (ID, PIID, event) {
                 if (event.stopPropagation) {
                     event.stopPropagation();
                 }
-                top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=" + model.PathCode + "_" + model.FormCode + "&ID=" + ID + "&PIID=" + PIID, "修改表单", "1000", "");
+                top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?vsr=2017&FormCode=" + model.PathCode + "_" + model.FormCode + "&ID=" + ID + "&PIID=" + PIID, "修改表单", "1000", "");
             },
             ShowForm: function (ID, PIID) { //查看
 

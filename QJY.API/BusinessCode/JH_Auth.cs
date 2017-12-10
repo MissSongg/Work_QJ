@@ -366,7 +366,7 @@ namespace QJY.API
 
                 if (UserInfo.QYinfo.IsUseWX == "Y")
                 {
-                 
+
                     WXHelp bm = new WXHelp(UserInfo.QYinfo);
                     int branid = bm.WX_CreateBranch(branch);
                     branch.WXBMCode = branid;
@@ -1387,14 +1387,18 @@ namespace QJY.API
         /// <returns>返回Y得时候可以撤回,返回不是Y,代表已经处理了不能撤回</returns>
         public string isCanCancel(string strUser, int PIID)
         {
-
+            string strReturn = "N";
             if (GetPDStatus(PIID) == "已退回")
             {
-                return "Y";
+                strReturn = "Y";
             }
 
-            DataTable dt = new Yan_WF_TIB().GetDTByCommand("SELECT ID FROM  dbo.Yan_WF_TI  WHERE PIID='" + PIID + "' AND EndTime IS not null  AND  TaskUserID='" + strUser + "'");
-            return dt.Rows.Count == 1 ? "Y" : "N";
+            DataTable dt = new Yan_WF_TIB().GetDTByCommand("SELECT * FROM  dbo.Yan_WF_TI  WHERE PIID='" + PIID + "' AND EndTime IS not null");
+            if (dt.Rows.Count == 1 && dt.Rows[0]["TaskUserID"].ToString() == strUser)
+            {
+                strReturn = "Y";
+            }
+            return strReturn;
         }
 
 

@@ -38,7 +38,6 @@
         <EntityTypeShape EntityType="QJY_SaaSModel.JH_Auth_YYLog" Width="1.5" PointX="2.75" PointY="17.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.JH_Auth_ZiDian" Width="1.5" PointX="4.75" PointY="17.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_CCXJ" Width="1.5" PointX="16.75" PointY="17.75" />
-        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_DRAFT" Width="1.5" PointX="6.75" PointY="19.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_DXGL" Width="1.5" PointX="18.75" PointY="19.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_GZBG" Width="1.5" PointX="20.75" PointY="0.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_GZGL" Width="1.5" PointX="20.75" PointY="6.75" />
@@ -83,6 +82,7 @@
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_HYGL_ROOM" Width="1.5" PointX="13.375" PointY="29.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_YCGL" Width="1.5" PointX="15.375" PointY="29.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_YCGL_CAR" Width="1.5" PointX="29.375" PointY="17.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_DRAFT" Width="1.5" PointX="21.375" PointY="29.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

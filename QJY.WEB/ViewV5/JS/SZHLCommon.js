@@ -219,6 +219,9 @@
         }
         return "";
     },//转字符串
+    trim: function (str) {
+        return str.replace(/^,+/, "").replace(/,+$/, "");
+    },
     getnowday: function () {
         var d = new Date();
         var year = d.getFullYear();

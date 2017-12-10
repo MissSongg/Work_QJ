@@ -2642,7 +2642,7 @@ namespace QJY.API
         //获取草稿
         public void GETDRAFT(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            string sql = string.Format(@"SELECT top 5 * FROM SZHL_DRAFT WHERE ComId={0} and CRUser='{2}' and FormCode='{1}' ", UserInfo.User.ComId, P1, UserInfo.User.UserName);
+            string sql = string.Format(@"SELECT top 5 * FROM SZHL_DRAFT WHERE ComId={0} and CRUser='{2}' and FormCode='{1}'and DATAID IS NULL ", UserInfo.User.ComId, P1, UserInfo.User.UserName);
             if (P2 != "")
             {
                 sql += " and FormID='" + P2 + "'";

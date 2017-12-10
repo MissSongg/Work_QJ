@@ -114,6 +114,12 @@
     <Content Include="API\WXAPI.ashx" />
     <Content Include="ViewV5\APP_WARN.html" />
     <Content Include="ViewV5\images\qrcode.png" />
+    <Content Include="ViewV5\JS\index.min.js">
+      <DependentUpon>index.js</DependentUpon>
+    </Content>
+    <Content Include="ViewV5\JS\WFJS.min.js">
+      <DependentUpon>WFJS.js</DependentUpon>
+    </Content>
     <Content Include="View_Mobile\CSS\login.css" />
     <Content Include="View_Mobile\JS\avalon1.47.js" />
     <Content Include="View_Mobile\UI\UI_Login.html" />
@@ -176,6 +182,7 @@
     <Content Include="WZWeb\mob\js\jquery-1.11.1.min.js" />
     <Content Include="WZWeb\mob\js\jquery.touchSwipe.min.js" />
     <Content Include="WZWeb\mob\success.html" />
+    <None Include="Properties\PublishProfiles\BD.pubxml" />
     <None Include="Properties\PublishProfiles\FB.pubxml" />
     <None Include="Properties\PublishProfiles\QJSignle.pubxml" />
     <None Include="Properties\PublishProfiles\QJ_UserS.pubxml" />
@@ -1551,6 +1558,12 @@
     <Content Include="ViewV5\AppPage\CRM\CRM_合同_导入模板.xls" />
     <Content Include="ViewV5\AppPage\CRM\CRM_客户_导入模板.xls" />
     <Content Include="ViewV5\AppPage\CRM\CRM_客户联系人_导入模板.xls" />
+    <Content Include="ViewV5\JS\WFJS.min.js.map">
+      <DependentUpon>WFJS.min.js</DependentUpon>
+    </Content>
+    <Content Include="ViewV5\JS\index.min.js.map">
+      <DependentUpon>index.min.js</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

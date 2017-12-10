@@ -35,7 +35,7 @@
 
                         <a class="btn btn-success" ms-if="isBack=='Y'" href="javascript:history.go(-1)">返回</a>
                         <a class="btn btn-info" ms-attr-href="/ViewV5/AppPage/{{FormCode}}/HtmlToWord.aspx?ID={{strId}}" target="_blank" ms-if="isExport">导出</a>
-                        <a class="btn btn-info" ms-click="print()">打印</a>
+                        <button class="btn btn-primary" id="btnCB" ms-if="model.TASKDATA.size()>0&&model.PIMODEL.isComplete!='Y'&&model.PIMODEL.IsCanceled != 'Y'" ms-click="SenLCCB(model.PIMODEL.ID)"><i class="iconfont icon-cb mr5 ft14"></i>发送催办提醒</button>
 
                     </div>
                 </div>
@@ -84,9 +84,7 @@
                     <div class="item-con">{{shzt}}</div>
                 </div>
 
-                <div class="detail-item" ms-if="TASKDATA.size()!=0">
-                    <span class="item-tit">审核流程</span>
-                </div>
+
                 <div class="detail-item" style="padding: 0; margin: 10px 0; overflow-x: auto; margin-bottom: 0px" ms-if="TASKDATA.size()!=0">
                     <div class="lcspstep"></div>
                 </div>
@@ -236,6 +234,7 @@
                 window.location.href = "/ViewV5/AppPage/APP_ADD_WF.html?FormCode=" + str + "&id=" + model.strId + "&PIID=" + model.PIID + "&PDID=" + model.PDID;
             },
             CancelWF: function () {//撤回表单到草稿箱
+                ComFunJS.winconfirm("确认要撤回此流程吗？", function () {
                 $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_CANCELWF", { P1: model.PIID, DataID: model.strId, ModelCode: model.FormCode, P2: model.PIMODEL.PDID }, function (result) {
                     if (result.ErrorMsg == "") {//流程数据
                         model.ISCANCEL = "N";
@@ -246,6 +245,7 @@
                         })
                     }
                 })
+                }, function () { })
             },
             getwfdata: function () {
                 $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_GETWFDATA", { P1: model.PIID, DataID: model.strId, ModelCode: model.FormCode, P2: model.PDID }, function (result) {
@@ -321,6 +321,16 @@
                         model.shzt = "已审批";
                     }
                 }
+            },
+            SenLCCB: function (id) {
+                ComFunJS.winconfirm("确认要催办此流程吗？", function () {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=LCSP_SENDLCCB', { "P1": id }, function (result) {
+                        if (result.ErrorMsg == "") {
+                            ComFunJS.winsuccess("催办通知发送成功");
+                            $("#btnCB").attr("disabled", "disabled");
+                        }
+                    })
+                }, function () { })
             },
             pf: function (str) {
                 if (str) {

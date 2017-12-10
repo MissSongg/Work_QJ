@@ -22,5 +22,6 @@ namespace QJY.Data
         public string CRUser { get; set; }
         public Nullable<System.DateTime> CRTime { get; set; }
         public string ExtData { get; set; }
+        public Nullable<int> DataID { get; set; }
     }
 }

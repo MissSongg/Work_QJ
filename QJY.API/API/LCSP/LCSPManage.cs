@@ -637,6 +637,7 @@ namespace QJY.API
                 tdList.ForEach(d => d.CRDate = DateTime.Now);
                 tdList.ForEach(d => d.CRUser = UserInfo.User.UserName);
                 tdList.ForEach(d => d.TDCODE = d.ProcessDefinitionID + "-" + d.Taskorder);
+                tdList.ForEach(d => d.AssignedRole = d.AssignedRole.Trim(','));
                 //tdList.ForEach(d => d.TDCODE = (d.ID == 0 ? (lcsp.ID + d.TDCODE) : d.TDCODE));
                 new Yan_WF_TDB().Delete(d => d.ProcessDefinitionID == tdList[0].ProcessDefinitionID);
                 new Yan_WF_TDB().Insert(tdList);
@@ -806,6 +807,31 @@ namespace QJY.API
             int Id = int.Parse(P1);
             msg.Result = new Yan_WF_TDB().GetEntities(d => d.ProcessDefinitionID == Id).OrderBy(d => d.Taskorder);
         }
+
+
+        /// <summary>
+        /// 对流程待处理人员发送提醒
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void SENDLCCB(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int Id = int.Parse(P1);
+            var CBResult = new Yan_WF_TIB().GetEntities(d => d.PIID == Id && d.TaskState == 0);
+            foreach (Yan_WF_TI item in CBResult)
+            {
+                SZHL_TXSX MODEL = new SZHL_TXSXB().GetEntity(d => d.TXUser == item.TaskUserID && d.intProcessStanceid == item.PIID);
+                if (MODEL != null)
+                {
+                    MODEL.Status = "0";
+                    new SZHL_TXSXB().Update(MODEL);
+                }
+            }
+        }
+
 
 
         public void MANAGEWF(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
@@ -1024,60 +1050,67 @@ namespace QJY.API
                     Yan_WF_PI PIMODEL = new Yan_WF_PIB().GetEntity(d => d.ID == PIID);
 
                     //固定流程获取流程处理数据
-
-                    //todo 需要处理PITYPE=-1的情况（关闭流程）
-                    if (PIMODEL.PITYPE == "0") //0自由流程,1固定流程
-                    { //获取流程处理数据
-                        dtList = new Yan_WF_TIB().GetEntities(d => d.PIID == PIID && d.TDCODE == "-1").ToDataTable();
-                        dtList.Columns.Add("userrealname");
-                        dtList.Columns.Add("state");
-                        for (int i = 0; i < dtList.Rows.Count; i++)
-                        {
-                            dtList.Rows[i]["userrealname"] = new JH_Auth_UserB().GetUserRealName(UserInfo.QYinfo.ComId, dtList.Rows[i]["TaskUserID"].ToString());
-                            dtList.Rows[i]["state"] = dtList.Rows[i]["TaskState"];
-                        }
+                    if (PIMODEL == null)
+                    {
+                        msg.ErrorMsg = "流程数据已清除";
+                        return;
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(PIMODEL.isComplete) && string.IsNullOrEmpty(PIMODEL.IsCanceled))
-                        {
-                            dtList = new Yan_WF_TDB().GetEntities(d => d.ProcessDefinitionID == PIMODEL.PDID.Value).OrderBy(d => d.Taskorder).ToDataTable();
+                        //todo 需要处理PITYPE=-1的情况（关闭流程）
+                        if (PIMODEL.PITYPE == "0") //0自由流程,1固定流程
+                        { //获取流程处理数据
+                            dtList = new Yan_WF_TIB().GetEntities(d => d.PIID == PIID && d.TDCODE == "-1").ToDataTable();
                             dtList.Columns.Add("userrealname");
-                            dtList.Columns.Add("EndTime");
-                            dtList.Columns.Add("TaskUserView");
                             dtList.Columns.Add("state");
-
-                            foreach (DataRow dr in dtList.Rows)
+                            for (int i = 0; i < dtList.Rows.Count; i++)
                             {
-                                string tdCode = dr["TDCODE"].ToString();
-                                Yan_WF_TI tiModel = new Yan_WF_TIB().GetEntity(d => d.PIID == PIID && d.TDCODE == tdCode && d.EndTime != null);//
-                                if (tiModel != null)
-                                {
-                                    dr["userrealname"] = new JH_Auth_UserB().GetUserRealName(UserInfo.QYinfo.ComId, tiModel.TaskUserID);
-                                    dr["EndTime"] = tiModel.EndTime;
-                                    dr["TaskUserView"] = tiModel.TaskUserView;
-                                    dr["state"] = tiModel.TaskState;
-                                }
-                                else
-                                {
-                                    dr["EndTime"] = "";
-                                    dr["TaskUserView"] = "";
-                                    dr["userrealname"] = "";
-                                    dr["state"] = "";
-                                    if (PIMODEL.IsCanceled != "Y")
-                                    { dr["state"] = "0"; }
-                                }
+                                dtList.Rows[i]["userrealname"] = new JH_Auth_UserB().GetUserRealName(UserInfo.QYinfo.ComId, dtList.Rows[i]["TaskUserID"].ToString());
+                                dtList.Rows[i]["state"] = dtList.Rows[i]["TaskState"];
                             }
                         }
                         else
                         {
-                            dtList = new Yan_WF_TIB().GetEntities(d => d.PIID == PIID && d.EndTime != null).OrderBy(d => d.TDCODE).ToDataTable();//
-                            dtList.Columns.Add("userrealname");
-                            dtList.Columns.Add("state");
-                            foreach (DataRow dr in dtList.Rows)
+                            if (string.IsNullOrEmpty(PIMODEL.isComplete) && string.IsNullOrEmpty(PIMODEL.IsCanceled))
                             {
-                                dr["userrealname"] = new JH_Auth_UserB().GetUserRealName(UserInfo.QYinfo.ComId, dr["TaskUserID"].ToString());
-                                dr["state"] = dr["TaskState"].ToString();
+                                dtList = new Yan_WF_TDB().GetEntities(d => d.ProcessDefinitionID == PIMODEL.PDID.Value).OrderBy(d => d.Taskorder).ToDataTable();
+                                dtList.Columns.Add("userrealname");
+                                dtList.Columns.Add("EndTime");
+                                dtList.Columns.Add("TaskUserView");
+                                dtList.Columns.Add("state");
+
+                                foreach (DataRow dr in dtList.Rows)
+                                {
+                                    string tdCode = dr["TDCODE"].ToString();
+                                    Yan_WF_TI tiModel = new Yan_WF_TIB().GetEntity(d => d.PIID == PIID && d.TDCODE == tdCode && d.EndTime != null);//
+                                    if (tiModel != null)
+                                    {
+                                        dr["userrealname"] = new JH_Auth_UserB().GetUserRealName(UserInfo.QYinfo.ComId, tiModel.TaskUserID);
+                                        dr["EndTime"] = tiModel.EndTime;
+                                        dr["TaskUserView"] = tiModel.TaskUserView;
+                                        dr["state"] = tiModel.TaskState;
+                                    }
+                                    else
+                                    {
+                                        dr["EndTime"] = "";
+                                        dr["TaskUserView"] = "";
+                                        dr["userrealname"] = "";
+                                        dr["state"] = "";
+                                        if (PIMODEL.IsCanceled != "Y")
+                                        { dr["state"] = "0"; }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                dtList = new Yan_WF_TIB().GetEntities(d => d.PIID == PIID && d.EndTime != null).OrderBy(d => d.TDCODE).ToDataTable();//
+                                dtList.Columns.Add("userrealname");
+                                dtList.Columns.Add("state");
+                                foreach (DataRow dr in dtList.Rows)
+                                {
+                                    dr["userrealname"] = new JH_Auth_UserB().GetUserRealName(UserInfo.QYinfo.ComId, dr["TaskUserID"].ToString());
+                                    dr["state"] = dr["TaskState"].ToString();
+                                }
                             }
                         }
                     }
@@ -1093,8 +1126,6 @@ namespace QJY.API
                 }
                 else    //新增流程
                 {
-
-
                     if (PDID > 0)
                     {
                         Yan_WF_PD pdmodel = new Yan_WF_PDB().GetEntity(d => d.ID == PDID);
@@ -1111,7 +1142,7 @@ namespace QJY.API
                             dtList.Rows[0]["state"] = "1";
                             msg.Result = null;
                             msg.Result1 = dtList;
-                            
+
                         }
                         msg.Result3 = pdmodel.ProcessType;
                         msg.Result5 = pdmodel;
@@ -1245,7 +1276,7 @@ namespace QJY.API
 
         public void CANCELWF(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-
+            string strMode = context.Request["ModelCode"].ToString();
 
             int DataID = 0;
             int.TryParse(context.Request["DataID"] ?? "0", out DataID);
@@ -1267,27 +1298,18 @@ namespace QJY.API
             int PDID = 0;
             int.TryParse(P2, out PDID);
             //添加草稿数据
-            SZHL_LCSP lcsp = new SZHL_LCSPB().GetEntity(d => d.ID == DataID);
-            lcsp.ID = 0;
-            DataTable dtExtData = new JH_Auth_ExtendModeB().GetExtDataAll(UserInfo.User.ComId, "LCSP", DataID.ToString());
-            SZHL_DRAFT DRAFT = new SZHL_DRAFT();
-            DRAFT.ComId = UserInfo.User.ComId;
-            DRAFT.CRUser = UserInfo.User.UserName;
-            DRAFT.CRTime = DateTime.Now;
-            DRAFT.FormCode = "LCSP";
-            DRAFT.FormID = PDID.ToString();//存储的不是数据ID而是流程定义ID哦
 
-            IsoDateTimeConverter timeConverter = new IsoDateTimeConverter();
-            timeConverter.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
-            DRAFT.JsonData = JsonConvert.SerializeObject(lcsp, Formatting.Indented, timeConverter).Replace("null", "\"\""); ;
-            DRAFT.ExtData = JsonConvert.SerializeObject(dtExtData, Formatting.Indented, timeConverter).Replace("null", "\"\""); ;
-            new SZHL_DRAFTB().Insert(DRAFT);
+            SZHL_DRAFT MODEL = new SZHL_DRAFTB().GetEntities(d => d.DataID == DataID && d.FormCode == strMode).FirstOrDefault();
+            if (MODEL != null)
+            {
+                MODEL.DataID = null;
+                MODEL.CRTime = DateTime.Now;
+                new SZHL_DRAFTB().Update(MODEL);
+            }
 
 
             //删除流程相关数据
-
-
 
             new SZHL_LCSPB().Delete(d => d.ID == DataID);
             new Yan_WF_PIB().Delete(d => d.ID == PIID);

@@ -71,7 +71,7 @@
                 });
             });
             //获取草稿
-            pmodel.GetDraftData();
+            pmodel.GetDraft();
         }
 
 
@@ -110,7 +110,7 @@
                 if (result.Result6) {
                     pmodel.CSQKData = result.Result6;
                 }
-             
+
                 pmodel.LoadWFData();
                 return callback.call(this);
             }
@@ -150,13 +150,17 @@
                 if ($.trim(result1.ErrorMsg) == "") {
                     pmodel.SaveExtData(result1.Result.ID);
                     //删除草稿
-                    pmodel.DelDraft();
+                    if (pmodel.DraftData.ID != "0") {
+                        pmodel.DelDraft();
+                    }
+                    //将新的表单数据存到草稿中去
+                    pmodel.SaveDraft(result1.Result.ID);
                     //如果MODELCODE有流程,开始流程数据
                     $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_STARTWF", { P1: pmodel.FormCode, P2: $("#conshr").val(), PDID: pmodel.PDID, DATAID: result1.Result.ID, LCTYPE: pmodel.lctype, csr: pmodel.CSUser }, function (result) {
                         if ($.trim(result.ErrorMsg) == "") {
                             top.ComFunJS.winsuccess("操作成功");
                             if (tempmodel && $.isFunction(tempmodel.Complate)) {
-                                setTimeout("tempmodel.Complate();", 1000);
+                                setTimeout("tempmodel.Complate();", 2000);
                             } else {
                                 if (type == 'addlxr') {
                                     top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=CRM_KHLXR&khid=" + result1.Result.ID, "客户联系人", "1000");
@@ -167,10 +171,10 @@
                                     pmodel.refiframe();
                                 }
                             }
-                          
+
                         }
                     });
-                 
+
                 }
                 else {
                     if (pmodel.isPC) {
@@ -191,34 +195,35 @@
         }
     },
     //存草稿
-    DraftData: { "ID": "0", "FormCode": "", "FormID": "", "JsonData": "", "ExtData": "" },
+    DraftData: { "ID": "0", "FormCode": "", "FormID": "", "JsonData": "", "ExtData": "", "DataID": "" },
     DraftList: [],
     //存草稿
-    SaveDraft: function (dom) {
+    SaveDraft: function (DATAID) {
         if (tempmodel) {
             pmodel.DraftData.FormCode = pmodel.FormCode;
-            if (pmodel.FormCode == "JFBX") {
-                pmodel.DraftData.JsonData = JSON.stringify(tempmodel.GetDraftData());
-            } else if (pmodel.FormCode == "QYHD") {
+            if (typeof (tempmodel.GetDraftData) == 'function') {
                 pmodel.DraftData.JsonData = JSON.stringify(tempmodel.GetDraftData());
             } else {
                 pmodel.DraftData.JsonData = JSON.stringify(tempmodel.modelData.$model);
             }
             pmodel.DraftData.ExtData = JSON.stringify(pmodel.ExtData.$model);
-            if (pmodel.PDID) {
-                pmodel.DraftData.FormID = pmodel.PDID;
+            if (pmodel.PDMODEL) {
+                pmodel.DraftData.FormID = pmodel.PDMODEL.ID;
+            }
+            if (DATAID) {
+                pmodel.DraftData.DataID = DATAID;
             }
             $.post("/API/VIEWAPI.ashx?ACTION=XTGL_SAVEDRAFT", { P1: JSON.stringify(pmodel.DraftData.$model) }, function (result) {
                 if (result.ErrorMsg == "") {
                     pmodel.DraftData = result.Result;
-                    pmodel.GetDraftData();
+                    pmodel.GetDraft();
                     top.ComFunJS.winsuccess("存草稿成功");
                 }
             })
         }
     },
     //获取草稿
-    GetDraftData: function () {
+    GetDraft: function () {
         $.getJSON("/API/VIEWAPI.ashx?ACTION=XTGL_GETDRAFT", { P1: pmodel.FormCode, P2: pmodel.PDID }, function (r) {
             if (r.ErrorMsg == "") {
                 pmodel.DraftList = r.Result;
@@ -230,14 +235,11 @@
     SelDraft: function (el) {
         pmodel.DraftData = el;
         if (el.JsonData) {
-            if (pmodel.FormCode == "JFBX") {
-                tempmodel.SetDraftData(JSON.parse(el.JsonData));
-            } else if (pmodel.FormCode == "QYHD") {
+            if (typeof (tempmodel.SetDraftData) == 'function') {
                 tempmodel.SetDraftData(JSON.parse(el.JsonData));
             } else {
                 tempmodel.modelData = JSON.parse(el.JsonData);
             }
-
         }
         if (el.ExtData) {
             pmodel.ExtData = JSON.parse(el.ExtData);

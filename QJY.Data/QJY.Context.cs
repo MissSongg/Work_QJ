@@ -58,7 +58,6 @@ namespace QJY.Data
         public virtual DbSet<JH_Auth_YYLog> JH_Auth_YYLog { get; set; }
         public virtual DbSet<JH_Auth_ZiDian> JH_Auth_ZiDian { get; set; }
         public virtual DbSet<SZHL_CCXJ> SZHL_CCXJ { get; set; }
-        public virtual DbSet<SZHL_DRAFT> SZHL_DRAFT { get; set; }
         public virtual DbSet<SZHL_DXGL> SZHL_DXGL { get; set; }
         public virtual DbSet<SZHL_GZBG> SZHL_GZBG { get; set; }
         public virtual DbSet<SZHL_GZGL> SZHL_GZGL { get; set; }
@@ -103,5 +102,6 @@ namespace QJY.Data
         public virtual DbSet<SZHL_HYGL_ROOM> SZHL_HYGL_ROOM { get; set; }
         public virtual DbSet<SZHL_YCGL> SZHL_YCGL { get; set; }
         public virtual DbSet<SZHL_YCGL_CAR> SZHL_YCGL_CAR { get; set; }
+        public virtual DbSet<SZHL_DRAFT> SZHL_DRAFT { get; set; }
     }
 }
