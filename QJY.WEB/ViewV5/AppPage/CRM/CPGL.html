@@ -101,7 +101,7 @@
                 return;
             }
             $.post("/API/VIEWAPI.ashx?ACTION=CRM_ADDCP", { P1: JSON.stringify(tempmodel.modelData.$model) }, function (result) {
-                return callback.call(result);
+                return callback.call(this, result);
             });
         }
     });

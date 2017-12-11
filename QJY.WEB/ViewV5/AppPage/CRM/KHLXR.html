@@ -185,7 +185,7 @@
         modelData: { "KHID": "", "UserXM": "", "UserSex": "", "TelePhone": "", "Department": "", "Position": "", "EMail": "", "QQ": "", "Weixin": "", "Address": "", "Remark": "", "Files": "", "WebSite": "", "PostCode": "", "Birthday": "", "Extension": "", "FixNo": "", "Education": "", "Company": "", "Mailbox": "", "Others": "" },
         SaveData: function (callback) {
             $.post("/API/VIEWAPI.ashx?ACTION=CRM_ADDKHLXR", { P1: JSON.stringify(tempmodel.modelData.$model) }, function (result) {
-                return callback.call(result);
+                return callback.call(this, result);
             });
         }, kh: function () {
             tempmodel.ColumnData.forEach(function (item) {
