@@ -112,6 +112,20 @@
     <Content Include="Global.asax" />
     <Content Include="API\VIEWAPI.ashx" />
     <Content Include="API\WXAPI.ashx" />
+    <Content Include="ViewV5\AppPage\HYGL\HYGL.html" />
+    <Content Include="ViewV5\AppPage\HYGL\HYGLINDEX.html" />
+    <Content Include="ViewV5\AppPage\HYGL\HYGLLIST.html" />
+    <Content Include="ViewV5\AppPage\HYGL\HYGLVIEW.html" />
+    <Content Include="ViewV5\AppPage\HYGL\HYS.html" />
+    <Content Include="ViewV5\AppPage\HYGL\HYSLIST.html" />
+    <Content Include="ViewV5\AppPage\HYGL\HYSVIEW.html" />
+    <Content Include="ViewV5\AppPage\YCGL\CLGL.html" />
+    <Content Include="ViewV5\AppPage\YCGL\CLGLLIST.html" />
+    <Content Include="ViewV5\AppPage\YCGL\CLGLVIEW.html" />
+    <Content Include="ViewV5\AppPage\YCGL\YCGL.html" />
+    <Content Include="ViewV5\AppPage\YCGL\YCGLINDEX.html" />
+    <Content Include="ViewV5\AppPage\YCGL\YCGLLIST.html" />
+    <Content Include="ViewV5\AppPage\YCGL\YCGLVIEW.html" />
     <Content Include="ViewV5\APP_WARN.html" />
     <Content Include="ViewV5\images\qrcode.png" />
     <Content Include="ViewV5\JS\index.min.js">
@@ -122,7 +136,13 @@
     </Content>
     <Content Include="View_Mobile\CSS\login.css" />
     <Content Include="View_Mobile\JS\avalon1.47.js" />
+    <Content Include="View_Mobile\UI\UI_CAR_INFO.html" />
+    <Content Include="View_Mobile\UI\UI_CAR_LIST.html" />
+    <Content Include="View_Mobile\UI\UI_HYGL_LIST.html" />
+    <Content Include="View_Mobile\UI\UI_HYS_INFO.html" />
+    <Content Include="View_Mobile\UI\UI_HYS_LIST.html" />
     <Content Include="View_Mobile\UI\UI_Login.html" />
+    <Content Include="View_Mobile\UI\UI_YCGL_LIST.html" />
     <Content Include="WZWeb\CSS\bootstrap.css" />
     <Content Include="WZWeb\CSS\dialog.css" />
     <Content Include="WZWeb\CSS\font-awesome.min.css" />

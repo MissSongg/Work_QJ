@@ -567,6 +567,23 @@
                         }
                     }
                     break;
+                case "clzt":    //车辆状态
+                    {
+                        switch (str) {
+                            case "0": str = '可用'; break;
+                            case "1": str = '报废'; break;
+                            case "2": str = '维修'; break;
+                        }
+                    }
+                    break;
+                case "hyszt":     //会议室状态
+                    {
+                        switch (str) {
+                            case "0": str = '启用'; break;
+                            case "1": str = '禁用'; break;
+                        }
+                    }
+                    break;
                 default: {
 
                 }

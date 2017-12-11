@@ -53,7 +53,7 @@ namespace QJY.API
             #region JSAPI
             container.RegisterType<IWsService, JSAPI>("JSSDK".ToUpper());
             #endregion
-            
+
             #region 短信管理
             container.RegisterType<IWsService, DXGLManage>("DXGL".ToUpper());//删除短信 
             #endregion
@@ -89,8 +89,8 @@ namespace QJY.API
 
             //记事本
             container.RegisterType<IWsService, NOTEManage>("NOTE".ToUpper());//记事本管理 
-        
-          
+
+
             container.RegisterType<IWsService, TSSQManage>("TSSQ".ToUpper());//同事社区
             container.RegisterType<IWsService, JFBXManage>("JFBX".ToUpper());//经费报销
             container.RegisterType<IWsService, KQGLManage>("KQGL".ToUpper());//考勤管理
@@ -102,6 +102,9 @@ namespace QJY.API
 
 
             container.RegisterType<IWsService, CRMManage>("CRM".ToUpper());//数据库管理
+
+            container.RegisterType<IWsService, YCGLManage>("YCGL".ToUpper());//用车
+            container.RegisterType<IWsService, HYGLManage>("HYGL".ToUpper());//会议
 
 
 

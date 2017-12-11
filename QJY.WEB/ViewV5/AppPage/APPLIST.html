@@ -145,9 +145,6 @@
                 }
                 top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?vsr=2017&FormCode=" + model.PathCode + "_" + model.FormCode + "&ID=" + ID + "&PIID=" + PIID, "修改表单", "1000", "");
             },
-            ShowForm: function (ID, PIID) { //查看
-
-            },
             ReSetShow: function (el) {
                 if (el) {
                     if (el.IsSel == true) {
@@ -214,7 +211,7 @@
 
             avalon.filters.fnFormat = function (str, format) {
                
-                return str;
+                return str + "A";
             }
         })
     </script>
