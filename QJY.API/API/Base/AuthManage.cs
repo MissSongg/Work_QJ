@@ -2661,6 +2661,7 @@ namespace QJY.API
         public void SAVEDRAFT(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             SZHL_DRAFT tt = JsonConvert.DeserializeObject<SZHL_DRAFT>(P1);
+            tt.ID = 0;
             if (tt.ID == 0)
             {
                 tt.ComId = UserInfo.User.ComId;
@@ -2668,11 +2669,7 @@ namespace QJY.API
                 tt.CRTime = DateTime.Now;
                 new SZHL_DRAFTB().Insert(tt);
             }
-            else
-            {
-                tt.CRTime = DateTime.Now;
-                new SZHL_DRAFTB().Update(tt);
-            }
+           
             msg.Result = tt;
         }
         public void DELDRAFT(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)

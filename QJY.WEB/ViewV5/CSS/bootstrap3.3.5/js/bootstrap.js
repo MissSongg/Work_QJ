@@ -1309,9 +1309,9 @@ if (typeof jQuery === 'undefined') {
         var triggers = this.options.trigger.split(' ')
 
         //设置延时
-        if (this.options.trigger.indexOf('hover') > -1) {
-            $.extend(true, this.options, { delay: { hide: 100 } });
-        }
+        //if (this.options.trigger.indexOf('hover') > -1) {
+        //    $.extend(true, this.options, { delay: { hide: 100 } });
+        //}
 
         for (var i = triggers.length; i--;) {
             var trigger = triggers[i]
@@ -1379,18 +1379,18 @@ if (typeof jQuery === 'undefined') {
         }
 
         clearTimeout(self.timeout)
-        if (self.options.trigger.indexOf('hover') > -1) {
-            self.$tip.unbind('mouseenter').bind('mouseenter', function (e) {
-                self.$tip.data('data-element', self.$element);//触发popover框的点击事件时可以获取id
-                clearTimeout(self.timeout);
-                self.hoverState = 'in';
-            }).unbind('mouseleave').bind('mouseleave', function (e) {
-                self.hoverState = 'out';
-                self.timeout = setTimeout(function () {
-                    if (self.hoverState == 'out') self.hide()
-                }, self.options.delay.hide)
-            })
-        }
+        //if (self.options.trigger.indexOf('hover') > -1) {
+        //    self.$tip.unbind('mouseenter').bind('mouseenter', function (e) {
+        //        self.$tip.data('data-element', self.$element);//触发popover框的点击事件时可以获取id
+        //        clearTimeout(self.timeout);
+        //        self.hoverState = 'in';
+        //    }).unbind('mouseleave').bind('mouseleave', function (e) {
+        //        self.hoverState = 'out';
+        //        self.timeout = setTimeout(function () {
+        //            if (self.hoverState == 'out') self.hide()
+        //        }, self.options.delay.hide)
+        //    })
+        //}
         self.hoverState = 'in'
 
         if (!self.options.delay || !self.options.delay.show) return self.show()

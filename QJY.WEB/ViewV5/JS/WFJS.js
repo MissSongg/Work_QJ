@@ -160,7 +160,7 @@
                         if ($.trim(result.ErrorMsg) == "") {
                             top.ComFunJS.winsuccess("操作成功");
                             if (tempmodel && $.isFunction(tempmodel.Complate)) {
-                                setTimeout("tempmodel.Complate();", 2000);
+                                setTimeout("tempmodel.Complate();", 1000);
                             } else {
                                 if (type == 'addlxr') {
                                     top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=CRM_KHLXR&khid=" + result1.Result.ID, "客户联系人", "1000");
@@ -360,7 +360,7 @@
             } else {
                 setTimeout("top.model.refpage()", 1000)
             }
-            setTimeout("parent.layer.closeAll()", 1000)
+            setTimeout("parent.layer.closeAll()", 3000)
 
         } else {
 
