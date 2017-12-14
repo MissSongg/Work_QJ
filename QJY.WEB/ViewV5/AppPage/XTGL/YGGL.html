@@ -10,6 +10,7 @@
         DeptName: "",
         userName: "",
         seltype: 1,
+        modelData:{},
         UserData: {
             "UserName": "", "UserRealName": "", "UserPass": "", "IsUse": "Y", "zhiwu": "", "mobphone": "", "mailbox": "", "Usersign": "", "BranchCode": 0, "UserOrder": 0, RoomCode: "", UserGW: "",
             Sex: "", weixinCard: "", NickName: "", JobNum: "", QQ: "", IDCard: "", Nationality: "",
@@ -82,6 +83,7 @@
                 tempmodel.UserData.UserName = tempmodel.UserData.mobphone;
             }
             var modelValue = JSON.stringify(tempmodel.UserData.$model);
+            tempmodel.modelData = tempmodel.UserData;
             $.post("/API/VIEWAPI.ashx", { Action: "XTGL_ADDUSER", P1: modelValue }, function (result) {
                 return callback.call(this, result);
             });
