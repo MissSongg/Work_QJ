@@ -98,7 +98,7 @@
                 var lg = $.loading({
                     content: '加载中...',
                 })
-                $.getJSON('/API/VIEWAPI.ashx?Action=XXFB_UPDATEXXFBREADUSER&r=' + Math.random(), { P1: strId }, function (data) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=XXFB_UPXXFBREADUSER&r=' + Math.random(), { P1: strId }, function (data) {
                     if (data.ErrorMsg == "") {
                         $.getJSON('/API/VIEWAPI.ashx?Action=XXFB_GETXXFBMODELWX&r=' + Math.random(), { P1: strId }, function (resultData) {
                             lg.hide();

@@ -752,7 +752,7 @@ namespace QJY.API
             msg.Result = dt;
             msg.Result1 = recordCount;
         }
-        public void UPDATEXXFBREADUSER(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        public void UPXXFBREADUSER(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             int Id = int.Parse(P1);
             SZHL_XXFB_ITEM model = new SZHL_XXFB_ITEMB().GetEntity(d => d.ID == Id);
