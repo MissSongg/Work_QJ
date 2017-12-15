@@ -112,6 +112,87 @@
     <Content Include="Global.asax" />
     <Content Include="API\VIEWAPI.ashx" />
     <Content Include="API\WXAPI.ashx" />
+    <Content Include="ToolS\DownFile.aspx" />
+    <Content Include="ToolS\HtmlToWord.aspx" />
+    <Content Include="ToolS\JS\echarts.common.min.js" />
+    <Content Include="ToolS\JS\echarts.js" />
+    <Content Include="ToolS\JS\echarts.min.js" />
+    <Content Include="ToolS\umeditor122\dialogs\emotion\emotion.css" />
+    <Content Include="ToolS\umeditor122\dialogs\emotion\emotion.js" />
+    <Content Include="ToolS\umeditor122\dialogs\emotion\images\0.gif" />
+    <Content Include="ToolS\umeditor122\dialogs\emotion\images\bface.gif" />
+    <Content Include="ToolS\umeditor122\dialogs\emotion\images\cface.gif" />
+    <Content Include="ToolS\umeditor122\dialogs\emotion\images\fface.gif" />
+    <Content Include="ToolS\umeditor122\dialogs\emotion\images\jxface2.gif" />
+    <Content Include="ToolS\umeditor122\dialogs\emotion\images\neweditor-tab-bg.png" />
+    <Content Include="ToolS\umeditor122\dialogs\emotion\images\tface.gif" />
+    <Content Include="ToolS\umeditor122\dialogs\emotion\images\wface.gif" />
+    <Content Include="ToolS\umeditor122\dialogs\emotion\images\yface.gif" />
+    <Content Include="ToolS\umeditor122\dialogs\formula\formula.css" />
+    <Content Include="ToolS\umeditor122\dialogs\formula\formula.html" />
+    <Content Include="ToolS\umeditor122\dialogs\formula\formula.js" />
+    <Content Include="ToolS\umeditor122\dialogs\formula\images\formula.png" />
+    <Content Include="ToolS\umeditor122\dialogs\image\image.css" />
+    <Content Include="ToolS\umeditor122\dialogs\image\image.js" />
+    <Content Include="ToolS\umeditor122\dialogs\image\images\close.png" />
+    <Content Include="ToolS\umeditor122\dialogs\image\images\upload1.png" />
+    <Content Include="ToolS\umeditor122\dialogs\image\images\upload2.png" />
+    <Content Include="ToolS\umeditor122\dialogs\link\link.js" />
+    <Content Include="ToolS\umeditor122\dialogs\map\map.html" />
+    <Content Include="ToolS\umeditor122\dialogs\map\map.js" />
+    <Content Include="ToolS\umeditor122\dialogs\video\images\center_focus.jpg" />
+    <Content Include="ToolS\umeditor122\dialogs\video\images\left_focus.jpg" />
+    <Content Include="ToolS\umeditor122\dialogs\video\images\none_focus.jpg" />
+    <Content Include="ToolS\umeditor122\dialogs\video\images\right_focus.jpg" />
+    <Content Include="ToolS\umeditor122\dialogs\video\video.css" />
+    <Content Include="ToolS\umeditor122\dialogs\video\video.js" />
+    <Content Include="ToolS\umeditor122\index.html" />
+    <Content Include="ToolS\umeditor122\lang\en\en.js" />
+    <Content Include="ToolS\umeditor122\lang\en\images\addimage.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\alldeletebtnhoverskin.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\alldeletebtnupskin.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\background.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\button.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\copy.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\deletedisable.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\deleteenable.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\imglabel.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\listbackground.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\localimage.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\music.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\rotateleftdisable.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\rotateleftenable.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\rotaterightdisable.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\rotaterightenable.png" />
+    <Content Include="ToolS\umeditor122\lang\en\images\upload.png" />
+    <Content Include="ToolS\umeditor122\lang\zh-cn\images\copy.png" />
+    <Content Include="ToolS\umeditor122\lang\zh-cn\images\imglabel.png" />
+    <Content Include="ToolS\umeditor122\lang\zh-cn\images\localimage.png" />
+    <Content Include="ToolS\umeditor122\lang\zh-cn\images\music.png" />
+    <Content Include="ToolS\umeditor122\lang\zh-cn\images\upload.png" />
+    <Content Include="ToolS\umeditor122\lang\zh-cn\zh-cn.js" />
+    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\3c616477-e2bb-40f9-8a08-c3821dd42742.jpg" />
+    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\45e4849b-d2b8-4553-b41c-6e5f315d2f05.png" />
+    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\49d89400-703e-4e67-8001-3bfc2f98cd6e.jpg" />
+    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\5f5e15b2-009f-4c19-b11a-fde1547cb01b.jpg" />
+    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\797b161f-a33b-4ae1-ba84-bcdcf2173158.png" />
+    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\9f5d0f16-82db-4478-9b6f-be167ab413db.jpg" />
+    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\c535721e-cb4a-484d-82ed-cbe7c3fec061.jpg" />
+    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\dabfe6d9-77a1-4b32-936d-6b28ac7ebfad.png" />
+    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\e9daa6f5-d18a-4519-9698-fe9826509086.png" />
+    <Content Include="ToolS\umeditor122\themes\default\css\umeditor.css" />
+    <Content Include="ToolS\umeditor122\themes\default\images\caret.png" />
+    <Content Include="ToolS\umeditor122\themes\default\images\close.png" />
+    <Content Include="ToolS\umeditor122\themes\default\images\icons.gif" />
+    <Content Include="ToolS\umeditor122\themes\default\images\icons.png" />
+    <Content Include="ToolS\umeditor122\themes\default\images\ok.gif" />
+    <Content Include="ToolS\umeditor122\themes\default\images\pop-bg.png" />
+    <Content Include="ToolS\umeditor122\themes\default\images\spacer.gif" />
+    <Content Include="ToolS\umeditor122\themes\default\images\videologo.gif" />
+    <Content Include="ToolS\umeditor122\umeditor.config.js" />
+    <Content Include="ToolS\umeditor122\umeditor.js" />
+    <Content Include="ToolS\umeditor122\umeditor.min.js" />
+    <Content Include="ToolS\YZMCode.aspx" />
     <Content Include="ViewV5\AppPage\HYGL\HYGL.html" />
     <Content Include="ViewV5\AppPage\HYGL\HYGLINDEX.html" />
     <Content Include="ViewV5\AppPage\HYGL\HYGLLIST.html" />
@@ -210,89 +291,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="ToolS\DownFile.aspx" />
-    <Content Include="ToolS\JS\echarts.common.min.js" />
-    <Content Include="ToolS\JS\echarts.js" />
-    <Content Include="ToolS\HtmlToWord.aspx" />
-    <Content Include="ToolS\JS\echarts.min.js" />
-    <Content Include="ToolS\umeditor122\dialogs\emotion\emotion.css" />
-    <Content Include="ToolS\umeditor122\dialogs\emotion\emotion.js" />
-    <Content Include="ToolS\umeditor122\dialogs\emotion\images\0.gif" />
-    <Content Include="ToolS\umeditor122\dialogs\emotion\images\bface.gif" />
-    <Content Include="ToolS\umeditor122\dialogs\emotion\images\cface.gif" />
-    <Content Include="ToolS\umeditor122\dialogs\emotion\images\fface.gif" />
-    <Content Include="ToolS\umeditor122\dialogs\emotion\images\jxface2.gif" />
-    <Content Include="ToolS\umeditor122\dialogs\emotion\images\neweditor-tab-bg.png" />
-    <Content Include="ToolS\umeditor122\dialogs\emotion\images\tface.gif" />
-    <Content Include="ToolS\umeditor122\dialogs\emotion\images\wface.gif" />
-    <Content Include="ToolS\umeditor122\dialogs\emotion\images\yface.gif" />
-    <Content Include="ToolS\umeditor122\dialogs\formula\formula.css" />
-    <Content Include="ToolS\umeditor122\dialogs\formula\formula.html" />
-    <Content Include="ToolS\umeditor122\dialogs\formula\formula.js" />
-    <Content Include="ToolS\umeditor122\dialogs\formula\images\formula.png" />
-    <Content Include="ToolS\umeditor122\dialogs\image\image.css" />
-    <Content Include="ToolS\umeditor122\dialogs\image\image.js" />
-    <Content Include="ToolS\umeditor122\dialogs\image\images\close.png" />
-    <Content Include="ToolS\umeditor122\dialogs\image\images\upload1.png" />
-    <Content Include="ToolS\umeditor122\dialogs\image\images\upload2.png" />
-    <Content Include="ToolS\umeditor122\dialogs\link\link.js" />
-    <Content Include="ToolS\umeditor122\dialogs\map\map.html" />
-    <Content Include="ToolS\umeditor122\dialogs\map\map.js" />
-    <Content Include="ToolS\umeditor122\dialogs\video\images\center_focus.jpg" />
-    <Content Include="ToolS\umeditor122\dialogs\video\images\left_focus.jpg" />
-    <Content Include="ToolS\umeditor122\dialogs\video\images\none_focus.jpg" />
-    <Content Include="ToolS\umeditor122\dialogs\video\images\right_focus.jpg" />
-    <Content Include="ToolS\umeditor122\dialogs\video\video.css" />
-    <Content Include="ToolS\umeditor122\dialogs\video\video.js" />
-    <Content Include="ToolS\umeditor122\index.html" />
-    <Content Include="ToolS\umeditor122\lang\en\en.js" />
-    <Content Include="ToolS\umeditor122\lang\en\images\addimage.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\alldeletebtnhoverskin.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\alldeletebtnupskin.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\background.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\button.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\copy.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\deletedisable.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\deleteenable.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\imglabel.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\listbackground.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\localimage.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\music.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\rotateleftdisable.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\rotateleftenable.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\rotaterightdisable.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\rotaterightenable.png" />
-    <Content Include="ToolS\umeditor122\lang\en\images\upload.png" />
-    <Content Include="ToolS\umeditor122\lang\zh-cn\images\copy.png" />
-    <Content Include="ToolS\umeditor122\lang\zh-cn\images\imglabel.png" />
-    <Content Include="ToolS\umeditor122\lang\zh-cn\images\localimage.png" />
-    <Content Include="ToolS\umeditor122\lang\zh-cn\images\music.png" />
-    <Content Include="ToolS\umeditor122\lang\zh-cn\images\upload.png" />
-    <Content Include="ToolS\umeditor122\lang\zh-cn\zh-cn.js" />
-    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\3c616477-e2bb-40f9-8a08-c3821dd42742.jpg" />
-    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\45e4849b-d2b8-4553-b41c-6e5f315d2f05.png" />
-    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\49d89400-703e-4e67-8001-3bfc2f98cd6e.jpg" />
-    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\5f5e15b2-009f-4c19-b11a-fde1547cb01b.jpg" />
-    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\797b161f-a33b-4ae1-ba84-bcdcf2173158.png" />
-    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\9f5d0f16-82db-4478-9b6f-be167ab413db.jpg" />
-    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\c535721e-cb4a-484d-82ed-cbe7c3fec061.jpg" />
-    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\dabfe6d9-77a1-4b32-936d-6b28ac7ebfad.png" />
-    <Content Include="ToolS\umeditor122\net\upload\2014-11-29\e9daa6f5-d18a-4519-9698-fe9826509086.png" />
-    <Content Include="ToolS\umeditor122\themes\default\css\umeditor.css" />
-    <Content Include="ToolS\umeditor122\themes\default\css\umeditor.min.css" />
-    <Content Include="ToolS\umeditor122\themes\default\images\caret.png" />
-    <Content Include="ToolS\umeditor122\themes\default\images\close.png" />
-    <Content Include="ToolS\umeditor122\themes\default\images\icons.gif" />
-    <Content Include="ToolS\umeditor122\themes\default\images\icons.png" />
-    <Content Include="ToolS\umeditor122\themes\default\images\ok.gif" />
-    <Content Include="ToolS\umeditor122\themes\default\images\pop-bg.png" />
-    <Content Include="ToolS\umeditor122\themes\default\images\spacer.gif" />
-    <Content Include="ToolS\umeditor122\themes\default\images\videologo.gif" />
-    <Content Include="ToolS\umeditor122\third-party\jquery.min.js" />
-    <Content Include="ToolS\umeditor122\umeditor.config.js" />
-    <Content Include="ToolS\umeditor122\umeditor.js" />
-    <Content Include="ToolS\umeditor122\umeditor.min.js" />
-    <Content Include="ToolS\YZMCode.aspx" />
+    <Content Include="API\ToolS\JS\echarts.common.min.js" />
+    <Content Include="API\ToolS\JS\echarts.min.js" />
+    <Content Include="API\ToolS\umeditor122\themes\default\css\umeditor.min.css" />
+    <Content Include="API\ToolS\umeditor122\third-party\jquery.min.js" />
     <Content Include="ViewV5\AppPage\APPLIST.html" />
     <Content Include="ViewV5\AppPage\APPVIEW.html" />
     <Content Include="ViewV5\AppPage\APP_ADD_WF.html" />
@@ -1522,11 +1524,12 @@
     </Compile>
     <Compile Include="ToolS\DownFile.aspx.cs">
       <DependentUpon>DownFile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ToolS\DownFile.aspx.designer.cs">
+      <DependentUpon>DownFile.aspx</DependentUpon>
     </Compile>
     <Compile Include="ToolS\HtmlToWord.aspx.cs">
       <DependentUpon>HtmlToWord.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ToolS\HtmlToWord.aspx.designer.cs">
       <DependentUpon>HtmlToWord.aspx</DependentUpon>
@@ -1537,16 +1540,16 @@
     </Compile>
     <Compile Include="ToolS\YZMCode.aspx.cs">
       <DependentUpon>YZMCode.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ToolS\YZMCode.aspx.designer.cs">
+      <DependentUpon>YZMCode.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ToolS\UploadTX.ashx" />
-    <Content Include="ToolS\umeditor122\net\getContent.ashx" />
-    <Content Include="ToolS\umeditor122\net\imageUp.ashx" />
+    <Content Include="API\ToolS\UploadTX.ashx" />
     <Content Include="ViewV5\Base\import_user.xlsx" />
     <Content Include="ViewV5\Base\批量发薪通知模板.xlsx" />
     <Content Include="ViewV5\CSS\bootstrap3.3.5\css\bootstrap-theme.css.map" />
@@ -1584,6 +1587,9 @@
     <Content Include="ViewV5\JS\index.min.js.map">
       <DependentUpon>index.min.js</DependentUpon>
     </Content>
+    <Content Include="ToolS\umeditor122\net\getContent.ashx" />
+    <Content Include="ToolS\umeditor122\net\imageUp.ashx" />
+    <Content Include="ToolS\UploadTX.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1592,6 +1598,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="API\ToolS\umeditor122\dialogs\emotion\images\" />
+    <Folder Include="API\ToolS\umeditor122\dialogs\formula\images\" />
+    <Folder Include="API\ToolS\umeditor122\dialogs\image\images\" />
+    <Folder Include="API\ToolS\umeditor122\dialogs\link\" />
+    <Folder Include="API\ToolS\umeditor122\dialogs\map\" />
+    <Folder Include="API\ToolS\umeditor122\dialogs\video\images\" />
+    <Folder Include="API\ToolS\umeditor122\lang\en\images\" />
+    <Folder Include="API\ToolS\umeditor122\lang\zh-cn\images\" />
+    <Folder Include="API\ToolS\umeditor122\net\upload\2014-11-29\" />
+    <Folder Include="API\ToolS\umeditor122\themes\default\images\" />
     <Folder Include="ViewV5\upload\" />
   </ItemGroup>
   <ItemGroup>

@@ -190,7 +190,8 @@
     SaveExtData: function (DATAID) {
         //保存扩展数据
         if (pmodel.ExtData.size() > 0) {
-            $.getJSON("/API/VIEWAPI.ashx?ACTION=XTGL_UPDATEEXTDATA", { P1: pmodel.FormCode, P2: DATAID, ExtData: JSON.stringify(pmodel.ExtData.$model) }, function (result) {
+            $.post("/API/VIEWAPI.ashx?ACTION=XTGL_UPDATEEXTDATA", { P1: pmodel.FormCode, P2: DATAID, ExtData: JSON.stringify(pmodel.ExtData.$model) }, function (result) {
+
             })
         }
     },
