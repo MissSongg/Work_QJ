@@ -6,15 +6,16 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <title>详细信息</title>
-    <link href="/View_Mobile/Frozenui1.3/css/frozen.css" rel="stylesheet" />
+    <link href="/View_Mobile/Frozenui1.3/css/frozen.css?ver=20171228" rel="stylesheet" />
     <link href="/View_Mobile/CSS/fs_gallery.css" rel="stylesheet" />
-    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
     <script src="/View_Mobile/JS/zepto.min.js"></script>
     <script src="/View_Mobile/Frozenui1.3/js/frozen.js"></script>
     <script src="/View_Mobile/JS/avalon.mobile.min.js"></script>
-    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
+    <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160427"></script>
     <script src="/View_Mobile/JS/watermark.js"></script>
     <script src="/View_Mobile/JS/fs_gallery.js"></script>
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
+
     <script>
         //document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
         //    //隐藏右上角按钮
@@ -66,7 +67,7 @@
                     })
 
                     html = html + '</div>';
-                    
+
                     $.dialog({
                         title: '未阅人员',
                         content: html,
@@ -95,13 +96,10 @@
             fheight = document.documentElement.clientHeight;
 
             if (strId != null) {
-                var lg = $.loading({
-                    content: '加载中...',
-                })
+
                 $.getJSON('/API/VIEWAPI.ashx?Action=XXFB_UPXXFBREADUSER&r=' + Math.random(), { P1: strId }, function (data) {
                     if (data.ErrorMsg == "") {
                         $.getJSON('/API/VIEWAPI.ashx?Action=XXFB_GETXXFBMODELWX&r=' + Math.random(), { P1: strId }, function (resultData) {
-                            lg.hide();
                             if (resultData.ErrorMsg == "") {
                                 if (resultData.Result.ID) {
                                     rwinfo.modelData = resultData.Result;
@@ -141,12 +139,9 @@
                         })
                         return;
                     }
-                    var lg = $.loading({
-                        content: '评论中...',
-                    })
+
 
                     $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_ADDCOMENT&r=' + Math.random(), { "P1": $("#content").val(), "MsgType": "XXFB", "MsgLYID": strId }, function (resultData) {
-                        lg.hide();
                         if (resultData.ErrorMsg == "") {
                             rwinfo.plData.push(resultData.Result);
                             rwinfo.plcount = rwinfo.plcount + 1;
@@ -182,226 +177,243 @@
 
     <style>
         .vote_box {
-    position: relative;
-    background-color: #fff;
-    padding: 1em 0 0;
-    overflow: hidden;
-}
+            position: relative;
+            background-color: #fff;
+            padding: 1em 0 0;
+            overflow: hidden;
+        }
 
-    .vote_box:after, .vote_box:before {
-        content: " ";
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 200%;
-        height: 1px;
-        border-top: 1px solid #e1e1df;
-        -webkit-transform-origin: 0 0;
-        transform-origin: 0 0;
-        -webkit-transform: scale(0.5);
-        transform: scale(0.5);
-    }
+            .vote_box:after, .vote_box:before {
+                content: " ";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 200%;
+                height: 1px;
+                border-top: 1px solid #e1e1df;
+                -webkit-transform-origin: 0 0;
+                transform-origin: 0 0;
+                -webkit-transform: scale(0.5);
+                transform: scale(0.5);
+            }
 
-    .vote_box:after {
-        top: auto;
-        bottom: -1px;
-    }
+            .vote_box:after {
+                top: auto;
+                bottom: -1px;
+            }
 
-    .vote_box.skin_help {
-        display: none;
-        position: absolute;
-        top: 0;
-        padding: 0;
-        width: 15px;
-    }
+            .vote_box.skin_help {
+                display: none;
+                position: absolute;
+                top: 0;
+                padding: 0;
+                width: 15px;
+            }
 
-    .vote_box.po_left {
-        left: -15px;
-    }
+            .vote_box.po_left {
+                left: -15px;
+            }
 
-    .vote_box.po_right {
-        left: 100%;
-    }
+            .vote_box.po_right {
+                left: 100%;
+            }
 
-blockquote, body, code, dd, div, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, input, legend, p, pre, td, textarea, th {
-    margin: 0;
-    padding: 0;
-}
+        blockquote, body, code, dd, div, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, input, legend, p, pre, td, textarea, th {
+            margin: 0;
+            padding: 0;
+        }
 
-pre {
-    word-break: break-all;
-    word-wrap: break-word;
-}
+        pre {
+            word-break: break-all;
+            word-wrap: break-word;
+        }
 
-table {
-    border-spacing: 0;
-}
+        table {
+            border-spacing: 0;
+        }
 
-fieldset, img {
-    border: 0;
-}
+        fieldset, img {
+            border: 0;
+        }
 
-address, caption, cite, code, dfn, th, var {
-    font-style: normal;
-    font-weight: 400;
-}
+        address, caption, cite, code, dfn, th, var {
+            font-style: normal;
+            font-weight: 400;
+        }
 
-ol, ul {
-    list-style: none;
-}
+        ol, ul {
+            list-style: none;
+        }
 
-caption, th {
-    text-align: left;
-}
+        caption, th {
+            text-align: left;
+        }
 
-h1, h2, h3, h4, h5, h6 {
-    font-size: 100%;
-    font-weight: 400;
-}
+        h1, h2, h3, h4, h5, h6 {
+            font-size: 100%;
+            font-weight: 400;
+        }
 
-q:after, q:before {
-    content: '';
-}
+        q:after, q:before {
+            content: '';
+        }
 
-abbr, acronym {
-    border: 0;
-    font-variant: normal;
-}
+        abbr, acronym {
+            border: 0;
+            font-variant: normal;
+        }
 
-sup {
-    vertical-align: text-top;
-}
+        sup {
+            vertical-align: text-top;
+        }
 
-sub {
-    vertical-align: text-bottom;
-}
+        sub {
+            vertical-align: text-bottom;
+        }
 
-input, select, textarea {
-    font-family: inherit;
-    font-weight: inherit;
-    font-size: 100%;
-}
+        input, select, textarea {
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 100%;
+        }
 
-legend {
-    color: #000;
-}
+        legend {
+            color: #000;
+        }
 
-body {
-    background: #f8f7f5;
-    color: #222;
-    font-family: Helvetica,STHeiti STXihei,Microsoft JhengHei,Microsoft YaHei,Tohoma,Arial;
-    height: 100%;
-    position: relative;
-}
+        body {
+            background: #f8f7f5;
+            color: #222;
+            font-family: Helvetica,STHeiti STXihei,Microsoft JhengHei,Microsoft YaHei,Tohoma,Arial;
+            height: 100%;
+            position: relative;
+        }
 
-    body > .tips {
-        display: none;
-        left: 50%;
-        padding: 20px;
-        position: fixed;
-        text-align: center;
-        top: 50%;
-        width: 200px;
-        z-index: 100;
-    }
+            body > .tips {
+                display: none;
+                left: 50%;
+                padding: 20px;
+                position: fixed;
+                text-align: center;
+                top: 50%;
+                width: 200px;
+                z-index: 100;
+            }
 
-.page {
-    padding: 15px;
-}
+        .page {
+            padding: 15px;
+        }
 
-    .page .page-error, .page .page-loading {
-        line-height: 30px;
-        position: relative;
-        text-align: center;
-    }
+            .page .page-error, .page .page-loading {
+                line-height: 30px;
+                position: relative;
+                text-align: center;
+            }
 
-.btn {
-    background-color: #fcfcfc;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 1px 4px rgba(0,0,0,.3);
-    color: #222;
-    cursor: pointer;
-    display: block;
-    font-size: 15px;
-    font-weight: 700;
-    margin: 15px 0;
-    moz-box-shadow: 0 1px 4px rgba(0,0,0,.3);
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    webkit-box-shadow: 0 1px 4px rgba(0,0,0,.3);
-}
+        .btn {
+            background-color: #fcfcfc;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.3);
+            color: #222;
+            cursor: pointer;
+            display: block;
+            font-size: 15px;
+            font-weight: 700;
+            margin: 15px 0;
+            moz-box-shadow: 0 1px 4px rgba(0,0,0,.3);
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            webkit-box-shadow: 0 1px 4px rgba(0,0,0,.3);
+        }
 
-.icons {
-    background: url(http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icons.png) no-repeat 0 0;
-    border-radius: 5px;
-    height: 25px;
-    overflow: hidden;
-    position: relative;
-    width: 25px;
-}
+        .icons {
+            background: url(http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/icons.png) no-repeat 0 0;
+            border-radius: 5px;
+            height: 25px;
+            overflow: hidden;
+            position: relative;
+            width: 25px;
+        }
 
-    .icons.arrow-r {
-        background: url(http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/brand_profileinweb_arrow2x.png) no-repeat center center;
-        background-size: 100%;
-        height: 16px;
-        width: 12px;
-    }
+            .icons.arrow-r {
+                background: url(http://res.wx.qq.com/mmbizwap/zh_CN/htmledition/images/brand_profileinweb_arrow2x.png) no-repeat center center;
+                background-size: 100%;
+                height: 16px;
+                width: 12px;
+            }
 
-    .icons.check {
-        background-position: -25px 0;
-    }
+            .icons.check {
+                background-position: -25px 0;
+            }
 
-#activity-detail .page-bizinfo .header #activity-name {
-    color: #000;
-    font-size: 20px;
-    font-weight: 700;
-    white-space: pre-wrap;
-    word-wrap: normal;
-    word-break: normal;
-}
+        #activity-detail .page-bizinfo .header #activity-name {
+            color: #000;
+            font-size: 20px;
+            font-weight: 700;
+            white-space: pre-wrap;
+            word-wrap: normal;
+            word-break: normal;
+        }
 
-.page-bizinfo {
-    padding-left: 15px;
-    padding-right: 15px;
-}
+        .page-bizinfo {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
 
-.activity-meta {
-    display: inline-block;
-    line-height: 16px;
-    vertical-align: middle;
-    margin-left: 8px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    color: #8c8c8c;
-    font-size: 11px;
-}
+        .activity-meta {
+            display: inline-block;
+            line-height: 16px;
+            vertical-align: middle;
+            margin-left: 8px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            color: #8c8c8c;
+            font-size: 11px;
+        }
 
-    .activity-meta.no-extra {
-        margin-left: 0;
-    }
+            .activity-meta.no-extra {
+                margin-left: 0;
+            }
 
-.activity-info .text-ellipsis {
-    display: inline-block;
-    vertical-align: middle;
-    max-width: 104px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+        .activity-info .text-ellipsis {
+            display: inline-block;
+            vertical-align: middle;
+            max-width: 104px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-#post-user, a.activity-meta {
-    text-decoration: none;
-    outline: 0;
-    color: #607fa6;
-}
+        #post-user, a.activity-meta {
+            text-decoration: none;
+            outline: 0;
+            color: #607fa6;
+        }
 
-    a.activity-meta:active {
-        color: #607fa6;
-    }
+            a.activity-meta:active {
+                color: #607fa6;
+            }
 
-        a.activity-meta:active .icon_link_arrow {
+                a.activity-meta:active .icon_link_arrow {
+                    background: transparent url(../images/link_arrow_right_blue.png) no-repeat 0 0;
+                    -webkit-background-size: 100%;
+                    -moz-background-size: 100%;
+                    -o-background-size: 100%;
+                    background-size: 100%;
+                }
+
+        .activity-info .icon_link_arrow {
+            margin-left: 3px;
+            margin-top: -5px;
+        }
+
+        .icon_link_arrow {
+            display: none;
+            vertical-align: middle;
+            width: 7px;
+            height: 7px;
             background: transparent url(../images/link_arrow_right_blue.png) no-repeat 0 0;
             -webkit-background-size: 100%;
             -moz-background-size: 100%;
@@ -409,290 +421,273 @@ body {
             background-size: 100%;
         }
 
-.activity-info .icon_link_arrow {
-    margin-left: 3px;
-    margin-top: -5px;
-}
-
-.icon_link_arrow {
-    display: none;
-    vertical-align: middle;
-    width: 7px;
-    height: 7px;
-    background: transparent url(../images/link_arrow_right_blue.png) no-repeat 0 0;
-    -webkit-background-size: 100%;
-    -moz-background-size: 100%;
-    -o-background-size: 100%;
-    background-size: 100%;
-}
-
-#activity-detail .page-content {
-    margin: 0 0;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-    #activity-detail .page-content .media {
-        margin: 18px 0;
-    }
-
-        #activity-detail .page-content .media img {
-            width: 100%;
+        #activity-detail .page-content {
+            margin: 0 0;
+            padding-left: 15px;
+            padding-right: 15px;
         }
 
-    #activity-detail .page-content .text {
-        color: #3e3e3e;
-        line-height: 1.5;
-        width: 100%;
-    }
+            #activity-detail .page-content .media {
+                margin: 18px 0;
+            }
 
-        #activity-detail .page-content .text p {
+                #activity-detail .page-content .media img {
+                    width: 100%;
+                }
+
+            #activity-detail .page-content .text {
+                color: #3e3e3e;
+                line-height: 1.5;
+                width: 100%;
+            }
+
+                #activity-detail .page-content .text p {
+                    *zoom: 1;
+                    min-height: 1.5em;
+                    white-space: pre-wrap;
+                }
+
+                    #activity-detail .page-content .text p:after {
+                        content: "\200B";
+                        display: block;
+                        height: 0;
+                        clear: both;
+                    }
+
+        #activity-list .header {
+            font-size: 20px;
+        }
+
+        #activity-list .page-list {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 18px 0;
+            overflow: hidden;
+        }
+
+            #activity-list .page-list .line.btn {
+                border-radius: 0;
+                margin: 0;
+                text-align: left;
+            }
+
+                #activity-list .page-list .line.btn .checkbox {
+                    height: 25px;
+                    line-height: 25px;
+                    padding-left: 35px;
+                    position: relative;
+                }
+
+                    #activity-list .page-list .line.btn .checkbox .icons {
+                        background-color: #ccc;
+                        left: 0;
+                        position: absolute;
+                        top: 0;
+                    }
+
+                #activity-list .page-list .line.btn.off .icons {
+                    background-image: none;
+                }
+
+        .vm {
+            vertical-align: middle;
+        }
+
+        .tc {
+            text-align: center;
+        }
+
+        .db {
+            display: block;
+        }
+
+        .dib {
+            display: inline-block;
+        }
+
+        .b {
+            font-weight: 700;
+        }
+
+        .clr {
+            clear: both;
+        }
+
+        .text img {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+        .page-toolbar {
+            padding: 18px 0;
+            overflow: hidden;
             *zoom: 1;
-            min-height: 1.5em;
-            white-space: pre-wrap;
+            height: 16px;
+            line-height: 16px;
         }
 
-            #activity-detail .page-content .text p:after {
-                content: "\200B";
+            .page-toolbar a {
+                color: #607fa6;
+                font-size: 14px;
+                text-decoration: none;
+                text-shadow: 0 1px #fff;
+                -webkit-text-shadow: 0 1px #fff;
+                -moz-text-shadow: 0 1px #fff;
+            }
+
+        .page-url {
+            float: left;
+        }
+
+        .page-toolbar a.page-imform {
+            float: right;
+            color: #7b7b7b;
+        }
+
+        .page-toolbar .pager {
+            display: block;
+            margin: 0 auto -16px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+            .page-toolbar .pager a {
+                margin: 0 10px;
+            }
+
+        .page-toolarea {
+            font-size: 14px;
+            padding: 10px 0 20px;
+        }
+
+            .page-toolarea a {
                 display: block;
-                height: 0;
-                clear: both;
+                line-height: 2em;
+                color: #7b7b7b;
+                text-decoration: none;
             }
 
-#activity-list .header {
-    font-size: 20px;
-}
+            .page-toolarea .icon_arrow_gray {
+                margin-left: 5px;
+                margin-top: -.2em;
+            }
 
-#activity-list .page-list {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin: 18px 0;
-    overflow: hidden;
-}
+        .res_iframe {
+            width: 100%;
+            background-color: transparent;
+            border: 0;
+        }
 
-    #activity-list .page-list .line.btn {
-        border-radius: 0;
-        margin: 0;
-        text-align: left;
-    }
+        .card_iframe {
+            min-height: 185px;
+            background-color: transparent;
+            border: none;
+        }
 
-        #activity-list .page-list .line.btn .checkbox {
-            height: 25px;
-            line-height: 25px;
-            padding-left: 35px;
+        .line_title {
+            text-align: center;
+            margin-top: 20px;
+            border-top: 1px dotted #a8a8a7;
+        }
+
+            .line_title .tips {
+                display: inline-block;
+                position: relative;
+                top: -9px;
+                padding-left: 16px;
+                padding-right: 16px;
+                font-size: 14px;
+                color: #cfcfcf;
+                background-color: #f8f7f5;
+                text-decoration: none;
+            }
+
+        .icon_arrow_gray {
+            display: inline-block;
+            vertical-align: middle;
+            width: 7px;
+            height: 7px;
+            background: transparent url(../images/icon_arrow_gray.png) no-repeat 0 0;
+            -webkit-background-size: 100%;
+            -moz-background-size: 100%;
+            -o-background-size: 100%;
+            background-size: 100%;
+        }
+
+        .selectTdClass {
+            background-color: #edf5fa !important;
+        }
+
+        table.noBorderTable caption, table.noBorderTable td, table.noBorderTable th {
+            border: 1px dashed #ddd !important;
+        }
+
+        table {
+            margin-bottom: 10px;
+            border-collapse: collapse;
+            display: table;
+            width: 100% !important;
+        }
+
+        td, th {
+            word-wrap: break-word;
+            word-break: break-all;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+        }
+
+        caption {
+            border: 1px dashed #DDD;
+            border-bottom: 0;
+            padding: 3px;
+            text-align: center;
+        }
+
+        th {
+            border-top: 2px solid #BBB;
+            background: #f7f7f7;
+        }
+
+        .ue-table-interlace-color-single {
+            background-color: #fcfcfc;
+        }
+
+        .ue-table-interlace-color-double {
+            background-color: #f7faff;
+        }
+
+        td p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .vote_area {
             position: relative;
+            display: block;
+            margin: 14px 0;
+            white-space: normal !important;
         }
 
-            #activity-list .page-list .line.btn .checkbox .icons {
-                background-color: #ccc;
-                left: 0;
-                position: absolute;
-                top: 0;
+        .vote_iframe {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            border: 0;
+        }
+
+        .text {
+            word-wrap: break-word;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            -webkit-nbsp-mode: space;
+        }
+
+            .text * {
+                max-width: 100%;
             }
 
-        #activity-list .page-list .line.btn.off .icons {
-            background-image: none;
-        }
-
-.vm {
-    vertical-align: middle;
-}
-
-.tc {
-    text-align: center;
-}
-
-.db {
-    display: block;
-}
-
-.dib {
-    display: inline-block;
-}
-
-.b {
-    font-weight: 700;
-}
-
-.clr {
-    clear: both;
-}
-
-.text img {
-    max-width: 100% !important;
-    height: auto !important;
-}
-
-.page-toolbar {
-    padding: 18px 0;
-    overflow: hidden;
-    *zoom: 1;
-    height: 16px;
-    line-height: 16px;
-}
-
-    .page-toolbar a {
-        color: #607fa6;
-        font-size: 14px;
-        text-decoration: none;
-        text-shadow: 0 1px #fff;
-        -webkit-text-shadow: 0 1px #fff;
-        -moz-text-shadow: 0 1px #fff;
-    }
-
-.page-url {
-    float: left;
-}
-
-.page-toolbar a.page-imform {
-    float: right;
-    color: #7b7b7b;
-}
-
-.page-toolbar .pager {
-    display: block;
-    margin: 0 auto -16px;
-    text-align: center;
-    font-size: 14px;
-}
-
-    .page-toolbar .pager a {
-        margin: 0 10px;
-    }
-
-.page-toolarea {
-    font-size: 14px;
-    padding: 10px 0 20px;
-}
-
-    .page-toolarea a {
-        display: block;
-        line-height: 2em;
-        color: #7b7b7b;
-        text-decoration: none;
-    }
-
-    .page-toolarea .icon_arrow_gray {
-        margin-left: 5px;
-        margin-top: -.2em;
-    }
-
-.res_iframe {
-    width: 100%;
-    background-color: transparent;
-    border: 0;
-}
-
-.card_iframe {
-    min-height: 185px;
-    background-color: transparent;
-    border: none;
-}
-
-.line_title {
-    text-align: center;
-    margin-top: 20px;
-    border-top: 1px dotted #a8a8a7;
-}
-
-    .line_title .tips {
-        display: inline-block;
-        position: relative;
-        top: -9px;
-        padding-left: 16px;
-        padding-right: 16px;
-        font-size: 14px;
-        color: #cfcfcf;
-        background-color: #f8f7f5;
-        text-decoration: none;
-    }
-
-.icon_arrow_gray {
-    display: inline-block;
-    vertical-align: middle;
-    width: 7px;
-    height: 7px;
-    background: transparent url(../images/icon_arrow_gray.png) no-repeat 0 0;
-    -webkit-background-size: 100%;
-    -moz-background-size: 100%;
-    -o-background-size: 100%;
-    background-size: 100%;
-}
-
-.selectTdClass {
-    background-color: #edf5fa !important;
-}
-
-table.noBorderTable caption, table.noBorderTable td, table.noBorderTable th {
-    border: 1px dashed #ddd !important;
-}
-
-table {
-    margin-bottom: 10px;
-    border-collapse: collapse;
-    display: table;
-    width: 100% !important;
-}
-
-td, th {
-    word-wrap: break-word;
-    word-break: break-all;
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-}
-
-caption {
-    border: 1px dashed #DDD;
-    border-bottom: 0;
-    padding: 3px;
-    text-align: center;
-}
-
-th {
-    border-top: 2px solid #BBB;
-    background: #f7f7f7;
-}
-
-.ue-table-interlace-color-single {
-    background-color: #fcfcfc;
-}
-
-.ue-table-interlace-color-double {
-    background-color: #f7faff;
-}
-
-td p {
-    margin: 0;
-    padding: 0;
-}
-
-.vote_area {
-    position: relative;
-    display: block;
-    margin: 14px 0;
-    white-space: normal !important;
-}
-
-.vote_iframe {
-    width: 100%;
-    height: 100%;
-    background-color: transparent;
-    border: 0;
-}
-
-.text {
-    word-wrap: break-word;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;
-    -webkit-nbsp-mode: space;
-}
-
-    .text * {
-        max-width: 100%;
-    }
-
-         #nickname {
+        #nickname {
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -718,19 +713,22 @@ td p {
             word-break: normal;
             padding-bottom: 10px;
         }
+
         .ms-controller, [ms-controller] {
             display: none;
         }
+
         .ui-list > li {
             margin: 3px;
             padding-left: 15px;
         }
+
         .layermcont {
             overflow-y: auto;
             max-height: 100%;
             position: relative;
-            
         }
+
         .ui-dialog-bd {
             padding: 10px;
         }
@@ -742,25 +740,25 @@ td p {
     <div id="page-content" class="page-content">
         <div id="img-content">
             <div class="header">
-                <h1 id="activity-name" style="border-bottom: 1px dotted #ccc; overflow: hidden; word-wrap: break-word; word-break: break-all; ">{{modelData.XXTitle}}</h1><p class="activity-info">
-                    <span>
-                    </span>
-                    <em id="post-date" class="activity-meta no-extra" style="font-style:normal">{{modelData.FBTime}}</em>
-                    <em class="activity-meta" style="font-style:normal">{{modelData.Author}}</em>
+                <h1 id="activity-name" style="border-bottom: 1px dotted #ccc; overflow: hidden; word-wrap: break-word; word-break: break-all;">{{modelData.XXTitle}}</h1>
+                <p class="activity-info">
+                    <span></span>
+                    <em id="post-date" class="activity-meta no-extra" style="font-style: normal">{{modelData.FBTime}}</em>
+                    <em class="activity-meta" style="font-style: normal">{{modelData.Author}}</em>
                     <a href="javascript:viewProfile();" id="post-user" class="activity-meta"><span class="text-ellipsis"></span></a>
                 </p>
             </div>
-            <div id="details" class="text" style="overflow: hidden; word-wrap: break-word; word-break: break-all; ">
+            <div id="details" class="text" style="overflow: hidden; word-wrap: break-word; word-break: break-all;">
                 {{modelData.XXContent|html}}
             </div>
             <ul class="ui-list">
                 <li class="ui-border-t" ms-repeat-el="fjData" style="padding: 5px; font-size: 14px; border: 1px solid #C8CACD;">
 
-                    <div style="padding-right:10px">
-                        <img ms-on-click="fdtp(this)" class="mall_pcp" style="height:40px;width:40px" ms-if="ComFunJS.xstp(el.FileExtendName)" ms-attr-src="{{ComFunJS.getfile(el.ID)}}" />
-                        <img ms-on-tap="viewwxx(el)" style="height:40px;width:40px" ms-if="!ComFunJS.xstp(el.FileExtendName)" ms-attr-src="../Images/qywd/{{el.FileExtendName}}.png" onerror="javascript: this.src = '/View_Mobile/Images/qywd/file.png'" />
+                    <div style="padding-right: 10px">
+                        <img ms-on-click="fdtp(this)" class="mall_pcp" style="height: 40px; width: 40px" ms-if="ComFunJS.xstp(el.FileExtendName)" ms-attr-src="{{ComFunJS.getfile(el.ID)}}" />
+                        <img ms-on-tap="viewwxx(el)" style="height: 40px; width: 40px" ms-if="!ComFunJS.xstp(el.FileExtendName)" ms-attr-src="../Images/qywd/{{el.FileExtendName}}.png" onerror="javascript: this.src = '/View_Mobile/Images/qywd/file.png'" />
                     </div>
-                    <div class="ui-list-info" ms-on-tap="viewwxx(el)" style="padding:0;">
+                    <div class="ui-list-info" ms-on-tap="viewwxx(el)" style="padding: 0;">
                         <h4 class="ui-nowrap">{{el.Name}}.{{el.FileExtendName}}</h4>
                         <p class="ui-nowrap">{{Math.round(el.FileSize/1024)}}kb</p>
                     </div>
@@ -772,32 +770,34 @@ td p {
 
                 </li>
             </ul>
-           
+
             <p class="page-toolbar" style="padding-bottom: 25px;">
-                <em class="activity-meta" style="font-style:normal;margin-left:0"><a ms-click="yy()">已阅({{ydcount}})</a></em> &nbsp;&nbsp;
-                <em class="activity-meta" style="font-style:normal;margin-left:0"><a ms-click="wy()">未阅({{wydcount}})</a></em>&nbsp;&nbsp;
-                <em class="activity-meta" style="font-style:normal;margin-left:0" ms-if="ztData.isPL=='1'"><a ms-click="pl()">评论({{plcount}})</a></em>
+                <em class="activity-meta" style="font-style: normal; margin-left: 0"><a ms-click="yy()">已阅({{ydcount}})</a></em> &nbsp;&nbsp;
+                <em class="activity-meta" style="font-style: normal; margin-left: 0"><a ms-click="wy()">未阅({{wydcount}})</a></em>&nbsp;&nbsp;
+                <em class="activity-meta" style="font-style: normal; margin-left: 0" ms-if="ztData.isPL=='1'"><a ms-click="pl()">评论({{plcount}})</a></em>
             </p>
         </div>
     </div>
-    <div class="ui-form ui-border-t" style="padding-bottom: 44px; background: #f8f7f5;" >
-        <ul class="ui-list " style="display:none;" >
+    <div class="ui-form ui-border-t" style="padding-bottom: 44px; background: #f8f7f5;">
+        <ul class="ui-list " style="display: none;">
             <li class=" ui-border " ms-repeat-el="plData" style="padding: 5px; height: auto;">
-                <div style="padding-right:10px">
-                    <img ms-attr-src="{{ComFunJS.getfile()+'&type=TX&user='+el.CRUser}}" style='width: 40px;height:40px;' onerror="javascript: this.src = '/Upload/TX/def.jpg'">
+                <div style="padding-right: 10px">
+                    <img ms-attr-src="{{ComFunJS.getfile()+'&type=TX&user='+el.CRUser}}" style='width: 40px; height: 40px;' onerror="javascript: this.src = '/Upload/TX/def.jpg'">
                 </div>
-                <div class="ui-list-info" style="padding:0;">
+                <div class="ui-list-info" style="padding: 0;">
                     <div style="padding: 0; display: -webkit-box;">
-                        <div class="ui-list-info" style="padding:0;"><h4 class="ui-nowrap" style="font-size: 12px">{{ComFunJS.convuser(el.CRUser)}}</h4></div>
+                        <div class="ui-list-info" style="padding: 0;">
+                            <h4 class="ui-nowrap" style="font-size: 12px">{{ComFunJS.convuser(el.CRUser)}}</h4>
+                        </div>
                         <div style="margin-right: 10px; font-size: 12px;">{{el.CRDate|date("yyyy-MM-dd HH:mm")}}</div>
                     </div>
-                    <p style="margin-bottom: 5px; font-size: 12px; overflow: hidden; word-wrap: break-word; word-break: break-all; " class="ui-txt-justify" ms-html="el.MSGContent"></p>
+                    <p style="margin-bottom: 5px; font-size: 12px; overflow: hidden; word-wrap: break-word; word-break: break-all;" class="ui-txt-justify" ms-html="el.MSGContent"></p>
                 </div>
             </li>
         </ul>
     </div>
-    <div class="ui-footer ui-footer-stable ui-btn-group ui-border-t" style="display:none;z-index:10000;">
-        <section class="ui-input-wrap ui-border-t" style="width:100%">
+    <div class="ui-footer ui-footer-stable ui-btn-group ui-border-t" style="display: none; z-index: 10000;">
+        <section class="ui-input-wrap ui-border-t" style="width: 100%">
             <div class="ui-input ui-border-radius">
                 <input id="content" type="text" name="" value="" placeholder="我也说一句...">
             </div>

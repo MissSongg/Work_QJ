@@ -1628,7 +1628,7 @@ var ComFunJS = {
             }
         })
         $(document).on('ajaxStop', function () {
-            ComFunJS.closeAll()
+           // ComFunJS.closeAll()
         })
         $(document).on('ajaxError', function (event, xhr, options, exc) {
             ComFunJS.winwarning("请求失败！")
