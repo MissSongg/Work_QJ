@@ -181,6 +181,7 @@
     <Content Include="ToolS\umeditor122\net\upload\2014-11-29\dabfe6d9-77a1-4b32-936d-6b28ac7ebfad.png" />
     <Content Include="ToolS\umeditor122\net\upload\2014-11-29\e9daa6f5-d18a-4519-9698-fe9826509086.png" />
     <Content Include="ToolS\umeditor122\themes\default\css\umeditor.css" />
+    <Content Include="ToolS\umeditor122\themes\default\css\umeditor.min.css" />
     <Content Include="ToolS\umeditor122\themes\default\images\caret.png" />
     <Content Include="ToolS\umeditor122\themes\default\images\close.png" />
     <Content Include="ToolS\umeditor122\themes\default\images\icons.gif" />
@@ -189,6 +190,7 @@
     <Content Include="ToolS\umeditor122\themes\default\images\pop-bg.png" />
     <Content Include="ToolS\umeditor122\themes\default\images\spacer.gif" />
     <Content Include="ToolS\umeditor122\themes\default\images\videologo.gif" />
+    <Content Include="ToolS\umeditor122\third-party\jquery.min.js" />
     <Content Include="ToolS\umeditor122\umeditor.config.js" />
     <Content Include="ToolS\umeditor122\umeditor.js" />
     <Content Include="ToolS\umeditor122\umeditor.min.js" />

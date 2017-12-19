@@ -190,7 +190,7 @@ namespace QJY.API
                 month = DateTime.Now.Month;
             }
             string strTime = new DateTime(DateTime.Now.Year, month, 1).ToShortDateString();
-            string endTime = new DateTime(DateTime.Now.Year, month + 1, 1).ToShortDateString();
+            string endTime = new DateTime(DateTime.Now.Year, month, 1).AddMonths(1).ToShortDateString();
             strWhere += string.Format("And  KQDate BETWEEN '{0}' and '{1}'", strTime, endTime);
             if (P1 != "")
             {

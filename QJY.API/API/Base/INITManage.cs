@@ -780,7 +780,7 @@ namespace QJY.API
                 WXHelp wx = new WXHelp(UserInfo.QYinfo);
                 #region 更新部门
                 Senparc.Weixin.QY.AdvancedAPIs.MailList.GetDepartmentListResult bmlist = wx.WX_GetBranchList("");
-                foreach (var wxbm in bmlist.department)
+                foreach (var wxbm in bmlist.department.OrderBy(d => d.id))
                 {
                     var bm = new JH_Auth_BranchB().GetEntity(p => p.ComId == UserInfo.User.ComId && p.WXBMCode == wxbm.id);
                     if (bm == null)
