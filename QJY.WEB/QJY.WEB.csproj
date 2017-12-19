@@ -293,10 +293,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="API\ToolS\JS\echarts.common.min.js" />
-    <Content Include="API\ToolS\JS\echarts.min.js" />
-    <Content Include="API\ToolS\umeditor122\themes\default\css\umeditor.min.css" />
-    <Content Include="API\ToolS\umeditor122\third-party\jquery.min.js" />
     <Content Include="ViewV5\AppPage\APPLIST.html" />
     <Content Include="ViewV5\AppPage\APPVIEW.html" />
     <Content Include="ViewV5\AppPage\APP_ADD_WF.html" />
@@ -1551,7 +1547,6 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="API\ToolS\UploadTX.ashx" />
     <Content Include="ViewV5\Base\import_user.xlsx" />
     <Content Include="ViewV5\Base\批量发薪通知模板.xlsx" />
     <Content Include="ViewV5\CSS\bootstrap3.3.5\css\bootstrap-theme.css.map" />
@@ -1600,16 +1595,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="API\ToolS\umeditor122\dialogs\emotion\images\" />
-    <Folder Include="API\ToolS\umeditor122\dialogs\formula\images\" />
-    <Folder Include="API\ToolS\umeditor122\dialogs\image\images\" />
-    <Folder Include="API\ToolS\umeditor122\dialogs\link\" />
-    <Folder Include="API\ToolS\umeditor122\dialogs\map\" />
-    <Folder Include="API\ToolS\umeditor122\dialogs\video\images\" />
-    <Folder Include="API\ToolS\umeditor122\lang\en\images\" />
-    <Folder Include="API\ToolS\umeditor122\lang\zh-cn\images\" />
-    <Folder Include="API\ToolS\umeditor122\net\upload\2014-11-29\" />
-    <Folder Include="API\ToolS\umeditor122\themes\default\images\" />
     <Folder Include="ViewV5\upload\" />
   </ItemGroup>
   <ItemGroup>
