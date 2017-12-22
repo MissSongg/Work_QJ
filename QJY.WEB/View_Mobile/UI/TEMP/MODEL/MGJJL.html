@@ -19,20 +19,8 @@
                     </select>
                 </div>
             </div>
-            <!--<div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">方式</label></div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <select ms-duplex="modelData.Type" class="weui-select">
-                        <option value="电话">电话</option>
-                        <option value="QQ">QQ</option>
-                        <option value="微信">微信</option>
-                        <option value="拜访">拜访</option>
-                        <option value="邮件">邮件</option>
-                        <option value="短信">短信</option>
-                        <option value="其他">其他</option>
-                    </select>
-                </div>
-            </div>-->
+            
+
         </div>
         <div class="weui_cells_title">描述</div>
         <div class="weui_cells weui_cells_form">
@@ -67,12 +55,7 @@
                     {{gjzt}}
                 </div>
             </div>
-            <!--<div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">方式</label></div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    {{modelData.Type}}
-                </div>
-            </div>-->
+            
         </div>
         <div class="weui_cells_title">描述</div>
         <div class="weui_cells weui_cells_form">
@@ -117,16 +100,7 @@
             }
         },
         inittemp: function (strId) {
-            //$.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETALLKH', {}, function (resultData) {
-            //    if (resultData.ErrorMsg == "") {
-            //        tempmodel.ColumnData = resultData.Result;
-            //        if (tempmodel.khid) {
-            //            tempmodel.modelData.KHID = tempmodel.khid
-            //        } else if (!tempmodel.modelData.KHID) {
-            //            tempmodel.modelData.KHID = resultData.Result[0].ID
-            //        }
-            //    }
-            //})
+          
             if (tempmodel.khid) {
                 tempmodel.modelData.KHID = tempmodel.khid;
                 $("#conKH").val(tempmodel.khid);

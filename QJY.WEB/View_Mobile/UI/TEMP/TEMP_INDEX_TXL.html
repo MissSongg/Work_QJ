@@ -612,7 +612,7 @@
                 <li class="add-li" ms-repeat-user="bm.DeptUser" ms-visible="(searstr&&(user.UserRealName.indexOf(searstr)!=-1||user.mobphone.indexOf(searstr)!=-1))||!searstr">
                     <span class="clearfix" external>
                         <span class="mes-icon">
-                            <img ms-attr-src="{{ComFunJS.getfile()+'&type=TX&user='+user.UserName}}">
+                            <img src="../../Images/user-icon.png" />
                         </span>
                         <div class="mess-r "> <span ms-if="isseltype"><h4 style="margin-bottom:0">{{user.UserRealName.length==2?user.UserRealName.substring(0,1)+'&nbsp;&nbsp;&nbsp;&nbsp;'+user.UserRealName.substring(1):user.UserRealName}}&nbsp; <font style="color:cornflowerblue"><i class="fa  fa-mobile-phone"></i>{{user.mobphone}}</font>  </h4> <p style="margin:0">{{user.zhiwu}}</p></span>  <a ms-attr-href="'tel:'+user.mobphone" external ms-if="!isseltype"><h4 style="margin-bottom:0">{{user.UserRealName.length==2?user.UserRealName.substring(0,1)+'&nbsp;&nbsp;&nbsp;&nbsp;'+user.UserRealName.substring(1):user.UserRealName|html}}&nbsp;<font style="color:cornflowerblue"><i class="fa  fa-mobile-phone"></i>{{user.mobphone}}</font>  </h4> <p style="margin:0">{{user.zhiwu}}</p></a>  </div>
                     </span>

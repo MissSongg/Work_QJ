@@ -157,7 +157,7 @@ namespace QJY.API
                 month = DateTime.Now.Month;
             }
             string strTime = new DateTime(DateTime.Now.Year, month, 1).ToShortDateString();
-            string endTime = new DateTime(DateTime.Now.Year, month + 1, 1).ToShortDateString();
+            string endTime = new DateTime(DateTime.Now.Year, month, 1).AddMonths(1).ToShortDateString();
             strWhere += string.Format("And cc.CRDate BETWEEN '{0}' and '{1}'", strTime, endTime);
             
             //已审核的经费报销

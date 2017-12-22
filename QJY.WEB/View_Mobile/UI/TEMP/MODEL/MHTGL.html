@@ -307,14 +307,7 @@
                     }
                 }
             })
-            //$.getJSON('/API/VIEWAPI.ashx?Action=CRM_GETALLKH', {}, function (resultData) {
-            //    if (resultData.ErrorMsg == "") {
-            //        tempmodel.khData = resultData.Result;
-            //        if (tempmodel.khid) {
-            //            tempmodel.modelData.KHID = tempmodel.khid;
-            //        }
-            //    }
-            //})
+
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 17 }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempmodel.fkfsData = resultData.Result;
