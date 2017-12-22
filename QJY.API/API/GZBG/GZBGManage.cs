@@ -186,7 +186,7 @@ namespace QJY.API
             int month = 0;
             int.TryParse(context.Request["month"] ?? "1", out month);
             string strTime = new DateTime(DateTime.Now.Year, month, 1).ToShortDateString();
-            string endTime = new DateTime(DateTime.Now.Year, month + 1, 1).ToShortDateString();
+            string endTime = new DateTime(DateTime.Now.Year, month, 1).AddMonths(1).ToShortDateString();
             strWhere += string.Format("And bg.RBDate BETWEEN '{0}' and '{1}'", strTime, endTime);
 
             string strSql = string.Format(" Select bg.BranchName,bg.RBContent,bg.RBJSR,bg.RBWCQK,bg.RBDate,bg.LeiBie,bg.CRUser,bg.CRDate,bg.ID,bg.Files,bg.CRUserName,zd.TypeName  from  SZHL_GZBG  bg inner join JH_Auth_ZiDian zd on LeiBie= zd.ID and Class=6 Where {0} order by bg.CRDate desc", strWhere);

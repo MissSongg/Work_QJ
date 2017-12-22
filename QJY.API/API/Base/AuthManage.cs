@@ -2559,7 +2559,7 @@ namespace QJY.API
 
             int month = DateTime.Now.Month;
             string strTime = new DateTime(DateTime.Now.Year, month, 1).ToShortDateString();
-            string endTime = new DateTime(DateTime.Now.Year, month + 1, 1).ToShortDateString();
+            string endTime = new DateTime(DateTime.Now.Year, month, 1).AddMonths(1).ToShortDateString();
 
 
             if (P1 != "")

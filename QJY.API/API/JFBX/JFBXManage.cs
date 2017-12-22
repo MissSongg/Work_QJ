@@ -159,7 +159,7 @@ namespace QJY.API
             int month = 0;
             int.TryParse(context.Request["month"] ?? "1", out month);
             string strTime = new DateTime(DateTime.Now.Year, month, 1).ToShortDateString();
-            string endTime = new DateTime(DateTime.Now.Year, month + 1, 1).ToShortDateString();
+            string endTime = new DateTime(DateTime.Now.Year, month, 1).AddMonths(1).ToShortDateString();
             strWhere += string.Format(" And BXDate BETWEEN '{0}' and '{1}'", strTime, endTime);
 
             string strContent = context.Request["Content"] ?? "";
