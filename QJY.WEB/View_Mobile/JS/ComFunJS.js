@@ -1197,6 +1197,7 @@ var ComFunJS = {
         return "";
     },//页面初始化
     initpeo: function () {
+        peomodel.peopcode = "TEMP_INDEX_TXL";
         $(".szhl_getPeoples").each(function () {
             //初始化选人插件
             $(this).parent().find('.selpeo').remove();
@@ -1229,6 +1230,7 @@ var ComFunJS = {
         })
     },//微信选择用户插件
     initkh: function () {
+        khmodel.khcode = "TEMP_INDEX_KH";
         $(".szhl_getKH").each(function () {
             //初始化选人插件
             $(this).parent().find('.selpeo').remove();

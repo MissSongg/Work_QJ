@@ -71,7 +71,9 @@
                 });
             });
             //获取草稿
-            pmodel.GetDraft();
+            if (pmodel.isPC) {
+                pmodel.GetDraft();
+            }
         }
 
 

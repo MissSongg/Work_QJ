@@ -8,19 +8,19 @@
 .laymshade{background-color:rgba(0,0,0, .5); pointer-events:auto;}
 .layermmain{display:table; font-family: Helvetica, arial, sans-serif; pointer-events: none;}
 .layermmain .section{display:table-cell; vertical-align:middle; text-align:center;}
-.layermchild{position:relative; display:inline-block;  text-align:left; background-color:#fff; font-size:14px; border-radius:6px; box-shadow:0 0 8px rgba(0, 0, 0, 0.1); opacity: 0; transform: scale(0); -webkit-transform: scale(0); pointer-events:auto;}
+.layermchild{position:relative; display:inline-block;  text-align:left; background-color:#fff; font-size:14px; border-radius:6px; opacity: 0; transform: scale(0); -webkit-transform: scale(0); pointer-events:auto;}
 .layermborder{border:1px solid #999;}
 .layermshow .layermchild{opacity: 1; transform:scale(1); -webkit-transform: scale(1);}
 .layermbox0 .layermchild{max-width:260px; min-width:150px;}
 .layermbox1 .layermchild{border:none; border-radius:0;}
-.layermbox2 .layermchild{width:auto; max-width:260px; min-width:40px; border:none; background-color:rgba(0,0,0,.6); color:#fff;}
+.layermbox2 .layermchild{width:auto; max-width:260px; min-width:40px; border:none; background-color:transparent; color:#fff;}
 .layermchild h3{padding:0 45px 0 10px; height:50px; line-height:50px; border-bottom:1px solid #EBEBEB; font-size:16px; font-weight:400;  border-radius:5px 5px 0 0; border-bottom:1px solid #EBEBEB;}
 .layermchild h3,
 .layermbtn span{ text-overflow:ellipsis; overflow:hidden; white-space:nowrap;}
 .layermcont{padding:20px 15px; line-height:22px; border-radius:5px;}
 .layermbox1 .layermcont{padding:0;}
 .layermbox2 .layermcont{text-align:center; padding:30px 30px 0; line-height: 0;}
-.layermbox2 .layermcont i{width:1.5rem; height:1.5rem; margin-left:8px; display:inline-block; background-color:#fff; border-radius:100%;}
+.layermbox2 .layermcont i{width:1.5rem; height:1.5rem; margin-left:8px; display:inline-block; background-color:#65ff64; border-radius:100%;}
 .layermbox2 .layermcont i{-webkit-animation: bouncedelay 1.4s infinite ease-in-out; animation: bouncedelay 1.4s infinite ease-in-out; -webkit-animation-fill-mode: both; animation-fill-mode: both;}
 @-webkit-keyframes bouncedelay{
     0%,80%,100%{-webkit-transform:scale(0)}
