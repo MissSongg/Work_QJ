@@ -45,6 +45,7 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void LOGIN(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
+
             string password = context.Request["password"] ?? "";
             string username = context.Request["UserName"] ?? "";
             string chkcode = context.Request["chkcode"] ?? "";

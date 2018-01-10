@@ -155,8 +155,7 @@
                     if (pmodel.DraftData.ID != "0") {
                         pmodel.DelDraft();
                     }
-                    //将新的表单数据存到草稿中去
-                    pmodel.SaveDraft(result1.Result.ID);
+                    
                     //如果MODELCODE有流程,开始流程数据
                     $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_STARTWF", { P1: pmodel.FormCode, P2: $("#conshr").val(), PDID: pmodel.PDID, DATAID: result1.Result.ID, LCTYPE: pmodel.lctype, csr: pmodel.CSUser }, function (result) {
                         if ($.trim(result.ErrorMsg) == "") {
@@ -176,6 +175,8 @@
 
                         }
                     });
+                    //将新的表单数据存到草稿中去
+                    pmodel.SaveDraft(result1.Result.ID);
 
                 }
                 else {

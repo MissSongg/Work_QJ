@@ -532,7 +532,7 @@ namespace QJY.API
         public DataTable GetBranchList(int intDeptCode, int comId, string branchQX = "", int index = 0)
         {
             DataTable dtRoot = new DataTable();
-            DataTable dt = new JH_Auth_BranchB().GetDTByCommand("SELECT * from JH_Auth_Branch  where DeptRoot=" + intDeptCode + " and ComId=" + comId + " order by DeptShort ASC");
+            DataTable dt = new JH_Auth_BranchB().GetDTByCommand("SELECT * from JH_Auth_Branch  where DeptRoot=" + intDeptCode + " and ComId=" + comId + " order by DeptShort DESC");
             dt.Columns.Add("ChildBranch", Type.GetType("System.Object"));
             foreach (DataRow row in dt.Rows)
             {
