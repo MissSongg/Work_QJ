@@ -65,7 +65,7 @@ label{font-weight:normal}
 .add-tab{border-top:1px solid #e5e5e5;color: #12b8f6;}
 .add-tab span{width: 120px;height: 25px;border:1px solid #e5e5e5;border-top-color: #fff;display: inline-block;cursor: pointer;margin-top: -1px;}
 .btn-add{position: absolute;right:20px;top:20px;z-index:2}
-.cz-btn{width: 28px;height: 28px;display: inline-block;border-radius: 2px;background-color: #12b8f6;line-height: 28px;text-align:center;color: #fff;}
+.cz-btn{width: 28px;height: 28px;display: inline-block;border-radius: 2px;background-color: #12b8f6;text-align:center;color: #fff;}
 .js-color{background-color: #9ec0cd}
 .sc-color{background-color: #ff7800}
 .default-tab td{height: 50px;}
@@ -198,8 +198,8 @@ label{font-weight:normal}
 .jg-left{width: 265px;height: 100%;}
 .jg-list-box li{position: relative;line-height: 40px;}
 
-.jg-item{padding:0 15px;cursor: pointer;padding: 0 25px 0 15px;white-space: nowrap;word-break: keep-all;overflow: hidden;text-overflow: ellipsis;}
-.jg-item:hover{background: #f8f8f8;}
+.jg-item{padding:0 15px;cursor: pointer;padding: 0 25px 0 15px;white-space: nowrap;word-break: keep-all;overflow: hidden;text-overflow: ellipsis;    background: #f8f8f8;margin-top: 5px;}
+.jg-item:hover{background: #e4e2e2;}
 .jg-item.active,.jg-item.active .jg-number,.jg-item.active .jh{background: #12b8f6;color: #fff;}
 .jg-item b{display:inline;}
 

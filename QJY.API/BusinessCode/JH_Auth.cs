@@ -29,12 +29,15 @@ namespace QJY.API
         }
         public UserInfo GetUserInfo(string strSZHLCode)
         {
-
             UserInfo UserInfo = new UserInfo();
             UserInfo.User = new JH_Auth_UserB().GetUserByPCCode(strSZHLCode);
-            UserInfo.UserRoleCode = new JH_Auth_UserRoleB().GetRoleCodeByUserName(UserInfo.User.UserName, UserInfo.User.ComId.Value);
-            UserInfo.QYinfo = new JH_Auth_QYB().GetEntity(d => d.ComId == UserInfo.User.ComId.Value);
-            UserInfo.BranchInfo = new JH_Auth_BranchB().GetBMByDeptCode(UserInfo.QYinfo.ComId, UserInfo.User.BranchCode);
+            if (UserInfo.User != null)
+            {
+                UserInfo.UserRoleCode = new JH_Auth_UserRoleB().GetRoleCodeByUserName(UserInfo.User.UserName, UserInfo.User.ComId.Value);
+                UserInfo.QYinfo = new JH_Auth_QYB().GetEntity(d => d.ComId == UserInfo.User.ComId.Value);
+                UserInfo.BranchInfo = new JH_Auth_BranchB().GetBMByDeptCode(UserInfo.QYinfo.ComId, UserInfo.User.BranchCode);
+            }
+
             return UserInfo;
         }
         public UserInfo GetUserInfo(int intComid, string strUserName)

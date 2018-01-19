@@ -38,7 +38,7 @@
                 } else {
                     // model.FunData = [{ code: "RWGL", name: "任务管理", wigetpath: "RWGL/RWGLLIST", issel: true, isshow: true, order: 0 }, { code: "LCSP", name: "流程管理", wigetpath: "RWGL/RWGLLIST", issel: false, isshow: true, order: 2 }, { code: "NOTE", name: "记事本", wigetpath: "RWGL/RWGLLIST", issel: false, isshow: true, order: 3 }, { code: "KJFS", name: "快捷网址", wigetpath: "RWGL/RWGLLIST", issel: false, isshow: true, order: 4 }];
                     model.FunData.pushArray([
-                         { PageCode: "/ViewV5/TempWiget/LCSP", ExtData: "", code: "LCSP", PageName: "流程审批", issel: true, isshow: true, order: 0 },
+                                                 { PageCode: "/ViewV5/TempWiget/LCSP", ExtData: "", code: "LCSP", PageName: "流程审批", issel: true, isshow: true, order: 0 },
                         { PageCode: "/ViewV5/AppPage/RWGL/RWGLLIST", ExtData: "", code: "RWGL", PageName: "任务管理", issel: true, isshow: true, order: 0 },
                         { PageCode: "/ViewV5/TempWiget/KJFS", ExtData: "", code: "KJFS", PageName: "快捷网址", issel: true, isshow: true, order: 0 },
                         { PageCode: "/ViewV5/TempWiget/NOTE", ExtData: "", PageName: "记事本", code: "NOTE", issel: true, isshow: true, order: 0 }
@@ -84,7 +84,8 @@
     selmenulev2: function (item, dom) {
         model.isiframe = item.isiframe;
         if (model.isiframe == 'Y') {
-            $("#main").attr("src", item.PageCode + ".html").css("min-height", (window.innerHeight - 150) + 'px');
+            var pagecode = item.PageCode.indexOf("html") > -1 ? item.PageCode : item.PageCode + ".html";
+            $("#main").attr("src", pagecode).css("min-height", (window.innerHeight - 150) + 'px').parent().css("height", $("#main").height());
         } else {
             var nowTime = new Date().getTime();
             var clickTime = $("body").data("me2time");
@@ -121,11 +122,16 @@
 
     },
     //选中二级菜单事件
+    ChangePage: function (pagedata) {
+        model.selmenulev2(pagedata);
+    },
     refpage: function (pagecode) {
-        if (model.isiframe=='Y') {
+        model.rdm = ComFunJS.getnowdate('yyyy-mm-dd hh:mm:ss');
+        if (model.isiframe == 'Y') {
             $('#main').attr('src', $('#main').attr('src'));
         } else {
             if (pagecode) {
+
                 for (var i = 0; i < model.FunData.length; i++) {
                     if (model.FunData[i].PageCode.indexOf(pagecode) > -1) {
                         model.selmenulev2(model.FunData[i]);
@@ -136,7 +142,7 @@
                 model.refpage(model.PageCode)
             }
         }
-      
+
 
     },//刷新页面
     initwork: function () {
@@ -162,7 +168,7 @@
         }
     },//设置当前模块到控制台
     PageCode: "/ViewV5/Base/Loading",//需要加载的模板
-    rdm: ComFunJS.getnowdate('yyyy-mm-dd'),//随机数
+    rdm: ComFunJS.getnowdate('yyyy-mm-dd hh:mm'),//随机数
     Temprender: function () {
         if (typeof (tempindex) != "undefined" && model.PageCode != "/ViewV5/Base/Loading") {
             tempindex.InitWigetData(model.initobj);
@@ -271,6 +277,9 @@
 
         }
     },//添加表格
+    AddViewNOWF: function (code,name) {
+        ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD.html?PathCode=" + code, name, "1000");
+    },
     ViewForm: function (code, ID, PIID, event) {
         event = event ? event : window.event
         var obj = event.srcElement ? event.srcElement : event.target;
@@ -447,7 +456,7 @@
     pageNum: [{ "num": 10 }, { "num": 20 }, { "num": 30 }, { "num": 50 }, { "num": 100 }],
     GetExtColumns: function (str) {  //获取扩展字段
 
-        if (model.SelModel&& model.rdm == str) {
+        if (model.SelModel && model.rdm == str) {
             $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETEXTENDFIELD', { P1: model.SelModel.ModelCode }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     $(resultData.Result).each(function (idx, itm) {
@@ -680,6 +689,7 @@ avalon.ready(function () {
     model.GetUserData();
     model.GetXXZXList();
     model.GetKQGZ();
+
 })
 
 model.page.$watch("pagecount", function () {

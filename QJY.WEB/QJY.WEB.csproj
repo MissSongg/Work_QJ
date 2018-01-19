@@ -195,6 +195,7 @@
     <Content Include="ToolS\umeditor122\umeditor.js" />
     <Content Include="ToolS\umeditor122\umeditor.min.js" />
     <Content Include="ToolS\YZMCode.aspx" />
+    <Content Include="ViewV5\AppPage\APP_ADD.html" />
     <Content Include="ViewV5\AppPage\HYGL\HYGL.html" />
     <Content Include="ViewV5\AppPage\HYGL\HYGLINDEX.html" />
     <Content Include="ViewV5\AppPage\HYGL\HYGLLIST.html" />
@@ -211,6 +212,7 @@
     <Content Include="ViewV5\AppPage\YCGL\YCGLVIEW.html" />
     <Content Include="ViewV5\APP_WARN.html" />
     <Content Include="ViewV5\images\qrcode.png" />
+    <Content Include="ViewV5\JS\ADDJS.js" />
     <Content Include="ViewV5\JS\index.min.js">
       <DependentUpon>index.js</DependentUpon>
     </Content>
