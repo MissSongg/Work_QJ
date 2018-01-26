@@ -1183,8 +1183,15 @@ namespace QJY.API
             DataTable dtUsers = new JH_Auth_UserB().GetDTByCommand(" SELECT UserName,UserRealName,mobphone FROM JH_Auth_User where ComId='" + UserInfo.User.ComId + "'");
             //获取选择用户需要的HTML和转化用户名需要的json数据
             msg.Result = dtUsers;
-
-            var url = new JH_Auth_CommonB().GetEntity(p => p.ModelCode == P1 && p.MenuCode == P2);
+            JH_Auth_Common url = new JH_Auth_Common();
+            if (P2 == "")
+            {
+                url = new JH_Auth_CommonB().GetEntity(p => p.ModelCode == P1);
+            }
+            else
+            {
+                url = new JH_Auth_CommonB().GetEntity(p => p.ModelCode == P1 && p.MenuCode == P2);
+            }
             if (url != null)
             {
                 msg.Result1 = url.Url1;
@@ -1601,7 +1608,7 @@ namespace QJY.API
                         HttpContext curContext = HttpContext.Current;
 
                         string strName = string.Empty;
-                   
+
 
                         // 设置编码和附件格式
                         curContext.Response.ContentType = "application/vnd.ms-excel";
@@ -2020,7 +2027,7 @@ namespace QJY.API
         #endregion
 
 
-        
+
 
 
         #region  获取评论
@@ -2669,7 +2676,7 @@ namespace QJY.API
                 tt.CRTime = DateTime.Now;
                 new SZHL_DRAFTB().Insert(tt);
             }
-           
+
             msg.Result = tt;
         }
         public void DELDRAFT(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
