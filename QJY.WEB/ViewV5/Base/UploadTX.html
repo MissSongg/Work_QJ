@@ -29,7 +29,7 @@
                 switch (msg.code) {
                     case 5:
                         if (msg.type == 0) {
-                            top.ComFunJS.winsuccess("操作成功");
+                            alert("操作成功");
                             top.location.reload();
                         }
                         break;
@@ -40,11 +40,6 @@
         });
     </script>
     <script>
-        if (window.name != 1) {
-            window.name = 1;
-            window.setTimeout("location.reload()", 500);
-        }
-
     </script>
 </body>
 </html>

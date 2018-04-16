@@ -171,11 +171,13 @@
         } else {
             ID = pmodel.DraftData.ID;
         }
-        $.getJSON("/API/VIEWAPI.ashx?ACTION=XTGL_DELDRAFT", { P1: ID }, function (r) {
-            if (el) {
-                pmodel.DraftList.remove(el);
-            }
+        $.getJSON("/API/VIEWAPI.ashx?ACTION=XTGL_DELDRAFT", { P1: ID }, function (resultData) {
+            if (resultData.ErrorMsg == "") {
 
+                if (el) {
+                    pmodel.DraftList.remove(el);
+                }
+            }
         })
     },
     CheckData: function () { //验证代码块

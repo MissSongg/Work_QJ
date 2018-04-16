@@ -148,7 +148,7 @@
         var url = ComFunJS.yuming + "/ToolS/DownFile.aspx?szhlcode=" + ComFunJS.getCookie("szhlcode");
         if (fileid) {
             url = url + "&fileId=" + fileid;
-        }       
+        }
         return url;
     },
     viewbigimg: function (dom, defacalss) {
@@ -219,9 +219,6 @@
         }
         return "";
     },//转字符串
-    trim: function (str) {
-        return str.replace(/^,+/, "").replace(/,+$/, "");
-    },
     getnowday: function () {
         var d = new Date();
         var year = d.getFullYear();
@@ -813,7 +810,12 @@
                 minView: 0,
                 format: "yyyy-mm-dd hh:ii"
             });
-            if ($(".szhl_form_date_time").val() === "" && $(".szhl_form_date_time").attr("novalue") == undefined) { $(".szhl_form_date_time").val(ComFunJS.getnowdate("yyyy-mm-dd hh:mm")); }
+            $(".szhl_form_date_time").each(function () {
+                if ($(this).val() === "" && $(this).attr("novalue") == undefined) {
+                    $(this).val(ComFunJS.getnowdate("yyyy-mm-dd hh:mm"))
+                }
+            })
+
             $(".szhl_form_date_time").trigger('change')
         }
         if ($(".szhl_UEEDIT").length > 0) {
@@ -953,7 +955,7 @@
                 var btnName = $(this).attr('title') ? $(this).attr('title') : "上传文件";//按钮名称
                 var FileType = $(this).attr('FileType') ? $(this).attr('FileType') : "";//文件类型(pic代表图片)
                 $input.parent().find(".panpel").remove();
-                var $panelsc = $('<div class="panel panel-default panpel" style="margin-bottom: 0px;"><div class="panel-body"><button class="btn btn-success  btn-upload  dim" type="button"><i class="fa fa-upload"></i>上传文件</button><button class="btn btn-success  btn-selfile  dim" type="button" style="margin-left: 10px;"><i class="fa fa-upload"></i>从文档中心选择文件</button></div><ul class="list-group"></ul></div>')
+                var $panelsc = $('<div class="panel panel-default panpel" style="margin-bottom: 0px;"><div class="panel-body"><button class="btn btn-success  btn-upload  dim" type="button"><i class="fa fa-upload"></i>上传文件</button></div><ul class="list-group"></ul></div>')
                     .insertAfter($input);
                 //上传文件
                 $panelsc.find('.btn-upload').bind('click', function () {
@@ -1097,48 +1099,113 @@
                 }
             })
         }
-    },
-    initsetajax: function (isload) { /// 配置AJAX
-        $(document).ajaxSend(function (event, request, settings) {
-            var s = request;
-            var s1 = settings;
-            request.setRequestHeader("randomcode", "msg");
-        }).ajaxStart(function () {
-            if (isload) {
-                top.ComFunJS.winload();
-            }
-        }).ajaxSuccess(function (e, jqXHR, s, data) {
-            try {
-                if (s.type == "POST") {
-                    data = $.parseJSON(data)
-                }
-                if (s.type == "GET") {
-                    data = data
-                }
-                if (data.ErrorMsg == "NOSESSIONCODE" || data.ErrorMsg == "WXTIMEOUT") {
-                    top.ComFunJS.winwarning("页面超时!")
-                    top.window.location.href = "/Login.html";
-                    return;
-                }
-                if (data.ErrorMsg) {
-                    top.ComFunJS.winwarning(data.ErrorMsg)
-                }
-            } catch (e) {
-                if (isload) {
-                    top.ComFunJS.wincloseload();
-                }
+        if ($(".szhl_UploadN:hidden").length > 0) {
 
-            }
-        }).ajaxStop(function () {
-            if (isload) {
-                top.ComFunJS.wincloseload();
-            }
+            $(".szhl_UploadN:hidden").each(function () {
+                var $input = $(this);
+                var btnName = $(this).attr('title') ? $(this).attr('title') : "上传文件";//按钮名称
+                var FileType = $(this).attr('FileType') ? $(this).attr('FileType') : "";//文件类型(pic代表图片)
+                $input.parent().find(".panpel").remove();
+                var $panelsc = $('<div class="panel panel-default panpel" style="margin-bottom: 0px;"><div class="panel-body"><button class="btn btn-success  btn-upload  dim" type="button" id="qjupload"><i class="fa fa-upload"></i>上传文件</button></div><ul class="list-group"></ul></div>')
+                    .insertAfter($input);
+                //上传文件
+                var upload = null;
+                var obj = {
+                    uploadButtton: 'qjupload',
+                    fileapiurl: ComFunJS.getfileapi(),
+                    usercode: "ZXPX",
+                    secret: "ZXPX",
+                    upinfo: "上传组件",
+                    webupconfig: {
+                        fileNumLimit: 5,
+                    },
+                    filecomplete: function (fileData) {
 
-        }).ajaxError(function (event, xhr, options, exc) {
+                    },
+                    closeupwin: function (fileData) {
+                        var fjids = "";
+                        $.post('/API/VIEWAPI.ashx?Action=QYWD_ADDFILE', { "P1": fileData, "P2": 3 }, function (result) {
+                            if (result.ErrorMsg == "") {
+                                var fjdata = result.Result;//给filedata赋值,供页面使用
+                                for (var i = 0; i < fjdata.length; i++) {
+                                    var picurl = "";
+                                    if (ComFunJS.isPic(fjdata[i].FileExtendName)) {
+                                        picurl = "<img  class='fjimg' style='width:60px;height:60px' src='" + ComFunJS.getfile(fjdata[i].ID) + "'/>";
+                                    }
+                                    var $fileitem = $("<a    class='list-group-item'   fileid='" + fjdata[i].ID + "' >" + picurl + fjdata[i].Name + "." + fjdata[i].FileExtendName + "<span class='glyphicon glyphicon-download-alt'  fileid='" + fjdata[i].ID + "'  FileMD5='" + fjdata[i].FileMD5 + "'  style='margin-left: 5px;'></span><span class='glyphicon glyphicon-trash pull-right'></span></a>");
+                                    $fileitem.find('.glyphicon-trash').bind('click', function () {
+                                        $(this).parent().remove();
+                                        var tempfjids = "";
+                                        $panelsc.find('.list-group-item').each(function () {
+                                            tempfjids = tempfjids + $(this).attr("fileid") + ",";
+                                        })
+                                        if (tempfjids.length > 0) {
+                                            tempfjids = tempfjids.substring(0, tempfjids.length - 1)
+                                        }
+                                        $input.val(tempfjids);
+                                    })
+                                    $fileitem.find('.glyphicon-download-alt').bind('click', function () {
+                                        window.open(ComFunJS.getfile($(this).attr("fileid")))
 
-        })
+                                    })
 
+                                    $panelsc.find('.list-group').append($fileitem);
+                                }
 
+                                $panelsc.find('.list-group-item').each(function () {
+                                    fjids = fjids + $(this).attr("fileid") + ",";
+                                })
+                                if (fjids.length > 0) {
+                                    fjids = fjids.substring(0, fjids.length - 1)
+                                }
+                                $input.val(fjids);
+                            }
+                        })
+                    
+                    }
+                };
+                upload = new QJUpload(obj);
+                if ($input.val() != "") {
+                    $.getJSON('/API/VIEWAPI.ashx?ACTION=QYWD_GETFILESLIST', { P1: $input.val() }, function (data) {
+                        if (data.ErrorMsg == "") {
+                            var fjdata = data.Result;
+                            for (var i = 0; i < fjdata.length; i++) {
+                                var picurl = "";
+                                if (ComFunJS.isPic(fjdata[i].FileExtendName)) {
+                                    picurl = "<img  class='fjimg' style='width:60px;height:60px' src='" + ComFunJS.getfile(fjdata[i].ID) + "'/>";
+                                }
+                                var $fileitem = $("<a  class='list-group-item'   fileid='" + fjdata[i].ID + "' >" + picurl + fjdata[i].Name + "." + fjdata[i].FileExtendName + "<span class='glyphicon glyphicon-download-alt' fileid='" + fjdata[i].ID + "' FileMD5='" + fjdata[i].FileMD5 + "' style='margin-left: 5px;'></span><span class='glyphicon glyphicon-trash pull-right'></span></a>");
+                                $fileitem.find('.glyphicon-trash').bind('click', function () {
+                                    $(this).parent().remove();
+                                    var tempfjids = "";
+                                    $panelsc.find('.list-group-item').each(function () {
+                                        tempfjids = tempfjids + $(this).attr("fileid") + ",";
+                                    })
+                                    if (tempfjids.length > 0) {
+                                        tempfjids = tempfjids.substring(0, tempfjids.length - 1)
+                                    }
+                                    $input.val(tempfjids);
+                                })
+                                $fileitem.find('.glyphicon-download-alt').bind('click', function () {
+
+                                    window.open(ComFunJS.getfile($(this).attr("fileid")))
+                                })
+                                $panelsc.find('.list-group').append($fileitem);
+                            }
+                            if ($input.attr("UploadType") == "1") {
+                                $panelsc.find('.glyphicon-trash').remove();
+                            }
+                        }
+                        else {
+                            $panelsc.find('.panel-body').text("无附件");
+                        }
+                    });
+                }
+                if ($input.attr("UploadType") == "1") {
+                    $panelsc.find('.btn-upload').remove();
+                }
+            })
+        }
     },
     getSPStatus: function (status, Id, PDID) {
         var content = "";
@@ -1281,7 +1348,6 @@ $(function () {
                 }
                 if (data.ErrorMsg) {
                     top.ComFunJS.winwarning(data.ErrorMsg)
-                    return;
                 }
                 fn.success(data, textStatus);
             },
@@ -1315,7 +1381,6 @@ $(function () {
                 }
                 if (data.ErrorMsg) {
                     top.ComFunJS.winwarning(data.ErrorMsg)
-                    return;
                 }
                 fn.success(data, textStatus);
             },

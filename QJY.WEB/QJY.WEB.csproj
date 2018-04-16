@@ -211,6 +211,7 @@
     <Content Include="ViewV5\AppPage\YCGL\YCGLLIST.html" />
     <Content Include="ViewV5\AppPage\YCGL\YCGLVIEW.html" />
     <Content Include="ViewV5\APP_WARN.html" />
+    <Content Include="ViewV5\Base\showvideo_bak.html" />
     <Content Include="ViewV5\images\qrcode.png" />
     <Content Include="ViewV5\JS\ADDJS.js" />
     <Content Include="ViewV5\JS\index.min.js">
@@ -431,7 +432,6 @@
     <Content Include="ViewV5\Base\pdf.html" />
     <Content Include="ViewV5\Base\ppt.html" />
     <Content Include="ViewV5\Base\showvideo.html" />
-    <Content Include="ViewV5\Base\showvideo_bak.html" />
     <Content Include="ViewV5\Base\Success.html" />
     <Content Include="ViewV5\Base\UploadTX.html" />
     <Content Include="ViewV5\Base\UserSelect.html" />
@@ -1524,12 +1524,14 @@
     </Compile>
     <Compile Include="ToolS\DownFile.aspx.cs">
       <DependentUpon>DownFile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ToolS\DownFile.aspx.designer.cs">
       <DependentUpon>DownFile.aspx</DependentUpon>
     </Compile>
     <Compile Include="ToolS\HtmlToWord.aspx.cs">
       <DependentUpon>HtmlToWord.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ToolS\HtmlToWord.aspx.designer.cs">
       <DependentUpon>HtmlToWord.aspx</DependentUpon>
@@ -1540,6 +1542,7 @@
     </Compile>
     <Compile Include="ToolS\YZMCode.aspx.cs">
       <DependentUpon>YZMCode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ToolS\YZMCode.aspx.designer.cs">
       <DependentUpon>YZMCode.aspx</DependentUpon>

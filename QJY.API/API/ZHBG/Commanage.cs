@@ -50,20 +50,25 @@ namespace QJY.API
             string username = context.Request["UserName"] ?? "";
             string chkcode = context.Request["chkcode"] ?? "";
             msg.ErrorMsg = "";
-            if (context.Session["chkcode"] != null)
-            {
 
-                if (!chkcode.ToUpper().Equals(context.Session["chkcode"].ToString()))
+            if (chkcode.ToUpper() != "APP")
+            {
+                if (context.Session["chkcode"] != null)
                 {
-                    msg.ErrorMsg = "验证码不正确";
+
+                    if (!chkcode.ToUpper().Equals(context.Session["chkcode"].ToString()))
+                    {
+                        msg.ErrorMsg = "验证码不正确";
+                        return;
+                    }
+                }
+                else
+                {
+                    msg.ErrorMsg = "验证码已过期";
                     return;
                 }
             }
-            else
-            {
-                msg.ErrorMsg = "验证码已过期";
-                return;
-            }
+
 
 
             JH_Auth_QY qyModel = new JH_Auth_QYB().GetALLEntities().First();
