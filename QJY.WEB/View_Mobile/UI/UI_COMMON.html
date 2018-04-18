@@ -16,7 +16,6 @@
         var funcode = ComFunJS.getQueryString("funcode");
         var code = ComFunJS.getQueryString("code");
         var corpId = ComFunJS.getQueryString("corpId");
-
         $(function () {
             if (ComFunJS.getCookie("szhlcode") && ComFunJS.getCookie("username")) {  //缓存的用户名，直接跳到对应的地址
                 $.getJSON("/API/WXAPI.ashx?action=isexist&r=" + Math.random(), { "corpid": corpId }, function (r) {
