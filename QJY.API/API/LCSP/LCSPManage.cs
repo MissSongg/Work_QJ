@@ -120,20 +120,16 @@ namespace QJY.API
                                 strWhere += " and 1=0 ";
                             }
                         }
-                        //List<Yan_WF_TI> ListData = new Yan_WF_TIB().GetEntities("TaskUserID ='" + UserInfo.User.UserName + "' AND EndTime IS NOT NULL AND TaskUserView!='发起表单'").ToList();
-                        //List<string> intPro = ListData.Select(d => d.PIID.ToString()).ToList();
-                        //string tableName = string.Format(@" SZHL_LCSP  lc inner join Yan_WF_PD  pd on lc.LeiBie=pd.ID inner join  Yan_WF_PI wfpi  on lc.intProcessStanceid=wfpi.ID");
-                        //string tableColumn = "pd.ProcessName,'LCSP' ProName,lc.intProcessStanceid,lc.ID,lc.CRUser,lc.CRDate,lc.ShenQingRen ,  case when wfpi.IsCanceled is null then '已审批'   WHEN wfpi.IsCanceled='Y' then '已退回' END StateName,lc.Files,lc.Content ";
-                        //strWhere += "  And lc.intProcessStanceid in (" + (intPro.ListTOString(',') == "" ? "0" : intPro.ListTOString(',')) + ")";
-                        break;
+                                              break;
 
                     case "4": //抄送我的
                         {
-                            strWhere += " And exists (select I.ID from Yan_WF_PI I where I.PDID=pd.ID and CHARINDEX('" + userName + "',I.ChaoSongUser)>0)";
+                            strWhere += " AND dbo.fn_PDStatus(lc.intProcessStanceid) ='已审批'  And   exists (select I.ID from Yan_WF_PI I where I.PDID=pd.ID  AND  ',' + I.ChaoSongUser  + ',' like '%," + userName + ",%' )";
+                            
                         }
                         break;
                 }
-                dt = new SZHL_CCXJB().GetDataPager("SZHL_LCSP lc inner join Yan_WF_PD pd on pd.ID=lc.LeiBie ", "lc.*,dbo.fn_PDStatus(lc.intProcessStanceid) AS StateName,pd.ID as PDID,pd.RelatedTable, pd.ProcessType,pd.ProcessName,'LCSP' as ModelCode", pagecount, page, " lc.CRDate desc", strWhere, ref total);
+                dt = new SZHL_LCSPB().GetDataPager("SZHL_LCSP lc inner join Yan_WF_PD pd on pd.ID=lc.LeiBie ", "lc.*,dbo.fn_PDStatus(lc.intProcessStanceid) AS StateName,pd.ID as PDID,pd.RelatedTable, pd.ProcessType,pd.ProcessName,'LCSP' as ModelCode", pagecount, page, " lc.CRDate desc", strWhere, ref total);
                 if (dt.Rows.Count > 0)
                 {
                     dt.Columns.Add("FileList", Type.GetType("System.Object"));

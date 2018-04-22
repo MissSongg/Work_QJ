@@ -19,6 +19,15 @@
             font-size: 12px;
         }
 
+    .link-logo {
+        background: url(/ViewV5/images/qywd/hand.png) no-repeat;
+        margin-top: -10px;
+        display: block;
+        height: 16px;
+        width: 40px;
+        position: absolute;
+    }
+
     #qh li {
         float: left;
         width: 50%;
@@ -44,8 +53,9 @@
         border: 1px solid #12b8f6;
         padding: 30px 20px;
     }
-        .imageYL{
-        cursor:zoom-in;
+
+    .imageYL {
+        cursor: zoom-in;
     }
 </style>
 <script src="/ViewV5/JS/timego.js"></script>
@@ -96,6 +106,7 @@
                         <td ms-click="enterFolder(folder,$event)" class="trdata">
                             <div>
                                 <img src="/ViewV5/images/qywd/file1.png" class="img40 mr5">
+                                <span class="link-logo" ms-if="folder.AuthUser"></span>
                                 {{folder.Name}}
                             </div>
                         </td>
@@ -204,7 +215,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
-   
+
 </div>
 <script src="/ViewV5/JS/contextmenu.js"></script>
 <script>
@@ -324,7 +335,7 @@
             tempindex.Pathdata.push(newpath);
             tempindex.GetListData(folder.ID);
 
-          
+
         },//进入文件夹
         viewitem: function (item) {
             if (ComFunJS.isPic(item.FileExtendName)) { //如果是图片格式，显示图片
@@ -453,7 +464,7 @@
         }, searchContent: "",
         getSearchFile: function () {
             tempindex.FileList.clear();
-            tempindex.FolderList.clear(); 
+            tempindex.FolderList.clear();
             tempindex.SelItemData.clear();
             if (tempindex.searchContent) {
                 $.getJSON('/API/VIEWAPI.ashx?Action=QYWD_QUERYFILE', {
@@ -474,7 +485,7 @@
                 tempindex.GetListData(tempindex.itemtype);
             }
         }
-    });//# sourceURL=APP_GEWD.js;
+    });//@ sourceURL=APP_GEWD.js;
 
 
 </script>

@@ -245,16 +245,23 @@ namespace QJY.API
                 //默认找出企业文件夹查看属性为空或者包含当前用户的数据
                 if (P2 == "Y")//如果是后台查看企业文件夹
                 {
-                    msg.Result = new FT_FolderB().GetEntities(" ComId=" + UserInfo.User.ComId + " AND  PFolderID=" + FolderID);
-                    msg.Result1 = new FT_FileB().GetEntities("ComId=" + UserInfo.User.ComId + " AND  FolderID=" + FolderID);
+                    //msg.Result = new FT_FolderB().GetEntities(" ComId=" + UserInfo.User.ComId + " AND  PFolderID=" + FolderID);
+                    //msg.Result1 = new FT_FileB().GetEntities("ComId=" + UserInfo.User.ComId + " AND  FolderID=" + FolderID);
 
+                    string strSQL = string.Format("SELECT FT_Folder.*,ISNULL(FT_File_UserAuth.AuthUser, '') as AuthUser from FT_Folder LEFT JOIN  FT_File_UserAuth  on FT_Folder.ID= FT_File_UserAuth.RefID  and FT_File_UserAuth.RefType='0' where FT_Folder.ComId='{0}' and FT_Folder.PFolderID='{1}' ", UserInfo.User.ComId, FolderID.ToString());
+                    msg.Result = new FT_FolderB().GetDTByCommand(strSQL);
+
+                    string strSQLFile = string.Format("SELECT FT_File.*,ISNULL(FT_File_UserAuth.AuthUser, '') as AuthUser from FT_File LEFT JOIN  FT_File_UserAuth  on FT_File.ID= FT_File_UserAuth.RefID  and FT_File_UserAuth.RefType='1' where FT_File.ComId='{0}' and FT_File.FolderID='{1}' ", UserInfo.User.ComId, FolderID.ToString());
+                    msg.Result1 = new FT_FileB().GetDTByCommand(strSQLFile);
+                    return;
                 }
                 else
                 {
-                    msg.Result = new FT_FolderB().GetEntities(d => d.ComId == UserInfo.User.ComId && d.PFolderID == FolderID).ToList().Where(d => (string.IsNullOrEmpty(d.ViewAuthUsers) || d.ViewAuthUsers.Split(',').Contains(UserInfo.User.UserName) || (!string.IsNullOrEmpty(d.UploadaAuthUsers) && d.UploadaAuthUsers.Split(',').Contains(UserInfo.User.UserName))));//
-                    msg.Result1 = new FT_FileB().GetEntities(d => d.ComId == UserInfo.User.ComId && d.FolderID == FolderID).ToList().Where(d => (string.IsNullOrEmpty(d.ViewAuthUsers) || d.ViewAuthUsers.Split(',').Contains(UserInfo.User.UserName)));
-                    string strIsMangnel = new FT_FolderB().isHasManage(P1, UserInfo.User.UserName);
-                    msg.Result2 = strIsMangnel == "Y";
+                    string strSQL = string.Format("SELECT FT_Folder.*,ISNULL(FT_File_UserAuth.AuthUser, '') as AuthUser from FT_Folder LEFT JOIN  FT_File_UserAuth  on FT_Folder.ID= FT_File_UserAuth.RefID  and FT_File_UserAuth.RefType='0' where FT_Folder.ComId='{0}' and FT_Folder.PFolderID='{1}'   and (  AuthUser is NULL OR  ',' + AuthUser  + ',' like '%,{2},%' )", UserInfo.User.ComId, FolderID.ToString(), UserInfo.User.UserName);
+                    msg.Result = new FT_FolderB().GetDTByCommand(strSQL);
+
+                    string strSQLFile = string.Format("SELECT FT_File.*,ISNULL(FT_File_UserAuth.AuthUser, '') as AuthUser from FT_File LEFT JOIN  FT_File_UserAuth  on FT_File.ID= FT_File_UserAuth.RefID  and FT_File_UserAuth.RefType='1' where FT_File.ComId='{0}' and FT_File.FolderID='{1}' ", UserInfo.User.ComId, FolderID.ToString());
+                    msg.Result1 = new FT_FileB().GetDTByCommand(strSQLFile);
                     return;
                 }
             }

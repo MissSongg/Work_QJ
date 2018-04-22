@@ -128,10 +128,7 @@
                         </td>
                         <td>
                             <div>
-                                <img ms-attr-filename="file.name" ms-attr-src="getsrc(file)" ms-click="viewitem(file)" ms-attr-imgyt="{{ComFunJS.getfile(file.ID)}}" ms-class-1="imageYL:ComFunJS.isPic(file.FileExtendName)" class="img40 mr5" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'">
-                                <span class="link-logo" ms-if="file.AuthUser"></span>
-
-                                {{file.Name}}
+                                <img ms-attr-filename="file.name" ms-attr-src="getsrc(file)" ms-click="viewitem(file)" ms-attr-imgyt="{{ComFunJS.getfile(file.ID)}}" ms-class-1="imageYL:ComFunJS.isPic(file.FileExtendName)" class="img40 mr5" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'">{{file.Name}}
                             </div>
                         </td>
                         <td class="tl">
@@ -206,12 +203,12 @@
 
 
     <div class="modal fade" id="FenXiangModal" tabindex="-1" role="dialog"
-        aria-labelledby="FenXiangModalLabel" aria-hidden="true">
+         aria-labelledby="FenXiangModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close"
-                        data-dismiss="modal" aria-hidden="true">
+                            data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
                     <h4 class="modal-title" id="FenXiangModalLabel">
@@ -238,7 +235,8 @@
 
 
                                 </div>
-                                <span class="c999 text-blue-2 ft14">密码：{{ShareData.SharePasd?ShareData.SharePasd:"无"}}<a class="ml10" ms-click="SetPassWord()">{{tempindex.ShareData.ShareType=="0"?"设置":"取消"}}</a>
+                                <span class="c999 text-blue-2 ft14">
+                                    密码：{{ShareData.SharePasd?ShareData.SharePasd:"无"}}<a class="ml10" ms-click="SetPassWord()">{{tempindex.ShareData.ShareType=="0"?"设置":"取消"}}</a>
                                     | 到期时间：{{ShareData.ShareDueDate}}({{jQuery.timeago(ShareData.ShareDueDate);}})<a class="ml10" ms-click="SetDueShow()">设置</a>
                                     <div class="input-group mt15" style="width: 295px;" ms-if="isDueShow">
                                         <input type="search" ms-duplex="DueDate" class="form-control szhl_form_date" placeholder="选择到期时间">
@@ -263,7 +261,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
-                        data-dismiss="modal">
+                            data-dismiss="modal">
                         关闭
                     </button>
                 </div>
@@ -273,12 +271,12 @@
         <!-- /.modal -->
     </div>
     <div class="modal fade" id="NBFenXiangModal" tabindex="-1" role="dialog"
-        aria-labelledby="NBFenXiangModalLabel" aria-hidden="true">
+         aria-labelledby="NBFenXiangModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close"
-                        data-dismiss="modal" aria-hidden="true">
+                            data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
                     <h4 class="modal-title" id="NBFenXiangModalLabel">
@@ -301,7 +299,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
-                        data-dismiss="modal">
+                            data-dismiss="modal">
                         关闭
                     </button>
                     <button type="button" class="btn btn-success" ms-click="shouquan(this)"><i class="fa fa-spinner fa-spin" style="display: none"></i>确&nbsp;&nbsp;认</button>
@@ -311,12 +309,12 @@
         </div>
     </div>
     <div class="modal fade" id="WJTX" tabindex="-1" role="dialog"
-        aria-labelledby="WJTXLabel" aria-hidden="true">
+         aria-labelledby="WJTXLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close"
-                        data-dismiss="modal" aria-hidden="true">
+                            data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
                     <h4 class="modal-title" id="WJTXLabel">
@@ -338,7 +336,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
-                        data-dismiss="modal">
+                            data-dismiss="modal">
                         关闭
                     </button>
                     <button type="button" class="btn btn-success" ms-click="wjtx(this)"><i class="fa fa-spinner fa-spin" style="display: none"></i>确&nbsp;&nbsp;认</button>
@@ -710,8 +708,7 @@
             if (tempindex.SelItemData.size() == 1) {
                 $.post('/API/VIEWAPI.ashx?Action=QYWD_SETAUTH', {
                     P1: $("#squsers").val(),
-                    "P2": tempindex.SelItemData[0].ID,
-                    "REFTYPE": tempindex.SelItemData.$model[0].type
+                    "P2": tempindex.SelItemData[0].ID
                 }, function (result) {
                     if (result.ErrorMsg == "") {
                         top.ComFunJS.winsuccess("授权成功");
@@ -728,9 +725,7 @@
         cancelshouquan: function () {
             $.post('/API/VIEWAPI.ashx?Action=QYWD_CANCELAUTH', {
                 P1: "0",
-                P2: tempindex.SelItemData[0].ID,
-                "REFTYPE": tempindex.SelItemData.$model[0].type
-
+                P2: tempindex.SelItemData[0].ID
             }, function (result) {
                 if (result.ErrorMsg == "") {
                     top.ComFunJS.winsuccess("取消成功");
@@ -845,6 +840,6 @@
                 tempindex.GetListData(tempindex.itemtype);
             }
         }
-    });//# sourceURL=APP_QYWD.js;
+    });//@ sourceURL=APP_QYWD.js;
 
 </script>
