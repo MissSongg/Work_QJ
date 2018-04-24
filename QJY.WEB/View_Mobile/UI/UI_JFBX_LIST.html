@@ -70,7 +70,7 @@
                         <div class="ribbon-wrapper-green" ><div class="ribbon-green">{{el.StateName}}</div></div>
                         <div class="card-header no-border" ms-on-click="showdetil(el)">
                             <div class="facebook-avatar">
-                                <img ms-src="{{ComFunJS.getfile()+'&type=TX&user='+el.CRUser}}" width="40" class="border-r">
+                                <img ms-src="{{ComFunJS.getfile()+'&type=TX&user='+el.CRUser}}" width="40" class="border-r" onerror="javascript: this.src = '/ViewV5/images/head.jpg'">
                             </div>
                             <div class="facebook-date head-ft16">{{el.ShenQingRen}}<span class="ml10 c999 ft14" ms-if="!el.isfold">{{$.timeago(el.CRDate)}}</span></div>
                             <div class="facebook-date head-ft16" ms-if="el.isfold"><span class="c999 ft14">{{el.CRDate|date("MM月dd日")}}</span></div>

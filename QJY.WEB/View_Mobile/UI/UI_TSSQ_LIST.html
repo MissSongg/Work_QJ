@@ -106,7 +106,7 @@
                                         <div class="comment-pl" ms-if="el.PLList.size()>0">
                                             <i class="iconfont icon-xiaoxi"></i>
                                             <div class="comment-pl-list" ms-repeat-pl="el.PLList">
-                                                <img ms-src="{{ComFunJS.getfile()+'&type=TX&user='+pl.CRUser}}" class="imgtx">
+                                                <img ms-src="{{ComFunJS.getfile()+'&type=TX&user='+pl.CRUser}}" class="imgtx" onerror="javascript: this.src = '/ViewV5/images/head.jpg'">
                                                 <div class="comment-pl-list-cont">
                                                     <div class="name-comment">
                                                         <div class="name-tx">

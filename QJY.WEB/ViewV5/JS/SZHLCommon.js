@@ -35,6 +35,9 @@
         else
             return null;
     },
+    trim: function (str) {
+        return str.replace(/^,+/, "").replace(/,+$/, "");
+    },
     delCookie: function (name) {
         var exp = new Date();
         exp.setTime(exp.getTime() - 1);
@@ -1395,7 +1398,5 @@ $(function () {
             }
         });
     };
-    //ComFunJS.initsetajax(true);//初始化数据
-
 })
 

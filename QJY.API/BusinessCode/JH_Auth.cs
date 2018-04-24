@@ -80,7 +80,7 @@ namespace QJY.API
 
         public void UpdateloginDate(int ComId, string strUser)
         {
-            string strSql = string.Format("UPDATE JH_Auth_User SET logindate='{0}' WHERE ComId={1} and UserName = '{2}'", DateTime.Now, ComId, strUser.ToFormatLike());
+            string strSql = string.Format("UPDATE JH_Auth_User SET logindate='{0}' WHERE ComId={1} and UserName = '{2}'", DateTime.Now.ToString("yyyy-MM-dd HH:ss"), ComId, strUser.ToFormatLike());
             new JH_Auth_UserB().ExsSql(strSql);
         }
 

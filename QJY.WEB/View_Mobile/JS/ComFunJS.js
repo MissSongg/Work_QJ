@@ -1606,6 +1606,10 @@ var ComFunJS = {
 
     },
     initsetajax: function (isload) { /// 配置AJAX
+        $(document).on('ajaxBeforeSend', function (e, xhr, options) {
+            var code = ComFunJS.getCookie("szhlcode");
+            options.url = options.url + "&szhlcode=" + code
+        })
         $(document).on('ajaxStart', function () {
             if (!isload) {
                 ComFunJS.showload()
