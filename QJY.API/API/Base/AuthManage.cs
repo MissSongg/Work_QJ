@@ -827,7 +827,7 @@ namespace QJY.API
             string strWhere = string.Format(" ComId={0}  And UserTO='{1}'", UserInfo.User.ComId, UserInfo.User.UserName);
             if (P1 != "")
             {
-                strWhere += string.Format(" and isRead={0} ", P1);
+                strWhere += string.Format(" and isRead in ({0}) ", P1);
             }
             if (P2 != "")
             {
@@ -886,6 +886,28 @@ namespace QJY.API
 
                 strSql = string.Format("UPDATE JH_Auth_User_Center set isRead='{0}' where ID in ({1}) ", status, P1);
 
+                new JH_Auth_User_CenterB().ExsSql(strSql);
+            }
+            catch (Exception ex)
+            {
+                msg.ErrorMsg = ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// 根据消息类别设置消息状态
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void UPMSGSTATE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            try
+            {
+                string strSql = "";
+                strSql = string.Format("UPDATE JH_Auth_User_Center set isRead='1' where MsgModelID = '{0}' AND UserTO='{1}' ", P1, UserInfo.User.UserName);
                 new JH_Auth_User_CenterB().ExsSql(strSql);
             }
             catch (Exception ex)
@@ -1183,27 +1205,10 @@ namespace QJY.API
             DataTable dtUsers = new JH_Auth_UserB().GetDTByCommand(" SELECT UserName,UserRealName,mobphone FROM JH_Auth_User where ComId='" + UserInfo.User.ComId + "'");
             //获取选择用户需要的HTML和转化用户名需要的json数据
             msg.Result = dtUsers;
-            JH_Auth_Common url = new JH_Auth_Common();
-            if (P2 == "")
-            {
-                url = new JH_Auth_CommonB().GetEntity(p => p.ModelCode == P1);
-            }
-            else
-            {
-                url = new JH_Auth_CommonB().GetEntity(p => p.ModelCode == P1 && p.MenuCode == P2);
-            }
+            JH_Auth_Common url = new JH_Auth_CommonB().GetEntity(p => p.ModelCode == P1 && p.MenuCode == P2);
             if (url != null)
             {
                 msg.Result1 = url.Url1;
-
-                //DataTable dtModel = new JH_Auth_ModelB().GETMenuList(UserInfo);//获取当前用户克查看得模块
-                //for (int i = 0; i < dtModel.Rows.Count; i++)
-                //{
-                //    if (dtModel.Rows[i]["ModelCode"].ToString() == url.ModelCode)//判断是否拥有该模块得权限
-                //    {
-
-                //    }
-                //}
             }
         }
 

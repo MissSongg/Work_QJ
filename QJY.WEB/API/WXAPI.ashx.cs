@@ -424,43 +424,17 @@ namespace QJY.WEB
                 #region 是否存在
                 if (strAction.ToUpper() == "isexist".ToUpper())
                 {
-                    string strcorpid = context.Request["corpid"] ?? "";
-                    if (strcorpid != "")
+                    if (context.Request["szhlcode"] != null)
                     {
-                        var qy = new JH_Auth_QYB().GetEntity(p => p.corpId == strcorpid);
-                        if (qy == null)
+                        //通过Cookies获取Code
+                        //string szhlcode = "5ab470be-4988-4bb3-9658-050481b98fca"; 
+                        string szhlcode = context.Request["szhlcode"].ToString();
+                        //通过Code获取用户名，然后执行接口方法
+                        var jau = new JH_Auth_UserB().GetUserByPCCode(szhlcode);
+                        if (jau == null)
                         {
-                            Model.ErrorMsg = "当前企业号未注册此平台";
+                            Model.ErrorMsg = "用户Code不存在";
                         }
-                        else
-                        {
-                            if (context.Request.Cookies["szhlcode"] != null)
-                            {
-                                //通过Cookies获取Code
-                                //string szhlcode = "5ab470be-4988-4bb3-9658-050481b98fca"; 
-                                string szhlcode = context.Request.Cookies["szhlcode"].Value.ToString();
-                                //通过Code获取用户名，然后执行接口方法
-                                var jau = new JH_Auth_UserB().GetUserByPCCode(szhlcode);
-                                if (jau == null)
-                                {
-                                    Model.ErrorMsg = "用户Code不存在";
-                                }
-                                else
-                                {
-                                    if (new JH_Auth_QYB().GetEntity(d => d.ComId == jau.ComId.Value).corpId != strcorpid)
-                                    {
-                                        Model.ErrorMsg = "企业需要重新选择";
-                                    }
-                                    //重写CODE
-
-
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Model.ErrorMsg = "企业号连接有误，请重新连接";
                     }
                 }
                 #endregion

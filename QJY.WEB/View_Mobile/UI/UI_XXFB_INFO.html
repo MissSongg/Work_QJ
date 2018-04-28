@@ -10,7 +10,7 @@
     <link href="/View_Mobile/CSS/fs_gallery.css" rel="stylesheet" />
     <script src="/View_Mobile/JS/zepto.min.js"></script>
     <script src="/View_Mobile/Frozenui1.3/js/frozen.js"></script>
-    <script src="/View_Mobile/JS/avalon.mobile.min.js"></script>
+    <script src="/View_Mobile/JS/avalon1.47.js"></script>
     <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160427"></script>
     <script src="/View_Mobile/JS/watermark.js"></script>
     <script src="/View_Mobile/JS/fs_gallery.js"></script>
@@ -38,7 +38,7 @@
             plcount: 0,
             TypeName: "",
             pl: function () {
-                $(".ui-list").toggle();
+                $(".xxpl").toggle();
                 $(".ui-footer").toggle();
             },
             yy: function () {
@@ -63,7 +63,9 @@
                 if (rwinfo.wydData.size() > 0) {
                     var html = '<div class=" ui-label-list" style="overflow-y: auto;margin-top:10px;max-height:' + (fheight - 150) + 'px">';
                     $(rwinfo.wydData).each(function (index, ele) {
-                        html = html + '<label class="ui-label" style="position: relative; width: auto;padding: 0 5px;margin: 0 5px 5px 0;">' + ComFunJS.convuser(ele) + '</label>';
+                        if (ComFunJS.convuser(ele)) {
+                            html = html + '<label class="ui-label" style="position: relative; width: auto;padding: 0 5px;margin: 0 5px 5px 0;">' + ComFunJS.convuser(ele) + '</label>';
+                        }
                     })
 
                     html = html + '</div>';
@@ -168,10 +170,10 @@
 
         function setwatermark() {
             var curuser = ComFunJS.convuser(ComFunJS.getCookie("username"));
-            if (curuser && model.modelData.IsSecret.toLowerCase() == "true") {
-                watermark({ watermark_txt: curuser, watermark_y: $(".header").height() + 20, watermark_page_width: $("#details").width(), watermark_page_height: $("#details").height() });
+            //if (curuser && rwinfo.modelData.IsSecret.toLowerCase() == "true") {
+            watermark({ watermark_txt: curuser, watermark_y: $(".header").height() + 20, watermark_page_width: $("#details").width(), watermark_page_height: $("#details").height() });
 
-            }
+            //}
         }
     </script>
 
@@ -779,10 +781,10 @@
         </div>
     </div>
     <div class="ui-form ui-border-t" style="padding-bottom: 44px; background: #f8f7f5;">
-        <ul class="ui-list " style="display: none;">
+        <ul class="ui-list xxpl " style="display: none;">
             <li class=" ui-border " ms-repeat-el="plData" style="padding: 5px; height: auto;">
                 <div style="padding-right: 10px">
-                    <img ms-attr-src="{{ComFunJS.getfile()+'&type=TX&user='+el.CRUser}}" style='width: 40px; height: 40px;' onerror="javascript: this.src = '/Upload/TX/def.jpg'">
+                    <img ms-attr-src="{{ComFunJS.getfile()+'&type=TX&user='+el.CRUser}}" style='width: 40px; height: 40px;' onerror="javascript: this.src = '/ViewV5/images/tx.png'">
                 </div>
                 <div class="ui-list-info" style="padding: 0;">
                     <div style="padding: 0; display: -webkit-box;">
