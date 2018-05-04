@@ -171,10 +171,13 @@
                 </div>
 
             </div>
-            <div class="formtitle" style="margin-bottom: 5px;"><span>{{selBM}}({{QueryUsers.size()}})<font ms-if="isSignle=='N'"><i class="fa fa-square  isel selall" ms-click="SelUserAll(this)" style="margin-left:10px"></i>全选</font></span></div>
+            <div class="formtitle" style="margin-bottom: 5px;">
+                <span>{{selBM}}({{QueryUsers.size()}})<font ms-if="isSignle=='N'"><i class="fa fa-square  isel selall" ms-click="SelUserAll(this)" style="margin-left:10px"></i>全选</font></span>
+                <input type="text" placeholder="搜索人员"  ms-duplex="searchuser"  style="float: right; HEIGHT: 30PX;BORDER: 0PX;border-bottom: solid 1px #171819;margin-right: 10px;"  />
+            </div>
             <!-- List group -->
             <div class="panel-body" style="padding: 0; min-height: 40px">
-                <div class="pCard float-shadow" ms-repeat-user="QueryUsers" ms-click="SelUser(user,this)" style="padding-right: 10px; min-width: 80px">
+                <div class="pCard float-shadow" ms-repeat-user="QueryUsers" ms-visible="(searchuser&&user.UserRealName.indexOf(searchuser)!=-1)||!searchuser" ms-click="SelUser(user,this)" style="padding-right: 10px; min-width: 80px">
                     <span class="usersel"><i class="fa isel fa-check-square " ms-if="user.issel"></i></span>
                     <div class="pName" style="padding-top: 5px">{{user.UserRealName}}</div>
                 </div>
@@ -218,6 +221,7 @@
         var zTreeObjRole = null;
         var model = avalon.define({
             $id: "UserSelect",
+            searchuser:"",
             isSignle: ComFunJS.getQueryString("issignle") ? ComFunJS.getQueryString("issignle") : "N",
             checkval: top.$("body").data("checkvalue") ? top.$("body").data("checkvalue") : "",
             userType: ComFunJS.getQueryString("userType") ? ComFunJS.getQueryString("userType") : "",
