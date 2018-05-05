@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="1b180fae3589429ab91711e04b3ebb50" Name="Diagram1" ZoomLevel="86">
-        <EntityTypeShape EntityType="QJY_SaaSModel.FT_File" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.FT_File_Downhistory" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.FT_File_Share" Width="1.5" PointX="2.75" PointY="3.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.FT_File_UserAuth" Width="1.5" PointX="4.75" PointY="0.75" />
@@ -83,6 +82,7 @@
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_YCGL" Width="1.5" PointX="15.375" PointY="29.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_YCGL_CAR" Width="1.5" PointX="29.375" PointY="17.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_DRAFT" Width="1.5" PointX="21.375" PointY="29.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.FT_File" Width="1.5" PointX="29.375" PointY="23.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

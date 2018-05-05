@@ -319,6 +319,73 @@ namespace QJY.API
             return false;
         }
 
+
+
+        /// <summary>
+        /// 上传文件到服务器
+        /// </summary>
+        /// <param name="uploadUrl"></param>
+        /// <param name="fileName"></param>
+        /// <param name="uploadFile"></param>
+        /// <returns></returns>
+        public  string SaveFile( JH_Auth_QY  QYinfo, string fileName, HttpPostedFile uploadFile)
+        {
+            try
+            {
+                string uploadUrl = QYinfo.FileServerUrl.TrimEnd('/') + "/document/fileupload/" + QYinfo.QYCode;
+                string result = "";
+                string boundary = "----------" + DateTime.Now.Ticks.ToString("x");
+                HttpWebRequest webrequest = (HttpWebRequest)WebRequest.Create(uploadUrl);
+                webrequest.ContentType = "multipart/form-data; boundary=" + boundary;
+                webrequest.Method = "POST";
+                StringBuilder sb = new StringBuilder();
+                sb.Append("--");
+                sb.Append(boundary);
+                sb.Append("\r\n");
+                sb.Append("Content-Disposition: form-data; name=\"file");
+                sb.Append("\"; filename=\"" + fileName + "\"");
+                sb.Append("\"");
+                sb.Append("\r\n");
+                sb.Append("Content-Type: application/octet-stream");
+                sb.Append("\r\n");
+                sb.Append("\r\n");
+                string postHeader = sb.ToString();
+                byte[] postHeaderBytes = Encoding.UTF8.GetBytes(postHeader);
+                byte[] boundaryBytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+                webrequest.ContentLength = uploadFile.InputStream.Length + postHeaderBytes.Length + boundaryBytes.Length;
+                Stream requestStream = webrequest.GetRequestStream();
+                requestStream.Write(postHeaderBytes, 0, postHeaderBytes.Length);
+                byte[] buffer = new Byte[(int)uploadFile.InputStream.Length]; //声明文件长度的二进制类型
+                uploadFile.InputStream.Read(buffer, 0, buffer.Length); //将文件转成二进制
+                requestStream.Write(buffer, 0, buffer.Length); //赋值二进制数据 
+                requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
+                webrequest.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
+                WebResponse responce = webrequest.GetResponse();
+                requestStream.Close();
+                using (Stream s = responce.GetResponseStream())
+                {
+                    using (StreamReader sr = new StreamReader(s))
+                    {
+                        result = sr.ReadToEnd();
+                    }
+                }
+                responce.Close();
+
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return "";
+
+            }
+
+        }
+
+
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -326,10 +393,10 @@ namespace QJY.API
         /// <param name="fileToUpload"></param>
         /// <param name="poststr"></param>
         /// <returns></returns>
-        public static string PostFile(string uploadUrl, string fileToUpload, string poststr = "")
+        public static string PostFile(JH_Auth_QY QYinfo, string fileToUpload, string poststr = "")
         {
             string result = "";
-
+            string uploadUrl = QYinfo.FileServerUrl.TrimEnd('/') + "/document/fileupload/" + QYinfo.QYCode;
             try
             {
                 string boundary = "----------" + DateTime.Now.Ticks.ToString("x");
@@ -412,12 +479,13 @@ namespace QJY.API
                 foreach (var mediaId in mediaIds.Split(','))
                 {
                     string fileToUpload = wx.GetMediaFile(mediaId, strType);
-                    string md5 = PostFile(UserInfo.QYinfo.FileServerUrl.TrimEnd('/') + "/fileupload?qycode=" + UserInfo.QYinfo.QYCode, fileToUpload);
+                    string md5 = PostFile(UserInfo.QYinfo, fileToUpload);
                     System.IO.FileInfo f = new FileInfo(fileToUpload);
                     FT_File newfile = new FT_File();
                     newfile.ComId = UserInfo.User.ComId;
                     newfile.Name = f.Name;
-                    newfile.FileMD5 = md5.Replace("\"", "");
+                    newfile.FileMD5 = md5.Replace("\"", "").Split(',')[0];
+                    newfile.zyid = md5.Split(',').Length == 2 ? md5.Split(',')[1] : md5.Split(',')[0];
                     newfile.FileSize = f.Length.ToString();
                     newfile.FileVersin = 0;
                     newfile.CRDate = DateTime.Now;
@@ -448,6 +516,15 @@ namespace QJY.API
             }
         }
 
+
+
+        /// <summary>
+        /// 微信应用里发的图片,暂时没用
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="UserInfo"></param>
+        /// <param name="strType"></param>
+        /// <returns></returns>
         public static string ProcessWxIMGUrl(string url, JH_Auth_UserB.UserInfo UserInfo, string strType = ".jpg")
         {
             try
@@ -476,14 +553,14 @@ namespace QJY.API
                 reader.Dispose();
                 response.Close();
 
-                string URL = UserInfo.QYinfo.FileServerUrl + "fileupload?qycode=" + UserInfo.QYinfo.QYCode;
-                string md5 = PostFile(URL, fileToUpload);
+                string md5 = PostFile(UserInfo.QYinfo, fileToUpload);
 
                 System.IO.FileInfo f = new FileInfo(fileToUpload);
                 FT_File newfile = new FT_File();
                 newfile.ComId = UserInfo.User.ComId;
                 newfile.Name = f.Name;
-                newfile.FileMD5 = md5.Replace("\"", "");
+                newfile.FileMD5 = md5.Replace("\"", "").Split(',')[0];
+                newfile.zyid = md5.Split(',').Length == 2 ? md5.Split(',')[1] : md5.Split(',')[0];
                 newfile.FileSize = f.Length.ToString();
                 newfile.FileVersin = 0;
                 newfile.CRDate = DateTime.Now;

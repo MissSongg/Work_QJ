@@ -73,6 +73,7 @@ namespace QJY.WEB
 
                             }
                             else
+
                             {
                                 Response.AddHeader("Content-Disposition", "attachment;filename=" + Name);
                                 Response.ContentType = "application/octet-stream";
@@ -85,6 +86,8 @@ namespace QJY.WEB
                             Response.AddHeader("Content-Disposition", "attachment;filename=" + Name);
                             Response.ContentType = "application/octet-stream";
                             filename = "/ViewV5/images/qywd/" + file.FileExtendName + ".png";
+                            Response.Redirect(filename);
+
 
                         }
                     }

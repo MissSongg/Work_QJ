@@ -21,10 +21,6 @@ public class imageUp : IHttpHandler
 
         string callback = context.Request["callback"];
         string editorId = context.Request["editorid"];
-
-
-
-
         //ÉÏ´«Í¼Æ¬
         Hashtable info;
 

@@ -84,7 +84,7 @@
                                 <ul class="filelist">
                                     <li ms-repeat-file="el.FileList">
                                         <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="ComFunJS.getfile(file.ID)" />
-                                        <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}</span>
+                                        <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}.{{file.FileExtendName}}</span>
                                     </li>
                                 </ul>
                             </div>

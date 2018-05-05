@@ -121,12 +121,12 @@ namespace QJY.WEB
             if (cxt.Request.Cookies["szhlcode"] != null && cxt.Request.Cookies["szhlcode"].ToString() != "")
             {
                 JH_Auth_UserB.UserInfo usermodel = new JH_Auth_UserB().GetUserInfo(cxt.Request.Cookies["szhlcode"].Value.ToString());
-                string URL = usermodel.QYinfo.FileServerUrl + "fileupload?qycode=" + usermodel.QYinfo.QYCode;
-                string md5 = SaveFile(URL, file, fileName);
+                string md5 = new CommonHelp().SaveFile(usermodel.QYinfo, fileName, file);
                 FT_File newfile = new FT_File();
                 newfile.ComId = usermodel.User.ComId;
                 newfile.Name = fileName;
-                newfile.FileMD5 = md5.Replace("\"", "");
+                newfile.FileMD5 = md5.Replace("\"", "").Split(',')[0];
+                newfile.zyid = md5.Split(',').Length == 2 ? md5.Split(',')[1] : md5.Split(',')[0];
                 newfile.FileSize = "0";
                 newfile.FileVersin = 0;
                 newfile.CRDate = DateTime.Now;
@@ -142,54 +142,7 @@ namespace QJY.WEB
                 new JH_Auth_UserB().Update(usermodel.User);
             }
         }
-        public string SaveFile(string uploadUrl, HttpPostedFile file, string fileName)
-        {
-            try
-            {
-                string result = "";
-                string boundary = "----------" + DateTime.Now.Ticks.ToString("x");
-                HttpWebRequest webrequest = (HttpWebRequest)WebRequest.Create(uploadUrl);
-                webrequest.ContentType = "multipart/form-data; boundary=" + boundary;
-                webrequest.Method = "POST";
-                StringBuilder sb = new StringBuilder();
-                sb.Append("--");
-                sb.Append(boundary);
-                sb.Append("\r\n");
-                sb.Append("Content-Disposition: form-data; name=\"file");
-                sb.Append("\"; filename=\"" + fileName + "\"");
-                sb.Append("\"");
-                sb.Append("\r\n");
-                sb.Append("Content-Type: application/octet-stream");
-                sb.Append("\r\n");
-                sb.Append("\r\n");
-                string postHeader = sb.ToString();
-                byte[] postHeaderBytes = Encoding.UTF8.GetBytes(postHeader);
-                byte[] boundaryBytes = Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
-                webrequest.ContentLength = file.InputStream.Length + postHeaderBytes.Length + boundaryBytes.Length;
-                Stream requestStream = webrequest.GetRequestStream();
-                requestStream.Write(postHeaderBytes, 0, postHeaderBytes.Length);
-                byte[] buffer = new Byte[(int)file.InputStream.Length]; //声明文件长度的二进制类型
-                file.InputStream.Read(buffer, 0, buffer.Length); //将文件转成二进制
-                requestStream.Write(buffer, 0, buffer.Length); //赋值二进制数据 
-                requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
-                webrequest.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
-                WebResponse responce = webrequest.GetResponse();
-                requestStream.Close();
-                using (Stream s = responce.GetResponseStream())
-                {
-                    using (StreamReader sr = new StreamReader(s))
-                    {
-                        result = sr.ReadToEnd();
-                    }
-                }
-                responce.Close();
-                return result;
-            }
-            catch (Exception ex)
-            {
-                return "";
-            }
-        }
+    
         private string GetFileType(string extname)
         {
             switch (extname.ToLower())

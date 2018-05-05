@@ -395,6 +395,7 @@ namespace QJY.WEB
                                         Model.Result = jau.pccode;
                                         Model.Result1 = jau.UserName;
                                         Model.Result2 = ts.TotalMinutes;
+                                        Model.Result3 = qy.FileServerUrl;
                                     }
 
                                 }

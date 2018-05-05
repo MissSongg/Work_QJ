@@ -44,5 +44,6 @@ namespace QJY.Data
         public string YLCount { get; set; }
         public string TBStatus { get; set; }
         public Nullable<int> TotalTime { get; set; }
+        public string zyid { get; set; }
     }
 }

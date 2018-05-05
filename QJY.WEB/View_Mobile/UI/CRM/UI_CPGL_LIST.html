@@ -102,8 +102,8 @@
                             </div>
                             <ul class="filelist" style="margin-left:.5rem;">
                                 <li ms-repeat-file="el.FileList">
-                                    <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="ComFunJS.getfile(file.ID)">
-                                    <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}</span>
+                                    <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="ComFunJS.getfile(file.ID)" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'">
+                                    <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}.{{file.FileExtendName}}</span>
                                 </li>
                             </ul>
                             <div class="buttons-tab list-op">

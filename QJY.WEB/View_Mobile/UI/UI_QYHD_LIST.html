@@ -186,7 +186,7 @@
                             <div class="card-content-inner" style="padding-top: 0; padding-top: 0.4rem; padding-bottom: 0;" ms-if="el.Files">
                                 <ul class="filelist">
                                     <li ms-repeat-file="el.FileList">
-                                        <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}" />
+                                        <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'" />
                                         <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}</span>
                                     </li>
                                 </ul>
@@ -222,7 +222,7 @@
                                                     <ul class="filelist">
                                                         <!--repeat428537517786-->
                                                         <li ms-repeat-file="pl.FileList">
-                                                            <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}" />
+                                                            <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'" />
                                                             <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}</span>
                                                         </li>
                                                     </ul>

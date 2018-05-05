@@ -839,42 +839,40 @@
                     if (input.hasClass("focus")) {
                         um.focus()
                     }
-                    if ($(".edui-btn-toolbar").find(".zdyimg").length == 0) {
-                        var $imgupload = $(".edui-btn-toolbar").find(".edui-btn-image").clone();//多张图片
-                        var $imgpdf = $(".edui-btn-toolbar").find(".edui-btn-image").clone();//多张图片
-                        $(".edui-btn-toolbar").find(".edui-btn-image").hide();
-                        $imgupload.css("display", "inline-block");
-                        $imgupload.addClass("zdyimg").show().appendTo($(".edui-btn-toolbar")).bind('click', function () {
-                            top.ComFunJS.winbtnwin(ComFunJS.getfileapi() + "fileupload", "上传", "550", "400", {}, function (layero, index, btdom) {
-                                var fjids = "";
-                                btdom.addClass("disabled").find("i").show();
-                                var frameid = $("iframe", $(layero)).attr('id');
-                                var nowwin = ComFunJS.isIE() ? top.window.frames[frameid] : top.window.frames[frameid].contentWindow;
-                                nowwin.location = "/ViewV5/Base/Success.html?ID=3&fmindex=" + index;  //应用附件
-                                var int = top.window.setInterval("getwinname()", 1500);//循环等待,直到上传成功并返回文件数据
-                                top.window.getwinname = function () {
-                                    try {
-                                        if (nowwin.filedata) {
-                                            top.window.clearInterval(int)
-                                            var fjdata = nowwin.filedata;
-                                            btdom.removeClass("disabled").find("i").hide();
-                                            var picurl = "";
-                                            for (var i = 0; i < fjdata.length; i++) {
-                                                if (ComFunJS.isPic(fjdata[i].FileExtendName)) {
-                                                    picurl = picurl + "<p><img  style='max-height:775px;max-width:475px' src='" + ComFunJS.getfile(fjdata[i].ID) + "'/></p>";
-                                                }
-                                            }
-                                            um.setContent(picurl, true);
-                                            top.layer.close(index);
-                                        };
-                                    } catch (e) {
-                                    }
-                                }
-                            });
-                        })
-                    }
-
-
+                    //if ($(".edui-btn-toolbar").find(".zdyimg").length == 0) {
+                    //    var $imgupload = $(".edui-btn-toolbar").find(".edui-btn-image").clone();//多张图片
+                    //    var $imgpdf = $(".edui-btn-toolbar").find(".edui-btn-image").clone();//多张图片
+                    //    $(".edui-btn-toolbar").find(".edui-btn-image").hide();
+                    //    $imgupload.css("display", "inline-block");
+                    //    $imgupload.addClass("zdyimg").show().appendTo($(".edui-btn-toolbar")).bind('click', function () {
+                    //        top.ComFunJS.winbtnwin(ComFunJS.getfileapi() + "fileupload", "上传", "550", "400", {}, function (layero, index, btdom) {
+                    //            var fjids = "";
+                    //            btdom.addClass("disabled").find("i").show();
+                    //            var frameid = $("iframe", $(layero)).attr('id');
+                    //            var nowwin = ComFunJS.isIE() ? top.window.frames[frameid] : top.window.frames[frameid].contentWindow;
+                    //            nowwin.location = "/ViewV5/Base/Success.html?ID=3&fmindex=" + index;  //应用附件
+                    //            var int = top.window.setInterval("getwinname()", 1500);//循环等待,直到上传成功并返回文件数据
+                    //            top.window.getwinname = function () {
+                    //                try {
+                    //                    if (nowwin.filedata) {
+                    //                        top.window.clearInterval(int)
+                    //                        var fjdata = nowwin.filedata;
+                    //                        btdom.removeClass("disabled").find("i").hide();
+                    //                        var picurl = "";
+                    //                        for (var i = 0; i < fjdata.length; i++) {
+                    //                            if (ComFunJS.isPic(fjdata[i].FileExtendName)) {
+                    //                                picurl = picurl + "<p><img  style='max-height:775px;max-width:475px' src='" + ComFunJS.getfile(fjdata[i].ID) + "'/></p>";
+                    //                            }
+                    //                        }
+                    //                        um.setContent(picurl, true);
+                    //                        top.layer.close(index);
+                    //                    };
+                    //                } catch (e) {
+                    //                }
+                    //            }
+                    //        });
+                    //    })
+                    //}
                 })
                 um.addListener('contentChange', function () {
                     input.val(UM.getEditor(ubid).getContent())

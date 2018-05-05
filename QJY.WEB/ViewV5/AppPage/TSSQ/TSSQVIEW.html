@@ -104,7 +104,7 @@
 
                         <ul class="clearfix list-unstyled pic-list">
                             <li ms-repeat-item="modelData.ZanList">
-                                <img style="width:60px;height:60px;" ms-attr-src="{{ComFunJS.getfile()}}?type=TX&user={{item.CRUser}}">
+                                <img style="width:60px;height:60px;" ms-attr-src="{{ComFunJS.getfile()}}?type=TX&user={{item.CRUser}}"  onerror="javascript: this.src = '/ViewV5/images/head.jpg'">
                                 <div style="color:#999;font-size:12px;text-align:center;">{{ComFunJS.convertuser(item.CRUser)}}</div>
                             </li>
                         </ul>

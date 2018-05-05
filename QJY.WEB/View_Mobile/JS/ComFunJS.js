@@ -145,6 +145,17 @@ var urlData = [];
 
 var ComFunJS = {
     yuming: "",
+    iswx: function () {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    getfileapi: function () {
+        return ComFunJS.getCookie("fileapi");
+    },
     seelp: function (numberMillis) {
         var now = new Date();
         var exitTime = now.getTime() + numberMillis;
@@ -229,9 +240,9 @@ var ComFunJS = {
 
     },//成功提示
     showload: function () {
-          layer.open({
-              type: 2
-          });
+        layer.open({
+            type: 2
+        });
     },//成功提示
     winwarning: function (msg) {
         layer.open({
@@ -582,7 +593,6 @@ var ComFunJS = {
         }
         document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString() + ";path=/";
     },//设置cookie
-
     getCookie: function (name) {
         var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
 
@@ -816,79 +826,79 @@ var ComFunJS = {
 
         //微信选图片
         if ($(".wximgupload")) {
+           
             var zhtml = '<div class="weui_uploader">'
                      + '    <div class="weui_uploader_bd">'
                      + '        <ul class="weui_uploader_files" id="imglist">'
-                     //+ '            <li class="imgxl scli">'
-                     //+ '            <div class="item-media">'
-                     //+ '                <img src="/View_Mobile/Images/icon-add.png" width="44">'
-                     //+ '            </div>'
-                     //+ '            </li>'
+
                      + '        </ul>'
                      + '        <div class="weui_uploader_input_wrp">'
-                     + '            <input class="weui_uploader_input" type="button" >'
+                     + '            <input class="weui_uploader_input" type="button" id="tpadd" >'
                      + '        </div>'
                      + '    </div>'
                      + '    <div style="clear:both"></div>'
                      + '</div>';
             $(zhtml).insertBefore($(".wximgupload")).find(".weui_uploader_input").click(function () {
-                wx.chooseImage({
-                    success: function (res) {
-                        $(res.localIds).each(function (index) {
-                            if (window.__wxjs_is_wkwebview) {
-                                wx.getLocalImgData({
-                                    localId: res.localIds[index],
-                                    success: function (resimg) {
-                                        ComFunJS.seelp(1000)//不得不加，不然苹果没法上传一次性多张图片
-                                        var localData = resimg.localData;// 返回图片本地数据
-                                        wx.uploadImage({
-                                            localId: res.localIds[index], // 需要上传的图片的本地ID，由chooseImage接口获得
-                                            isShowProgressTips: 1,// 默认为1，显示进度提示
-                                            success: function (s_res) {
-                                                var serverId = s_res.serverId; // 返回图片的服务器端ID
-                                                var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + localData + ')" src="' + localData + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
-                                                $html.appendTo($("#imglist"));
-                                                $html.find("i").bind("click", function (event) {
-                                                    event.stopPropagation();
-                                                    $html.remove();
-                                                })
-                                            }
-                                        });
-                                        //var serverId = res.localIds[index]; 
-                                        //var localData = resimg.localData;// 返回图片本地数据
-                                        //var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + localData + ')" src="' + localData + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
-                                        //$html.appendTo($("#imglist"));
-                                        //$html.find("i").bind("click", function (event) {
-                                        //    event.stopPropagation();
-                                        //    $html.remove();
-                                        //})
-                                    }
-                                })
-                            }
-                            else {
-                                wx.uploadImage({
-                                    localId: res.localIds[index], // 需要上传的图片的本地ID，由chooseImage接口获得
-                                    isShowProgressTips: 1,// 默认为1，显示进度提示
-                                    success: function (s_res) {
-                                        var serverId =s_res.serverId ; // 返回图片的服务器端ID
-                                        var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + res.localIds[index] + ')" src="' + res.localIds[index] + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
-                                        $html.appendTo($("#imglist"));
-                                        $html.find("i").bind("click", function (event) {
-                                            event.stopPropagation();
-                                            $html.remove();
-                                        })
-                                    }
-                                });
-                            }
+                if (ComFunJS.iswx()) {
+                    wx.chooseImage({
+                        success: function (res) {
+                            $(res.localIds).each(function (index) {
+                                if (window.__wxjs_is_wkwebview) {
+                                    wx.getLocalImgData({
+                                        localId: res.localIds[index],
+                                        success: function (resimg) {
+                                            ComFunJS.seelp(1000)//不得不加，不然苹果没法上传一次性多张图片
+                                            var localData = resimg.localData;// 返回图片本地数据
+                                            wx.uploadImage({
+                                                localId: res.localIds[index], // 需要上传的图片的本地ID，由chooseImage接口获得
+                                                isShowProgressTips: 1,// 默认为1，显示进度提示
+                                                success: function (s_res) {
+                                                    var serverId = s_res.serverId; // 返回图片的服务器端ID
+                                                    var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + localData + ')" src="' + localData + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
+                                                    $html.appendTo($("#imglist"));
+                                                    $html.find("i").bind("click", function (event) {
+                                                        event.stopPropagation();
+                                                        $html.remove();
+                                                    })
+                                                }
+                                            });
+                                            //var serverId = res.localIds[index]; 
+                                            //var localData = resimg.localData;// 返回图片本地数据
+                                            //var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + localData + ')" src="' + localData + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
+                                            //$html.appendTo($("#imglist"));
+                                            //$html.find("i").bind("click", function (event) {
+                                            //    event.stopPropagation();
+                                            //    $html.remove();
+                                            //})
+                                        }
+                                    })
+                                }
+                                else {
+                                    wx.uploadImage({
+                                        localId: res.localIds[index], // 需要上传的图片的本地ID，由chooseImage接口获得
+                                        isShowProgressTips: 1,// 默认为1，显示进度提示
+                                        success: function (s_res) {
+                                            var serverId = s_res.serverId; // 返回图片的服务器端ID
+                                            var $html = $('<li id="img_' + index + '" itemid="' + serverId + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + res.localIds[index] + ')" src="' + res.localIds[index] + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
+                                            $html.appendTo($("#imglist"));
+                                            $html.find("i").bind("click", function (event) {
+                                                event.stopPropagation();
+                                                $html.remove();
+                                            })
+                                        }
+                                    });
+                                }
 
 
 
-                        })
-
-                    }
-                });
+                            })
+                        }
+                    });
+                }
             })
-
+            if (!ComFunJS.iswx()) {
+                ComFunJS.upfilenowx($(".wximgupload").eq(0))
+            }
             $(tpdata).each(function (index, ele) {
                 var html = '';
                 if (ComFunJS.xstp(ele.FileExtendName)) {
@@ -905,6 +915,49 @@ var ComFunJS = {
             })
         }
     },//上传图片
+
+
+    upfilenowx: function (dom) {
+        var $input = dom;
+        var upload = null;
+        var obj = {
+            uploadButtton: 'tpadd',
+            fileapiurl: ComFunJS.getfileapi(),
+            usercode: "qycode",
+            secret: "qycode",
+            upinfo: "上传组件",
+            width: "90%",
+            left: "5%",
+            webupconfig: {
+                fileNumLimit: 5,
+            },
+            closeupwin: function (fileData) {
+                var fjids = "";
+                $.post('/API/VIEWAPI.ashx?Action=QYWD_ADDFILE', { "P1": fileData, "P2": 3 }, function (result) {
+                    result = JSON.parse(result);
+                    if (result.ErrorMsg == "") {
+                        var fjdata = result.Result;//给filedata赋值,供页面使用
+                        for (var i = 0; i < fjdata.length; i++) {
+                            var $html = $('<li id="img_' + i + '" itemid="' + fjdata[i].ID + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + ComFunJS.getfile(fjdata[i].ID) + ')" src="' + ComFunJS.getfile(fjdata[i].ID) + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
+                            $html.appendTo($("#imglist"));
+                            $html.find("i").bind("click", function (event) {
+                                event.stopPropagation();
+                                $html.remove();
+                            })
+                            fjids = fjids + fjdata[i].ID + ",";
+                        }
+                        if (fjids.length > 0) {
+                            fjids = fjids.substring(0, fjids.length - 1)
+                        }
+                        $input.val(fjids);
+                    }
+                })
+
+            }
+        };
+        upload = new QJUpload(obj);
+
+    },
     uploadimgnewbak: function (tpdata) {
 
         //微信选图片
@@ -987,6 +1040,8 @@ var ComFunJS = {
             }
         })
     },//打开微信聊天
+
+
     viewimg: function (tpdata) {
         var zhtml = '<div class="weui_uploader">'
                      + '    <div class="weui_uploader_bd">'
@@ -1263,7 +1318,7 @@ var ComFunJS = {
         })
     },//微信选择用户插件
     getnowuser: function () {
-        return  ComFunJS.getCookie("username");
+        return ComFunJS.getCookie("username");
     },//获取当前用户名
     getnowuserobj: function () {
         return ComFunJS.convuserobj(ComFunJS.getnowuser("username"));

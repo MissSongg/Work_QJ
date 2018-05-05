@@ -39,6 +39,7 @@
           <Property Name="YLCount" Type="varchar" MaxLength="255" />
           <Property Name="TBStatus" Type="varchar" MaxLength="50" />
           <Property Name="TotalTime" Type="int" />
+          <Property Name="zyid" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="FT_File_Downhistory">
           <Key>
@@ -253,13 +254,13 @@
           </Key>
           <Property Name="ComId" Type="varchar" MaxLength="100" />
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LogType" Type="varchar" MaxLength="50" />
+          <Property Name="LogType" Type="varchar" MaxLength="5000" />
           <Property Name="LogContent" Type="text" />
-          <Property Name="Remark" Type="varchar" MaxLength="500" />
+          <Property Name="Remark" Type="varchar" MaxLength="5000" />
           <Property Name="CRUser" Type="varchar" MaxLength="50" />
           <Property Name="CRDate" Type="datetime" />
           <Property Name="IP" Type="varchar" MaxLength="50" />
-          <Property Name="Remark1" Type="varchar" MaxLength="500" />
+          <Property Name="Remark1" Type="varchar" MaxLength="5000" />
         </EntityType>
         <EntityType Name="JH_Auth_Model">
           <Key>
@@ -1684,7 +1685,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="QJY_SaaSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="QJY_SaaSEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="FT_File" EntityType="QJY_SaaSModel.FT_File" />
           <EntitySet Name="FT_File_Downhistory" EntityType="QJY_SaaSModel.FT_File_Downhistory" />
           <EntitySet Name="FT_File_Share" EntityType="QJY_SaaSModel.FT_File_Share" />
           <EntitySet Name="FT_File_UserAuth" EntityType="QJY_SaaSModel.FT_File_UserAuth" />
@@ -1762,42 +1762,8 @@
           <EntitySet Name="SZHL_YCGL" EntityType="QJY_SaaSModel.SZHL_YCGL" />
           <EntitySet Name="SZHL_YCGL_CAR" EntityType="QJY_SaaSModel.SZHL_YCGL_CAR" />
           <EntitySet Name="SZHL_DRAFT" EntityType="QJY_SaaSModel.SZHL_DRAFT" />
+          <EntitySet Name="FT_File" EntityType="QJY_SaaSModel.FT_File" />
         </EntityContainer>
-        <EntityType Name="FT_File">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ComId" Type="Int32" />
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="FolderID" Type="Int32" />
-          <Property Name="FileExtendName" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="FileSize" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="FileDownloadCishu" Type="Int32" />
-          <Property Name="FileMD5" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="FileVersin" Type="Int32" />
-          <Property Name="IsRecycle" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="FileUrl" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="ViewAuthUsers" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="DownloadAuthUsers" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CollectUser" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="ShareCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="SharePasd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ShareType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ShareDueDate" Type="DateTime" Precision="3" />
-          <Property Name="ISYL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Remark" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="UPUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="UPDDate" Type="DateTime" Precision="3" />
-          <Property Name="CRUser" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
-          <Property Name="CRDate" Type="DateTime" Precision="3" />
-          <Property Name="YLUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="YLCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="YLPath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="YLCount" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="TBStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TotalTime" Type="Int32" />
-        </EntityType>
         <EntityType Name="FT_File_Downhistory">
           <Key>
             <PropertyRef Name="ID" />
@@ -1992,13 +1958,13 @@
           </Key>
           <Property Name="ComId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LogType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LogType" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
           <Property Name="LogContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
           <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CRDate" Type="DateTime" Precision="3" />
           <Property Name="IP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Remark1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Remark1" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="JH_Auth_Model">
           <Key>
@@ -3357,48 +3323,48 @@
           <Property Name="ExtData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="DataID" Type="Int32" />
         </EntityType>
+        <EntityType Name="FT_File">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="FolderID" Type="Int32" />
+          <Property Name="FileExtendName" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="FileSize" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="FileDownloadCishu" Type="Int32" />
+          <Property Name="FileMD5" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="FileVersin" Type="Int32" />
+          <Property Name="IsRecycle" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="FileUrl" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="ViewAuthUsers" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DownloadAuthUsers" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CollectUser" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ShareCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SharePasd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ShareType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ShareDueDate" Type="DateTime" Precision="3" />
+          <Property Name="ISYL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="UPUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UPDDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="YLUrl" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="YLCode" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="YLPath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="YLCount" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TBStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TotalTime" Type="Int32" />
+          <Property Name="zyid" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="QJY_SaaSModelStoreContainer" CdmEntityContainer="QJY_SaaSEntities">
-          <EntitySetMapping Name="FT_File">
-            <EntityTypeMapping TypeName="QJY_SaaSModel.FT_File">
-              <MappingFragment StoreEntitySet="FT_File">
-                <ScalarProperty Name="TotalTime" ColumnName="TotalTime" />
-                <ScalarProperty Name="TBStatus" ColumnName="TBStatus" />
-                <ScalarProperty Name="YLCount" ColumnName="YLCount" />
-                <ScalarProperty Name="YLPath" ColumnName="YLPath" />
-                <ScalarProperty Name="YLCode" ColumnName="YLCode" />
-                <ScalarProperty Name="YLUrl" ColumnName="YLUrl" />
-                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
-                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
-                <ScalarProperty Name="UPDDate" ColumnName="UPDDate" />
-                <ScalarProperty Name="UPUser" ColumnName="UPUser" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="ISYL" ColumnName="ISYL" />
-                <ScalarProperty Name="ShareDueDate" ColumnName="ShareDueDate" />
-                <ScalarProperty Name="ShareType" ColumnName="ShareType" />
-                <ScalarProperty Name="SharePasd" ColumnName="SharePasd" />
-                <ScalarProperty Name="ShareCode" ColumnName="ShareCode" />
-                <ScalarProperty Name="CollectUser" ColumnName="CollectUser" />
-                <ScalarProperty Name="DownloadAuthUsers" ColumnName="DownloadAuthUsers" />
-                <ScalarProperty Name="ViewAuthUsers" ColumnName="ViewAuthUsers" />
-                <ScalarProperty Name="FileUrl" ColumnName="FileUrl" />
-                <ScalarProperty Name="IsRecycle" ColumnName="IsRecycle" />
-                <ScalarProperty Name="FileVersin" ColumnName="FileVersin" />
-                <ScalarProperty Name="FileMD5" ColumnName="FileMD5" />
-                <ScalarProperty Name="FileDownloadCishu" ColumnName="FileDownloadCishu" />
-                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
-                <ScalarProperty Name="FileExtendName" ColumnName="FileExtendName" />
-                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ComId" ColumnName="ComId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FT_File_Downhistory">
             <EntityTypeMapping TypeName="QJY_SaaSModel.FT_File_Downhistory">
               <MappingFragment StoreEntitySet="FT_File_Downhistory">
@@ -5032,6 +4998,43 @@
                 <ScalarProperty Name="FormCode" ColumnName="FormCode" />
                 <ScalarProperty Name="ComId" ColumnName="ComId" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FT_File">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.FT_File">
+              <MappingFragment StoreEntitySet="FT_File">
+                <ScalarProperty Name="zyid" ColumnName="zyid" />
+                <ScalarProperty Name="TotalTime" ColumnName="TotalTime" />
+                <ScalarProperty Name="TBStatus" ColumnName="TBStatus" />
+                <ScalarProperty Name="YLCount" ColumnName="YLCount" />
+                <ScalarProperty Name="YLPath" ColumnName="YLPath" />
+                <ScalarProperty Name="YLCode" ColumnName="YLCode" />
+                <ScalarProperty Name="YLUrl" ColumnName="YLUrl" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="UPDDate" ColumnName="UPDDate" />
+                <ScalarProperty Name="UPUser" ColumnName="UPUser" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="ISYL" ColumnName="ISYL" />
+                <ScalarProperty Name="ShareDueDate" ColumnName="ShareDueDate" />
+                <ScalarProperty Name="ShareType" ColumnName="ShareType" />
+                <ScalarProperty Name="SharePasd" ColumnName="SharePasd" />
+                <ScalarProperty Name="ShareCode" ColumnName="ShareCode" />
+                <ScalarProperty Name="CollectUser" ColumnName="CollectUser" />
+                <ScalarProperty Name="DownloadAuthUsers" ColumnName="DownloadAuthUsers" />
+                <ScalarProperty Name="ViewAuthUsers" ColumnName="ViewAuthUsers" />
+                <ScalarProperty Name="FileUrl" ColumnName="FileUrl" />
+                <ScalarProperty Name="IsRecycle" ColumnName="IsRecycle" />
+                <ScalarProperty Name="FileVersin" ColumnName="FileVersin" />
+                <ScalarProperty Name="FileMD5" ColumnName="FileMD5" />
+                <ScalarProperty Name="FileDownloadCishu" ColumnName="FileDownloadCishu" />
+                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+                <ScalarProperty Name="FileExtendName" ColumnName="FileExtendName" />
+                <ScalarProperty Name="FolderID" ColumnName="FolderID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

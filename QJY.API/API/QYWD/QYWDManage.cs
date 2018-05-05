@@ -168,13 +168,14 @@ namespace QJY.API
             {
                 int index = item["filename"].ToString().LastIndexOf('.');
                 string filename = item["filename"].ToString().Substring(0, index);
-
+                string md5 = item["md5"].ToString();
                 FT_File File = new FT_FileB().GetSameFile(item["filename"].ToString(), int.Parse(P2), UserInfo.User.ComId.Value);
                 if (File == null)//相同目录下没有重复文件
                 {
                     FT_File newfile = new FT_File();
                     newfile.Name = filename;
-                    newfile.FileMD5 = item["md5"].ToString();
+                    newfile.FileMD5 = md5.Replace("\"", "").Split(',')[0];
+                    newfile.zyid = md5.Split(',').Length == 2 ? md5.Split(',')[1] : md5.Split(',')[0];
                     newfile.FileSize = item["filesize"].ToString();
                     newfile.FileVersin = 0;
                     newfile.CRDate = date;
@@ -197,7 +198,6 @@ namespace QJY.API
                 else
                 {
                     FT_File_Vesion Vseion = new FT_File_Vesion();
-                    Vseion.FileMD5 = File.FileMD5;
                     Vseion.RFileID = File.ID;
                     Vseion.FileSize = File.FileSize;
                     Vseion.CRDate = date;
@@ -205,7 +205,8 @@ namespace QJY.API
                     new FT_File_VesionB().Insert(Vseion);//加入新版本
 
                     File.FileVersin = File.FileVersin + 1;
-                    File.FileMD5 = item["md5"].ToString();
+                    File.FileMD5 = md5.Replace("\"", "").Split(',')[0];
+                    File.zyid = md5.Split(',').Length == 2 ? md5.Split(',')[1] : md5.Split(',')[0];
                     File.FileSize = item["filesize"].ToString();
                     File.UPDDate = date;
                     File.UPUser = UserInfo.User.UserName;

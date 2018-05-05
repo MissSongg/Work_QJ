@@ -25,7 +25,6 @@ namespace QJY.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<FT_File> FT_File { get; set; }
         public virtual DbSet<FT_File_Downhistory> FT_File_Downhistory { get; set; }
         public virtual DbSet<FT_File_Share> FT_File_Share { get; set; }
         public virtual DbSet<FT_File_UserAuth> FT_File_UserAuth { get; set; }
@@ -103,5 +102,6 @@ namespace QJY.Data
         public virtual DbSet<SZHL_YCGL> SZHL_YCGL { get; set; }
         public virtual DbSet<SZHL_YCGL_CAR> SZHL_YCGL_CAR { get; set; }
         public virtual DbSet<SZHL_DRAFT> SZHL_DRAFT { get; set; }
+        public virtual DbSet<FT_File> FT_File { get; set; }
     }
 }

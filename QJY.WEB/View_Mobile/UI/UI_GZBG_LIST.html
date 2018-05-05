@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="/View_Mobile/CSS/msui.css">
-    
+
     <link rel="stylesheet" href="//at.alicdn.com/t/font_1476090774_8365302.css">
     <link href="/View_Mobile/CSS/szhlextend.css?ver=20160904" rel="stylesheet" />
 
@@ -78,7 +78,7 @@
                             <div style="clear:both"></div>
                         </div>
                         <div class="card-content" ms-visible="el.isfold">
-                           
+
                             <div class="card-item">
                                 <span class="c999 title-item">报告时间：</span>
                                 <span>{{el.RBDate|date("yyyy年MM月dd日")}}</span>
@@ -93,8 +93,8 @@
                             </div>
                             <ul class="filelist" style="margin-left:.5rem;">
                                 <li ms-repeat-file="el.FileList">
-                                    <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}">
-                                    <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}</span>
+                                    <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}"  onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'">
+                                    <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}.{{file.FileExtendName}}</span>
                                 </li>
                             </ul>
 
@@ -128,8 +128,8 @@
                                                     <ul class="filelist">
                                                         <!--repeat428537517786-->
                                                         <li ms-repeat-file="pl.FileList">
-                                                            <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}" />
-                                                            <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}</span>
+                                                            <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'" />
+                                                            <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}.{{file.FileExtendName}}</span>
                                                         </li>
                                                     </ul>
                                                     <p></p><div class="item-after pfdv">{{pf(pl.Points)|html}}</div><p></p>
@@ -141,7 +141,7 @@
                                     </div>
                                 </div>
                             </div>
-                          
+
                             <div class="buttons-tab list-op">
                                 <a class="tab-link button external" ms-click="pl(el)">
                                     <i class="iconfont icon-xiaoxi"></i>评论
@@ -167,7 +167,7 @@
                     <div class="preloader"></div>
                 </div>
             </div>
-                     <div class="right-panel">
+            <div class="right-panel">
                 <ul>
                     <li ms-if="DataID=='-1'">
 
@@ -181,7 +181,7 @@
                     </li>
                     <li ms-if="DataID=='-1'">
                         <a class="mod-li-icon" ms-if="DataID=='-1'" ms-click="addGZBG()"><img src="../images/plus-add.png"></a>
-                    </li>                 
+                    </li>
                 </ul>
             </div>
         </div>
@@ -189,16 +189,16 @@
 
         </div>
         <div class="search-top" ms-if="isShow">
-            
+
             <div class="searchbar searchbar-active">
                 <a class="searchbar-cancel" ms-click="GetList()">搜索</a>
                 <a class="searchbar-cancel search-close" ms-click="show()"><i class="iconfont icon-cuo"></i></a>
                 <div class="search-input">
-                    <label class="icon icon-search" for="search" ></label>
+                    <label class="icon icon-search" for="search"></label>
                     <input type="search" id="search" placeholder="搜索姓名,部门,报告内容" ms-duplex="search">
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -214,9 +214,9 @@
         var model = avalon.define({
             $id: "BGList",
             ctData: [],
-            search:"",
+            search: "",
             loading: false,
-            isShow:false,
+            isShow: false,
             loadtip: "",//切换页时显示信息
             nowuser: ComFunJS.getnowuser(),
             isfold: localStorage.getItem("BGListisfold") == "Y" ? true : false,//是否折叠显示
@@ -235,7 +235,7 @@
             GetList: function () {
                 model.ctData.clear();
                 model.loadtip = "";
-                model.page=1;
+                model.page = 1;
                 model.loadMore();
             },
             changefold: function () {
@@ -351,7 +351,7 @@
                             if (model.ctData.size() == 0) {
                                 model.loadtip = '没有找到数据哦'
                             }
-                        } 
+                        }
                     })
                 })
             },

@@ -223,6 +223,7 @@
     <Content Include="ViewV5\JS\WFJS.min.js">
       <DependentUpon>WFJS.js</DependentUpon>
     </Content>
+    <Content Include="ViewV5\upload.html" />
     <Content Include="ViewV5\web\css\css.css" />
     <Content Include="ViewV5\web\css\default.css" />
     <Content Include="ViewV5\web\images\erweima.png" />
@@ -324,8 +325,6 @@
     <Content Include="WZWeb\mob\js\jquery-1.11.1.min.js" />
     <Content Include="WZWeb\mob\js\jquery.touchSwipe.min.js" />
     <Content Include="WZWeb\mob\success.html" />
-    <None Include="Properties\PublishProfiles\BD.pubxml" />
-    <None Include="Properties\PublishProfiles\FB.pubxml" />
     <None Include="Properties\PublishProfiles\QJSignle.pubxml" />
     <None Include="Properties\PublishProfiles\QJ_UserS.pubxml" />
     <None Include="Properties\Settings.settings">

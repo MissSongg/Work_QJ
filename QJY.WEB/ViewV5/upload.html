@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta charset="utf-8" />
+    <script src="JS/jquery-1.11.2.min.js"></script>
+    <script  src="http://47.92.121.230:9100/Web/qj_upload.js?v=3"></script>
+    <script>
+        $(document).ready(function () {
+            var upload = null;
+            var obj = {
+                uploadButtton: 'upload',
+                fileapiurl: "http://47.92.121.230:9100/",
+                usercode: "qycode",
+                secret: "qycode",
+                width: "90%",
+                left:"5%",
+                upinfo:"测试消息",
+                webupconfig: {
+                    fileNumLimit: 5,
+                },
+                filecomplete: function (fileData) {
+                    //console.log('上传完毕！ 上传成功的文件：');
+                    //console.log(JSON.stringify(fileData));
+                },
+                closeupwin: function (fileData) {
+                    console.log(fileData);
+                }
+            };
+            upload = new QJUpload(obj);
+        });
+    </script>
+</head>
+<body >
+    		<input type="button" id="upload" value="上传" />
+</body>
+</html>

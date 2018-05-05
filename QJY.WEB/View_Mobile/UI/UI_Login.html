@@ -42,6 +42,9 @@
                     if (resultData.ErrorMsg == "") {
                         ComFunJS.setCookie('szhlcode', resultData.Result);
                         ComFunJS.setCookie('username', resultData.Result1, 20000);
+                        ComFunJS.setCookie('fileapi', resultData.Result2, 20000);
+
+                        
                         location.href = "/View_Mobile/UI/UI_ZHBG_INDEX.html";
                     }
                 })
