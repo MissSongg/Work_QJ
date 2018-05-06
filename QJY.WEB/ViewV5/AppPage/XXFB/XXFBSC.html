@@ -155,56 +155,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane fade in" id="ImagesSC" style="padding-top:20px">
-                            <div style="margin-bottom:10px;text-align:right">
-                                <button class="btn btn-info btn-large" ms-click="SaveDataImage(1)">上传图片</button>
-                            </div>
-                            <div class="card_collection_block">
-                                <!--<p class="card_collection_title" date="2016年3月">2016年3月</p>-->
-                                <br />
-                                <ul>
-                                    <li ms-repeat-item="ImagesList">
-                                        <div class="pic_unit">
-                                            <div class="image_wrap">
-                                                <div class="image_inner">
-                                                    <!-- 加一个后缀名hack fancybox插件的识别链接后缀名问题 -->
-                                                    <a data-lightbox="materialImage" data-title="">
-                                                        <img class="pic_image" ms-attr-src="{{ComFunJS.getfile(item.Files)}}" />
-                                                    </a>
-                                                </div>
-                                                <div class="tool_mask"></div>
-                                                <div class="tool_panel">
-                                                    <a class="icon icon_download_white hidden"></a>
-                                                    <a class="icon icon_edit_white js_edit hidden" href="javascript:;"></a>
-                                                    <a class="icon icon_remove_white js_remove" href="javascript:;" ms-click="DelSC(item,1)"></a>
-                                                </div>
-                                            </div>
-                                            <p class="pic_name">{{item.name+'.'+item.FileExtendName}}</p>
-                                        </div>
-                                    </li>
-                                    <!-- 编辑名字的时候添加一个pic_status_edit的类 -->
-
-                                </ul>
-                            </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane  fade in" id="FileSC" style="padding-top:20px">
-                            <div style="margin-bottom:10px;text-align:right"> <button class="btn btn-info btn-large" ms-click="SaveDataImage(2)">上传文件</button></div>
-                            <div class="card_collection_block">
-                                <ul>
-                                    <li ms-repeat-item="FilesList">
-                                        <div class="file_unit">
-                                            <img class="icon_filetype" ms-attr-src="'/images/Vimg/qywd/'+item.FileExtendName+'.png'" />
-                                            <p class="filetype_name">{{item.name+'.'+item.FileExtendName}}</p>
-                                            <div class="tool_mask"></div>
-                                            <div class="tool_panel">
-                                                <a class="icon icon_download_white" ms-attr-href="{{ComFunJS.getfile(item.ID)}}"></a></a>
-                                                <a class="icon icon_remove_white js_remove" href="javascript:;" ms-click="DelSC(item,2)"></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                     
                     </div>
 
 
@@ -322,45 +273,7 @@
             um.setContent(content); 
             setTimeout("ComFunJS.initForm()", 500)
         }//图文消息结束
-        , SaveDataImage: function (type) {
-            top.ComFunJS.winbtnwin(ComFunJS.getfileapi() + "fileupload", "上传", "550", "400", {}, function (layero, index, btdom) {
-                var fjids = "";
-                var frameid = $("iframe", $(layero)).attr('id');
-                var nowwin = ComFunJS.isIE() ? top.window.frames[frameid] : top.window.frames[frameid].contentWindow;
-                nowwin.location = "/ViewV5/Base/Success.html?ID=3&fmindex=" + index;  //应用附件
-                var int = top.window.setInterval("getwinname()", 1500);//循环等待,直到上传成功并返回文件数据
-                top.window.getwinname = function () {
-                    try {
-                        if (nowwin.filedata) {
-                            top.window.clearInterval(int)
-                            var fjdata = nowwin.filedata;
-                            var imagesmodel = { "Type": type, "Files": "", "name": "", "FileExtendName": "", "FileMD5": "" }
-                            var imagesArray = [];
-                            for (var i = 0; i < fjdata.length; i++) {
-                                if (ComFunJS.isPic(fjdata[i].FileExtendName) || type == 2) {
-                                    imagesmodel.Files = fjdata[i].ID;
-                                    imagesmodel.name = fjdata[i].Name;
-                                    imagesmodel.FileExtendName = fjdata[i].FileExtendName;
-                                    imagesmodel.FileMD5 = fjdata[i].FileMD5;
-                                    imagesArray.push($.extend({}, imagesmodel));
-                                }
-                            }
-                            $.post("/API/VIEWAPI.ashx?ACTION=XXFB_ADDSCCONTENT", { P1: JSON.stringify(imagesArray) }, function (result) {
-                                if (result.ErrorMsg == "") {
-                                    if (type == 1) {
-                                        tempindex.ImagesList.pushArray(imagesArray);
-                                    } else if (type == 2) {
-                                        tempindex.FilesList.pushArray(imagesArray);
-                                    }
-                                }
-                            })
-                            top.layer.close(index);
-                        };
-                    } catch (e) {
-                    }
-                }
-            });
-        }, DelSC: function (item, type) {
+        , DelSC: function (item, type) {
             top.ComFunJS.winconfirm("确定要删除素材吗", function () {
                 $.post("/API/VIEWAPI.ashx?ACTION=XXFB_DELETESCMODEL", { P1: item.Id }, function (result) {
                     if (result.ErrorMsg == "") {

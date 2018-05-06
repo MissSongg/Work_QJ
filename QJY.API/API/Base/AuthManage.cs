@@ -2200,13 +2200,13 @@ namespace QJY.API
                     {
                         newfile.ISYL = "Y";
                     }
-
-                    new FT_FileB().Insert(newfile);
-
                     if (new List<string>() { "pdf", "doc", "docx", "ppt", "pptx", "xls", "xlsx" }.Contains(newfile.FileExtendName.ToLower()))
                     {
-                        new FileHelp().CoverOffice(newfile.FileMD5, newfile.Name, newfile.FileExtendName.ToLower(), UserInfo);
+                        newfile.ISYL = "Y";
+                        newfile.YLUrl = UserInfo.QYinfo.FileServerUrl + "/document/YL/" + newfile.zyid;
                     }
+                    new FT_FileB().Insert(newfile);
+
                     int filesize = 0;
                     int.TryParse(newfile.FileSize, out filesize);
                     new FT_FileB().AddSpace(UserInfo.User.ComId.Value, filesize);

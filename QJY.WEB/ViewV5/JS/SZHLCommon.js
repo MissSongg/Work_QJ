@@ -949,9 +949,9 @@
 
             })
         }
-        if ($(".szhl_Upload:hidden").length > 0) {
+        if ($(".szhl_UploadN:hidden").length > 0) {
 
-            $(".szhl_Upload:hidden").each(function () {
+            $(".szhl_UploadN:hidden").each(function () {
                 var $input = $(this);
                 var btnName = $(this).attr('title') ? $(this).attr('title') : "上传文件";//按钮名称
                 var FileType = $(this).attr('FileType') ? $(this).attr('FileType') : "";//文件类型(pic代表图片)
@@ -1100,22 +1100,20 @@
                 }
             })
         }
-        if ($(".szhl_UploadN:hidden").length > 0) {
-
-            $(".szhl_UploadN:hidden").each(function () {
+        if ($(".szhl_Upload:hidden").length > 0) {
+            var arrUp = [];
+            $(".szhl_Upload:hidden").each(function (index) {
                 var $input = $(this);
                 var btnName = $(this).attr('title') ? $(this).attr('title') : "上传文件";//按钮名称
                 var FileType = $(this).attr('FileType') ? $(this).attr('FileType') : "";//文件类型(pic代表图片)
                 $input.parent().find(".panpel").remove();
-                var $panelsc = $('<div class="panel panel-default panpel" style="margin-bottom: 0px;"><div class="panel-body"><button class="btn btn-success  btn-upload  dim" type="button" id="qjupload"><i class="fa fa-upload"></i>上传文件</button></div><ul class="list-group"></ul></div>')
+                var $panelsc = $('<div class="panel panel-default panpel" style="margin-bottom: 0px;"><div class="panel-body"><button class="btn btn-success  btn-upload  dim" type="button" id="qjupload' + index + '"><i class="fa fa-upload"></i>上传文件</button></div><ul class="list-group"></ul></div>')
                     .insertAfter($input);
-                //上传文件
-                var upload = null;
-                var obj = {
-                    uploadButtton: 'qjupload',
+                arrUp[index] = new QJUpload({
+                    uploadButtton: 'qjupload' + index,
                     fileapiurl: ComFunJS.getfileapi(),
-                    usercode: "ZXPX",
-                    secret: "ZXPX",
+                    usercode: "qycode",
+                    secret: "qycode",
                     upinfo: "上传组件",
                     webupconfig: {
                         fileNumLimit: 5,
@@ -1123,7 +1121,7 @@
                     filecomplete: function (fileData) {
 
                     },
-                    closeupwin: function (fileData) {
+                    closeupwin: function (fileData, dom) {
                         var fjids = "";
                         $.post('/API/VIEWAPI.ashx?Action=QYWD_ADDFILE', { "P1": fileData, "P2": 3 }, function (result) {
                             if (result.ErrorMsg == "") {
@@ -1162,10 +1160,8 @@
                                 $input.val(fjids);
                             }
                         })
-                    
                     }
-                };
-                upload = new QJUpload(obj);
+                });
                 if ($input.val() != "") {
                     $.getJSON('/API/VIEWAPI.ashx?ACTION=QYWD_GETFILESLIST', { P1: $input.val() }, function (data) {
                         if (data.ErrorMsg == "") {
@@ -1205,6 +1201,7 @@
                 if ($input.attr("UploadType") == "1") {
                     $panelsc.find('.btn-upload').remove();
                 }
+                //上传文件
             })
         }
     },

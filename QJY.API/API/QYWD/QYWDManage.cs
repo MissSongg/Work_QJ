@@ -169,13 +169,15 @@ namespace QJY.API
                 int index = item["filename"].ToString().LastIndexOf('.');
                 string filename = item["filename"].ToString().Substring(0, index);
                 string md5 = item["md5"].ToString();
+                string zyid = item["zyid"].ToString();
+
                 FT_File File = new FT_FileB().GetSameFile(item["filename"].ToString(), int.Parse(P2), UserInfo.User.ComId.Value);
                 if (File == null)//相同目录下没有重复文件
                 {
                     FT_File newfile = new FT_File();
                     newfile.Name = filename;
                     newfile.FileMD5 = md5.Replace("\"", "").Split(',')[0];
-                    newfile.zyid = md5.Split(',').Length == 2 ? md5.Split(',')[1] : md5.Split(',')[0];
+                    newfile.zyid = zyid;
                     newfile.FileSize = item["filesize"].ToString();
                     newfile.FileVersin = 0;
                     newfile.CRDate = date;
@@ -191,7 +193,8 @@ namespace QJY.API
                     }
                     if (new List<string>() { "pdf", "doc", "docx", "ppt", "pptx", "xls", "xlsx" }.Contains(newfile.FileExtendName.ToLower()))
                     {
-                        new FileHelp().CoverOffice(newfile.FileMD5, newfile.Name, newfile.FileExtendName.ToLower(), UserInfo);
+                        newfile.ISYL = "Y";
+                        newfile.YLUrl = UserInfo.QYinfo.FileServerUrl + "/document/YL/" + newfile.zyid;
                     }
                     ListData.Add(newfile);
                 }

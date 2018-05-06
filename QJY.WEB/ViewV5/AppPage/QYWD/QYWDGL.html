@@ -62,7 +62,7 @@
 
 <div ms-controller="APP_QYWDM">
     <div class="padding20">
-        <button type="button" class="btn btn-success" ms-click="addFile()"><i class="iconfont icon-shangchuan ft14 mr5"></i>上传文件</button>
+        <button type="button" class="btn btn-success"  id="qjupload" ><i class="iconfont icon-shangchuan ft14 mr5"></i>上传文件</button>
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addForderModal"><i class="iconfont icon-xinjian ft14 mr5"></i>新建文件夹</button>
         <button type="button" class="btn btn-info ml20" ms-click="downloaditem()"><i class="iconfont icon-xiazai ft14 mr5"></i>下载</button>
         <button type="button" class="btn btn-info" ms-click="delitem()"><i class="iconfont icon-shanchu ft14 mr5"></i>删除</button>
@@ -347,6 +347,8 @@
     </div>
 </div>
 <script src="/ViewV5/JS/contextmenu.js"></script>
+<script src="http://47.92.121.230:9100/Web/qj_upload.js?v=3"></script>
+
 <script>
 
     var tempindex = avalon.define({
@@ -362,7 +364,7 @@
             }
             tempindex.GetListData(tempindex.itemtype);
             ComFunJS.initForm();
-
+            tempindex.initFile();
 
         },
         Pathdata: [],
@@ -547,34 +549,33 @@
                 })
             })
         },
-        addFile: function () {
-            ComFunJS.winbtnwin(ComFunJS.getfileapi() + "fileupload", "上传", "800", "500", {
-            }, function (layero, index, btdom) {
-                btdom.addClass("disabled").find("i").show();
-                var frameid = $("iframe", $(layero)).attr('id');
-                var nowwin = ComFunJS.isIE() ? top.window.frames[frameid] : top.window.frames[frameid].contentWindow;
-                var nowfolderid = tempindex.Pathdata[tempindex.Pathdata.length - 1].ID;
-                nowwin.location = "/ViewV5/Base/Success.html?ID=" + nowfolderid + "&fmindex=" + index;
-                var int = top.window.setInterval("getwinname()", 1000);//循环等待,直到上传成功并返回文件数据
-                top.window.getwinname = function () {
-                    try {
-                        if (nowwin.filedata) {
-                            top.window.clearInterval(int);
-                            var filedata = nowwin.filedata;
-                            btdom.removeClass("disabled").find("i").hide();
+        initFile: function () {
+            new QJUpload({
+                uploadButtton: 'qjupload',
+                fileapiurl: ComFunJS.getfileapi(),
+                usercode: "qycode",
+                secret: "qycode",
+                upinfo: "上传组件",
+                webupconfig: {
+                    fileNumLimit: 5,
+                },
+                closeupwin: function (fileData, dom) {
+                    var nowfolderid = tempindex.Pathdata[tempindex.Pathdata.length - 1].ID;
+                    var fjids = "";
+                    $.post('/API/VIEWAPI.ashx?Action=QYWD_ADDFILE', { "P1": fileData, "P2": nowfolderid }, function (result) {
+                        if (result.ErrorMsg == "") {
+                            var filedata = result.Result;//给filedata赋值,供页面使用
                             filedata.forEach(function (item) {
                                 item.issel = false;
                                 item.type = "file";
                             })
                             tempindex.FileList.pushArray(filedata)
-                            top.layer.close(index);
-                        };
-                    } catch (e) {
-                    }
+                           
+                        }
+                    })
                 }
             });
-
-        },//添加文件
+        },
         downloaditem: function () {
             if (tempindex.SelItemData.size() == 0) {
                 ComFunJS.winwarning("请选择文件再下载");

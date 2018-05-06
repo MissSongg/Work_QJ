@@ -27,7 +27,7 @@
                     //console.log(JSON.stringify(fileData));
                 },
                 closeupwin: function (fileData) {
-                    console.log(fileData);
+                    $("#upmsg").append(JSON.stringify(fileData)+"<br/>")
                 }
             };
             upload = new QJUpload(obj);
@@ -36,5 +36,8 @@
 </head>
 <body >
     		<input type="button" id="upload" value="上传" />
+    <div id="upmsg">
+
+    </div>
 </body>
 </html>
