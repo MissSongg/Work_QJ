@@ -264,6 +264,7 @@
     <Content Include="ViewV5\web\login\uniform.default.css" />
     <Content Include="View_Mobile\CSS\login.css" />
     <Content Include="View_Mobile\CSS\msui.css" />
+    <Content Include="View_Mobile\Images\phone-plus3.png" />
     <Content Include="View_Mobile\JS\avalon1.47.js" />
     <Content Include="View_Mobile\UI\UI_CAR_INFO.html" />
     <Content Include="View_Mobile\UI\UI_CAR_LIST.html" />

@@ -232,24 +232,29 @@ var ComFunJS = {
         });
     },//弹框确认取消
     winsuccess: function (msg) {
-        layer.open({
-            content: msg,
-            style: 'background-color:#09C1FF; color:#fff; border:none;',
-            time: 2
-        });
-
+        if (typeof (layer) != "undefined") {
+            layer.open({
+                content: msg,
+                style: 'background-color:#09C1FF; color:#fff; border:none;',
+                time: 2
+            });
+        }
     },//成功提示
     showload: function () {
-        layer.open({
-            type: 2
-        });
+        if (typeof (layer) != "undefined") {
+            layer.open({
+                type: 2
+            });
+        }
     },//成功提示
     winwarning: function (msg) {
-        layer.open({
-            content: msg,
-            style: 'background-color:RED; color:#fff; border:none;',
-            time: 2
-        });
+        if (typeof (layer) != "undefined") {
+            layer.open({
+                content: msg,
+                style: 'background-color:RED; color:#fff; border:none;',
+                time: 2
+            });
+        }
     },//错误提示
     closeAll: function () {
         setTimeout("layer.closeAll()", 1500);

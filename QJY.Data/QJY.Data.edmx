@@ -1235,6 +1235,7 @@
           <Property Name="auther" Type="varchar" MaxLength="50" />
           <Property Name="SL" Type="varchar" MaxLength="50" />
           <Property Name="Remark" Type="varchar(max)" />
+          <Property Name="TSName" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="SZHL_TSSQ">
           <Key>
@@ -3460,6 +3461,7 @@
           <Property Name="auther" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="SL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TSName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -5169,6 +5171,7 @@
           <EntitySetMapping Name="SZHL_TSGL_TS">
             <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_TSGL_TS">
               <MappingFragment StoreEntitySet="SZHL_TSGL_TS">
+                <ScalarProperty Name="TSName" ColumnName="TSName" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="SL" ColumnName="SL" />
                 <ScalarProperty Name="auther" ColumnName="auther" />

@@ -111,28 +111,6 @@ namespace QJY.API
             int Id = int.Parse(P1);
             var info = new SZHL_TSGL_TSB().GetEntity(d => d.ID == Id && d.ComId == UserInfo.User.ComId);
             msg.Result = info;
-            int tid = Int32.Parse(info.TSNum);
-            msg.Result3 = new JH_Auth_ZiDianB().GetEntity(p => p.ID == tid);
-            #region 微信端
-            var st = DateTime.Now;
-
-            var list = new SZHL_TSGLB().GetEntities(p => p.TSID == Id && p.IsDel == 0 && st < p.EndTime).OrderBy(p => p.StartTime);
-
-            List<int> li = new List<int>();
-
-            foreach (var l in list)
-            {
-                var pi = new Yan_WF_PIB().GetEntity(p => p.ID == l.intProcessStanceid);
-                if (pi != null && pi.IsCanceled == "Y")
-                {
-                    li.Add(l.ID);
-                }
-            }
-
-            var list1 = list.Where(p => !li.Contains(p.ID));
-
-            msg.Result2 = list1;
-            #endregion
             if (!string.IsNullOrEmpty(info.Files))
             {
                 msg.Result4 = new FT_FileB().GetEntities(" ID in (" + info.Files + ")");

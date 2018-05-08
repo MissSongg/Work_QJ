@@ -13,7 +13,7 @@
                     <label class="add-item-label"><i>*</i>图书类型</label>
                     <div class="add-ic">
                         <select name="conType" id="conType" ms-duplex="modelData.TSType" class="form-control">
-                            <option ms-repeat-item="ColumnData" ms-attr-value="item.ID" ms-attr-selected="item.ID==modelData.LeiBie?'selected':''">{{item.TypeName}}</option>
+                            <option ms-repeat-item="ColumnData" ms-attr-value="item.ID" ms-attr-selected="item.ID==modelData.TSType?'selected':''">{{item.TypeName}}</option>
                         </select>
                     </div>
                 </li>
@@ -88,8 +88,9 @@
                 ComFunJS.initForm();
             }
         },//初始化
-        modelData: { "TSNum": "", "TSType": "", "TSName": "", "BuyDate": "", "Price": "", "auther": "",  "Status": 0, "Files": "" },
+        modelData: { "TSNum": "", "TSType": "", "TSName": "", "BuyDate": "", "Price": "", "auther": "",  "Status": 0, "Files": "","TSTypeName":"" },
         SaveData: function (callback) {
+            tempmodel.modelData.TSTypeName = $("#conType").find("option:selected").text();
             $.post("/API/VIEWAPI.ashx?ACTION=TSGL_ADDTSINFO", { P1: JSON.stringify(tempmodel.modelData.$model) }, function (result) {
                 return callback.call(this,result);
             });

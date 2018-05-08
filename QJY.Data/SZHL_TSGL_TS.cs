@@ -33,5 +33,6 @@ namespace QJY.Data
         public string auther { get; set; }
         public string SL { get; set; }
         public string Remark { get; set; }
+        public string TSName { get; set; }
     }
 }

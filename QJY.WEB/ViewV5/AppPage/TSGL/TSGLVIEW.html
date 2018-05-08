@@ -22,8 +22,6 @@
                     //编辑加载数据
                     $.getJSON('/API/VIEWAPI.ashx?Action=TSGL_GETTSINFO', { P1: model.strId }, function (resultData) {
                         if (resultData.ErrorMsg == "") {
-                            resultData.Result.TypeName = resultData.Result3.TypeName;
-                            //resultData.Result.StateName = resultData.Result3[0].StateName;
                             model.modelData = resultData.Result;
                             setTimeout(" ComFunJS.initForm()", 500);
                             model.tpData = resultData.Result4;
