@@ -689,54 +689,55 @@ var ComFunJS = {
         return sts;
     },//获取请假状态（无用）
     initwxConfig: function () {
-        $.getJSON("/API/VIEWAPI.ashx?action=JSSDK_GETSIGNAGURE&r=" + Math.random(), { "P1": window.location.href }, function (r) {
-            if (r.ErrorMsg == "") {
+        if (ComFunJS.iswx()) {
+            $.getJSON("/API/VIEWAPI.ashx?action=JSSDK_GETSIGNAGURE&r=" + Math.random(), { "P1": window.location.href }, function (r) {
+                if (r.ErrorMsg == "") {
+                    wx.config({
+                        debug: false,
+                        appId: r.Result.appId,
+                        timestamp: r.Result.timestamp,
+                        nonceStr: r.Result.noncestr,
+                        signature: r.Result.signature,
+                        jsApiList: [
+                            'checkJsApi',
+                            'openEnterpriseChat',
+                            'openEnterpriseContact',
+                            'onMenuShareTimeline',
+                            'onMenuShareAppMessage',
+                            'onMenuShareQQ',
+                            'onMenuShareWeibo',
+                            'onMenuShareQZone',
+                            'startRecord',
+                            'stopRecord',
+                            'onVoiceRecordEnd',
+                            'playVoice',
+                            'pauseVoice',
+                            'stopVoice',
+                            'onVoicePlayEnd',
+                            'uploadVoice',
+                            'downloadVoice',
+                            'chooseImage',
+                            'previewImage',
+                            'uploadImage',
+                            'downloadImage',
+                            'translateVoice',
+                            'getNetworkType',
+                            'openLocation',
+                            'getLocation',
+                            'hideOptionMenu',
+                            'showOptionMenu',
+                            'hideMenuItems',
+                            'showMenuItems',
+                            'hideAllNonBaseMenuItem',
+                            'showAllNonBaseMenuItem',
+                            'closeWindow',
+                            'scanQRCode'
+                        ]
+                    })
+                }
+            })
+        }
 
-                wx.config({
-                    debug: false,
-                    appId: r.Result.appId,
-                    timestamp: r.Result.timestamp,
-                    nonceStr: r.Result.noncestr,
-                    signature: r.Result.signature,
-                    jsApiList: [
-                        'checkJsApi',
-                        'openEnterpriseChat',
-                        'openEnterpriseContact',
-                        'onMenuShareTimeline',
-                        'onMenuShareAppMessage',
-                        'onMenuShareQQ',
-                        'onMenuShareWeibo',
-                        'onMenuShareQZone',
-                        'startRecord',
-                        'stopRecord',
-                        'onVoiceRecordEnd',
-                        'playVoice',
-                        'pauseVoice',
-                        'stopVoice',
-                        'onVoicePlayEnd',
-                        'uploadVoice',
-                        'downloadVoice',
-                        'chooseImage',
-                        'previewImage',
-                        'uploadImage',
-                        'downloadImage',
-                        'translateVoice',
-                        'getNetworkType',
-                        'openLocation',
-                        'getLocation',
-                        'hideOptionMenu',
-                        'showOptionMenu',
-                        'hideMenuItems',
-                        'showMenuItems',
-                        'hideAllNonBaseMenuItem',
-                        'showAllNonBaseMenuItem',
-                        'closeWindow',
-                        'scanQRCode'
-                    ]
-                })
-
-            }
-        })
     },//微信插件初始化
     uploadimg: function () {
         $.getJSON("/API/VIEWAPI.ashx?action=JSSDK_GETSIGNAGURE&r=" + Math.random(), { "P1": window.location.href }, function (r) {
@@ -826,7 +827,7 @@ var ComFunJS = {
 
         //微信选图片
         if ($(".wximgupload")) {
-           
+
             var zhtml = '<div class="weui_uploader">'
                      + '    <div class="weui_uploader_bd">'
                      + '        <ul class="weui_uploader_files" id="imglist">'
@@ -933,19 +934,21 @@ var ComFunJS = {
             },
             closeupwin: function (fileData) {
                 var fjids = "";
-                $.post('/API/VIEWAPI.ashx?Action=QYWD_ADDFILE', { "P1": fileData, "P2": 3 }, function (result) {
-                    result = JSON.parse(result);
+                $.getJSON('/API/VIEWAPI.ashx?Action=QYWD_ADDFILE', { "P1": fileData, "P2": 3 }, function (result) {
                     if (result.ErrorMsg == "") {
                         var fjdata = result.Result;//给filedata赋值,供页面使用
                         for (var i = 0; i < fjdata.length; i++) {
-                            var $html = $('<li id="img_' + i + '" itemid="' + fjdata[i].ID + '" class="weui_uploader_file wximg mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + ComFunJS.getfile(fjdata[i].ID) + ')" src="' + ComFunJS.getfile(fjdata[i].ID) + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
+                            var $html = $('<li id="img_' + i + '" itemid="' + fjdata[i].ID + '" class="weui_uploader_file  mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + ComFunJS.getfile(fjdata[i].ID) + ')" src="' + ComFunJS.getfile(fjdata[i].ID) + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
                             $html.appendTo($("#imglist"));
                             $html.find("i").bind("click", function (event) {
                                 event.stopPropagation();
                                 $html.remove();
                             })
-                            fjids = fjids + fjdata[i].ID + ",";
                         }
+
+                        $("#imglist .tpli").each(function () {
+                            fjids = fjids + $(this).attr("itemid") + ",";
+                        })
                         if (fjids.length > 0) {
                             fjids = fjids.substring(0, fjids.length - 1)
                         }
@@ -1226,6 +1229,7 @@ var ComFunJS = {
             ComFunJS.loadfile();
         }
         if ($(".szhl_getPeoples").length > 0) {
+
             ComFunJS.initpeo();
         }
         if ($(".szhl_getKH").length > 0) {
@@ -1267,6 +1271,9 @@ var ComFunJS = {
                     $peodiv = $('<div class="color-gray selpeo" >请选择' + msg + '</div> ').attr("id", "dvname" + $(this).attr("id"));
                 }
                 $peodiv.bind('click', function () {
+                    if (peomodel.peopcode != "TEMP_INDEX_TXL") {
+                        peomodel.peopcode = "TEMP_INDEX_TXL";
+                    }
                     peomodel.nowpeodomid = inputdom.attr("id");//保存当前选中控件的ID供选人插件回调
                     if (inputdom.hasClass("single")) {
                         peomodel.singleSelect = true;
@@ -1697,5 +1704,45 @@ var ComFunJS = {
     },
 }
 
-ComFunJS.initsetajax();
+; (function ($) {
+    $.extend($, {
+        getJSON: function (url, data, success, opt) {
+            data.szhlcode = ComFunJS.getCookie("szhlcode");
+            var fn = {
+                success: function (data, textStatus) { }
+            }
+            if (success) {
+                fn.success = success;
+            }
+            $.ajax({
+                url: url + "&szhlcode=" + data.szhlcode,
+                data: data,
+                dataType: "json",
+                type: "post",
+                success: function (data, textStatus) {
+                    if (data.ErrorMsg == "NOSESSIONCODE" || data.ErrorMsg == "WXTIMEOUT") {
+                        top.ComFunJS.winwarning("页面超时!")
+                        return;
+                    }
+                    if (data.ErrorMsg) {
+                        top.ComFunJS.winwarning(data.ErrorMsg)
+                    }
+                    fn.success(data, textStatus);
+                },
+
+                beforeSend: function (XHR) {
+                    ComFunJS.showload()
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    ComFunJS.winwarning("请求失败！")
+                },
+                complete: function (XHR, TS) {
+                    ComFunJS.closeAll()
+                }
+            });
+        }
+    });
+})(Zepto);
+//ComFunJS.initsetajax();
 

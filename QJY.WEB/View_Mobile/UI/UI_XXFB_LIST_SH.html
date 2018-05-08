@@ -149,14 +149,10 @@
                     urlapi = "/API/VIEWAPI.ashx?ACTION=XXFB_SUREXXFB&r=" + Math.random();
                 }
                 ComFunJS.showSH("200", msg, function (nr) {
-                    $.post(urlapi, { P1: el.ID, P2: type, jy: nr }, function (result) {
-                        var result = $.parseJSON(result)
+                    $.getJSON(urlapi, { P1: el.ID, P2: type, jy: nr }, function (result) {
                         if ($.trim(result.ErrorMsg) == "") {
                             $.toast("已" + msg);
                             el.SHStatus = type;
-                        }
-                        else {
-                            $.toast("操作失败");
                         }
                     });
                 })

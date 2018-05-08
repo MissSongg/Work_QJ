@@ -167,8 +167,8 @@
             tempmodel.modelData.Status = tempmodel.htmodel.HTStatus;
             tempmodel.modelData.Remark = tempmodel.htmodel.KHID;
 
-            $.post("/API/VIEWAPI.ashx?ACTION=CRM_ADDGJJL", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg, "gjtype": "HTGL" }, function (result) {
-                return callback.call(this, $.parseJSON(result));
+            $.getJSON("/API/VIEWAPI.ashx?ACTION=CRM_ADDGJJL", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg, "gjtype": "HTGL" }, function (result) {
+                return callback.call(this, result);
             });
         },
         Complate: function () {

@@ -246,6 +246,12 @@
     <Compile Include="SZHL_RWGL_ITEM.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
+    <Compile Include="SZHL_TSGL.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_TSGL_TS.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
     <Compile Include="SZHL_TSSQ.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>

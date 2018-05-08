@@ -283,8 +283,7 @@
             },
             zan: function (el,obj) {
                 $(this).toggleClass("active animated pulse");
-                $.post('/API/VIEWAPI.ashx?Action=TSSQ_ZANHTBYID', { "P1": el.ID }, function (result) {
-                    result = JSON.parse(result)
+                $.getJSON('/API/VIEWAPI.ashx?Action=TSSQ_ZANHTBYID', { "P1": el.ID }, function (result) {
                     if (result.ErrorMsg == "") {
                         //ComFunJS.winsuccess("点赞成功");
                         el.ZanList.push(result.Result);

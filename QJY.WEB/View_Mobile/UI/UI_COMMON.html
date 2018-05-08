@@ -21,13 +21,15 @@
             if (ComFunJS.getCookie("szhlcode") && ComFunJS.getCookie("username")) {  //缓存的用户名，直接跳到对应的地址
                 $.getJSON("/API/WXAPI.ashx?action=isexist&r=" + Math.random(), { "corpid": corpId }, function (r) {
                     if (r.ErrorMsg == "") {
-                        getRURL(funcode);
+                        if (r.Result == "NOCODE") {
+                            ComFunJS.delCookie("szhlcode");
+                            ComFunJS.delCookie("username");
+                            hqsq();
+                        } else {
+                            getRURL(funcode);
+                        }
                     }
-                    else {
-                        ComFunJS.delCookie("szhlcode");
-                        ComFunJS.delCookie("username");
-                        hqsq();
-                    }
+
                 })
             }
             else {   //获取授权
@@ -37,7 +39,6 @@
 
         function hqsq() {
             if (code) {   //授权回来，抓取用户名
-           
                 $.getJSON("/API/WXAPI.ashx?action=GetUserCodeByCode&r=" + Math.random(), { "code": code, "corpid": corpId, "funcode": funcode }, function (r) {
                     //el.loading("hide");
                     if (r.ErrorMsg == "") {
@@ -50,12 +51,9 @@
 
                 })
 
-
             } else { //微信企业号接口获取授权
-
                 var wx_r_url = encodeURIComponent(window.location.href + '&v=' + Math.random());
                 var wxurl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + corpId + "&redirect_uri=" + wx_r_url + "&response_type=code&scope=snsapi_base&state=STATE" + "&v=" + Math.random() + "#wechat_redirect";
-
                 window.location.replace(wxurl);
             }
         }

@@ -434,7 +434,7 @@ namespace QJY.WEB
                         var jau = new JH_Auth_UserB().GetUserByPCCode(szhlcode);
                         if (jau == null)
                         {
-                            Model.ErrorMsg = "用户Code不存在";
+                            Model.Result = "NOCODE";
                         }
                     }
                 }

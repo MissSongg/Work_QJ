@@ -120,10 +120,9 @@
                     }
                 })
             }, SetPassWord: function () {
-                $.post('/API/VIEWAPI.ashx?Action=QYWD_MODIFYPASSWORD', {
+                $.getJSON('/API/VIEWAPI.ashx?Action=QYWD_MODIFYPASSWORD', {
                     "P1": model.ShareData.ID, P2: model.ShareData.ShareType == "0" ? "1" : "0"
                 }, function (result) {
-                    var result = $.parseJSON(result);
                     if (result.ErrorMsg == "") {
                         model.ShareData = result.Result;
                         top.ComFunJS.winsuccess("操作成功" + model.ShareData.SharePasd);

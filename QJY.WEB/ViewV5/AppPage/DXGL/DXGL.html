@@ -34,7 +34,7 @@
             </tr>
         </table>
         <button class='btn btn-success btnfb' style='width:120px;height:40px;' ms-click="SaveOpenUserList()"> 确 定 </button>
-     
+
     </div>
 
     <div class="modal fade" id="UserListModal" role="dialog">
@@ -114,22 +114,12 @@
             tempindex.dxqz = model.CompanyData.DXQZ;
             $(".toolfootbar tbody").empty(); //清除底部按钮
             tempindex.getList()
-            if (localStorage.getItem(model.SelModel.ModelCode)) {//判断有没有未保存的表单
-                var tempdata = localStorage.getItem(model.SelModel.ModelCode);//缓存表单数据
-                ComFunJS.winconfirm("系统检测到您未保存的数据,是否加载?", function () {
-                    tempindex.modelData = $.parseJSON(tempdata);
-                    ComFunJS.initForm();
-                }, function () {
-                    localStorage.removeItem(model.SelModel.ModelCode);
-                    ComFunJS.initForm();
-                })
-            } else {
-                ComFunJS.initForm();
-            }
+
+            ComFunJS.initForm();
 
         },//初始化
         getList: function () {
-            $.getJSON('/API/VIEWAPI.ashx?ACTION=DXGL_GETDXQTY',{}, function (r) {
+            $.getJSON('/API/VIEWAPI.ashx?ACTION=DXGL_GETDXQTY', {}, function (r) {
                 if (r.ErrorMsg == "") {
                     tempindex.dxQty = r.Result;
                 }
@@ -218,11 +208,11 @@
         SaveQZ: function () {
             if (!tempindex.dxqz) {
                 top.ComFunJS.winwarning("前缀不能为");
-                return; 
+                return;
             }
             $.post('/API/VIEWAPI.ashx?Action=XTGL_SAVECOMPANYQZ', { P1: tempindex.dxqz }, function (result) {
                 if ($.trim(result.ErrorMsg) == "") {
-                   
+
                     top.ComFunJS.winsuccess("修改成功");
                     model.CompanyData.DXQZ = tempindex.dxqz;
                     $("#ManageUserModal").modal("hide");

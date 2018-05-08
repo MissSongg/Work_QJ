@@ -479,6 +479,7 @@ namespace QJY.API
                 foreach (var mediaId in mediaIds.Split(','))
                 {
                     string fileToUpload = wx.GetMediaFile(mediaId, strType);
+
                     string md5 = PostFile(UserInfo.QYinfo, fileToUpload);
                     System.IO.FileInfo f = new FileInfo(fileToUpload);
                     FT_File newfile = new FT_File();

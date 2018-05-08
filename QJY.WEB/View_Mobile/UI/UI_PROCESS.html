@@ -187,9 +187,8 @@
                     model.savedata();
                 }
                 psmodel.shyj = nr;
-                $.post("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF&r=" + Math.random(), { P1: psmodel.formpiid, P2: psmodel.shyj, formcode: psmodel.formcode, ID: psmodel.formid }, function (result) {
+                $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF&r=" + Math.random(), { P1: psmodel.formpiid, P2: psmodel.shyj, formcode: psmodel.formcode, ID: psmodel.formid }, function (result) {
                     lg.hide();
-                    var result = $.parseJSON(result)
                     if ($.trim(result.ErrorMsg) == "") {
                         $(".ui-footer").hide();
                         var el = $.tips({
@@ -227,9 +226,8 @@
                             })
                             psmodel.shyj = nr;
                             psmodel.zsshr = zsr;
-                            $.post("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF&r=" + Math.random(), { P1: psmodel.formpiid, P2: psmodel.shyj, SHUser: psmodel.zsshr, formcode: psmodel.formcode, ID: psmodel.formid }, function (result) {
+                            $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF&r=" + Math.random(), { P1: psmodel.formpiid, P2: psmodel.shyj, SHUser: psmodel.zsshr, formcode: psmodel.formcode, ID: psmodel.formid }, function (result) {
                                 lg.hide();
-                                var result = $.parseJSON(result)
                                 if ($.trim(result.ErrorMsg) == "") {
                                     $(".ui-footer").hide();
                                     var el = $.tips({
@@ -278,9 +276,8 @@
                 var lg = $.loading({
                     content: '保存中...',
                 })
-                $.post("/API/VIEWAPI.ashx?ACTION=LCSP_REBACKWF&r=" + Math.random(), { P1: psmodel.formpiid, P2: psmodel.shyj, formcode: psmodel.formcode, ID: psmodel.formid }, function (result) {
+                $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_REBACKWF&r=" + Math.random(), { P1: psmodel.formpiid, P2: psmodel.shyj, formcode: psmodel.formcode, ID: psmodel.formid }, function (result) {
                     lg.hide();
-                    var result = $.parseJSON(result)
                     if ($.trim(result.ErrorMsg) == "") {
                         $(".ui-footer").hide();
                         var el = $.tips({

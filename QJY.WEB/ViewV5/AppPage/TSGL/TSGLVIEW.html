@@ -1,0 +1,49 @@
+﻿
+<div style="background-color:#F8F8F8" ms-controller="TSGLVIEW">
+
+    <script type="text/javascript">
+
+        var tempindex = avalon.define({
+            $id: "TSGLVIEW",
+            PCode: "TSGL",
+            InitWigetData: function (strId) {
+                model.title = "图书";
+                model.ShowColumns.pushArray(
+                [{ ColName: "TSNum", ColText: "图书编码", IsSel: true },
+                      { ColName: "TypeName", ColText: "车类型", IsSel: true, },
+                      { ColName: "TSName", ColText: "图书名称", IsSel: true, },
+                      { ColName: "BuyDate", ColText: "购买时间", IsSel: true,},
+                      { ColName: "Price", ColText: "购买价格(元)", IsSel: true },
+                      { ColName: "authe", ColText: "作者", IsSel: true,},
+                      { ColName: "Status", ColText: "状态", IsSel: true, format: "clzt" }
+                ]);
+
+                if (strId) {
+                    //编辑加载数据
+                    $.getJSON('/API/VIEWAPI.ashx?Action=TSGL_GETTSINFO', { P1: model.strId }, function (resultData) {
+                        if (resultData.ErrorMsg == "") {
+                            resultData.Result.TypeName = resultData.Result3.TypeName;
+                            //resultData.Result.StateName = resultData.Result3[0].StateName;
+                            model.modelData = resultData.Result;
+                            setTimeout(" ComFunJS.initForm()", 500);
+                            model.tpData = resultData.Result4;
+                        }
+                    })
+                }
+            }, GetStatusName: function (status) {
+                var statusName = "";
+                switch (status) {
+                    case "0":
+                        statusName = "可用";
+                        break;
+                    case "1":
+                        statusName = "不可用";
+                        break;
+                }
+                return statusName;
+            }
+        });
+        avalon.ready(function () {
+        })
+    </script>
+</div>

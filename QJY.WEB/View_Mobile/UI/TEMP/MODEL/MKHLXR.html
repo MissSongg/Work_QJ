@@ -409,15 +409,14 @@
                 }
 
             })
-            $.post("/API/VIEWAPI.ashx?ACTION=CRM_ADDKHLXR&mpid=" + tempmodel.mpid + "&r=" + Math.random(), { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
+            $.getJSON("/API/VIEWAPI.ashx?ACTION=CRM_ADDKHLXR&mpid=" + tempmodel.mpid + "&r=" + Math.random(), { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
 
-                return callback.call(this, $.parseJSON(result));
+                return callback.call(this, result);
             });
         },
         addmpkh: function () {
             $.confirm("确认要新增客户【" + tempmodel.modelData.Company + "】？", function () {
-                $.post('/API/VIEWAPI.ashx?Action=CRM_ADDMPKH&r=' + Math.random(), { "P1": tempmodel.modelData.Company }, function (result) {
-                    result = JSON.parse(result)
+                $.getJSON('/API/VIEWAPI.ashx?Action=CRM_ADDMPKH&r=' + Math.random(), { "P1": tempmodel.modelData.Company }, function (result) {
                     if (result.ErrorMsg == "") {
                         tempmodel.modelData.KHID = result.Result.ID;
                         ComFunJS.initkh();

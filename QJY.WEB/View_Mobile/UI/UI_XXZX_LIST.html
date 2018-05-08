@@ -221,9 +221,8 @@
             },
             bwyd: function () {
                 $.showIndicator();
-                $.post("/API/VIEWAPI.ashx?Action=XTGL_UPDTEREADSTATES&s=1&r=" + Math.random(), { P1: model.ids }, function (data) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_UPDTEREADSTATES&s=1&r=" + Math.random(), { P1: model.ids }, function (data) {
                     $.hideIndicator();
-                    var data = $.parseJSON(data);
                     if (data.ErrorMsg == "") {
                         $(model.ids.split(',')).each(function (index, obj) {
                             $(model.ctData).each(function (inx, ele) {
@@ -233,9 +232,6 @@
                             })
                         })
                         $.toast("操作成功");
-                    } else {
-
-                        $.toast("操作失败");
                     }
                 })
             }

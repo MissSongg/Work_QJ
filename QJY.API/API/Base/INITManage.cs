@@ -206,7 +206,7 @@ namespace QJY.API
             else if (userCustom.Count == 0 && P1 == "APPINDEX")
             {
                 DataTable dtShowMenu = dtMenu.Clone();
-                DataRow[] rowMenu = dtMenu.Rows.OfType<DataRow>().Skip(1).Take(3).ToArray();
+                DataRow[] rowMenu = dtMenu.Rows.OfType<DataRow>().Skip(1).Take(20).ToArray();
                 foreach (DataRow row in rowMenu)
                 {
                     dtShowMenu.Rows.Add(row.ItemArray);

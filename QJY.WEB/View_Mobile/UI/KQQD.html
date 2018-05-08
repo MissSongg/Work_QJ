@@ -182,8 +182,7 @@
                         return;
                     }
 
-                    $.post("/API/VIEWAPI.ashx?ACTION=KQGL_ADDKQJL&r=" + Math.random(), { P1: tempmodel.modelData.Type, P2: tempmodel.modelData.Position, "long": tempmodel.modelData.Longitude, "lat": tempmodel.modelData.Latitude }, function (result) {
-                        result = $.parseJSON(result);
+                    $.getJSON("/API/VIEWAPI.ashx?ACTION=KQGL_ADDKQJL&r=" + Math.random(), { P1: tempmodel.modelData.Type, P2: tempmodel.modelData.Position, "long": tempmodel.modelData.Longitude, "lat": tempmodel.modelData.Latitude }, function (result) {
                         if (result.ErrorMsg == "") {
                             if (tempmodel.modelData.Type == "0") {
                                 tempmodel.QDData = result.Result;

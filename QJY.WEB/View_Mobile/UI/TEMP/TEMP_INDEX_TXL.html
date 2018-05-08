@@ -250,7 +250,7 @@
             width: 100%;
             font-size: 1em;
             border: none;
-            background: #fff url(../images/zoom.png) no-repeat 0.82rem center;
+            background: #fff url(../../images/zoom.png) no-repeat 0.82rem center;
             background-size: 0.8rem auto;
             text-align: left;
             padding-left: 2rem;
@@ -593,7 +593,7 @@
     <div class="selected-per" ms-if="isseltype && selusers.size()>0" style="overflow: auto;">
         <ul class="clearfix">
             <li ms-repeat-seluser="selusers">
-                <a external><img ms-click="clearuser(seluser,this)" style="max-height:45PX;max-width:45PX;    min-width: 45PX;min-height: 45PX;border-radius: 0.3rem;opacity: .9;" ms-attr-src="{{ComFunJS.getfile()+'&type=TX&user='+seluser.UserName}}"><span>{{seluser.UserRealName}}</span></a>
+                <a external><img ms-click="clearuser(seluser,this)" src="/ViewV5/images/tx.png" style="max-height:45PX;max-width:45PX;    min-width: 45PX;min-height: 45PX;border-radius: 0.3rem;opacity: .9;"><span>{{seluser.UserRealName}}</span></a>
             </li>
         </ul>
     </div>
@@ -612,7 +612,7 @@
                 <li class="add-li" ms-repeat-user="bm.DeptUser" ms-visible="(searstr&&(user.UserRealName.indexOf(searstr)!=-1||user.mobphone.indexOf(searstr)!=-1))||!searstr">
                     <span class="clearfix" external>
                         <span class="mes-icon">
-                            <img src="../../Images/user-icon.png" />
+                            <img  src="/ViewV5/images/tx.png"  />
                         </span>
                         <div class="mess-r "> <span ms-if="isseltype"><h4 style="margin-bottom:0">{{user.UserRealName.length==2?user.UserRealName.substring(0,1)+'&nbsp;&nbsp;&nbsp;&nbsp;'+user.UserRealName.substring(1):user.UserRealName}}&nbsp; <font style="color:cornflowerblue"><i class="fa  fa-mobile-phone"></i>{{user.mobphone}}</font>  </h4> <p style="margin:0">{{user.zhiwu}}</p></span>  <a ms-attr-href="'tel:'+user.mobphone" external ms-if="!isseltype"><h4 style="margin-bottom:0">{{user.UserRealName.length==2?user.UserRealName.substring(0,1)+'&nbsp;&nbsp;&nbsp;&nbsp;'+user.UserRealName.substring(1):user.UserRealName|html}}&nbsp;<font style="color:cornflowerblue"><i class="fa  fa-mobile-phone"></i>{{user.mobphone}}</font>  </h4> <p style="margin:0">{{user.zhiwu}}</p></a>  </div>
                     </span>
@@ -645,7 +645,7 @@
             <li class="add-li" ms-repeat-user="DeptUser" ms-visible="(searstr&&(user.UserRealName.indexOf(searstr)!=-1||user.mobphone.indexOf(searstr)!=-1))||!searstr">
                 <span class="clearfix" external>
                     <span class="mes-icon">
-                        <img ms-attr-src="{{ComFunJS.getfile()+'&type=TX&user='+user.UserName}}">
+                        <img   src="/ViewV5/images/tx.png" >
                     </span>
                     <div class="mess-r "> <span ms-if="isseltype"><h4 style="margin-bottom:0">{{user.UserRealName.length==2?user.UserRealName.substring(0,1)+'&nbsp;&nbsp;&nbsp;&nbsp;'+user.UserRealName.substring(1):user.UserRealName}}&nbsp; <font style="color:cornflowerblue"><i class="fa  fa-mobile-phone"></i>{{user.mobphone}}</font>  </h4> <p style="margin:0">{{user.zhiwu}}</p></span>  <a ms-attr-href="'tel:'+user.mobphone" external ms-if="!isseltype"><h4 style="margin-bottom:0">{{user.UserRealName.length==2?user.UserRealName.substring(0,1)+'&nbsp;&nbsp;&nbsp;&nbsp;'+user.UserRealName.substring(1):user.UserRealName|html}}&nbsp;<font style="color:cornflowerblue"><i class="fa  fa-mobile-phone"></i>{{user.mobphone}}</font>  </h4> <p style="margin:0">{{user.zhiwu}}</p></a>  </div>
                 </span>

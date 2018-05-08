@@ -49,8 +49,7 @@
         UserData: {},
         QYData: {},
         inittemp: function () {
-            $.post("/API/VIEWAPI.ashx?Action=XTGL_GetUserInfo&r=" + Math.random(), {}, function (data) {
-                var data = $.parseJSON(data);
+            $.getJSON("/API/VIEWAPI.ashx?Action=XTGL_GetUserInfo&r=" + Math.random(), {}, function (data) {
                 if (data.ErrorMsg == "") {
                     tempmodel1.UserData = data.Result.User;
                     tempmodel1.QYData = data.Result.QYinfo;

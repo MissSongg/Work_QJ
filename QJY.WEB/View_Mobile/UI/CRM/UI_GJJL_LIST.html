@@ -179,7 +179,7 @@
             },
             delGJJL: function (el) {
                 $.confirm("确认要删除吗", function () {
-                    $.post('/API/VIEWAPI.ashx?Action=CRM_DELGJJL', { "P1": el.ID }, function (result) {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=CRM_DELGJJL', { "P1": el.ID }, function (result) {
                         if (result.ErrorMsg == "") {
                             ComFunJS.winsuccess("删除成功");
                             model.ctData.remove(el);

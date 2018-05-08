@@ -152,8 +152,7 @@
             },
             zan: function (el) {
 
-                $.post('/API/VIEWAPI.ashx?Action=TSSQ_ZANHTBYID', { "P1": strId }, function (result) {
-                    result = JSON.parse(result)
+                $.getJSON('/API/VIEWAPI.ashx?Action=TSSQ_ZANHTBYID', { "P1": strId }, function (result) {
                     if (result.ErrorMsg == "") {
                         //ComFunJS.winsuccess("点赞成功");
                         model.modelData.ZanList.push(result.Result);

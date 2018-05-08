@@ -319,8 +319,7 @@
             },
             zan: function (el,obj) {
                 $(this).toggleClass("active animated pulse");
-                $.post('/API/VIEWAPI.ashx?Action=TSSQ_ZANHTBYID', { "P1": el.ID }, function (result) {
-                    result = JSON.parse(result)
+                $.getJSON('/API/VIEWAPI.ashx?Action=TSSQ_ZANHTBYID', { "P1": el.ID }, function (result) {
                     if (result.ErrorMsg == "") {
                         //ComFunJS.winsuccess("点赞成功");
                         el.ZanList.push(result.Result);
@@ -351,8 +350,7 @@
             },
             DELHT: function (item) {
                 $.confirm('确认要删除吗？', function () {
-                    $.post('/API/VIEWAPI.ashx?Action=TSSQ_DELHTBYID', { "P1": item.ID }, function (result) {
-                        result = JSON.parse(result)
+                    $.getJSON('/API/VIEWAPI.ashx?Action=TSSQ_DELHTBYID', { "P1": item.ID }, function (result) {
                         if (result.ErrorMsg == "") {
                             ComFunJS.winsuccess("删除成功");
                             model.ctData.remove(item);

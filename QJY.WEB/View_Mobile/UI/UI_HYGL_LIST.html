@@ -499,7 +499,7 @@
                 }
             },//文件查看方法
             hyqr: function (el) {//确认参加
-                $.post("/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYQK&r=" + Math.random(), { "P1": el.ID, "P2": "2" }, function (data) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYQK&r=" + Math.random(), { "P1": el.ID, "P2": "2" }, function (data) {
 
                     if (data.ErrorMsg == "") {
                         el.PLList.push(data.Result);
@@ -516,7 +516,7 @@
             },
             hyqd: function (el) {//签到
 
-                $.post("/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYQK&r=" + Math.random(), { "P1": el.ID, "P2": "3" }, function (data) {
+                $.getJSON("/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYQK&r=" + Math.random(), { "P1": el.ID, "P2": "3" }, function (data) {
 
                     if (data.ErrorMsg == "") {
                         el.PLList.push(data.Result);
@@ -534,8 +534,7 @@
             },
             hyqj: function (el) {//请假
                 ComFunJS.showCommentNew(function (result) {
-                    $.post("/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYQK&QJSY=" + result.comment + "&r=" + Math.random(), { "P1": el.ID, "P2": "4" }, function (data) {
-
+                    $.getJSON("/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYQK&QJSY=" + result.comment + "&r=" + Math.random(), { "P1": el.ID, "P2": "4" }, function (data) {
                         if (data.ErrorMsg == "") {
                             el.PLList.push(data.Result);
                             top.ComFunJS.winsuccess("请假成功！！");
@@ -555,7 +554,6 @@
                 ComFunJS.showCommentNew(function (result) {
 
                     $.getJSON('/API/VIEWAPI.ashx?Action=HYGL_UPDATEHYJL&r=' + Math.random(), { "P1": el.ID, "P2": result.comment }, function (resultData) {
-
                         if (resultData.ErrorMsg == "") {
                             el.HYJL = result.comment;
 

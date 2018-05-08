@@ -322,7 +322,7 @@
                 },
                 delKHGL: function (el) {
                     $.confirm("确认要删除客户吗，删除后客户下的联系人、合同、跟进记录都将删除", function () {
-                        $.post('/API/VIEWAPI.ashx?Action=CRM_DELKHGL', { "P1": el.ID }, function (result) {
+                        $.getJSON('/API/VIEWAPI.ashx?Action=CRM_DELKHGL', { "P1": el.ID }, function (result) {
                             if (result.ErrorMsg == "") {
                                 ComFunJS.winsuccess("删除成功");
                                 model.ctData.remove(el);

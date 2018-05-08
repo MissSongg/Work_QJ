@@ -105,6 +105,7 @@ namespace QJY.API
 
             container.RegisterType<IWsService, YCGLManage>("YCGL".ToUpper());//用车
             container.RegisterType<IWsService, HYGLManage>("HYGL".ToUpper());//会议
+            container.RegisterType<IWsService, TSGLManage>("TSGL".ToUpper());//图书管理
 
 
 

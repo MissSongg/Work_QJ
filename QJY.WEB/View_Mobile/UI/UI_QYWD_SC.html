@@ -993,8 +993,7 @@
                     return;
                 }
                 $.confirm('确认要删除吗？', function () {
-                    $.post('/API/VIEWAPI.ashx?Action=QYWD_DELSC', { "P1": model.operIds }, function (result) {
-                        result = JSON.parse(result)
+                    $.getJSON('/API/VIEWAPI.ashx?Action=QYWD_DELSC', { "P1": model.operIds }, function (result) {
                         if (result.ErrorMsg == "") {
                             ComFunJS.winsuccess("删除成功");
                             location.reload();

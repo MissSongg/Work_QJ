@@ -176,8 +176,8 @@
                 }
 
             })
-            $.post("/API/VIEWAPI.ashx?ACTION=CRM_ADDGJJL", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                return callback.call(this, $.parseJSON(result));
+            $.getJSON("/API/VIEWAPI.ashx?ACTION=CRM_ADDGJJL", { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
+                return callback.call(this, result);
             });
         },
         Complate: function () {

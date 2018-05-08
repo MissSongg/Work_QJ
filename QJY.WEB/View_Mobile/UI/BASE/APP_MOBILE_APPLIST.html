@@ -71,7 +71,7 @@
             UserData: [],
             setData: function (el, dom, event) { 
                 event.stopPropagation(); 
-                $.post('/API/VIEWAPI.ashx?Action=INIT_SETAPPINDEX', { "P1": el.ModelCode+":"+($(dom).parent().find("input[type=checkbox]").attr("checked") ? "N" : "Y"), type: "APPINDEX" }, function (result) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=INIT_SETAPPINDEX', { "P1": el.ModelCode+":"+($(dom).parent().find("input[type=checkbox]").attr("checked") ? "N" : "Y"), type: "APPINDEX" }, function (result) {
                     if (result.ErrorMsg == "") {
                         el.UserAPPID = result.Result.ID;
                         el.DataContent1 = result.Result.DataContent1; 

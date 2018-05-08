@@ -142,8 +142,8 @@
         },//初始化
         modelData: { "ShenQingRen": "", "StarTime": "", "EndTime": "", "Daycount": "1", "LeiBie": "", "SPUser": "", "ChaoSongRen": "", "ZhuYaoShiYou": "", "Files": "" },
         SaveData: function (callback) {
-            $.post("/API/VIEWAPI.ashx?ACTION=CCXJ_ADDCCXJ", { P1: JSON.stringify(tempmodel.modelData.$model) }, function (result) {
-                return callback.call(this, $.parseJSON(result));
+            $.getJSON("/API/VIEWAPI.ashx?ACTION=CCXJ_ADDCCXJ", { P1: JSON.stringify(tempmodel.modelData.$model) }, function (result) {
+                return callback.call(this, result);
             });
         },
         Complate: function () {

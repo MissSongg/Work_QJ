@@ -24,15 +24,15 @@
                 </li>
                 <li class="add-item add-width  fl-left">
                     <label class="add-item-label"><i>*</i>报销日期</label>
-                    <div class="add-ic" >
+                    <div class="add-ic">
                         <input type="text" class="form-control szhl_form_date szhl_require" ms-duplex="modelData.BXDate">
                     </div>
                 </li>
                 <li class="add-item add-width  fl-right">
                     <label class="add-item-label">关联项目</label>
-                    <div class="add-ic" >
+                    <div class="add-ic">
                         <div class="input-group ">
-                        <input type="text" class="form-control szhl_select">
+                            <input type="text" class="form-control szhl_select">
 
                             <span class="input-group-addon">请选择</span>
                         </div>
@@ -85,7 +85,7 @@
                                         </select>
                                     </td>
                                     <td><input type="text" class="form-control" ms-duplex="JFBXJL.BXJE" placeholder="请输入金额" /></td>
-                                    <td><input type="text" class="form-control szhl_form_date"   ms-duplex="JFBXJL.BXDate" placeholder="请选择日期" /></td>
+                                    <td><input type="text" class="form-control szhl_form_date" ms-duplex="JFBXJL.BXDate" placeholder="请选择日期" /></td>
                                     <td>
                                         <label ms-click="SETIsHasFP()">
                                             <div class="icheckbox_square-blue mr5" ms-class-1="checked:JFBXJL.IsHasFP==1">
@@ -135,7 +135,7 @@
                     };
                 }
             })
-            $.getJSON('/API/VIEWAPI.ashx?Action=XMGL_GETXMLIST',{}, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=XMGL_GETXMLIST', {}, function (resultData) {
                 if (resultData.ErrorMsg == "" && resultData.Result.length > 0) {
                     tempmodel.XMData = resultData.Result;
                     tempmodel.XM();
@@ -157,40 +157,29 @@
                     }
                 })
             } else {
-                if (localStorage.getItem(pmodel.FormCode) && localStorage.getItem(pmodel.FormCode) != JSON.stringify(tempmodel.modelData.$model)) {//判断有没有未保存的表单
-                    var tempdata = localStorage.getItem(pmodel.FormCode);//缓存表单数据
-                    ComFunJS.winconfirm("系统检测到您未保存的数据,是否加载?", function () {
-                        tempmodel.modelData = $.parseJSON(tempdata);
-                        ComFunJS.initForm();
-                    }, function () {
-                        localStorage.removeItem(pmodel.FormCode);
-                        ComFunJS.initForm();
-                    })
-                } else {
-                    pmodel.isDraft = true;
-                    ComFunJS.initForm();
-                }
-                //$(".btnSucc").text("送审");
+
+                pmodel.isDraft = true;
+                ComFunJS.initForm();
             }
         },//初始化
-        modelData: { "ShenQingRen": ComFunJS.convertuser(ComFunJS.getnowuser()), "BranchName": "", "BXDate": "", "BXZJE": 0, "BXContent": "", "Files": "", "JFBXTitle": "","XMID":"" },
+        modelData: { "ShenQingRen": ComFunJS.convertuser(ComFunJS.getnowuser()), "BranchName": "", "BXDate": "", "BXZJE": 0, "BXContent": "", "Files": "", "JFBXTitle": "", "XMID": "" },
         JFBXJL: { "ShenQingRen": ComFunJS.convertuser(ComFunJS.getnowuser()), "LeiBie": "", "TypeName": "", "BXDate": "", "BXContent": "", "BXJE": "", "BXDNum": "", "IsHasFP": 0 },
         JFBXJLLIST: [],
         //存草稿使用
-        GetDraftData:function(){
+        GetDraftData: function () {
             return { "modelData": tempmodel.modelData.$model, "JFBXJLLIST": tempmodel.JFBXJLLIST.$model };
         },
         SetDraftData: function (vm) {
             tempmodel.modelData = vm.modelData;
             tempmodel.JFBXJLLIST = vm.JFBXJLLIST;
         },
-        AddJFBXJL: function () { 
-          
+        AddJFBXJL: function () {
+
             if (!tempmodel.JFBXJL.BXJE) {
                 top.ComFunJS.winwarning("请填写报销金额");
                 return false;
             }
-            if (tempmodel.JFBXJL.BXJE.length>10) {
+            if (tempmodel.JFBXJL.BXJE.length > 10) {
                 top.ComFunJS.winwarning("请输入长度10位及10位一下的报销金额");
                 return false;
             }
@@ -203,7 +192,7 @@
                 top.ComFunJS.winwarning("请选择报销时间");
                 return false;
             }
-            
+
             var jfbxModel = $.extend(false, {}, tempmodel.JFBXJL.$model);
             tempmodel.JFBXJLLIST.push(jfbxModel);
             tempmodel.modelData.BXZJE = (Number(tempmodel.modelData.BXZJE) + Number(tempmodel.JFBXJL.BXJE)).toFixed(2);

@@ -203,6 +203,12 @@
     <Content Include="ViewV5\AppPage\HYGL\HYS.html" />
     <Content Include="ViewV5\AppPage\HYGL\HYSLIST.html" />
     <Content Include="ViewV5\AppPage\HYGL\HYSVIEW.html" />
+    <Content Include="ViewV5\AppPage\TSGL\TSGL.html" />
+    <Content Include="ViewV5\AppPage\TSGL\TSGLLIST.html" />
+    <Content Include="ViewV5\AppPage\TSGL\TSGLVIEW.html" />
+    <Content Include="ViewV5\AppPage\TSGL\JYGL.html" />
+    <Content Include="ViewV5\AppPage\TSGL\JYGLLIST.html" />
+    <Content Include="ViewV5\AppPage\TSGL\JYGLVIEW.html" />
     <Content Include="ViewV5\AppPage\YCGL\CLGL.html" />
     <Content Include="ViewV5\AppPage\YCGL\CLGLLIST.html" />
     <Content Include="ViewV5\AppPage\YCGL\CLGLVIEW.html" />
@@ -326,6 +332,7 @@
     <Content Include="WZWeb\mob\js\jquery.touchSwipe.min.js" />
     <Content Include="WZWeb\mob\success.html" />
     <None Include="Properties\PublishProfiles\QJSignle.pubxml" />
+    <None Include="Properties\PublishProfiles\QJ_APP.pubxml" />
     <None Include="Properties\PublishProfiles\QJ_UserS.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

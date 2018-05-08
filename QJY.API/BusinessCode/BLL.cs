@@ -315,7 +315,7 @@ namespace QJY.API
             return dtList;
         }
     }
-   
+
     public class SZHL_XXFBTypeB : BaseEFDao<SZHL_XXFBType>
     {
     }
@@ -336,7 +336,7 @@ namespace QJY.API
     public class SZHL_WQQDB : BaseEFDao<SZHL_WQQD>
     {
     }
-   
+
     public class SZHL_JFBXB : BaseEFDao<SZHL_JFBX>
     {
         /// <summary>
@@ -371,13 +371,13 @@ namespace QJY.API
     public class SZHL_RWGL_ITEMB : BaseEFDao<SZHL_RWGL_ITEM>
     {
     }
-   
+
 
 
     public class JH_Auth_CommonB : BaseEFDao<JH_Auth_Common>
     {
     }
-  
+
     public class SZHL_TXSXB : BaseEFDao<SZHL_TXSX>
     {
     }
@@ -394,15 +394,15 @@ namespace QJY.API
     public class SZHL_GZBGB : BaseEFDao<SZHL_GZBG>
     {
     }
-  
+
     public class SZHL_NOTEB : BaseEFDao<SZHL_NOTE>
     {
     }
-   
+
     public class SZHL_XMGLB : BaseEFDao<SZHL_XMGL>
     {
     }
-   
+
     public class SZHL_KQBCB : BaseEFDao<SZHL_KQBC>
     { }
     public class SZHL_KQJLB : BaseEFDao<SZHL_KQJL>
@@ -441,6 +441,14 @@ namespace QJY.API
     public class SZHL_YCGL_CARB : BaseEFDao<SZHL_YCGL_CAR>
     {
     }
+
+    public class SZHL_TSGLB : BaseEFDao<SZHL_TSGL>
+    {
+    }
+    public class SZHL_TSGL_TSB : BaseEFDao<SZHL_TSGL_TS>
+    {
+    }
+
     #endregion
 
     #region CRM
@@ -453,7 +461,7 @@ namespace QJY.API
     public class SZHL_CRM_HTGLB : BaseEFDao<SZHL_CRM_HTGL>
     {
     }
- 
+
     public class SZHL_CRM_CPGLB : BaseEFDao<SZHL_CRM_CPGL>
     {
     }

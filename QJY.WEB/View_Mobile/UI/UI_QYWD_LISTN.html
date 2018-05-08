@@ -956,10 +956,9 @@
                     msg = "如果删除目录会删除目录下的所有文件,";
                 }
                 $.confirm(msg + "确认要删除选中项吗", function () {
-                    $.post('/API/VIEWAPI.ashx?Action=QYWD_DELFLODER', {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=QYWD_DELFLODER', {
                         P1: JSON.stringify(delmodel)
                     }, function (resultData) {//P1为个人文件夹
-                        var resultData = $.parseJSON(resultData);
                         if (resultData.ErrorMsg == "") {
                             ComFunJS.winsuccess("删除成功");
                             model.wjData.remove(model.selWJ[0])
@@ -971,10 +970,9 @@
             }, ShareWJ: function () {
                 if (model.selWJ) {
                     var type = model.selWJ[0].FileExtendName ? "file" : "wj";
-                    $.post('/API/VIEWAPI.ashx?Action=QYWD_ADDSHARECODE', {
+                    $.getJSON('/API/VIEWAPI.ashx?Action=QYWD_ADDSHARECODE', {
                         "P1": model.selWJ[0].ID, "P2": type, url: "http://" + location.host + "/ViewV5/share.html"
                     }, function (result) {
-                        var result = $.parseJSON(result);
                         if (result.ErrorMsg == "") {
                             location.href = "UI_QYWD_Share.html?shareid=" + result.Result.ID;
                         } else {
