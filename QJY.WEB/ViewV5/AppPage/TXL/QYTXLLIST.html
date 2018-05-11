@@ -92,7 +92,7 @@
                                 <span ms-if="item.IsUse=='Y'" class="ico-radius-r color-greed"></span>{{item.UserRealName}}
                             </td>
 
-                            <td ms-repeat-im="ShowColumns" style="min-width:120px;" ms-visible="im.IsSel" >{{FnFormat(item[im.ColName],im)|html}}</td>
+                            <td ms-repeat-im="ShowColumns" style="min-width:120px;" ms-visible="im.IsSel" >{{ComFunJS.FnFormat(item[im.ColName],im)|html}}</td>
                         </tr>
                     </tbody>
                     <tfoot>

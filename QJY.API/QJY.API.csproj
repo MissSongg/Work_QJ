@@ -114,7 +114,7 @@
     <Compile Include="API\DXGL\DXGLManage.cs" />
     <Compile Include="API\GZBG\GZBGManage.cs" />
     <Compile Include="API\HYGL\HYGLManage.cs" />
-    <Compile Include="API\TSGL\TSGLManage.cs" />
+    <Compile Include="API\JYGL\JYGLManage.cs" />
     <Compile Include="API\YCGL\YCGLManage.cs" />
     <Compile Include="BusinessCode\BLL.cs" />
     <Compile Include="BusinessCode\JH_Auth.cs" />

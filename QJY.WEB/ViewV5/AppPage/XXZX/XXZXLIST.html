@@ -62,7 +62,7 @@
                     <td><a class="btn-link" ms-click="OpenDetail(el)" href="javascript:;">{{el.MsgContent|html}}</a></td>
                     <td>{{el.CRDate|date('yyyy-MM-dd HH:mm')}}</td>
 
-                    <!--<td ms-repeat-im="ShowColumns" ms-css-width="im.width+'px'" ms-visible="im.IsSel">{{FnFormat(el[im.ColName],im)|html}}</td>-->
+                    <!--<td ms-repeat-im="ShowColumns" ms-css-width="im.width+'px'" ms-visible="im.IsSel">{{ComFunJS.FnFormat(el[im.ColName],im)|html}}</td>-->
                     <!-- <td>
 
                         <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="标记为已读" ms-if="listType =='0'" ms-click="Upd(el,$event)">

@@ -103,7 +103,7 @@ namespace QJY.Data
         public virtual DbSet<SZHL_YCGL_CAR> SZHL_YCGL_CAR { get; set; }
         public virtual DbSet<SZHL_DRAFT> SZHL_DRAFT { get; set; }
         public virtual DbSet<FT_File> FT_File { get; set; }
-        public virtual DbSet<SZHL_TSGL> SZHL_TSGL { get; set; }
         public virtual DbSet<SZHL_TSGL_TS> SZHL_TSGL_TS { get; set; }
+        public virtual DbSet<SZHL_TSGL> SZHL_TSGL { get; set; }
     }
 }

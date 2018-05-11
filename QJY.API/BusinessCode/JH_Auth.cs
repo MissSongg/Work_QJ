@@ -1474,10 +1474,10 @@ namespace QJY.API
                 }
 
             }
-            else
-            {
-                strISHasQX = "Y";
-            }
+            //else
+            //{
+            //    strISHasQX = "Y";
+            //}
             return strISHasQX;
         }
 

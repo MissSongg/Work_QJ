@@ -30,7 +30,7 @@
             <div class="detail-con">
                 <div class="detail-item" ms-repeat-el="ShowColumns" ms-visible="modelData[el.ColName]" ms-class-1="{{el.class}}">
                     <span class="item-tit">{{el.ColText}}</span>
-                    <div class="item-con">{{FnFormat(modelData[el.ColName],el)|html}}</div>
+                    <div class="item-con">{{ComFunJS.FnFormat(modelData[el.ColName],el)|html}}</div>
                 </div>
            
                 <div class="detail-item" ms-if="tpData.size()!=0">
@@ -354,70 +354,8 @@
                     if (itm.MsgISShow == str) { num++; }
                 })
                 return num;
-            },
-            //格式化
-            FnFormat: function (str, fmt) { //格式化
-                if (str && fmt.format) {
-                    switch (fmt.format) {
-                        case "shstate": //审核状态转换成文字
-                            {
-                                if (str == 0) {
-                                    return "未审核";
-                                } else if (str == -1) {
-                                    return "审核不通过";
-                                } else if (str == 1) {
-                                    return "审核通过";
-                                }
-                            }
-                            break;
-
-                        case "statename": //审核流程，-1时不需要流程
-                            {
-                                if (str == "-1") return "";
-                            }
-                            break;
-                        case "rwstate": //任务状态
-                            {
-                                if (str == "0") return "未完成";
-                                else if (str == "1") return "已完成";
-                            }
-                            break;
-
-                        case "dateformat": //日期格式，默认yyyy-mm-dd
-                            {
-                                return ComFunJS.getnowdate("yyyy-mm-dd", str);
-                            }
-                            break;
-                        case "username": //用户id转成为用户名
-                            {
-                                return ComFunJS.convertuser(str);
-                            }
-                            break;
-                        case "qrcode": //二维码图片展示
-                            {
-                                return "<img src='" + str + "' style='width:60px;height:60px;' />"
-                            }
-                            break;
-                        case "bqh":
-                            {
-                                return ComFunJS.bqhContent(str);
-                            }
-                            break;
-                        case "text":
-                            {
-                                var len = fmt.len || 20;
-                                return ComFunJS.convstr(str + "", len);
-                            }
-                            break;
-                        default: {
-                            return "";
-                        }
-                    }
-
-
-                }
-                return str;
             }
+           
         });
         avalon.ready(function () {
             model.ShowColumns.pushArray(

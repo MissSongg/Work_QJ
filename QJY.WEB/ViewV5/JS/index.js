@@ -173,7 +173,7 @@
         if (typeof (tempindex) != "undefined" && model.PageCode != "/ViewV5/Base/Loading") {
             tempindex.InitWigetData(model.initobj);
             if (model.ShowColumns.size() > 0) {
-                setTimeout("model.GetExtColumns(" + model.rdm + ")", 1500);
+                setTimeout("model.GetExtColumns('" + model.rdm + "')", 1500);
             }
         }
     },//组件加载完成事件
@@ -492,120 +492,6 @@
         }
     },
     search: { seartype: "1", searchcontent: "" },
-    FnFormat: function (str, fmt) { //格式化
-        str = str + "";
-        if ((str || fmt.format == "gzstatus") && fmt.format) {
-
-            switch (fmt.format) {
-                case "shstate": //审核状态转换成文字
-                    {
-                        if (str == "0") {
-                            str = "未审核";
-                        } else if (str == "-1") {
-                            str = "审核不通过";
-                        } else if (str == "1") {
-                            str = "审核通过";
-                        }
-                    }
-                    break;
-
-                case "statename": //审核流程，-1时不需要流程
-                    {
-                        if (str == "-1") {
-                            str = "";
-                        }
-                        else if (str == "已退回") {
-                            str = "<span style='color:red;font-weight:bold'>" + str + "</span>";
-                        }
-                    }
-                    break;
-                case "rwstate": //任务状态
-                    {
-                        if (str == "0") str = "待办任务";
-                        else if (str == "1") str = "已办任务";
-                        else if (str == "2") str = "过期任务";
-                    }
-                    break;
-                case "dateformat": //日期格式，默认yyyy-mm-dd
-                    {
-                        str = ComFunJS.getnowdate("yyyy-mm-dd", str);
-                    }
-                    break;
-                case "timeformat": //日期格式，默认yyyy-mm-dd
-                    {
-                        str = ComFunJS.getnowdate("yyyy-mm-dd hh:mm", str);
-                    }
-                    break;
-                case "username": //用户id转成为用户名
-                    {
-                        str = ComFunJS.convertuser(str);
-                    }
-                    break;
-                case "qrcode": //二维码图片展示
-                    {
-                        str = "<img src='" + str + "' style='width:60px;height:60px;' />"
-                    }
-                    break;
-                case "bqh"://表情转换
-                    {
-                        return ComFunJS.bqhContent(str);
-                    }
-                    break;
-                case "text"://截取字符串
-                    {
-                        str = ComFunJS.convstr(str);
-                    }
-                    break;
-                case "txfs"://提醒方式
-                    {
-                        switch (str) {
-                            case "0": str = '短信和微信'; break;
-                            case "1": str = '短信'; break;
-                            case "2": str = '微信'; break;
-                        }
-
-                    }
-                    break;
-                case "xxshzt":     //信息发布审核状态
-                    {
-                        switch (str) {
-                            case "0": str = "未审核"; break;
-                            case "1": str = "已审核"; break;
-                            case "2": str = "正常"; break;
-                            case "-1": str = "<label class='text-danger'>退回</label>"; break;
-                        }
-                    }
-                    break;
-                case "clzt":    //车辆状态
-                    {
-                        switch (str) {
-                            case "0": str = '可用'; break;
-                            case "1": str = '报废'; break;
-                            case "2": str = '维修'; break;
-                        }
-                    }
-                    break;
-                case "hyszt":     //会议室状态
-                    {
-                        switch (str) {
-                            case "0": str = '启用'; break;
-                            case "1": str = '禁用'; break;
-                        }
-                    }
-                    break;
-                default: {
-
-                }
-            }
-
-
-        }
-        if (fmt.len) {
-            str = str.length > fmt.len ? str.substring(0, fmt.len) + '...' : str;
-        }
-        return str;
-
-    },
     ViewXXFB: function (xxitem) {
         ComFunJS.winviewform("/ViewV5/AppPage/XXFB/XXFBVIEW.html?ID=" + xxitem.ID + "&r=" + Math.random(), "新闻公告");
     },

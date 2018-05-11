@@ -16,7 +16,7 @@ namespace QJY.Data
     {
         public Nullable<int> ComId { get; set; }
         public int ID { get; set; }
-        public Nullable<int> TSID { get; set; }
+        public string TSID { get; set; }
         public string TSName { get; set; }
         public string TSTypeName { get; set; }
         public string JYR { get; set; }

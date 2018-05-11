@@ -58,11 +58,11 @@
                     <td class="tc">
                         {{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <td class="lk" ms-click="ViewFormNew('WQQD_WQQD',el.ID,'',$event)">{{FnFormat(el.CRUser,{"format": "username"})}}</td>
+                    <td class="lk" ms-click="ViewFormNew('WQQD_WQQD',el.ID,'',$event)">{{ComFunJS.FnFormat(el.CRUser,{"format": "username"})}}</td>
                     <td>{{el.BranchName}}</td>
                     <td>{{el.CRDate|date('yyyy-MM-dd HH:mm')}}</td>
                     <td>{{el.Position}}</td>
-                    <td>{{FnFormat(el.QDContent,{"format": "text", "len": 40})|html}}<span ms-if="el.Files"><i class="iconfont icon-fj ft14 ml5"></i></span></td>
+                    <td>{{ComFunJS.FnFormat(el.QDContent,{"format": "text", "len": 40})|html}}<span ms-if="el.Files"><i class="iconfont icon-fj ft14 ml5"></i></span></td>
                 </tr>
             </tbody>
             <tfoot>

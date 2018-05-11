@@ -233,8 +233,8 @@ namespace QJY.WEB
                                                     }
 
                                                 }
-                                             
-                                
+
+
                                             }
                                         }
                                     }
@@ -326,13 +326,13 @@ namespace QJY.WEB
 
                                         if (MsgType == "event")
                                         {
-                                            
+
                                         }
                                         else if (new List<string> { "text", "image", "voice", "file", "link" }.Contains(MsgType))
                                         {
                                             #region 内容处理
 
-                                          
+
                                             #endregion
                                         }
                                     }
@@ -444,6 +444,65 @@ namespace QJY.WEB
                 {
                     TXSX.TXSXAPI.AUTOALERT();
                 }
+                if (strAction.ToUpper() == "LOGIN")
+                {
+                    string password = context.Request["password"] ?? "";
+                    string username = context.Request["UserName"] ?? "";
+                    string chkcode = context.Request["chkcode"] ?? "";
+                    Model.ErrorMsg = "";
+
+                    if (chkcode.ToUpper() != "APP")
+                    {
+                        if (context.Session["chkcode"] != null)
+                        {
+
+                            if (!chkcode.ToUpper().Equals(context.Session["chkcode"].ToString()))
+                            {
+                                Model.ErrorMsg = "验证码不正确";
+                            }
+                        }
+                        else
+                        {
+                            Model.ErrorMsg = "验证码已过期";
+                        }
+                    }
+
+
+
+                    JH_Auth_QY qyModel = new JH_Auth_QYB().GetALLEntities().First();
+                    password = CommonHelp.GetMD5(password);
+                    JH_Auth_User userInfo = new JH_Auth_User();
+
+                    List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => (d.UserName == username || d.mobphone == username) && d.UserPass == password).ToList();
+                    if (userList.Count() == 0)
+                    {
+                        Model.ErrorMsg = "用户名或密码不正确";
+                    }
+                    else
+                    {
+                        userInfo = userList[0];
+                        if (userInfo.IsUse != "Y")
+                        {
+                            Model.ErrorMsg = "用户被禁用,请联系管理员";
+                        }
+                        if (Model.ErrorMsg == "")
+                        {
+                            if (string.IsNullOrEmpty(userInfo.pccode))
+                            {
+                                userInfo.pccode = CommonHelp.CreatePCCode(userInfo);
+                            }
+                            userInfo.logindate = DateTime.Now;
+                            new JH_Auth_UserB().Update(userInfo);
+                            Model.Result = userInfo.pccode;
+                            Model.Result1 = userInfo.UserName;
+                            Model.Result2 = qyModel.FileServerUrl;
+                            Model.Result4 = userInfo;
+                        }
+
+                    }
+
+                }
+
                 #endregion
             }
             else

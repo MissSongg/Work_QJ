@@ -1,15 +1,15 @@
-﻿<div ms-controller="TSGLLIST">
+﻿<div ms-controller="JYGLLIST">
     <!-- 添加按钮 -->
-    <div class="btn-add">
-        <button type="button" class="btn btn-info btn-lg" ms-click="AddView('TSGL')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加图书</button>
-    </div>
+  
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
         <div class="oh">
-            <h5 class="pull-left tr">图书类型：</h5>
+            <h5 class="pull-left tr">事项类型：</h5>
             <ul class="tab-type ft14">
-                <li ms-click="SelectTSType('')"><span class="active">全部</span></li>
-                <li ms-repeat-el="TypeData" ms-click="SelectTSType(el.ID)"><span>{{el.TypeName}}</span></li>
+                <!--<li><span class="active" ms-click="SelectType('0')">全部</span></li>-->
+                <li ms-click="SelectType('1')"><span class="active">我创建的</span></li>
+                <li ms-click="SelectType('2')"><span>待我审核的</span></li>
+                <li ms-click="SelectType('3')"><span>我已审核的</span></li>
             </ul>
         </div>
         <!-- 搜索 -->
@@ -30,47 +30,30 @@
             <thead>
                 <tr>
                     <th class="tc">
-                        <!--<div class="icheckbox_square-blue">
-                            <input type="checkbox">
-                            <span class="iconfont icon-check ft12"></span>
-                        </div>-->
                         序号
                     </th>
-                    <th>编码</th>
-                    <th>图书类别</th>
+                    <th>借阅申请人</th>
                     <th>图书名称</th>
-                    <th>作者</th>
-                    <th>购买时间</th>
-                    <th>可用状态</th>
-                    <th>借阅状态</th>
+                    <th>开始时间</th>
+                    <th>截止时间</th>
+                    <th>审核状态</th>
 
-                    <th>
-                        操作
-                    </th>
                 </tr>
             </thead>
             <tbody>
-                <tr ms-repeat-el="tmpListData" ms-click="ViewForm('TSGL_TSGL',el.ID,'',$event)">
-                    <td class="tc">
-                        <!--<div class="icheckbox_square-blue">
-                            <input type="checkbox">
-                            <span class="iconfont icon-check ft12"></span>
-                        </div>-->
+                <tr ms-repeat-el="tmpListData" ms-click="ViewForm('JYGL',el.ID,el.intProcessStanceid,$event)">
+                    <td class=" tc">
                         {{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <td>{{el.TSNum}}</td>
-                    <td>{{el.TSTypeName}}</td>
+                    <td>{{el.JYRName}}</td>
                     <td>{{el.TSName}}</td>
-                    <td>{{el.auther}}</td>
-                    <td>{{el.BuyDate}}</td>
-                    <td>{{el.Status=='0'?"可用":"不可用"}}</td>
-                    <td>借阅状态</td>
+                    <td>{{el.StartTime|date('yyyy-MM-dd HH:ss')}}</td>
+                    <td>{{el.EndTime|date('yyyy-MM-dd HH:ss')}}</td>
+                    <td>{{el.StateName}} </td>
+
                     <td>
-                        <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="EditForm('TSGL_TSGL',el.ID,'',$event)">
-                            <i class="iconfont icon-bianji"></i>
-                        </a>
-                        <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELTS(el,$event)">
-                            <i class="iconfont icon-shanchu"></i>
+                        <a class="cz-btn ft18 js-color tip" data-toggle="tooltip" title="审批" ms-click="EditForm('JYGL',el.ID,el.intProcessStanceid,$event)" ms-if="el.StateName!='-1'&&search.seartype==2">
+                            <i class="iconfont icon-shenhe"></i>
                         </a>
                     </td>
                 </tr>
@@ -100,44 +83,25 @@
 <script>
 
     var tempindex = avalon.define({
-        $id: "TSGLLIST",
-        curTSType: "",
-        tmpListData: [],
+        $id: "JYGLLIST",
+        curCL: "",
+        tmpListData:[],
         SelectType: function (type) {
             model.search.seartype = type;
-            tempindex.GetLIST();
-        },
-        SelectTSType: function (type) {
-            tempindex.curTSType = type;
             tempindex.GetLIST();
         },
         selNum: function (item) {    //选择显示的条数
             model.page.pagecount = item;
             tempindex.GetLIST();
         },
-        DELTS: function (item, event) {
-            if (event) {
-                event.stopPropagation();
-            }
-            ComFunJS.winconfirm("确认要删除吗", function () {
-                $.post("/API/VIEWAPI.ashx?Action=TSGL_DELTS", { P1: item.ID }, function (resultData) {
-                    if (resultData.ErrorMsg == "") {
-                        tempindex.tmpListData.remove(item);
-                        ComFunJS.winsuccess("操作成功");
-                    }
-                })
-            }, function () { })
-        },
         InitWigetData: function () {
-            model.search.seartype = "";
-            model.GetTypeData("24");
             tempindex.GetLIST();
         },
 
         GetLIST: function () {
             model.page.pageindex = 1;
             tempindex.tmpListData.clear();
-            $.getJSON('/API/VIEWAPI.ashx?Action=TSGL_GETTSLIST_PAGE', { p: 1, P1: model.search.searchcontent, P2: tempindex.curTSType, pagecount: model.page.pagecount }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_GETJYGLLIST', { p: 1, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempindex.tmpListData = resultData.Result;
                     if (tempindex.tmpListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
@@ -149,7 +113,7 @@
                         skin: 'molv',
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=TSGL_GETTSLIST_PAGE', { p: e.curr, P1: model.search.seartype, P2: tempindex.curTSType, pagecount: model.page.pagecount }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_GETJYGLLIST', { p: e.curr, P1: model.search.seartype, pagecount: model.page.pagecount, Content: model.search.searchcontent }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
                                         tempindex.tmpListData = resultData.Result;
                                     }
@@ -162,5 +126,5 @@
             })
         }
     })
-    //@ sourceURL=TSGLLIST.js;
+    //@ sourceURL=JYGLLIST.js;
 </script>

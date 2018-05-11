@@ -1193,8 +1193,8 @@
           </Key>
           <Property Name="ComId" Type="int" />
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TSID" Type="int" />
-          <Property Name="TSName" Type="varchar" MaxLength="50" />
+          <Property Name="TSID" Type="varchar" MaxLength="50" />
+          <Property Name="TSName" Type="varchar" MaxLength="500" />
           <Property Name="TSTypeName" Type="varchar" MaxLength="50" />
           <Property Name="JYR" Type="varchar" MaxLength="50" />
           <Property Name="StartTime" Type="datetime" />
@@ -1236,6 +1236,9 @@
           <Property Name="SL" Type="varchar" MaxLength="50" />
           <Property Name="Remark" Type="varchar(max)" />
           <Property Name="TSName" Type="varchar" MaxLength="255" />
+          <Property Name="jystatus" Type="varchar" MaxLength="255" />
+          <Property Name="bc" Type="varchar" MaxLength="255" />
+          <Property Name="cbs" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="SZHL_TSSQ">
           <Key>
@@ -1815,8 +1818,8 @@
           <EntitySet Name="SZHL_YCGL_CAR" EntityType="QJY_SaaSModel.SZHL_YCGL_CAR" />
           <EntitySet Name="SZHL_DRAFT" EntityType="QJY_SaaSModel.SZHL_DRAFT" />
           <EntitySet Name="FT_File" EntityType="QJY_SaaSModel.FT_File" />
-          <EntitySet Name="SZHL_TSGL" EntityType="QJY_SaaSModel.SZHL_TSGL" />
           <EntitySet Name="SZHL_TSGL_TS" EntityType="QJY_SaaSModel.SZHL_TSGL_TS" />
+          <EntitySet Name="SZHL_TSGL" EntityType="QJY_SaaSModel.SZHL_TSGL" />
         </EntityContainer>
         <EntityType Name="FT_File_Downhistory">
           <Key>
@@ -3413,31 +3416,6 @@
           <Property Name="TotalTime" Type="Int32" />
           <Property Name="zyid" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="SZHL_TSGL">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ComId" Type="Int32" />
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TSID" Type="Int32" />
-          <Property Name="TSName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TSTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="JYR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="StartTime" Type="DateTime" Precision="3" />
-          <Property Name="EndTime" Type="DateTime" Precision="3" />
-          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="JYRName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CRDate" Type="DateTime" Precision="3" />
-          <Property Name="intProcessStanceid" Type="Int32" Nullable="false" />
-          <Property Name="IsDel" Type="Int32" />
-          <Property Name="DelUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="DelDate" Type="DateTime" Precision="3" />
-          <Property Name="BackDate" Type="DateTime" Precision="3" />
-          <Property Name="BackBZ" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="SZHL_TSGL_TS">
           <Key>
             <PropertyRef Name="ID" />
@@ -3462,6 +3440,34 @@
           <Property Name="SL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TSName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="jystatus" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="bc" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="cbs" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SZHL_TSGL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TSID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TSName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TSTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="JYR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="JYRName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="intProcessStanceid" Type="Int32" Nullable="false" />
+          <Property Name="IsDel" Type="Int32" />
+          <Property Name="DelUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DelDate" Type="DateTime" Precision="3" />
+          <Property Name="BackDate" Type="DateTime" Precision="3" />
+          <Property Name="BackBZ" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -5142,6 +5148,35 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_TSGL_TS">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_TSGL_TS">
+              <MappingFragment StoreEntitySet="SZHL_TSGL_TS">
+                <ScalarProperty Name="cbs" ColumnName="cbs" />
+                <ScalarProperty Name="bc" ColumnName="bc" />
+                <ScalarProperty Name="jystatus" ColumnName="jystatus" />
+                <ScalarProperty Name="TSName" ColumnName="TSName" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="SL" ColumnName="SL" />
+                <ScalarProperty Name="auther" ColumnName="auther" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="BuyDate" ColumnName="BuyDate" />
+                <ScalarProperty Name="DelDate" ColumnName="DelDate" />
+                <ScalarProperty Name="DelUser" ColumnName="DelUser" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+                <ScalarProperty Name="intProcessStanceid" ColumnName="intProcessStanceid" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="TSXH" ColumnName="TSXH" />
+                <ScalarProperty Name="TSTypeName" ColumnName="TSTypeName" />
+                <ScalarProperty Name="TSType" ColumnName="TSType" />
+                <ScalarProperty Name="TSNum" ColumnName="TSNum" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SZHL_TSGL">
             <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_TSGL">
               <MappingFragment StoreEntitySet="SZHL_TSGL">
@@ -5163,32 +5198,6 @@
                 <ScalarProperty Name="TSTypeName" ColumnName="TSTypeName" />
                 <ScalarProperty Name="TSName" ColumnName="TSName" />
                 <ScalarProperty Name="TSID" ColumnName="TSID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ComId" ColumnName="ComId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SZHL_TSGL_TS">
-            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_TSGL_TS">
-              <MappingFragment StoreEntitySet="SZHL_TSGL_TS">
-                <ScalarProperty Name="TSName" ColumnName="TSName" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="SL" ColumnName="SL" />
-                <ScalarProperty Name="auther" ColumnName="auther" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="BuyDate" ColumnName="BuyDate" />
-                <ScalarProperty Name="DelDate" ColumnName="DelDate" />
-                <ScalarProperty Name="DelUser" ColumnName="DelUser" />
-                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
-                <ScalarProperty Name="intProcessStanceid" ColumnName="intProcessStanceid" />
-                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
-                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Files" ColumnName="Files" />
-                <ScalarProperty Name="TSXH" ColumnName="TSXH" />
-                <ScalarProperty Name="TSTypeName" ColumnName="TSTypeName" />
-                <ScalarProperty Name="TSType" ColumnName="TSType" />
-                <ScalarProperty Name="TSNum" ColumnName="TSNum" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ComId" ColumnName="ComId" />
               </MappingFragment>

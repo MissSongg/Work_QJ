@@ -48,7 +48,7 @@
             <tbody>
                 <tr ms-repeat-el="tmpListData" >
                     <td class="tc">{{$index+1+page.pagecount*(page.pageindex-1)}}</td>
-                    <td ms-repeat-im="ShowColumns" ms-class-1="lk:im.type=='link'" ms-visible="im.IsSel" ms-click="ViewXXFB(el,this)">{{FnFormat(el[im.ColName],im)|html}}</td>
+                    <td ms-repeat-im="ShowColumns" ms-class-1="lk:im.type=='link'" ms-visible="im.IsSel" ms-click="ViewXXFB(el,this)">{{ComFunJS.FnFormat(el[im.ColName],im)|html}}</td>
                     <td>
                         <span class="btn-click" ms-if="search.seartype=='0'">
                             <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="EditFormXXFB('XXFB',el.ID,'',$event)">

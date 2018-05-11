@@ -66,7 +66,7 @@
                         </div>-->
                         {{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <td ms-repeat-im="ShowColumns" ms-visible="im.IsSel" ms-class-1="lk:im.type=='link'" ms-click="ViewFormNew('LCSP_LCSP',el.ID,el.intProcessStanceid,$event)">{{FnFormat(el[im.ColName],im)|html}}</td>
+                    <td ms-repeat-im="ShowColumns" ms-visible="im.IsSel" ms-class-1="lk:im.type=='link'" ms-click="ViewFormNew('LCSP_LCSP',el.ID,el.intProcessStanceid,$event)">{{ComFunJS.FnFormat(el[im.ColName],im)|html}}</td>
                     <td>
                         <a class="cz-btn ft18 js-color tip" data-toggle="tooltip" title="审批" ms-click="EditForm('LCSP_LCSP',el.ID,el.intProcessStanceid,$event)" ms-if="el.StateName!='-1'&&search.seartype==2">
                             <i class="iconfont icon-shenhe"></i>

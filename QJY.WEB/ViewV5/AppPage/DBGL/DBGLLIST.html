@@ -29,7 +29,7 @@
                 <tr ms-repeat-el="tmpListData">
                     <td class=" tc">{{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <td ms-repeat-im="ShowColumns" ms-class-1="lk:im.type=='link'" ms-visible="im.IsSel">{{FnFormat(el[im.ColName],im)|html}}</td>
+                    <td ms-repeat-im="ShowColumns" ms-class-1="lk:im.type=='link'" ms-visible="im.IsSel">{{ComFunJS.FnFormat(el[im.ColName],im)|html}}</td>
                     <td>
                         <a class=" tip" data-toggle="tooltip" title="下载此备份" style="color:darkcyan" ms-if="search.seartype==1" ms-click="XZDB(el.ID)">下载
                         </a>

@@ -43,7 +43,7 @@
                 <tr ms-repeat-el="tmpListData">
                     <td class="tc">{{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <td ms-repeat-im="ShowColumns" ms-click="ViewFormNew('CRM_CPGL',el.ID,'',$event)" ms-class-1="lk:im.type=='link'" style="min-width: 120px;" ms-visible="im.IsSel">{{FnFormat(el[im.ColName],im)|html}}</td>
+                    <td ms-repeat-im="ShowColumns" ms-click="ViewFormNew('CRM_CPGL',el.ID,'',$event)" ms-class-1="lk:im.type=='link'" style="min-width: 120px;" ms-visible="im.IsSel">{{ComFunJS.FnFormat(el[im.ColName],im)|html}}</td>
                     <td style="min-width: 100px;">
                         <span class="btn-click">
                             <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-if="el.CRUser==userName" ms-click="EditForm('CRM_CPGL',el.ID,'',$event)">

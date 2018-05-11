@@ -62,9 +62,9 @@
                         </div>-->
                         {{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <!--<td ms-repeat-im="ShowColumns" ms-visible="im.IsSel">{{FnFormat(el[im.ColName],im)|html}}</td>-->
+                    <!--<td ms-repeat-im="ShowColumns" ms-visible="im.IsSel">{{ComFunJS.FnFormat(el[im.ColName],im)|html}}</td>-->
                     <td>{{el.TypeName}}</td>
-                    <td class="lk" ms-click="View(el.ID)">{{FnFormat(el.HTNR,{"format": "text", "len": 40})|html}}</td>
+                    <td class="lk" ms-click="View(el.ID)">{{ComFunJS.FnFormat(el.HTNR,{"format": "text", "len": 40})|html}}</td>
                     <td>{{FnFormat(el.CRUser,{"format": "username"})|html}}</td>
                     <!--<td>
                         <a class="cz-btn ft18 js-color" data-toggle="tooltip" title="审批" ms-click="ViewForm(el.ID,el.intProcessStanceid,$event)" ms-if="el.StateName!='-1'&&search.seartype==2">

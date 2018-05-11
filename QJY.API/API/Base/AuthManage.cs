@@ -1863,7 +1863,7 @@ namespace QJY.API
             DataTable dt = new JH_Auth_ModelB().GetDTByCommand(strSql);
             dt.Columns.Add("FunData", Type.GetType("System.Object"));
             DataTable dtRoleFun = new JH_Auth_RoleFunB().GetDTByCommand(@"SELECT DISTINCT fun.*,rolefun.ActionCode RoleFun,rolefun.FunCode 
-                                                                            from JH_Auth_Function fun left join JH_Auth_RoleFun rolefun on fun.ID=rolefun.FunCode and rolefun.ComId=" + UserInfo.User.ComId + "and rolefun.RoleCode=" + P1 + " Where  fun.ComId=0 or fun.ComId=" + UserInfo.User.ComId);
+                                                                            from JH_Auth_Function fun left join JH_Auth_RoleFun rolefun on fun.ID=rolefun.FunCode and rolefun.ComId=" + UserInfo.User.ComId + "and rolefun.RoleCode=" + P1 + " Where  fun.ComId=0 or fun.ComId=" + UserInfo.User.ComId + " ORDER BY fun.FunOrder ");
             int roleId = 0;
             int.TryParse(P1, out roleId);
             JH_Auth_Role roleModel = new JH_Auth_RoleB().GetEntity(d => d.RoleCode == roleId && d.ComId == UserInfo.User.ComId);

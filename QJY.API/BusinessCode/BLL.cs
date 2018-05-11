@@ -447,6 +447,18 @@ namespace QJY.API
     }
     public class SZHL_TSGL_TSB : BaseEFDao<SZHL_TSGL_TS>
     {
+
+        /// <summary>
+        /// 修改图书的借阅状态
+        /// </summary>
+        /// <param name="strIDS"></param>
+        /// <param name="Status"></param>
+        /// <param name="strComid"></param>
+        public void UPSTATUS(string strIDS,string Status,string strComid)
+        {
+            string strSql = string.Format(" update SZHL_TSGL_TS set jystatus={0}  where Id in ({1}) and ComId={2}", Status, strIDS, strComid);
+            new SZHL_TSGL_TSB().ExsSql(strSql);
+        }
     }
 
     #endregion

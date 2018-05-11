@@ -288,7 +288,7 @@
                     }
                     e.preventDefault();
                     $(".uppercase").text("正在登陆")
-                    $.getJSON('/API/VIEWAPI.ashx?Action=Commanage_LOGIN', { "password": $("#password").val(), "UserName": $("#username").val(), "ComID": ComID, "chkcode": $("#chkcode").val() }, function (resultData) {
+                    $.getJSON('/API/WXAPI.ashx?Action=LOGIN', { "password": $("#password").val(), "UserName": $("#username").val(), "ComID": ComID, "chkcode": $("#chkcode").val() }, function (resultData) {
                         if (resultData.ErrorMsg == "") {
                             setCookie('szhlcode', resultData.Result);
                             location.href = "/ViewV5/index.html";

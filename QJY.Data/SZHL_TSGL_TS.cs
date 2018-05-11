@@ -34,5 +34,8 @@ namespace QJY.Data
         public string SL { get; set; }
         public string Remark { get; set; }
         public string TSName { get; set; }
+        public string jystatus { get; set; }
+        public string bc { get; set; }
+        public string cbs { get; set; }
     }
 }

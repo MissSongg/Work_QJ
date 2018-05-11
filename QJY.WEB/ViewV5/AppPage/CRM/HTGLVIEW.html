@@ -30,7 +30,7 @@
             <div class="detail-con">
                 <div class="detail-item" ms-repeat-el="ShowColumns" ms-class-1="{{el.class}}" ms-visible="modelData[el.ColName]">
                     <span class="item-tit">{{el.ColText}}</span>
-                    <div class="item-con">{{FnFormat(modelData[el.ColName],el)|html}}</div>
+                    <div class="item-con">{{ComFunJS.FnFormat(modelData[el.ColName],el)|html}}</div>
                 </div>
                 <div class="detail-item" ms-repeat-ext="modelData.SubExt">
                     <span class="item-tit">{{ext.TableFiledName}}</span>

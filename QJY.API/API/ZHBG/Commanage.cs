@@ -24,7 +24,7 @@ using System.Web.SessionState;
 
 namespace QJY.API
 {
-    public class Commanage : IWsService, IRequiresSessionState
+    public class Commanage : IWsService
     {
         public void ProcessRequest(HttpContext context, ref Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
@@ -35,74 +35,7 @@ namespace QJY.API
 
 
         #region 官网登录和注册
-        /// <summary>
-        /// 登录
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="msg"></param>
-        /// <param name="P1">用户名</param>
-        /// <param name="P2">密码（未解码的）</param>
-        /// <param name="UserInfo"></param>
-        public void LOGIN(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
 
-            string password = context.Request["password"] ?? "";
-            string username = context.Request["UserName"] ?? "";
-            string chkcode = context.Request["chkcode"] ?? "";
-            msg.ErrorMsg = "";
-
-            if (chkcode.ToUpper() != "APP")
-            {
-                if (context.Session["chkcode"] != null)
-                {
-
-                    if (!chkcode.ToUpper().Equals(context.Session["chkcode"].ToString()))
-                    {
-                        msg.ErrorMsg = "验证码不正确";
-                        return;
-                    }
-                }
-                else
-                {
-                    msg.ErrorMsg = "验证码已过期";
-                    return;
-                }
-            }
-
-
-
-            JH_Auth_QY qyModel = new JH_Auth_QYB().GetALLEntities().First();
-            password = CommonHelp.GetMD5(password);
-            JH_Auth_User userInfo = new JH_Auth_User();
-
-            List<JH_Auth_User> userList = new JH_Auth_UserB().GetEntities(d => (d.UserName == username || d.mobphone == username) && d.UserPass == password).ToList();
-            if (userList.Count() == 0)
-            {
-                msg.ErrorMsg = "用户名或密码不正确";
-                return;
-            }
-            else
-            {
-                userInfo = userList[0];
-                if (userInfo.IsUse != "Y")
-                {
-                    msg.ErrorMsg = "用户被禁用,请联系管理员";
-                    return;
-                }
-                if (string.IsNullOrEmpty(userInfo.pccode))
-                {
-                    userInfo.pccode = CommonHelp.CreatePCCode(userInfo);
-                }
-                userInfo.logindate = DateTime.Now;
-                new JH_Auth_UserB().Update(userInfo);
-                msg.Result = userInfo.pccode;
-                msg.Result1 = userInfo.UserName;
-                msg.Result2 = qyModel.FileServerUrl;
-                msg.Result4 = userInfo;
-            }
-
-
-        }
 
         /// <summary>
         /// 注册

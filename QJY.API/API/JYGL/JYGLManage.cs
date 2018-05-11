@@ -11,12 +11,12 @@ using System.Data;
 
 namespace QJY.API
 {
-    public class TSGLManage : IWsService
+    public class JYGLManage : IWsService
     {
         public void ProcessRequest(HttpContext context, ref Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            MethodInfo methodInfo = typeof(TSGLManage).GetMethod(msg.Action.ToUpper());
-            TSGLManage model = new TSGLManage();
+            MethodInfo methodInfo = typeof(JYGLManage).GetMethod(msg.Action.ToUpper());
+            JYGLManage model = new JYGLManage();
             methodInfo.FastInvoke(model, new object[] { context, msg, P1, P2, UserInfo });
         }
         #region 图书管理
@@ -40,6 +40,17 @@ namespace QJY.API
             if (P2 != "")//图书类型
             {
                 strWhere += string.Format(" And SZHL_TSGL_TS.TSType='{0}'", P2); ;
+            }
+            string kystatus = context.Request["kystatus"] ?? "";
+            if (kystatus != "")//图书类型
+            {
+                strWhere += string.Format(" And SZHL_TSGL_TS.Status='{0}'", kystatus);
+            }
+
+            string jystatus = context.Request["jystatus"] ?? "";
+            if (jystatus != "")//图书类型
+            {
+                strWhere += string.Format(" And SZHL_TSGL_TS.jystatus='{0}'", jystatus);
             }
             int recordCount = 0;
             int page = 0;
@@ -129,9 +140,8 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void MODIFYTSSTATUS(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            int Id = int.Parse(P1);
-            string strSql = string.Format(" update SZHL_TSGL_TS set status={0}  where Id={1} and ComId={2}", P2, P1, UserInfo.User.ComId);
-            new SZHL_TSGL_TSB().ExsSql(strSql);
+
+            new SZHL_TSGL_TSB().UPSTATUS(P1, P2, UserInfo.User.ComId.ToString());
         }
         #endregion
 
@@ -177,16 +187,12 @@ namespace QJY.API
             string userName = UserInfo.User.UserName;
             string strWhere = " 1=1 and jy.ComId=" + UserInfo.User.ComId;
 
-            string leibie = context.Request["lb"] ?? "";
-            if (leibie != "")
-            {
-                strWhere += string.Format(" And jy.TSID='{0}' ", leibie);
-            }
+         
             string strContent = context.Request["Content"] ?? "";
             strContent = strContent.TrimEnd();
             if (strContent != "")
             {
-                strWhere += string.Format(" And ( jy.Remark like '%{0}%')", strContent);
+                strWhere += string.Format(" And ( jy.TSName like '%{0}%')", strContent);
             }
             int DataID = -1;
             int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
@@ -215,7 +221,7 @@ namespace QJY.API
                     case "0": //手机单条数据
                         {
                             //设置usercenter已读
-                            new JH_Auth_User_CenterB().ReadMsg(UserInfo, DataID, "YCGL");
+                            new JH_Auth_User_CenterB().ReadMsg(UserInfo, DataID, "TSGL");
                         }
                         break;
                     case "1": //创建的
@@ -252,7 +258,7 @@ namespace QJY.API
                         break;
                 }
 
-                dt = new SZHL_TSGLB().GetDataPager("SZHL_TSGL yc left join SZHL_TSGL_TS ts on jy.tsID=ts.ID", "jy.*,ts.tsType,ts.tsNum ,dbo.fn_PDStatus(jy.intProcessStanceid) AS StateName", pagecount, page, " jy.CRDate desc", strWhere, ref total);
+                dt = new SZHL_TSGLB().GetDataPager("SZHL_TSGL jy left join SZHL_TSGL_TS ts on jy.tsID=ts.ID", "jy.*,ts.tsNum,dbo.fn_PDStatus(jy.intProcessStanceid) AS StateName", pagecount, page, " jy.CRDate desc", strWhere, ref total);
 
                 if (dt.Rows.Count > 0)
                 {
@@ -337,12 +343,11 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void GETTSIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            // string strSql = string.Format("SELECT  ts.* from  SZHL_TSGL_TS ts LEFT JOIN SZHL_TSGL ycgl on ts.ID=ycgl.tsID where ts.Status=0 and (ycgl.Status=0 or ycgl.Status is NULL) and ts.ComId={0}", UserInfo.User.ComId);
             string strSql = string.Format("SELECT  ts.* from  SZHL_TSGL_TS ts  where ts.Status=0  and ts.ComId={0}", UserInfo.User.ComId);
-            //if (P1 != "")
-            //{
-            //    strSql += string.Format(" and ycgl.EndTime<'{0}' ", P1);
-            //}
+            if (P1 != "")
+            {
+                strSql += string.Format("  and ts.id in ({0})", P1.TrimEnd(','));
+            }
             msg.Result = new SZHL_TSGL_TSB().GetDTByCommand(strSql);
         }
         #endregion
@@ -359,7 +364,7 @@ namespace QJY.API
         public void GETKYTSLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             string strwhere = string.Empty;
-            
+
             DataTable dt = new SZHL_TSGL_TSB().GetDTByCommand("select * from dbo.SZHL_TSGL_TS where IsDel=0 and Status='0'  and comid=" + UserInfo.QYinfo.ComId + strwhere);
 
             dt.Columns.Add("tsTypeName", Type.GetType("System.String"));
@@ -368,7 +373,7 @@ namespace QJY.API
 
             foreach (DataRow dr in dt.Rows)
             {
-               
+
             }
 
             msg.Result = dt;
@@ -396,7 +401,7 @@ namespace QJY.API
             {
                 if (P2 != "") // 处理微信上传的图片
                 {
-                    string fids = CommonHelp.ProcessWxIMG(P2, "YCGL", UserInfo);
+                    string fids = CommonHelp.ProcessWxIMG(P2, "JYGL", UserInfo);
                     if (!string.IsNullOrEmpty(jygl.Files))
                     {
                         jygl.Files += "," + fids;
@@ -409,9 +414,11 @@ namespace QJY.API
                 jygl.CRDate = DateTime.Now;
                 jygl.CRUser = UserInfo.User.UserName;
                 jygl.ComId = UserInfo.User.ComId;
-                jygl.Status = "1";
+                jygl.Status = "0";
                 jygl.IsDel = 0;
                 new SZHL_TSGLB().Insert(jygl);
+                new SZHL_TSGL_TSB().UPSTATUS(jygl.TSID, "1", UserInfo.User.ComId.ToString());//更新为借阅状态
+
             }
             else
             {
@@ -443,7 +450,7 @@ namespace QJY.API
                 }
                 if (model.TSID != null)
                 {
-                    msg.Result2 = new SZHL_TSGL_TSB().GetEntity(p => p.ID == model.TSID);
+                    msg.Result2 = new SZHL_TSGL_TSB().GetEntities(" ID IN (" + model.TSID + ") ");
                 }
 
                 new JH_Auth_User_CenterB().ReadMsg(UserInfo, model.ID, "TSGL");
@@ -471,7 +478,7 @@ namespace QJY.API
         }
         #endregion
 
-        
+
 
         #endregion
     }

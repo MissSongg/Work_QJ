@@ -69,7 +69,7 @@
             <div class="activity-cont">
                 <!--<p>部门：{{el.BranchName}}</p>-->
                 <p>时间：{{el.RBDate|date("yyyy-MM-dd")}}</p>
-                <p>{{FnFormat(el.RBContent,{"format": "text"})|html}}</p>
+                <p>{{ComFunJS.FnFormat(el.RBContent,{"format": "text"})|html}}</p>
                 <p ms-if="el.FileList||el.PLList"><span class="mr10" ms-if="el.PLList.size()>0"><i class="iconfont icon-pinglun  ft14 ml5"></i>({{el.PLList.size()}})</span><span class="mr10" ms-if="el.FileList&&el.FileList.size()>0"><i class="iconfont icon-fj mr5 ft14"></i>({{el.FileList.size()}})</span></p>
             </div>            
             <div class="btn-add">

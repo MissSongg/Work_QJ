@@ -5,7 +5,6 @@ using System.Web;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
-using System.Web.SessionState;
 using QJY.API;
 using QJY.Data;
 using System.Diagnostics;
@@ -15,7 +14,7 @@ namespace QJY.WEB
     /// <summary>
     /// VIEWAPI 的摘要说明
     /// </summary>
-    public class VIEWAPI : IHttpHandler, IRequiresSessionState
+    public class VIEWAPI : IHttpHandler
     {
         public string ComId { get; set; }
 

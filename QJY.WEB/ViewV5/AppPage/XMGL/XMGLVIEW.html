@@ -30,7 +30,7 @@
             <div class="detail-con">
                 <div class="detail-item" ms-repeat-el="ShowColumns" ms-visible="modelData[el.ColName]" ms-class-1="{{el.class}}">
                     <span class="item-tit">{{el.ColText}}</span>
-                    <div class="item-con">{{FnFormat(modelData[el.ColName],el)|html}}</div>
+                    <div class="item-con">{{ComFunJS.FnFormat(modelData[el.ColName],el)|html}}</div>
                 </div>
                 <!--<div class="detail-item" ms-repeat-ext="modelData.SubExt">
                     <span class="item-tit">{{ext.TableFiledName}}</span>
@@ -208,66 +208,6 @@
                     window.open(file.YLUrl);
                     return;
                 }
-            },
-            FnFormat: function (str, fmt) { //格式化
-                if (str && fmt.format) {
-                    switch (fmt.format) {
-
-                        case "statename": //审核流程，-1时不需要流程
-                            {
-                                if (str == "-1") return "";
-                            }
-                            break;
-                        case "dateformat": //日期格式，默认yyyy-mm-dd
-                            {
-                                return ComFunJS.getnowdate("yyyy-mm-dd", str);
-                            }
-                            break;
-                        case "username": //用户id转成为用户名
-                            {
-                                return ComFunJS.convertuser(str);
-                            }
-                            break;
-                        case "qrcode": //二维码图片展示
-                            {
-                                return "<img src='" + str + "' style='width:60px;height:60px;' />"
-                            }
-                            break;
-                        case "bqh":
-                            {
-                                return ComFunJS.bqhContent(str);
-                            }
-                            break;
-                        case "text":
-                            {
-                                var len = fmt.len || 20;
-                                return ComFunJS.convstr(str + "", len);
-                            }
-                            break;
-                        case "xmzt":
-                            {
-                                switch (str) {
-                                    case "0": str = '正在进行'; break;
-                                    case "1": str = '已结束'; break;
-                                }
-                            }
-                            break;
-                        case "xmjd":
-                            {
-                                if (str) {
-                                    return str + '%';
-                                }
-                                else {
-                                    return '0%';
-                                }
-                            }
-                            break;
-                        default: {
-                            return "";
-                        }
-                    }
-                }
-                return str;
             }
         });
         avalon.ready(function () {

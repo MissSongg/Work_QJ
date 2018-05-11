@@ -51,7 +51,7 @@
                     <td class="tc">
                         {{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <td ms-repeat-im="ShowColumns" ms-class-1="lk:im.type=='link'" ms-visible="im.IsSel" ms-click="View(el.ID,el.intProcessStanceid,this)">{{FnFormat(el[im.ColName],im)|html}}</td>
+                    <td ms-repeat-im="ShowColumns" ms-class-1="lk:im.type=='link'" ms-visible="im.IsSel" ms-click="View(el.ID,el.intProcessStanceid,this)">{{ComFunJS.FnFormat(el[im.ColName],im)|html}}</td>
                     <td>
                         <a class="cz-btn ft18 js-color tip" data-toggle="tooltip" title="审批" ms-click="EditForm('HYGL_HYGL',el.ID,el.intProcessStanceid,$event)" ms-if="el.StateName!='-1'&&search.seartype==3">
                             <i class="iconfont icon-shenhe"></i>

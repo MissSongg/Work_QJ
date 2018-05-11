@@ -1109,59 +1109,61 @@
                 $input.parent().find(".panpel").remove();
                 var $panelsc = $('<div class="panel panel-default panpel" style="margin-bottom: 0px;"><div class="panel-body"><button class="btn btn-success  btn-upload  dim" type="button" id="qjupload' + index + '"><i class="fa fa-upload"></i>上传文件</button></div><ul class="list-group"></ul></div>')
                     .insertAfter($input);
-                arrUp[index] = new QJUpload({
-                    uploadButtton: 'qjupload' + index,
-                    fileapiurl: ComFunJS.getfileapi(),
-                    usercode: "qycode",
-                    secret: "qycode",
-                    upinfo: "上传组件",
-                    webupconfig: {
-                        fileNumLimit: 5,
-                    },
-                    filecomplete: function (fileData) {
-
-                    },
-                    closeupwin: function (fileData, dom) {
-                        var fjids = "";
-                        $.post('/API/VIEWAPI.ashx?Action=QYWD_ADDFILE', { "P1": fileData, "P2": 3 }, function (result) {
-                            if (result.ErrorMsg == "") {
-                                var fjdata = result.Result;//给filedata赋值,供页面使用
-                                for (var i = 0; i < fjdata.length; i++) {
-                                    var picurl = "";
-                                    if (ComFunJS.isPic(fjdata[i].FileExtendName)) {
-                                        picurl = "<img  class='fjimg' style='width:60px;height:60px' src='" + ComFunJS.getfile(fjdata[i].ID) + "'/>";
-                                    }
-                                    var $fileitem = $("<a    class='list-group-item'   fileid='" + fjdata[i].ID + "' >" + picurl + fjdata[i].Name + "." + fjdata[i].FileExtendName + "<span class='glyphicon glyphicon-download-alt'  fileid='" + fjdata[i].ID + "'  FileMD5='" + fjdata[i].FileMD5 + "'  style='margin-left: 5px;'></span><span class='glyphicon glyphicon-trash pull-right'></span></a>");
-                                    $fileitem.find('.glyphicon-trash').bind('click', function () {
-                                        $(this).parent().remove();
-                                        var tempfjids = "";
-                                        $panelsc.find('.list-group-item').each(function () {
-                                            tempfjids = tempfjids + $(this).attr("fileid") + ",";
-                                        })
-                                        if (tempfjids.length > 0) {
-                                            tempfjids = tempfjids.substring(0, tempfjids.length - 1)
+                ComFunJS.loadJs(ComFunJS.getfileapi() + "/Web/qj_upload.js", function () {
+                    arrUp[index] = new QJUpload({
+                        uploadButtton: 'qjupload' + index,
+                        fileapiurl: ComFunJS.getfileapi(),
+                        usercode: "qycode",
+                        secret: "qycode",
+                        upinfo: "上传组件",
+                        webupconfig: {
+                            fileNumLimit: 5,
+                        },
+                        closeupwin: function (fileData, dom) {
+                            var fjids = "";
+                            $.post('/API/VIEWAPI.ashx?Action=QYWD_ADDFILE', { "P1": fileData, "P2": 3 }, function (result) {
+                                if (result.ErrorMsg == "") {
+                                    var fjdata = result.Result;//给filedata赋值,供页面使用
+                                    for (var i = 0; i < fjdata.length; i++) {
+                                        var picurl = "";
+                                        if (ComFunJS.isPic(fjdata[i].FileExtendName)) {
+                                            picurl = "<img  class='fjimg' style='width:60px;height:60px' src='" + ComFunJS.getfile(fjdata[i].ID) + "'/>";
                                         }
-                                        $input.val(tempfjids);
+                                        var $fileitem = $("<a    class='list-group-item'   fileid='" + fjdata[i].ID + "' >" + picurl + fjdata[i].Name + "." + fjdata[i].FileExtendName + "<span class='glyphicon glyphicon-download-alt'  fileid='" + fjdata[i].ID + "'  FileMD5='" + fjdata[i].FileMD5 + "'  style='margin-left: 5px;'></span><span class='glyphicon glyphicon-trash pull-right'></span></a>");
+                                        $fileitem.find('.glyphicon-trash').bind('click', function () {
+                                            $(this).parent().remove();
+                                            var tempfjids = "";
+                                            $panelsc.find('.list-group-item').each(function () {
+                                                tempfjids = tempfjids + $(this).attr("fileid") + ",";
+                                            })
+                                            if (tempfjids.length > 0) {
+                                                tempfjids = tempfjids.substring(0, tempfjids.length - 1)
+                                            }
+                                            $input.val(tempfjids);
+                                        })
+                                        $fileitem.find('.glyphicon-download-alt').bind('click', function () {
+                                            window.open(ComFunJS.getfile($(this).attr("fileid")))
+
+                                        })
+
+                                        $panelsc.find('.list-group').append($fileitem);
+                                    }
+
+                                    $panelsc.find('.list-group-item').each(function () {
+                                        fjids = fjids + $(this).attr("fileid") + ",";
                                     })
-                                    $fileitem.find('.glyphicon-download-alt').bind('click', function () {
-                                        window.open(ComFunJS.getfile($(this).attr("fileid")))
-
-                                    })
-
-                                    $panelsc.find('.list-group').append($fileitem);
+                                    if (fjids.length > 0) {
+                                        fjids = fjids.substring(0, fjids.length - 1)
+                                    }
+                                    $input.val(fjids);
                                 }
+                            })
+                        }
+                    });
+                })
 
-                                $panelsc.find('.list-group-item').each(function () {
-                                    fjids = fjids + $(this).attr("fileid") + ",";
-                                })
-                                if (fjids.length > 0) {
-                                    fjids = fjids.substring(0, fjids.length - 1)
-                                }
-                                $input.val(fjids);
-                            }
-                        })
-                    }
-                });
+
+
                 if ($input.val() != "") {
                     $.getJSON('/API/VIEWAPI.ashx?ACTION=QYWD_GETFILESLIST', { P1: $input.val() }, function (data) {
                         if (data.ErrorMsg == "") {
@@ -1318,6 +1320,156 @@
                     }
                 }
             }
+        }
+        return str;
+    },
+    FnFormat: function (str, fmt) { //格式化
+        str = str + "";
+        if (str && fmt.format) {
+            if ($.isFunction(fmt.format)) {
+                str = fmt.format(str);
+            } else {
+                switch (fmt.format) {
+                    case "shstate": //审核状态转换成文字
+                        {
+                            if (str == "0") {
+                                str = "未审核";
+                            } else if (str == "-1") {
+                                str = "审核不通过";
+                            } else if (str == "1") {
+                                str = "审核通过";
+                            }
+                        }
+                        break;
+
+                    case "statename": //审核流程，-1时不需要流程
+                        {
+                            if (str == "-1") str = "";
+                        }
+                        break;
+                    case "rwstate": //任务状态
+                        {
+                            if (str == "0") str = "待办任务";
+                            else if (str == "1") str = "已办任务";
+                            else if (str == "2") str = "过期任务";
+                        }
+                        break;
+                    case "zt": //任务状态
+                        {
+                            return str == "0" ? "可用" : "不可用";
+                        }
+                        break;
+                    case "dateformat": //日期格式，默认yyyy-mm-dd
+                        {
+                            str = ComFunJS.getnowdate("yyyy-mm-dd", str);
+                        }
+                        break;
+                    case "timeformat": //日期格式，默认yyyy-mm-dd
+                        {
+                            str = ComFunJS.getnowdate("yyyy-mm-dd hh:mm", str);
+                        }
+                        break;
+                    case "username": //用户id转成为用户名
+                        {
+                            str = ComFunJS.convertuser(str);
+                        }
+                        break;
+                    case "qrcode": //二维码图片展示
+                        {
+                            str = "<img src='" + str + "' style='width:60px;height:60px;' />"
+                        }
+                        break;
+                    case "bqh"://表情转换
+                        {
+                            return ComFunJS.bqhContent(str);
+                        }
+                        break;
+                    case "text"://截取字符串
+                        {
+                            str = ComFunJS.convstr(str);
+                        }
+                        break;
+                    case "txfs"://提醒方式
+                        {
+                            switch (str) {
+                                case "0": str = '短信和微信'; break;
+                                case "1": str = '短信'; break;
+                                case "2": str = '微信'; break;
+                            }
+
+                        }
+                        break;
+                    case "hdlx"://活动类型
+                        {
+                            switch (str) {
+                                case "0": str = '企业活动'; break;
+                                case "1": str = '企业投票'; break;
+                            }
+                        }
+                        break;
+                    case "hdzt"://活动状态
+                        {
+                            switch (str) {
+                                case "0": str = '已结束'; break;
+                                case "1": str = '未开始'; break;
+                                case "2": str = '正在进行'; break;
+                            }
+                        }
+                        break;
+                    case "sr":     //收入明细
+                        {
+                            if (str * 1 >= 0)
+                                str = "￥" + str;
+                            else
+                                str = "--";
+                        }
+                        break;
+                    case "zc":    //支出明细
+                        {
+                            if (str * 1 >= 0)
+                                str = "--";
+                            else
+                                str = "￥" + str;
+                        }
+                        break;
+                    case "xmzt":
+                        {
+                            switch (str) {
+                                case "0": str = '正在进行'; break;
+                                case "1": str = '已结束'; break;
+                            }
+                        }
+                        break;
+                    case "xmjd":
+                        {
+                            if (str) {
+                                return str + '%';
+                            }
+                            else {
+                                return '0%';
+                            }
+                        }
+                        break;
+                    case "clzt":    //车辆状态
+                        {
+                            switch (str) {
+                                case "0": str = '可用'; break;
+                                case "1": str = '报废'; break;
+                                case "2": str = '维修'; break;
+                            }
+                        }
+                        break;
+
+                    default: {
+
+                    }
+                }
+
+            }
+
+        }
+        if (fmt.len) {
+            str = str.length > fmt.len ? str.substring(0, fmt.len) + '...' : str;
         }
         return str;
     }

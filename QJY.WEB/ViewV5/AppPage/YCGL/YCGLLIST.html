@@ -58,7 +58,7 @@
             </div>-->
                         {{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <td ms-repeat-im="ShowColumns" ms-visible="im.IsSel">{{FnFormat(el[im.ColName],im)|html}}</td>
+                    <td ms-repeat-im="ShowColumns" ms-visible="im.IsSel">{{ComFunJS.FnFormat(el[im.ColName],im)|html}}</td>
                     <td>
                         <a class="cz-btn ft18 js-color tip" data-toggle="tooltip" title="审批" ms-click="EditForm('YCGL_YCGL',el.ID,el.intProcessStanceid,$event)" ms-if="el.StateName!='-1'&&search.seartype==2">
                             <i class="iconfont icon-shenhe"></i>

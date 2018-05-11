@@ -38,7 +38,7 @@
                     ComFunJS.winwarning(msg);
                     return;
                 }
-                $.getJSON('/API/VIEWAPI.ashx?Action=Commanage_LOGIN', { "password": model.Pasword, "UserName": model.username, "chkcode": "APP"}, function (resultData) {
+                $.getJSON('/API/WXAPI.ashx?Action=LOGIN', { "password": model.Pasword, "UserName": model.username, "chkcode": "APP"}, function (resultData) {
                     if (resultData.ErrorMsg == "") {
                         ComFunJS.setCookie('szhlcode', resultData.Result);
                         ComFunJS.setCookie('username', resultData.Result1, 20000);

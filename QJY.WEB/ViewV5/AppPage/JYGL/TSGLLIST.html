@@ -1,21 +1,30 @@
-﻿<div ms-controller="CLGLLIST">
+﻿<div ms-controller="TSGLLIST">
     <!-- 添加按钮 -->
     <div class="btn-add">
-        <button type="button" class="btn btn-info btn-lg" ms-click="AddView('YCGL_CLGL')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加车辆</button>
+        <button type="button" class="btn btn-info btn-lg" ms-click="AddView('JYGL_TSGL')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加图书</button>
     </div>
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
-        <!--<div class="oh">
-            <h5 class="pull-left tr">车辆类型：</h5>
+        <div class="oh">
+            <h5 class="pull-left tr">图书类型：</h5>
             <ul class="tab-type ft14">
-                <li ms-click="SelectXJType('')"><span class="active">全部</span></li>
-                <li ms-repeat-el="TypeData" ms-click="SelectXJType(el.ID)"><span>{{el.TypeName}}</span></li>
+                <li ms-click="SelectTSType('')"><span class="active">全部</span></li>
+                <li ms-repeat-el="TypeData" ms-click="SelectTSType(el.ID)"><span>{{el.TypeName}}</span></li>
             </ul>
-        </div>-->
+        </div>
+        <div class="oh">
+            <h5 class="pull-left tr">借阅状态：</h5>
+            <ul class="tab-type ft14">
+                <li ms-click="SelectJYType('')"><span class="active">全部</span></li>
+                <li ms-click="SelectJYType('0')"><span>可借阅</span></li>
+                <li ms-click="SelectJYType('1')"><span>借阅中</span></li>
+
+            </ul>
+        </div>
         <!-- 搜索 -->
         <div class="oh">
             <div class="input-group ml15" style="width:295px;">
-                <input type="search" class="form-control" ms-duplex="search.searchcontent" placeholder="搜索车牌号">
+                <input type="search" class="form-control" ms-duplex="search.searchcontent" placeholder="搜索图书名称">
                 <span class="input-group-addon" ms-click="GetLIST()">搜索</span>
             </div>
         </div>
@@ -36,14 +45,21 @@
                         </div>-->
                         序号
                     </th>
-                    <th ms-repeat-im="ShowColumns" ms-visible="im.IsSel">{{im.ColText}}</th>
+                    <th>编码</th>
+                    <th>图书类别</th>
+                    <th>图书名称</th>
+                    <th>作者</th>
+                    <th>购买时间</th>
+                    <th>可用状态</th>
+                    <th>借阅状态</th>
+
                     <th>
                         操作
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr ms-repeat-el="tmpListData" ms-click="ViewForm('YCGL_CLGL',el.ID,'',$event)">
+                <tr ms-repeat-el="tmpListData" ms-click="ViewForm('JYGL_TSGL',el.ID,'',$event)">
                     <td class="tc">
                         <!--<div class="icheckbox_square-blue">
                             <input type="checkbox">
@@ -51,12 +67,18 @@
                         </div>-->
                         {{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <td ms-repeat-im="ShowColumns" ms-visible="im.IsSel">{{ComFunJS.FnFormat(el[im.ColName],im)|html}}</td>
+                    <td>{{el.TSNum}}</td>
+                    <td>{{el.TSTypeName}}</td>
+                    <td>{{el.TSName}}</td>
+                    <td>{{el.auther}}</td>
+                    <td>{{el.BuyDate}}</td>
+                    <td>{{el.Status=='0'?"可用":"不可用"}}</td>
+                    <td>{{el.jystatus=='0'?"可借阅":"借阅中"}}</td>
                     <td>
-                        <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="EditForm('YCGL_CLGL',el.ID,'',$event)">
+                        <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="EditForm('JYGL_TSGL',el.ID,'',$event)">
                             <i class="iconfont icon-bianji"></i>
                         </a>
-                        <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELCL(el,$event)">
+                        <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELTS(el,$event)">
                             <i class="iconfont icon-shanchu"></i>
                         </a>
                     </td>
@@ -87,27 +109,35 @@
 <script>
 
     var tempindex = avalon.define({
-        $id: "CLGLLIST",
-        curXJType: "",
+        $id: "TSGLLIST",
+        curTSType: "",
+        curJYType: "",
+
         tmpListData: [],
         SelectType: function (type) {
             model.search.seartype = type;
             tempindex.GetLIST();
         },
-        SelectXJType: function (type) {
-            tempindex.curXJType = type;
+        SelectTSType: function (type) {
+            tempindex.curTSType = type;
             tempindex.GetLIST();
         },
+        SelectJYType: function (type) {
+            tempindex.curJYType = type;
+            tempindex.GetLIST();
+        },
+
+
         selNum: function (item) {    //选择显示的条数
             model.page.pagecount = item;
             tempindex.GetLIST();
         },
-        DELCL: function (item, event) {
+        DELTS: function (item, event) {
             if (event) {
                 event.stopPropagation();
             }
             ComFunJS.winconfirm("确认要删除吗", function () {
-                $.post("/API/VIEWAPI.ashx?Action=YCGL_DELCL", { P1: item.ID }, function (resultData) {
+                $.post("/API/VIEWAPI.ashx?Action=JYGL_DELTS", { P1: item.ID }, function (resultData) {
                     if (resultData.ErrorMsg == "") {
                         tempindex.tmpListData.remove(item);
                         ComFunJS.winsuccess("操作成功");
@@ -117,25 +147,14 @@
         },
         InitWigetData: function () {
             model.search.seartype = "";
-            //显示的列名
-            model.ShowColumns.clear();
-            model.ShowColumns.pushArray([
-                { "ColName": "CarNum", "ColText": "车牌号", "IsSel": true, "format": "text" },
-                { "ColName": "TypeName", "ColText": "车类型", "IsSel": true, "format": "text" },
-                { "ColName": "CarBrand", "ColText": "品牌", "IsSel": true, "format": "text" },
-                { "ColName": "BuyDate", "ColText": "购买时间", "IsSel": true, "format": "text" },
-                { "ColName": "SeatNum", "ColText": "座位数", "IsSel": true, "format": "text" },
-                { "ColName": "Status", "ColText": "状态", "IsSel": true, "format": "clzt" }
-            ]);
-            //类型数据
-
-            model.GetTypeData("5");
+            model.GetTypeData("24");
             tempindex.GetLIST();
         },
+
         GetLIST: function () {
             model.page.pageindex = 1;
             tempindex.tmpListData.clear();
-            $.getJSON('/API/VIEWAPI.ashx?Action=YCGL_GETCLLIST_PAGE', { p: 1, P1: model.search.searchcontent, P2: tempindex.curXJType, pagecount: model.page.pagecount }, function (resultData) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_GETTSLIST_PAGE', { p: 1, P1: model.search.searchcontent, P2: tempindex.curTSType, pagecount: model.page.pagecount, jystatus: tempindex.curJYType }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempindex.tmpListData = resultData.Result;
                     if (tempindex.tmpListData.size() == 0) { model.isnull = true; } else { model.isnull = false; }
@@ -147,7 +166,7 @@
                         skin: 'molv',
                         jump: function (e) { //触发分页后的回调
                             if (e.curr != model.page.pageindex) {
-                                $.getJSON('/API/VIEWAPI.ashx?Action=YCGL_GETCLLIST_PAGE', { p: e.curr, P1: model.search.seartype, P2: tempindex.curXJType, pagecount: model.page.pagecount }, function (resultData) {
+                                $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_GETTSLIST_PAGE', { p: e.curr, P1: model.search.seartype, P2: tempindex.curTSType, pagecount: model.page.pagecount, jystatus: tempindex.curJYType }, function (resultData) {
                                     if (resultData.ErrorMsg == "") {
                                         tempindex.tmpListData = resultData.Result;
                                     }
@@ -160,5 +179,5 @@
             })
         }
     })
-    //@ sourceURL=CCXJLIST.js;
+    //@ sourceURL=TSGLLIST.js;
 </script>

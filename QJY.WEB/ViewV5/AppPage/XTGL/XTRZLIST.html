@@ -46,7 +46,7 @@
                             <span class="iconfont icon-check ft12"></span>
                         </div>
                     </td>
-                    <td ms-repeat-im="ShowColumns" ms-visible="im.IsSel">{{FnFormat(el[im.ColName],im)|html}}</td>
+                    <td ms-repeat-im="ShowColumns" ms-visible="im.IsSel">{{ComFunJS.FnFormat(el[im.ColName],im)|html}}</td>
                     <td style="min-width:100px;">
                         <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="Del(el,$event)">
                             <i class="iconfont icon-shanchu"></i>

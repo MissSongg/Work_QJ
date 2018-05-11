@@ -46,11 +46,11 @@
                       
                         {{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <td class="lk" ms-click="ViewFormNew('DXGL_DXGL',el.ID,'',$event)">{{FnFormat(el.dxContent,{"format": "text", "len": 20})|html}}</td>
-                    <td>{{FnFormat(el.dxnums,{"format": "text", "len": 20})|html}}</td>
+                    <td class="lk" ms-click="ViewFormNew('DXGL_DXGL',el.ID,'',$event)">{{ComFunJS.FnFormat(el.dxContent,{"format": "text", "len": 20})|html}}</td>
+                    <td>{{ComFunJS.FnFormat(el.dxnums,{"format": "text", "len": 20})|html}}</td>
                     <td>{{el.status}}</td>
                     <td>{{el.SendTime|date("yyyy-MM-dd HH:mm")}}</td>
-                    <td>{{FnFormat(el.CRUser,{"format": "username"})|html}}</td>
+                    <td>{{ComFunJS.FnFormat(el.CRUser,{"format": "username"})|html}}</td>
                     <td>
                         <span class=" btn-click">
                             <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" ms-attr-title="el.status=='已发送'?'删除':'撤销'" ms-if="el.CRUser==userName" ms-click="DELDX(el,$event)">

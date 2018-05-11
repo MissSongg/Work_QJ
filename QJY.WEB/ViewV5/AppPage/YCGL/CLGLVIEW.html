@@ -18,7 +18,6 @@
                       { ColName: "SeatNum", ColText: "座位数", IsSel: true},
                       { ColName: "Status", ColText: "状态", IsSel: true, format: "clzt" }
                 ]);
-
                 if (strId) {
                     //编辑加载数据
                     $.getJSON('/API/VIEWAPI.ashx?Action=YCGL_GETCLINFO', { P1: model.strId }, function (resultData) {
@@ -31,23 +30,6 @@
                         }
                     })
                 }
-            }, GetStatusName: function (status) {
-                var statusName = "";
-                switch (status) {
-                    case "0":
-                        statusName = "可用";
-                        break;
-                    case "1":
-                        statusName = "报废";
-                        break;
-                    case "2":
-                        statusName = "维修";
-                        break;
-                    case "3":
-                        statusName = "正在使用";
-                        break;
-                }
-                return statusName;
             }
         });
         avalon.ready(function () {

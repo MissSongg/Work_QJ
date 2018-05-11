@@ -62,7 +62,7 @@
                     <td class="tc">
                         {{$index+1+page.pagecount*(page.pageindex-1)}}
                     </td>
-                    <td ms-repeat-im="ShowColumns" ms-class-1="lk:im.type=='link'" ms-click="View(el.ID,this)" style="min-width: 120px; white-space: nowrap" ms-visible="im.IsSel">{{FnFormat(el[im.ColName],im)|html}}</td>
+                    <td ms-repeat-im="ShowColumns" ms-class-1="lk:im.type=='link'" ms-click="View(el.ID,this)" style="min-width: 120px; white-space: nowrap" ms-visible="im.IsSel">{{ComFunJS.FnFormat(el[im.ColName],im)|html}}</td>
 
                     <td style="min-width:100px;">
                         <span class=" btn-click">

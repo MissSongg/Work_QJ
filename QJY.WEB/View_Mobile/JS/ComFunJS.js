@@ -156,6 +156,23 @@ var ComFunJS = {
     getfileapi: function () {
         return ComFunJS.getCookie("fileapi");
     },
+    loadJs: function (url, callback) {
+        var done = false;
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.language = 'javascript';
+        script.src = url;
+        script.onload = script.onreadystatechange = function () {
+            if (!done && (!script.readyState || script.readyState == 'loaded' || script.readyState == 'complete')) {
+                done = true;
+                script.onload = script.onreadystatechange = null;
+                if (callback) {
+                    callback.call(script);
+                }
+            }
+        }
+        document.getElementsByTagName("head")[0].appendChild(script);
+    },
     seelp: function (numberMillis) {
         var now = new Date();
         var exitTime = now.getTime() + numberMillis;
@@ -921,50 +938,49 @@ var ComFunJS = {
             })
         }
     },//上传图片
-
-
     upfilenowx: function (dom) {
-        var $input = dom;
-        var upload = null;
-        var obj = {
-            uploadButtton: 'tpadd',
-            fileapiurl: ComFunJS.getfileapi(),
-            usercode: "qycode",
-            secret: "qycode",
-            upinfo: "上传组件",
-            width: "90%",
-            left: "5%",
-            webupconfig: {
-                fileNumLimit: 5,
-            },
-            closeupwin: function (fileData) {
-                var fjids = "";
-                $.getJSON('/API/VIEWAPI.ashx?Action=QYWD_ADDFILE', { "P1": fileData, "P2": 3 }, function (result) {
-                    if (result.ErrorMsg == "") {
-                        var fjdata = result.Result;//给filedata赋值,供页面使用
-                        for (var i = 0; i < fjdata.length; i++) {
-                            var $html = $('<li id="img_' + i + '" itemid="' + fjdata[i].ID + '" class="weui_uploader_file  mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + ComFunJS.getfile(fjdata[i].ID) + ')" src="' + ComFunJS.getfile(fjdata[i].ID) + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
-                            $html.appendTo($("#imglist"));
-                            $html.find("i").bind("click", function (event) {
-                                event.stopPropagation();
-                                $html.remove();
+        ComFunJS.loadJs(ComFunJS.getfileapi() + "/Web/qj_upload.js", function () {
+            var $input = dom;
+            var upload = null;
+            var obj = {
+                uploadButtton: 'tpadd',
+                fileapiurl: ComFunJS.getfileapi(),
+                usercode: "qycode",
+                secret: "qycode",
+                upinfo: "上传组件",
+                width: "90%",
+                left: "5%",
+                webupconfig: {
+                    fileNumLimit: 5,
+                },
+                closeupwin: function (fileData) {
+                    var fjids = "";
+                    $.getJSON('/API/VIEWAPI.ashx?Action=QYWD_ADDFILE', { "P1": fileData, "P2": 3 }, function (result) {
+                        if (result.ErrorMsg == "") {
+                            var fjdata = result.Result;//给filedata赋值,供页面使用
+                            for (var i = 0; i < fjdata.length; i++) {
+                                var $html = $('<li id="img_' + i + '" itemid="' + fjdata[i].ID + '" class="weui_uploader_file  mall_pcp tpli" onclick="ComFunJS.viewbigimg(this)" style="background-image:url(' + ComFunJS.getfile(fjdata[i].ID) + ')" src="' + ComFunJS.getfile(fjdata[i].ID) + '"><i><img src="/View_Mobile/Images/close2.png"></i></li>');
+                                $html.appendTo($("#imglist"));
+                                $html.find("i").bind("click", function (event) {
+                                    event.stopPropagation();
+                                    $html.remove();
+                                })
+                            }
+
+                            $("#imglist .tpli").each(function () {
+                                fjids = fjids + $(this).attr("itemid") + ",";
                             })
+                            if (fjids.length > 0) {
+                                fjids = fjids.substring(0, fjids.length - 1)
+                            }
+                            $input.val(fjids);
                         }
+                    })
 
-                        $("#imglist .tpli").each(function () {
-                            fjids = fjids + $(this).attr("itemid") + ",";
-                        })
-                        if (fjids.length > 0) {
-                            fjids = fjids.substring(0, fjids.length - 1)
-                        }
-                        $input.val(fjids);
-                    }
-                })
-
-            }
-        };
-        upload = new QJUpload(obj);
-
+                }
+            };
+            upload = new QJUpload(obj);
+        })
     },
     uploadimgnewbak: function (tpdata) {
 
