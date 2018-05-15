@@ -271,7 +271,7 @@ namespace QJY.API
             }
             if (commonUrl != null && !string.IsNullOrEmpty(commonUrl.Url2))
             {
-                string[] modelArray = new string[] { "ccxj", "lcsp", "ycgl", "hygl", "jfbx" };
+                string[] modelArray = new string[] { "ccxj", "lcsp", "ycgl", "hygl", "jfbx", "jygl" };
                 if (modelArray.Contains(modelCode.ToLower()))
                 {
                     if (type == "B")//流程查看页面

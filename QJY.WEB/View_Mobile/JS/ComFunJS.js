@@ -156,6 +156,9 @@ var ComFunJS = {
     getfileapi: function () {
         return ComFunJS.getCookie("fileapi");
     },
+    trim: function (str) {
+        return str.replace(/^,+/, "").replace(/,+$/, "");
+    },
     loadJs: function (url, callback) {
         var done = false;
         var script = document.createElement('script');

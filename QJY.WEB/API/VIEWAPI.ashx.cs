@@ -81,17 +81,16 @@ namespace QJY.WEB
                         {
                             if (szhlcode != "")//如果存在TOKEN,根据TOKEN找到用户信息，并根据权限执行具体ACTION
                             {
-                                string strSZHLCode = szhlcode;
                                 //通过Code获取用户名，然后执行接口方法
                                 var container = ServiceContainerV.Current().Resolve<IWsService>(acs[0].ToUpper());
-                                JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB().GetUserInfo(strSZHLCode);
-                                if (UserInfo.User.logindate == null)
+                                JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB().GetUserInfo(szhlcode);
+                                if (UserInfo.User != null)
                                 {
-                                    UserInfo.User.logindate = DateTime.Now;
-                                }
-                                TimeSpan ts = new TimeSpan(UserInfo.User.logindate.Value.Ticks).Subtract(new TimeSpan(DateTime.Now.Ticks)).Duration();
-                                if (UserInfo != null)
-                                {
+                                    if (UserInfo.User.logindate == null)
+                                    {
+                                        UserInfo.User.logindate = DateTime.Now;
+                                    }
+                                    TimeSpan ts = new TimeSpan(UserInfo.User.logindate.Value.Ticks).Subtract(new TimeSpan(DateTime.Now.Ticks)).Duration();
                                     if (ts.TotalMinutes > intTimeOut)  // 超过五分钟了,超时了哦;
                                     {
                                         UserInfo.User.pccode = "";
@@ -100,6 +99,7 @@ namespace QJY.WEB
                                     }
                                     else
                                     {
+
                                         Model.Action = Model.Action.Substring(acs[0].Length + 1);
                                         container.ProcessRequest(context, ref Model, P1.TrimEnd(), P2.TrimEnd(), UserInfo);
                                         new JH_Auth_LogB().InsertLog(Model.Action, "调用接口", context.Request.Url.AbsoluteUri, UserInfo.User.UserName, UserInfo.User.UserRealName, UserInfo.QYinfo.ComId, strIP);

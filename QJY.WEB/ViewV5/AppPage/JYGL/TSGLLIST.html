@@ -59,7 +59,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ms-repeat-el="tmpListData" ms-click="ViewForm('JYGL_TSGL',el.ID,'',$event)">
+                <tr ms-repeat-el="tmpListData">
                     <td class="tc">
                         <!--<div class="icheckbox_square-blue">
                             <input type="checkbox">
@@ -69,16 +69,23 @@
                     </td>
                     <td>{{el.TSNum}}</td>
                     <td>{{el.TSTypeName}}</td>
-                    <td>{{el.TSName}}</td>
+                    <td class="lk" ms-click="ViewForm('JYGL_TSGL',el.ID,'',$event)">{{el.TSName}}</td>
                     <td>{{el.auther}}</td>
                     <td>{{el.BuyDate}}</td>
                     <td>{{el.Status=='0'?"可用":"不可用"}}</td>
                     <td>{{el.jystatus=='0'?"可借阅":"借阅中"}}</td>
                     <td>
-                        <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="EditForm('JYGL_TSGL',el.ID,'',$event)">
+
+                        <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="借阅记录" ms-click="ShowJYData(el)" >
+                            <i class="iconfont icon-liebiao3 "></i>
+                        </a>
+                        <!--<a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="归还图书" ms-click="RebackTS(el)"  ms-if="el.jystatus=='1'">
+                            <i class="iconfont icon-baoming"></i>
+                        </a>-->
+                        <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="EditForm('JYGL_TSGL',el.ID,'',$event)" style="margin-left: 10px;">
                             <i class="iconfont icon-bianji"></i>
                         </a>
-                        <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELTS(el,$event)">
+                        <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELTS(el,$event)" style="margin-left: 10px;">
                             <i class="iconfont icon-shanchu"></i>
                         </a>
                     </td>
@@ -104,6 +111,49 @@
 
         </div>
     </div>
+
+    <div class="modal fade" id="JYData" role="dialog">
+        <div class="modal-dialog" role="document" style="width: 700px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{selts.TSName}}--借阅记录</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <table class="table table-hover table-bordered" id="tab">
+                            <thead style="background:#f7f7f7;">
+                                <tr>
+                                    <th width="80px">借阅人</th>
+                                    <th width="110px">借阅开始时间</th>
+                                    <th width="110px">借阅截止时间</th>
+                                    <th width="110px">归还时间</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ms-repeat-item="JYJLData">
+                                    <td>{{item.JYRName}}</td>
+                                    <td>{{item.StartTime|date('yyyy-MM-dd')}}</td>
+                                    <td>{{item.EndTime|date('yyyy-MM-dd')}}</td>
+                                    <td>  <span ms-if="$index==0">{{selts.jystatus=='0'?item.BackDate:"暂未归还"}}</span><span ms-if="$index>0">{{item.BackDate}}</span></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr ms-if="JYJLData.size()==0"><td class="tc" colspan="4">暂无借阅记录</td></tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default  btn-lg " data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info btn-lg " id="conaddForder" ms-click="SaveZiDian()" ms-if="selts.jystatus=='1'">发送归还提醒</button>
+                    <button type="button" class="btn btn-success  btn-lg " id="conaddForder" ms-click="RebackTS()" ms-if="selts.jystatus=='1'">归还图书</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -126,7 +176,18 @@
             tempindex.curJYType = type;
             tempindex.GetLIST();
         },
+        selts:{},
+        JYJLData:[],
+        ShowJYData: function (item) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=JYGL_GETTSJYINFO", { P1: item.ID}, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempindex.selts = item;
+                    tempindex.JYJLData = resultData.Result;
+                    $('#JYData').modal('show');
 
+                }
+            })
+        },
 
         selNum: function (item) {    //选择显示的条数
             model.page.pagecount = item;
@@ -150,7 +211,25 @@
             model.GetTypeData("24");
             tempindex.GetLIST();
         },
-
+        tb: function () {
+            ComFunJS.winconfirm("确认要催还图书吗？", function () {
+                $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_SENDTXMSG', { "P1": ID }, function (result) {
+                    if (result.ErrorMsg == "") {
+                        ComFunJS.winsuccess("催还消息已发送成功");
+                    }
+                })
+            }, function () { })
+        },
+        RebackTS: function () {
+            ComFunJS.winconfirm("确认要归还图书<b  style='color: blue;'>" + tempindex.selts.TSName + "</b>吗", function () {
+                $.post("/API/VIEWAPI.ashx?Action=JYGL_REBACKTS", { P1: tempindex.selts.ID, P2: tempindex.JYJLData[0].ID }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        ComFunJS.winsuccess("操作成功");
+                        tempindex.GetLIST();
+                    }
+                })
+            }, function () { })
+        },
         GetLIST: function () {
             model.page.pageindex = 1;
             tempindex.tmpListData.clear();

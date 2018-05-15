@@ -29,7 +29,7 @@
                     <span ms-click="seltitle(1)" ms-class-1="cur:titletype==1"><i ms-if="titletype==1" class="iconfont icon-bookmark"></i>{{title}}</span>
                     <span ms-if="title1" ms-click="seltitle(2)" ms-class-1="cur:titletype==2"><i ms-if="titletype==2" class="iconfont icon-bookmark"></i>{{title1}}</span>
                     <span ms-if="title2" ms-click="seltitle(3)" ms-class-1="cur:titletype==3"><i ms-if="titletype==3" class="iconfont icon-bookmark"></i>{{title2}}</span>
-                    <div class="pr20" style="float: right;">
+                    <div class="pr20 tbs" style="float: right;">
                         <button class="btn btn-info" ms-if="isEdit=='Y'" ms-click="Edit()">编辑</button>
                         <button class="btn btn-info" ms-if="ISCANCEL=='Y'||model.PIMODEL.IsCanceled == 'Y'" ms-click="CancelWF()">撤回到草稿箱</button>
 
@@ -113,7 +113,7 @@
                     </div>
                 </div>
             </div>
-            <div class="pl20 mb10">
+            <div class="pl20 mb10 tbs">
                 <!-- <div ms-include="btn"></div>-->
                 <button class="btn btn-info" ms-if="ispl" ms-click="addPL()"><i class="iconfont icon-pinglun mr5 ft14"></i>添加{{plTitle}}</button>
                 <button class="btn btn-primary" ms-if="isEndTask" ms-click="tempindex.EndTask(modelData.ID)"><i class="iconfont icon-stop mr5 ft14"></i>结束任务 </button>

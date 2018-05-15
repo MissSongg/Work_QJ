@@ -8,6 +8,7 @@ using FastReflectionLib;
 using QJY.Data;
 using Newtonsoft.Json;
 using System.Data;
+using Senparc.Weixin.QY.Entities;
 
 namespace QJY.API
 {
@@ -126,6 +127,26 @@ namespace QJY.API
             {
                 msg.Result4 = new FT_FileB().GetEntities(" ID in (" + info.Files + ")");
             }
+
+            msg.Result2 = new SZHL_TSGLB().GetEntities(" ','+TSID+','  like '%," + info.ID + ",%'");
+
+        }
+
+
+
+        /// <summary>
+        /// 获取借阅记录
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETTSJYINFO(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int Id = int.Parse(P1);
+            msg.Result = new SZHL_TSGLB().GetEntities(" ','+TSID+','  like '%," + Id + ",%'").OrderByDescending(d => d.ID);
+
         }
         #endregion
 
@@ -143,6 +164,39 @@ namespace QJY.API
 
             new SZHL_TSGL_TSB().UPSTATUS(P1, P2, UserInfo.User.ComId.ToString());
         }
+        public void REBACKTS(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int JYId = int.Parse(P2);
+
+            new SZHL_TSGL_TSB().UPSTATUS(P1, "0", UserInfo.User.ComId.ToString());
+            SZHL_TSGL jygl = new SZHL_TSGLB().GetEntity(d => d.ID == JYId && d.ComId == UserInfo.User.ComId);
+            jygl.BackDate = DateTime.Now;
+            new SZHL_TSGLB().Update(jygl);
+
+        }
+
+        public void SENDTXMSG(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int Id = 0;
+            int.TryParse(P1, out Id);
+            SZHL_TSGL jygl = new SZHL_TSGLB().GetEntity(d => d.ID == Id);
+            if (jygl != null)
+            {
+                SZHL_TXSX TX = new SZHL_TXSX();
+                TX.Date = DateTime.Now.ToString();
+                TX.APIName = "TSGL";
+                TX.ComId = UserInfo.User.ComId;
+                TX.FunName = "TSGLMSG";
+                TX.TXMode = "TSGL";
+                TX.CRUserRealName = UserInfo.User.UserRealName;
+                TX.MsgID = P1;
+                TX.TXContent = UserInfo.User.UserRealName + "请尽快归还图书(" + jygl.TSName + ")";
+                TX.TXUser = jygl.JYR;
+                TX.CRUser = UserInfo.User.UserName;
+                TXSX.TXSXAPI.AddALERT(TX); //时间为发送时间
+            }
+        }
+
         #endregion
 
         #region 获取所有图书
@@ -171,7 +225,6 @@ namespace QJY.API
 
         #endregion
 
-        #region 借阅管理
 
         #region 借阅列表
         /// <summary>
@@ -187,7 +240,7 @@ namespace QJY.API
             string userName = UserInfo.User.UserName;
             string strWhere = " 1=1 and jy.ComId=" + UserInfo.User.ComId;
 
-         
+
             string strContent = context.Request["Content"] ?? "";
             strContent = strContent.TrimEnd();
             if (strContent != "")
@@ -198,7 +251,7 @@ namespace QJY.API
             int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
             if (DataID != -1)
             {
-                string strIsHasDataQX = new JH_Auth_QY_ModelB().ISHASDATAREADQX("TSGL", DataID, UserInfo);
+                string strIsHasDataQX = new JH_Auth_QY_ModelB().ISHASDATAREADQX("JYGL", DataID, UserInfo);
                 if (strIsHasDataQX == "Y")
                 {
                     strWhere += string.Format(" And jy.ID = '{0}'", DataID);
@@ -221,7 +274,7 @@ namespace QJY.API
                     case "0": //手机单条数据
                         {
                             //设置usercenter已读
-                            new JH_Auth_User_CenterB().ReadMsg(UserInfo, DataID, "TSGL");
+                            new JH_Auth_User_CenterB().ReadMsg(UserInfo, DataID, "JYGL");
                         }
                         break;
                     case "1": //创建的
@@ -258,7 +311,7 @@ namespace QJY.API
                         break;
                 }
 
-                dt = new SZHL_TSGLB().GetDataPager("SZHL_TSGL jy left join SZHL_TSGL_TS ts on jy.tsID=ts.ID", "jy.*,ts.tsNum,dbo.fn_PDStatus(jy.intProcessStanceid) AS StateName", pagecount, page, " jy.CRDate desc", strWhere, ref total);
+                dt = new SZHL_TSGLB().GetDataPager("SZHL_TSGL jy ", "jy.*,dbo.fn_PDStatus(jy.intProcessStanceid) AS StateName", pagecount, page, " jy.CRDate desc", strWhere, ref total);
 
                 if (dt.Rows.Count > 0)
                 {
@@ -274,6 +327,46 @@ namespace QJY.API
                 msg.Result = dt;
                 msg.Result1 = total;
             }
+        }
+
+
+
+        #region 菜品列表
+        /// <summary>
+        /// 图书列表//手机端
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void GETTSLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            DataTable dt = new JH_Auth_ZiDianB().GetDTByCommand("select TypeNO,TypeName,ID from JH_Auth_ZiDian where class=24 and (comid=" + UserInfo.User.ComId + " or comid=0)");
+            dt.Columns.Add("Item", Type.GetType("System.Object"));
+            dt.Columns.Add("Qty", Type.GetType("System.String"));
+            dt.Columns.Add("xsQty", Type.GetType("System.String"));
+
+            List<SZHL_TSGL_TS> LISTTS = new SZHL_TSGL_TSB().GetEntities(D => D.Status != "1"&&D.ComId== UserInfo.User.ComId).ToList();
+            foreach (DataRow dr in dt.Rows)
+            {
+                String rid = dr["ID"].ToString();
+                var list = LISTTS.Where(D=>D.TSType== rid).OrderByDescending(p => p.CRDate).Select(p => new
+                {
+                    p.ID,
+                    p.CRDate,
+                    p.auther,
+                    p.SL,
+                    p.TSName,
+                    p.TSTypeName,
+                    Qty = 0
+                });
+                dr["Item"] = list;
+                dr["Qty"] = 0;
+                dr["xsQty"] = list.Count();
+            }
+
+            msg.Result = dt;
         }
         #endregion
 
@@ -479,7 +572,37 @@ namespace QJY.API
         #endregion
 
 
+        #region 任务发送消息的接口
+        public void TSGLMSG(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            SZHL_TXSX TX = JsonConvert.DeserializeObject<SZHL_TXSX>(P1);
+            int rwid = 0;
+            int.TryParse(TX.MsgID, out rwid);
+            SZHL_TSGL jy = new SZHL_TSGLB().GetEntity(d => d.ID == rwid);
 
+            Article ar0 = new Article();
+            ar0.Title = TX.TXContent;
+            ar0.Description = jy == null ? "" : jy.TSName;
+            ar0.Url = TX.MsgID;
+            List<Article> al = new List<Article>();
+            al.Add(ar0);
+            if (!string.IsNullOrEmpty(TX.TXUser))
+
+                try
+                {
+                    //发送PC消息
+                    UserInfo = new JH_Auth_UserB().GetUserInfo(TX.ComId.Value, TX.CRUser);
+                    new JH_Auth_User_CenterB().SendMsg(UserInfo, TX.TXMode, TX.TXContent, TX.MsgID, TX.TXUser, "A", 0, TX.ISCS);
+                }
+                catch (Exception)
+                {
+                }
+
+            //发送微信消息
+            WXHelp wx = new WXHelp(UserInfo.QYinfo);
+            wx.SendTH(al, TX.TXMode, "A", TX.TXUser);
+        }
+        #endregion
         #endregion
     }
 }
