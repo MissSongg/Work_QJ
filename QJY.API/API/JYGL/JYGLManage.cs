@@ -36,7 +36,7 @@ namespace QJY.API
             string strWhere = string.Format(" SZHL_TSGL_TS.ComId=" + UserInfo.User.ComId);
             if (P1 != "") //图书码
             {
-                strWhere += string.Format("and SZHL_TSGL_TS.TSNum like '%{0}%'", P1);
+                strWhere += string.Format("and SZHL_TSGL_TS.TSName like '%{0}%'", P1);
             }
             if (P2 != "")//图书类型
             {
@@ -171,6 +171,7 @@ namespace QJY.API
             new SZHL_TSGL_TSB().UPSTATUS(P1, "0", UserInfo.User.ComId.ToString());
             SZHL_TSGL jygl = new SZHL_TSGLB().GetEntity(d => d.ID == JYId && d.ComId == UserInfo.User.ComId);
             jygl.BackDate = DateTime.Now;
+            jygl.BackBZ = (jygl.BackBZ + "," + P1).TrimStart(',');
             new SZHL_TSGLB().Update(jygl);
 
         }
@@ -184,13 +185,13 @@ namespace QJY.API
             {
                 SZHL_TXSX TX = new SZHL_TXSX();
                 TX.Date = DateTime.Now.ToString();
-                TX.APIName = "TSGL";
+                TX.APIName = "JYGL";
                 TX.ComId = UserInfo.User.ComId;
                 TX.FunName = "TSGLMSG";
-                TX.TXMode = "TSGL";
+                TX.TXMode = "JYGL";
                 TX.CRUserRealName = UserInfo.User.UserRealName;
                 TX.MsgID = P1;
-                TX.TXContent = UserInfo.User.UserRealName + "请尽快归还图书(" + jygl.TSName + ")";
+                TX.TXContent = "您好：" + UserInfo.User.UserRealName + ",请尽快归还图书(" + jygl.TSName + ")";
                 TX.TXUser = jygl.JYR;
                 TX.CRUser = UserInfo.User.UserName;
                 TXSX.TXSXAPI.AddALERT(TX); //时间为发送时间
@@ -347,11 +348,11 @@ namespace QJY.API
             dt.Columns.Add("Qty", Type.GetType("System.String"));
             dt.Columns.Add("xsQty", Type.GetType("System.String"));
 
-            List<SZHL_TSGL_TS> LISTTS = new SZHL_TSGL_TSB().GetEntities(D => D.Status != "1"&&D.ComId== UserInfo.User.ComId).ToList();
+            List<SZHL_TSGL_TS> LISTTS = new SZHL_TSGL_TSB().GetEntities(D => D.Status != "1" && D.ComId == UserInfo.User.ComId).ToList();
             foreach (DataRow dr in dt.Rows)
             {
                 String rid = dr["ID"].ToString();
-                var list = LISTTS.Where(D=>D.TSType== rid).OrderByDescending(p => p.CRDate).Select(p => new
+                var list = LISTTS.Where(D => D.TSType == rid).OrderByDescending(p => p.CRDate).Select(p => new
                 {
                     p.ID,
                     p.CRDate,
@@ -437,10 +438,8 @@ namespace QJY.API
         public void GETTSIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             string strSql = string.Format("SELECT  ts.* from  SZHL_TSGL_TS ts  where ts.Status=0  and ts.ComId={0}", UserInfo.User.ComId);
-            if (P1 != "")
-            {
-                strSql += string.Format("  and ts.id in ({0})", P1.TrimEnd(','));
-            }
+
+            strSql += string.Format("  and ts.id in ({0})", P1 == "" ? "0" : P1.TrimEnd(','));
             msg.Result = new SZHL_TSGL_TSB().GetDTByCommand(strSql);
         }
         #endregion
@@ -485,29 +484,30 @@ namespace QJY.API
         public void ADDJYGL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             SZHL_TSGL jygl = JsonConvert.DeserializeObject<SZHL_TSGL>(P1);
+            JH_Auth_ZiDian ZD = new JH_Auth_ZiDianB().GetEntities(d => d.Class == 25).FirstOrDefault();
             if (jygl == null)
             {
                 msg.ErrorMsg = "操作失败";
                 return;
             }
+            if (new SZHL_TSGLB().getYHYJTS(UserInfo.User.UserName, UserInfo.User.ComId.Value) + jygl.TSID.Split(',').Count() > int.Parse(ZD.Remark1))
+            {
+                msg.ErrorMsg = "超出借书数量限制,数量限制为" + ZD.Remark1 + "本";
+                return;
+            }
+            double hours = (jygl.EndTime.Value - jygl.StartTime.Value).TotalDays;
+            if (hours > double.Parse(ZD.Remark2))
+            {
+                msg.ErrorMsg = "超出借书时间限制,时间限制为" + ZD.Remark2 + "天";
+                return;
+            }
             if (jygl.ID == 0)
             {
-                if (P2 != "") // 处理微信上传的图片
-                {
-                    string fids = CommonHelp.ProcessWxIMG(P2, "JYGL", UserInfo);
-                    if (!string.IsNullOrEmpty(jygl.Files))
-                    {
-                        jygl.Files += "," + fids;
-                    }
-                    else
-                    {
-                        jygl.Files = fids;
-                    }
-                }
                 jygl.CRDate = DateTime.Now;
                 jygl.CRUser = UserInfo.User.UserName;
                 jygl.ComId = UserInfo.User.ComId;
                 jygl.Status = "0";
+                jygl.BackBZ = "";
                 jygl.IsDel = 0;
                 new SZHL_TSGLB().Insert(jygl);
                 new SZHL_TSGL_TSB().UPSTATUS(jygl.TSID, "1", UserInfo.User.ComId.ToString());//更新为借阅状态
@@ -551,28 +551,10 @@ namespace QJY.API
         }
         #endregion
 
-        #region 更新归还图书记录
-        /// <summary>
-        /// 更新归还图书记录
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="msg"></param>
-        /// <param name="P1"></param>
-        /// <param name="P2"></param>
-        /// <param name="UserInfo"></param>
-        public void BACKJYJL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
-            int ID = int.Parse(P1);
-            SZHL_TSGL ysgl = new SZHL_TSGLB().GetEntity(d => d.ID == ID && d.ComId == UserInfo.User.ComId);
-            ysgl.Status = "0";//0 归还  1正在使用
-            ysgl.BackDate = DateTime.Now;
-            new SZHL_TSGLB().Update(ysgl);
-            msg.Result = ysgl;
-        }
-        #endregion
 
 
-        #region 任务发送消息的接口
+
+        #region 借阅消息的接口
         public void TSGLMSG(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             SZHL_TXSX TX = JsonConvert.DeserializeObject<SZHL_TXSX>(P1);

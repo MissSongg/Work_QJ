@@ -2,6 +2,8 @@
     <!-- 添加按钮 -->
     <div class="btn-add">
         <button type="button" class="btn btn-info btn-lg" ms-click="AddView('JYGL_TSGL')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加图书</button>
+        <button type="button" class="btn btn-primary btn-lg" ms-click="$('#JYZD').modal('show');"><i class="iconfont icon-shezhi ft12 mr5"></i>借阅设置</button>
+
     </div>
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
@@ -49,7 +51,6 @@
                     <th>图书类别</th>
                     <th>图书名称</th>
                     <th>作者</th>
-                    <th>购买时间</th>
                     <th>可用状态</th>
                     <th>借阅状态</th>
 
@@ -71,18 +72,17 @@
                     <td>{{el.TSTypeName}}</td>
                     <td class="lk" ms-click="ViewForm('JYGL_TSGL',el.ID,'',$event)">{{el.TSName}}</td>
                     <td>{{el.auther}}</td>
-                    <td>{{el.BuyDate}}</td>
                     <td>{{el.Status=='0'?"可用":"不可用"}}</td>
                     <td>{{el.jystatus=='0'?"可借阅":"借阅中"}}</td>
                     <td>
 
-                        <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="借阅记录" ms-click="ShowJYData(el)" >
+                        <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="借阅记录" ms-click="ShowJYData(el)">
                             <i class="iconfont icon-liebiao3 "></i>
                         </a>
                         <!--<a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="归还图书" ms-click="RebackTS(el)"  ms-if="el.jystatus=='1'">
                             <i class="iconfont icon-baoming"></i>
                         </a>-->
-                        <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="EditForm('JYGL_TSGL',el.ID,'',$event)" style="margin-left: 10px;">
+                        <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="edit('JYGL_TSGL',el.ID,$event)" style="margin-left: 10px;">
                             <i class="iconfont icon-bianji"></i>
                         </a>
                         <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELTS(el,$event)" style="margin-left: 10px;">
@@ -147,9 +147,37 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default  btn-lg " data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-info btn-lg " id="conaddForder" ms-click="SaveZiDian()" ms-if="selts.jystatus=='1'">发送归还提醒</button>
+                    <button type="button" class="btn btn-info btn-lg " id="conaddForder" ms-click="SenDTSTX()" ms-if="selts.jystatus=='1'">发送归还提醒</button>
                     <button type="button" class="btn btn-success  btn-lg " id="conaddForder" ms-click="RebackTS()" ms-if="selts.jystatus=='1'">归还图书</button>
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="JYZD" role="dialog">
+        <div class="modal-dialog" role="document" style="width: 500px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">借阅设置</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label"><span class="Required " style="color:red">*</span>借阅数量限制(本)</label>
+                            <input type="number" class="form-control szhl_require" style="width: 200px" placeholder="请输入借阅数量限制" ms-duplex="JYZiDian.Remark1" />
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label"><span class="Required " style="color:red">*</span>借阅时间限制(天)</label>
+                            <input type="number" class="form-control szhl_require" style="width: 200px" placeholder="请输入借阅时间限制" ms-duplex="JYZiDian.Remark2" />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success" id="conaddForder" ms-click="SaveJYZiDian()">确&nbsp;&nbsp;认</button>
                 </div>
             </div>
         </div>
@@ -162,7 +190,29 @@
         $id: "TSGLLIST",
         curTSType: "",
         curJYType: "",
-
+        JYZiDian: { Remark1: "", Remark2: "" },
+        SaveJYZiDian: function () {
+            if (!tempindex.JYZiDian.Remark) {
+                ComFunJS.winwarning("请输入借阅数量限制");
+                return;
+            }
+            if (!tempindex.JYZiDian.Remark1) {
+                ComFunJS.winwarning("借阅时间限制");
+                return;
+            }
+            $.post("/API/VIEWAPI.ashx?ACTION=XTGL_SAVETYPEMODEL", { P1: JSON.stringify(tempindex.JYZiDian.$model) }, function (jsonresult) {
+                if ($.trim(jsonresult.ErrorMsg) == "") {
+                    ComFunJS.winsuccess("操作成功");
+                    $('#JYZD').modal('hide');
+                }
+            });
+        },
+        edit: function (code, ID, event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD.html?FormCode=" + code + "&ID=" + ID  + "&r=" + Math.random(), "修改", "1000");
+        },
         tmpListData: [],
         SelectType: function (type) {
             model.search.seartype = type;
@@ -176,10 +226,10 @@
             tempindex.curJYType = type;
             tempindex.GetLIST();
         },
-        selts:{},
-        JYJLData:[],
+        selts: {},
+        JYJLData: [],
         ShowJYData: function (item) {
-            $.getJSON("/API/VIEWAPI.ashx?Action=JYGL_GETTSJYINFO", { P1: item.ID}, function (resultData) {
+            $.getJSON("/API/VIEWAPI.ashx?Action=JYGL_GETTSJYINFO", { P1: item.ID }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempindex.selts = item;
                     tempindex.JYJLData = resultData.Result;
@@ -210,10 +260,15 @@
             model.search.seartype = "";
             model.GetTypeData("24");
             tempindex.GetLIST();
+            $.getJSON('/API/VIEWAPI.ashx?Action=XTGL_GETZIDIANLIST', { P1: 25, P2: "" }, function (resultData) {
+                if (resultData.ErrorMsg == "") {
+                    tempindex.JYZiDian = resultData.Result[0];
+                }
+            })
         },
-        tb: function () {
+        SenDTSTX: function () {
             ComFunJS.winconfirm("确认要催还图书吗？", function () {
-                $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_SENDTXMSG', { "P1": ID }, function (result) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_SENDTXMSG', { "P1": tempindex.JYJLData[0].ID }, function (result) {
                     if (result.ErrorMsg == "") {
                         ComFunJS.winsuccess("催还消息已发送成功");
                     }
@@ -224,6 +279,7 @@
             ComFunJS.winconfirm("确认要归还图书<b  style='color: blue;'>" + tempindex.selts.TSName + "</b>吗", function () {
                 $.post("/API/VIEWAPI.ashx?Action=JYGL_REBACKTS", { P1: tempindex.selts.ID, P2: tempindex.JYJLData[0].ID }, function (resultData) {
                     if (resultData.ErrorMsg == "") {
+                        tempindex.selts.jystatus = "0";
                         ComFunJS.winsuccess("操作成功");
                         tempindex.GetLIST();
                     }

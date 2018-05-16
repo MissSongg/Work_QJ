@@ -351,6 +351,9 @@
             $.post("/API/VIEWAPI.ashx?ACTION=LCSP_REBACKWF", { P1: pmodel.PIID, P2: pmodel.spReason, ID: pmodel.DataID, formcode: pmodel.FormCode }, function (result) {
                 if ($.trim(result.ErrorMsg) == "") {
                     top.ComFunJS.winsuccess("退回成功");
+                    if (tempmodel && $.isFunction(tempmodel.rebackform)) {
+                        tempmodel.rebackform(pmodel.DataID);
+                    }
                     pmodel.refiframe();
                 }
             });

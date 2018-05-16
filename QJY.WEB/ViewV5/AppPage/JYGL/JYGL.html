@@ -93,12 +93,18 @@
             $.post("/API/VIEWAPI.ashx?ACTION=JYGL_ADDJYGL", { P1: JSON.stringify(tempmodel.modelData.$model) }, function (result) {
                 return callback.call(this, result);
             });
-        }, GetTSLIST: function (tsids) {
+        },
+        GetTSLIST: function (tsids) {
             $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_GETTSIST', { P1: tempmodel.tsids }, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempmodel.TSData = resultData.Result;
 
                 }
+            })
+        },
+        rebackform: function () {
+            $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_MODIFYTSSTATUS', { P1: tempmodel.modelData.TSID, P2: "0" }, function (resultData) {
+
             })
         }
     });//@ sourceURL=YSGL.js;

@@ -145,8 +145,13 @@
                 return callback.call(this, result);
             });
         },
+        rebackform: function () {
+            $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_MODIFYTSSTATUS', { P1: tempmodel.modelData.TSID, P2: "0" }, function (resultData) {
+
+            })
+        },
         Complate: function () {
-            window.location.href = "/View_Mobile/UI/UI_HYGL_LIST.html?r=" + Math.random();
+            window.location.href = "/View_Mobile/UI/UI_JYGL_LIST.html?r=" + Math.random();
         }, GetTSLIST: function (tsids) {
             $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_GETTSIST', { P1: tsids }, function (resultData) {
                 if (resultData.ErrorMsg == "") {

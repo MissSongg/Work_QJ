@@ -444,6 +444,29 @@ namespace QJY.API
 
     public class SZHL_TSGLB : BaseEFDao<SZHL_TSGL>
     {
+
+        /// <summary>
+        /// 获取用户还有多少本没有归还的书
+        /// </summary>
+        /// <param name="strUserName"></param>
+        /// <param name="ComID"></param>
+        /// <returns></returns>
+        public int getYHYJTS(string strUserName, int ComID)
+        {
+            List<int> ListTS = new List<int>();
+            var JY = this.GetEntities(d => d.JYR == strUserName && d.ComId == ComID);
+            foreach (var item in JY)
+            {
+                foreach (int tsid in item.TSID.SplitTOInt(','))
+                {
+                    if (!ListTS.Contains(tsid) && !item.BackBZ.Split(',').Contains(tsid.ToString()))
+                    {
+                        ListTS.Add(tsid);
+                    }
+                }
+            }
+            return ListTS.Count();
+        }
     }
     public class SZHL_TSGL_TSB : BaseEFDao<SZHL_TSGL_TS>
     {
@@ -454,11 +477,15 @@ namespace QJY.API
         /// <param name="strIDS"></param>
         /// <param name="Status"></param>
         /// <param name="strComid"></param>
-        public void UPSTATUS(string strIDS,string Status,string strComid)
+        public void UPSTATUS(string strIDS, string Status, string strComid)
         {
             string strSql = string.Format(" update SZHL_TSGL_TS set jystatus={0}  where Id in ({1}) and ComId={2}", Status, strIDS, strComid);
             new SZHL_TSGL_TSB().ExsSql(strSql);
         }
+
+
+
+
     }
 
     #endregion

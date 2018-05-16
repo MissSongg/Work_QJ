@@ -47,7 +47,6 @@
                     <th>图书类别</th>
                     <th>图书名称</th>
                     <th>作者</th>
-                    <th>购买时间</th>
                     <th>借阅状态</th>
                 </tr>
             </thead>
@@ -64,7 +63,6 @@
                     <td>{{el.TSTypeName}}</td>
                     <td class="lk" ms-click="ViewForm('JYGL_TSGL',el.ID,'',$event)">{{el.TSName}}</td>
                     <td>{{el.auther}}</td>
-                    <td>{{el.BuyDate}}</td>
                     <td>{{el.jystatus=='0'?"可借阅":"借阅中"}}</td>
                 </tr>
 
