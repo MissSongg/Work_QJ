@@ -56,8 +56,8 @@ namespace QJY.API
             int recordCount = 0;
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             DataTable dt = new SZHL_TSGL_TSB().GetDataPager("SZHL_TSGL_TS   left join  JH_Auth_ZiDian zd on SZHL_TSGL_TS.tsType=zd.ID and zd.Class=24 ", "SZHL_TSGL_TS.*,zd.TypeName", pagecount, page, "SZHL_TSGL_TS.CRDate desc", strWhere, ref recordCount);
             msg.Result = dt;
             msg.Result1 = recordCount;
@@ -248,7 +248,7 @@ namespace QJY.API
                 strWhere += string.Format(" And ( jy.TSName like '%{0}%')", strContent);
             }
             int DataID = -1;
-            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
+            int.TryParse(context.Request["ID"] ?? "-1", out DataID);//记录Id
             if (DataID != -1)
             {
                 string strIsHasDataQX = new JH_Auth_QY_ModelB().ISHASDATAREADQX("JYGL", DataID, UserInfo);
@@ -263,8 +263,8 @@ namespace QJY.API
             {
                 int page = 0;
                 int pagecount = 8;
-                int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-                int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+                int.TryParse(context.Request["p"] ?? "1", out page);
+                int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
                 page = page == 0 ? 1 : page;
                 int total = 0;
 
@@ -414,7 +414,7 @@ namespace QJY.API
             }
 
             int page = 0;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
+            int.TryParse(context.Request["p"] ?? "1", out page);
             page = page == 0 ? 1 : page;
             int total = 0;
             string colNme = @"jygl.*,ts.tsBrand,ts.tsType,ts.tsNum ,    case WHEN wfpi.isComplete is null and wfpi.IsCanceled is null  THEN '正在审批' 

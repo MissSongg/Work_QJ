@@ -35,7 +35,7 @@
                     if (result.ErrorMsg == "") {
                         window.document.getElementById("tb").className = "fa fa-flag";
                         window.document.getElementById("pinfo").innerHTML = "压缩完毕,正在下载,您可以离开此页面";
-                        location.href = ComFunJS.getfile()+"&type=folder&MD5=" + result.Result;
+                        window.location.href = ComFunJS.getfileapi() + "/document/zipfile/" + result.Result;
                     }
                 })
             }

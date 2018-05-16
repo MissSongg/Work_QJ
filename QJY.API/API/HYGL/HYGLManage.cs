@@ -52,8 +52,8 @@ namespace QJY.API
             }
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int total = 0;
             DataTable dt = new SZHL_CCXJB().GetDataPager(" SZHL_HYGL_ROOM cc", "cc.*", pagecount, page, " cc.CRDate desc", strWhere, ref total);
@@ -312,8 +312,8 @@ namespace QJY.API
             {
                 int page = 0;
                 int pagecount = 8;
-                int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-                int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+                int.TryParse(context.Request["p"] ?? "1", out page);
+                int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
                 page = page == 0 ? 1 : page;
                 int total = 0;
 
@@ -664,7 +664,7 @@ namespace QJY.API
                     {
                         jat.MSGContent = "请假";
                     }
-                    var qjsy = context.Request.QueryString["QJSY"] ?? "";
+                    var qjsy = context.Request["QJSY"] ?? "";
                     if (qjsy != "") { jat.Remark = qjsy; }
                     jat.CRUser = UserInfo.User.UserName;
                     jat.CRUserName = UserInfo.User.UserRealName;
@@ -736,7 +736,7 @@ namespace QJY.API
         public void GETRYLIST_PAGE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
             int page = 0;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
+            int.TryParse(context.Request["p"] ?? "1", out page);
             page = page == 0 ? 1 : page;
 
 

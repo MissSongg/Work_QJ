@@ -44,8 +44,8 @@ namespace QJY.API
             int recordCount = 0;
             int page = 0;
             int pagecount = 8;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-            int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+            int.TryParse(context.Request["p"] ?? "1", out page);
+            int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             DataTable dt = new SZHL_XXFBB().GetDataPager("SZHL_YCGL_CAR car  left join  JH_Auth_ZiDian zd on car.CarType=zd.ID and zd.Class=5 ", "car.*,zd.TypeName", pagecount, page, "car.CRDate desc", strWhere, ref recordCount);
             msg.Result = dt;
             msg.Result1 = recordCount;
@@ -228,8 +228,8 @@ namespace QJY.API
             {
                 int page = 0;
                 int pagecount = 8;
-                int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
-                int.TryParse(context.Request.QueryString["pagecount"] ?? "8", out pagecount);//页数
+                int.TryParse(context.Request["p"] ?? "1", out page);
+                int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
                 page = page == 0 ? 1 : page;
                 int total = 0;
 
@@ -379,7 +379,7 @@ namespace QJY.API
             }
 
             int page = 0;
-            int.TryParse(context.Request.QueryString["p"] ?? "1", out page);
+            int.TryParse(context.Request["p"] ?? "1", out page);
             page = page == 0 ? 1 : page;
             int total = 0;
             string colNme = @"ycgl.*,car.CarBrand,car.CarType,car.CarNum ,    case WHEN wfpi.isComplete is null and wfpi.IsCanceled is null  THEN '正在审批' 

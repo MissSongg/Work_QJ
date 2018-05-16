@@ -20,7 +20,7 @@ namespace QJY.API
     {
 
 
-      
+
         /// <summary>
         /// 压缩需求
         /// </summary>
@@ -31,7 +31,7 @@ namespace QJY.API
         {
             Dictionary<String, String> DATA = new Dictionary<String, String>();
             DATA.Add("data", strFileData);
-            HttpWebResponse ResponseData = CommonHelp.CreatePostHttpResponse(UserInfo.QYinfo.FileServerUrl + "zipfolder", DATA, 0, "", null);
+            HttpWebResponse ResponseData = CommonHelp.CreatePostHttpResponse(UserInfo.QYinfo.FileServerUrl.TrimEnd('/') + "/" + UserInfo.QYinfo.QYCode + "/document/zipfolder", DATA, 0, "", null);
             return CommonHelp.GetResponseString(ResponseData);
         }
 

@@ -124,7 +124,11 @@
         curXJTime: "",
         starTime: "",
         endTime: "",
-        tmpListData:[],
+        tmpListData: [],
+        selNum: function (item) {    //选择显示的条数
+            model.page.pagecount = item;
+            tempindex.GetLIST();
+        },
         SelectType: function (type) {
             model.search.seartype = type;
             tempindex.GetLIST();

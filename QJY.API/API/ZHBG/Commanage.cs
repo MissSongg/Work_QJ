@@ -471,7 +471,7 @@ namespace QJY.API
             //压缩文件
             Dictionary<String, String> DATA = new Dictionary<String, String>();
             DATA.Add("data", Result);
-            HttpWebResponse ResponseData = CommonHelp.CreatePostHttpResponse(qymodel.FileServerUrl + "zipfolder", DATA, 0, "", null);
+            HttpWebResponse ResponseData = CommonHelp.CreatePostHttpResponse(qymodel.FileServerUrl.TrimEnd('/') + "/" + qymodel.QYCode + "/document/zipfolder", DATA, 0, "", null);
             string strData = CommonHelp.GetResponseString(ResponseData);
             msg.Result = strData;
         }

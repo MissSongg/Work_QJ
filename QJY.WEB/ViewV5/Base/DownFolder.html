@@ -9,7 +9,7 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="/ViewV5/CSS/bootstrap3.3.5/css/bootstrap.css">
-        <link href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -21,7 +21,7 @@
     <div class="container-fluid text-center">
         <p><i class="fa fa-spinner fa-spin" id="tb" style="font-size:80px; color: crimson; margin-top:40PX"></i></p>
         <p class="text-info" id="pinfo">正在压缩文件夹...请稍后</p>
-        <a  class="btn btn-success" href="#" style="display:none">下载文件</a>
+        <a class="btn btn-success" href="#" style="display:none">下载文件</a>
     </div>
     <script type="text/javascript" src="/ViewV5/JS/jquery-1.11.2.min.js"></script>
     <script src="/ViewV5/JS/SZHLCommon.js?jsver=20160915"></script>
@@ -34,7 +34,7 @@
                     if (result.ErrorMsg == "") {
                         window.document.getElementById("tb").className = "fa fa-flag";
                         window.document.getElementById("pinfo").innerHTML = "压缩完毕,正在下载,您可以离开此页面";
-                        window.location.href = ComFunJS.getfile()+"&type=folder&MD5=" + result.Result;
+                        window.location.href = ComFunJS.getfileapi() + "/document/zipfile/" + result.Result;
                     }
                 })
             }
