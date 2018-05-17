@@ -268,7 +268,7 @@ namespace QJY.API
             if (month > 0)
             {
                 DateTime newData = new DateTime(year, month, 1);
-                strWhere = string.Format("  and DATEDIFF(MONTH, jfbx.BXDate,'{0}')=0 ", newData);
+                strWhere = string.Format("  and DATEDIFF(MONTH, jfbx.BXDate,'{0}')=0 ", newData.ToString("yyyy-MM-dd HH:mm:ss"));
             }
             string content = context.Request["search"] ?? "";
             content = content.TrimEnd();
