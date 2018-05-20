@@ -24,3 +24,4 @@
 ![系统首页](https://gitee.com/uploads/images/2018/0520/131626_a4260b3b_11702.png "屏幕截图.png")
 ![企业微信配置页](https://gitee.com/uploads/images/2018/0520/131641_bf559e9f_11702.png "屏幕截图.png")
 ![输入图片说明](https://gitee.com/uploads/images/2018/0520/131722_8623cb01_11702.png "屏幕截图.png")
+![微信端截图](https://gitee.com/uploads/images/2018/0520/133540_0463639f_11702.png "屏幕截图.png")
