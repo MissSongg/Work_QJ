@@ -263,7 +263,7 @@
                 </p>
             </div>
             <div class="col-xs-4">
-                 <p class="text-info mb20">提示：选择最近的发放历史复制,默认最近一条记录</p>
+                <p class="text-info mb20">提示：选择最近的发放历史复制,默认最近一条记录</p>
 
                 <div ms-repeat-el="LastData" class="pCard " ms-class-1="pCardSelect:$first" ms-click="xzgz(el)" style=" text-align: center; background-color: transparent;">
                     <div style="height: 90px"><i class="iconfont icon-gongzidan0240" style="font-size: 70px;"></i></div>
@@ -292,7 +292,8 @@
                                 <th rowspan="2">
                                     <div class="input-box">
                                         人员
-                                        <span class="add-sc-fun add2" ms-click="OpenRow()">+
+                                        <span class="add-sc-fun add2" ms-click="OpenRow()">
+                                            +
                                         </span>
 
                                     </div>
@@ -302,8 +303,9 @@
                                 <th ms-attr-colspan="colnum(XGYFData)">
                                     <div class="input-box">
                                         应发
-                                        <span class="add-sc-fun  add2" ms-click="OpenCol(1,'')">+
-                                      
+                                        <span class="add-sc-fun  add2" ms-click="OpenCol(1,'')">
+                                            +
+
                                         </span>
 
                                     </div>
@@ -311,7 +313,8 @@
                                 <th ms-attr-colspan="colnum(XGYKData)">
                                     <div class="input-box">
                                         应扣
-                                        <span class="add-sc-fun  add2" ms-click="OpenCol(2,'')">+
+                                        <span class="add-sc-fun  add2" ms-click="OpenCol(2,'')">
+                                            +
 
                                         </span>
 
@@ -504,9 +507,11 @@
                     <div class="article-wages-right">
                         <div class=" padding20">
                             <div>标题：<span id="yltitle" class="mail-head color-6"></span></div>
-                            <h4 style="font-weight: 700" class="pt20 pb20 ft16"><span id="selusername"></span>
+                            <h4 style="font-weight: 700" class="pt20 pb20 ft16">
+                                <span id="selusername"></span>
                                 <br>
-                                {{taitou}}</h4>
+                                {{taitou}}
+                            </h4>
                             <div class="show-table">
                                 <table class="odd-col color-6">
                                     <tr>
@@ -530,18 +535,22 @@
                                         <td class="output-key" colspan="2">应发：{{ylhj(YFData)}}</td>
                                     </tr>
                                     <tr ms-repeat="YFData">
-                                        <td class="output-key">{{$key}}
+                                        <td class="output-key">
+                                            {{$key}}
                                         </td>
-                                        <td class="output-value">{{$val}}
+                                        <td class="output-value">
+                                            {{$val}}
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="output-key" colspan="2">应扣：{{ylhj(YKData)}}</td>
                                     </tr>
                                     <tr ms-repeat="YKData">
-                                        <td class="output-key">{{$key}}
+                                        <td class="output-key">
+                                            {{$key}}
                                         </td>
-                                        <td class="output-value">{{$val}}
+                                        <td class="output-value">
+                                            {{$val}}
                                         </td>
                                     </tr>
 
@@ -633,7 +642,7 @@
     }
     var tempindex = avalon.define({
         $id: "XXFFIMPORT",
-        LastData:[],
+        LastData: [],
         InitWigetData: function () {
 
             var now = new Date();
@@ -782,7 +791,7 @@
                             //    tempindex.msg = "发送成功！！ ";
                             //}
                         }
-                     
+
                     })
             }
             else {
@@ -1009,9 +1018,12 @@
                     })
                     tempindex.ctData = resultData.Result;
                     //tempindex.lmData = tempindex.ctData[0];
-                    tempindex.XGYFData = tempindex.ctData[0].YF;
-                    tempindex.XGYKData = tempindex.ctData[0].YK;
-                    tempindex.listnext(1);
+                    if (tempindex.ctData.length > 0) {
+                        tempindex.XGYFData = tempindex.ctData[0].YF;
+                        tempindex.XGYKData = tempindex.ctData[0].YK;
+                        tempindex.listnext(1);
+                    }
+
                 }
             })
         },
