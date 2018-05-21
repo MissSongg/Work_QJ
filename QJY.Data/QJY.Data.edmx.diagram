@@ -85,6 +85,11 @@
         <EntityTypeShape EntityType="QJY_SaaSModel.FT_File" Width="1.5" PointX="29.375" PointY="23.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_TSGL_TS" Width="1.5" PointX="25.375" PointY="29.75" />
         <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_TSGL" Width="1.5" PointX="31.375" PointY="0.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_QYHD" Width="1.5" PointX="31.375" PointY="6.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_QYHD_ITEM" Width="1.5" PointX="31.375" PointY="12.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_QYHD_Option" Width="1.5" PointX="7.375" PointY="19.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_QYHD_Result" Width="1.5" PointX="31.375" PointY="16.75" />
+        <EntityTypeShape EntityType="QJY_SaaSModel.SZHL_QYHDN" Width="1.5" PointX="31.375" PointY="20.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -107,6 +107,7 @@ namespace QJY.API
             container.RegisterType<IWsService, HYGLManage>("HYGL".ToUpper());//会议
             container.RegisterType<IWsService, JYGLManage>("JYGL".ToUpper());//图书借阅管理
 
+            container.RegisterType<IWsService, QYHDManage>("QYHD".ToUpper());//企业活动
 
 
             return container;

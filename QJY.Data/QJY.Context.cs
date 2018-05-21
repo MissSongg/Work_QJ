@@ -105,5 +105,10 @@ namespace QJY.Data
         public virtual DbSet<FT_File> FT_File { get; set; }
         public virtual DbSet<SZHL_TSGL_TS> SZHL_TSGL_TS { get; set; }
         public virtual DbSet<SZHL_TSGL> SZHL_TSGL { get; set; }
+        public virtual DbSet<SZHL_QYHD> SZHL_QYHD { get; set; }
+        public virtual DbSet<SZHL_QYHD_ITEM> SZHL_QYHD_ITEM { get; set; }
+        public virtual DbSet<SZHL_QYHD_Option> SZHL_QYHD_Option { get; set; }
+        public virtual DbSet<SZHL_QYHD_Result> SZHL_QYHD_Result { get; set; }
+        public virtual DbSet<SZHL_QYHDN> SZHL_QYHDN { get; set; }
     }
 }

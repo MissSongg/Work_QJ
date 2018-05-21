@@ -1472,8 +1472,165 @@
             str = str.length > fmt.len ? str.substring(0, fmt.len) + '...' : str;
         }
         return str;
-    }
+    },
+    JSONToExcelConvertor: function (JSONData, FileName, ShowLabel) {
+        //先转化json
+        var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
 
+        var excel = '<table>';
+
+        //设置表头
+        var row = "<tr>";
+        for (var i = 0, l = ShowLabel.length; i < l; i++) {
+            row += "<td>" + ShowLabel[i].text + '</td>';
+        }
+
+
+        //换行
+        excel += row + "</tr>";
+
+        //设置数据
+        for (var i = 0; i < arrData.length; i++) {
+            var row = "<tr>";
+
+            for (var index in arrData[i]) {
+                var value = arrData[i][index].value === "." ? "" : arrData[i][index].value;
+                row += '<td>' + value + '</td>';
+            }
+
+            excel += row + "</tr>";
+        }
+
+        excel += "</table>";
+
+        var excelFile = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns='http://www.w3.org/TR/REC-html40'>";
+        excelFile += '<meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
+        excelFile += '<meta http-equiv="content-type" content="application/vnd.ms-excel';
+        excelFile += '; charset=UTF-8">';
+        excelFile += "<head>";
+        excelFile += "<!--[if gte mso 9]>";
+        excelFile += "<xml>";
+        excelFile += "<x:ExcelWorkbook>";
+        excelFile += "<x:ExcelWorksheets>";
+        excelFile += "<x:ExcelWorksheet>";
+        excelFile += "<x:Name>";
+        excelFile += "{worksheet}";
+        excelFile += "</x:Name>";
+        excelFile += "<x:WorksheetOptions>";
+        excelFile += "<x:DisplayGridlines/>";
+        excelFile += "</x:WorksheetOptions>";
+        excelFile += "</x:ExcelWorksheet>";
+        excelFile += "</x:ExcelWorksheets>";
+        excelFile += "</x:ExcelWorkbook>";
+        excelFile += "</xml>";
+        excelFile += "<![endif]-->";
+        excelFile += "</head>";
+        excelFile += "<body>";
+        excelFile += excel;
+        excelFile += "</body>";
+        excelFile += "</html>";
+
+
+        var uri = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(excelFile);
+
+        var link = document.createElement("a");
+        link.href = uri;
+
+        link.style = "visibility:hidden";
+        link.download = FileName + ".xls";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    },
+    inithighgrid: function (option, tabledata) {
+        var getLocalization = function () {
+            var localizationobj = {};
+            var patterns = {
+                d: "yyyy-MM-dd",
+                f: "yyyy-MM-dd HH: mm"
+
+            }
+            localizationobj.patterns = patterns;
+            return localizationobj;
+        }
+        var defoption =
+        {
+            width: '100%',
+            height: 560,
+            theme: "office",
+            groupable: true,
+            rowsheight: 45,
+            columnsresize: true,
+            editable: true,
+            editmode: 'dblclick',
+            pageable: false,
+            selectionmode: 'multiplerowsextended',
+            localization: getLocalization(),
+            filterable: true,
+            autoshowfiltericon: true,
+            altrows: true,
+            sortable: true,
+            showstatusbar: true,
+            renderstatusbar: function (statusbar) {
+                statusbar.css("border-top", "1px solid #d4d4d4").css("line-height", "34PX").css("PADDING-LEFT", "10PX").append("共200条记录");
+            }
+
+        };
+        ComFunJS.loadJs("/VIEWV5/JS/YanGrid/jqwidgets/jqgridall.js", function () {
+            var options = $.extend(defoption, option);
+            var datafields = [];
+            for (var i = 0; i < options.columns.length; i++) {
+                var col = options.columns[i];
+                var fieldtype = 'string';
+                if (col.type) {
+                    fieldtype = col.type;
+                }
+                datafields.push({ name: col.dataField, type: fieldtype })
+            }
+            options.source = new $.jqx.dataAdapter({
+                localdata: tabledata,
+                datatype: "json",
+                datafields: datafields
+            });
+            $("#jqxgrid").jqxGrid(options);
+
+
+
+            $("#groupsheader div").css({ width: "70%" }).addClass("pull-left");
+
+            //导出数据
+            $("#groupsheader").append("<a class='excel btn pull-right btn-info btn-small' href='#' style='margin: 4px;HEIGHT: 26PX;'><i class='icon-align-left'></i>导出Excel</a>");
+            $("#groupsheader").find(".excel").click(function () {
+                var arrjson = options.source._source.localdata;
+                var ShowLabel = options.columns;
+                var arrdata = [];
+                for (var i = 0; i < arrjson.length; i++) {
+                    var row = [];
+                    for (var m = 0; m < ShowLabel.length; m++) {
+                        row.push({ "value": arrjson[i][ShowLabel[m].dataField] })
+                    }
+                    arrdata.push(row)
+                }
+                ComFunJS.JSONToExcelConvertor(arrdata, "导出文件", ShowLabel)
+
+            })
+
+
+            //双击事件
+            $('#jqxgrid').on('rowdoubleclick', function (event) {
+                var args = event.args;
+                var row = args.rowindex;
+                var data = $('#jqxgrid').jqxGrid('getrowdata', row);
+                $(data.FormStatus).trigger('click');
+            });
+
+            $("#jqxgrid").on("groupschanged", function (event) {
+                $("#jqxgrid").jqxGrid('expandallgroups');
+            });
+        });
+
+    }
 });
 
 $(function () {

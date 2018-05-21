@@ -2,6 +2,8 @@
     <!-- 添加按钮 -->
     <div class="btn-add">
         <button type="button" class="btn btn-info btn-lg" ms-click="addJY()"><i class="iconfont icon-jiahao ft12 mr5"></i>添加借阅</button>
+        <!--<button type="button" class="btn btn-info btn-lg" ms-click="addJY"><i class="iconfont icon-jiahao ft12 mr5"></i></button>-->
+
     </div>
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
@@ -15,8 +17,8 @@
         <div class="oh">
             <h5 class="pull-left tr">借阅状态：</h5>
             <ul class="tab-type ft14">
-                <li  ms-click="SelectJYType('0')"><span  class="active">可借阅</span></li>
-                <li  ms-click="SelectJYType('1')"><span>借阅中</span></li>
+                <li ms-click="SelectJYType('0')"><span class="active">可借阅</span></li>
+                <li ms-click="SelectJYType('1')"><span>借阅中</span></li>
 
             </ul>
         </div>
@@ -42,7 +44,7 @@
                             <span class="iconfont icon-check ft12"></span>
                         </div>
                     </th>
-                    <th  ms-class-1="tc:curJYType=='1'">  序号</th>
+                    <th ms-class-1="tc:curJYType=='1'">  序号</th>
                     <th>编码</th>
                     <th>图书类别</th>
                     <th>图书名称</th>
@@ -86,8 +88,14 @@
 
         </div>
     </div>
-</div>
+    <div class="default-tab ft14 pt20"  style="display:none">
+        <div id="jqxgrid" style="border-left: 0;border-right: 0;">
+        </div>
 
+    </div>
+</div>
+<link rel="stylesheet" href="/ViewV5/JS/YanGrid/jqwidgets/styles/jqx.base.css" />
+<link rel="stylesheet" href="/ViewV5/JS/YanGrid/jqwidgets/styles/jqx.office.css" />
 <script>
 
     var tempindex = avalon.define({
@@ -124,10 +132,35 @@
             model.page.pagecount = item;
             tempindex.GetLIST();
         },
+        gridoption: {
+            columns: [
+                    {
+                        text: '#', sortable: false, filterable: false, editable: false,
+                        groupable: false, draggable: false, resizable: false,
+                        datafield: '', columntype: 'number', width: 50,
+                        cellsrenderer: function (row, column, value) {
+                            return "<div style='margin:4px; margin-top: 15px;'>" + (value + 1) + "</div>";
+                        }
+                    },
+                  { text: '编码', dataField: 'TSNum' },
+                  { text: '图书类别', dataField: 'TSTypeName' },
+                  { text: '图书名称', dataField: 'TSName',  width: '20%' },
+                  { text: '作者', dataField: 'auther' },
+                  { text: '借阅状态', dataField: 'jystatus', editable: false },
+                  { text: '出版社', dataField: 'cbs', editable: false }
+            ]
+        },
+
         InitWigetData: function () {
             model.search.seartype = "";
             model.GetTypeData("24");
             tempindex.GetLIST();
+            //$.getJSON('/API/VIEWAPI.ashx?Action=JYGL_GETTSLIST_PAGE', { p: 1, P1: model.search.seartype, P2: tempindex.curTSType, pagecount: 500, kystatus: "0", jystatus: tempindex.curJYType }, function (resultData) {
+            //    if (resultData.ErrorMsg == "") {
+            //        ComFunJS.inithighgrid(tempindex.gridoption.$model, resultData.Result)
+            //        tempindex.tmpListData = resultData.Result;
+            //    }
+            //})
         },
 
         GetLIST: function () {

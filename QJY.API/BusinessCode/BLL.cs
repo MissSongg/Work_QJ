@@ -488,6 +488,24 @@ namespace QJY.API
 
     }
 
+
+
+    public class SZHL_QYHDNB : BaseEFDao<SZHL_QYHDN>
+    {
+    }
+
+    public class SZHL_QYHD_ITEMB : BaseEFDao<SZHL_QYHD_ITEM>
+    {
+    }
+
+    public class SZHL_QYHD_OptionB : BaseEFDao<SZHL_QYHD_Option>
+    {
+    }
+
+    public class SZHL_QYHD_ResultB : BaseEFDao<SZHL_QYHD_Result>
+    {
+    }
+
     #endregion
 
     #region CRM

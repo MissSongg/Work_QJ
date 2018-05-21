@@ -195,11 +195,11 @@
                                 <div class="lookright-box">
                                     <div class="menu-general">
                                         <ul>
-                                            <li ms-class-1="active:el.pltype==1" ms-on-click="getpldata(el,1)">
+                                            <li ms-class-1="active:el.pltype==1" ms-on-click="getpldata(el,1)" style="list-style: none;">
                                                 <a>评论</a>
                                             </li>
 
-                                            <li ms-class-1="active:el.pltype==2" ms-if="el.Type==0&&((el.TP_IsPublic==0&&el.CRUser==nowuser)||el.TP_IsPublic==1)" ms-on-click="getpldata(el,2)">
+                                            <li ms-class-1="active:el.pltype==2" ms-if="el.Type==0&&((el.TP_IsPublic==0&&el.CRUser==nowuser)||el.TP_IsPublic==1)" ms-on-click="getpldata(el,2)"  style="list-style: none;">
                                                 <a>已报名列表</a>
                                             </li>
                                         </ul>
@@ -511,7 +511,8 @@
             QYHDBMData: { "UserPhone": "", "OptionUser": "", "BMNum": 1, "HDID": "" },
             //活动报名
             QYHDBM: function (el) {
-                $.getJSON('/API/VIEWAPI.ashx?Action=QYHD_GETQYHDITEMBYUSER', { P1: el.ID }, function (resultData) {
+                $.get('/API/VIEWAPI.ashx?Action=QYHD_GETQYHDITEMBYUSER', { P1: el.ID }, function (resultData) {
+                    resultData = JSON.parse(resultData);
                     if (resultData.Result) {
                         model.QYHDBMData = resultData.Result;
                     } else {

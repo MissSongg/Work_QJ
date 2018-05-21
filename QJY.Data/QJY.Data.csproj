@@ -240,6 +240,21 @@
     <Compile Include="SZHL_NOTE.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>
+    <Compile Include="SZHL_QYHD.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_QYHDN.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_QYHD_ITEM.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_QYHD_Option.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SZHL_QYHD_Result.cs">
+      <DependentUpon>QJY.tt</DependentUpon>
+    </Compile>
     <Compile Include="SZHL_RWGL.cs">
       <DependentUpon>QJY.tt</DependentUpon>
     </Compile>

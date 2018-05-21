@@ -1131,6 +1131,99 @@
           <Property Name="NoteTitle" Type="varchar" MaxLength="200" />
           <Property Name="ComId" Type="int" />
         </EntityType>
+        <EntityType Name="SZHL_QYHD">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="HDTitle" Type="varchar" MaxLength="500" />
+          <Property Name="HDLeiBie" Type="varchar" MaxLength="200" />
+          <Property Name="HDPeople" Type="varchar" MaxLength="5000" />
+          <Property Name="HDFQF" Type="varchar" MaxLength="500" />
+          <Property Name="isPublic" Type="varchar" MaxLength="50" />
+          <Property Name="isTX" Type="varchar" MaxLength="50" />
+          <Property Name="TXID" Type="int" />
+          <Property Name="HDAdress" Type="varchar" MaxLength="500" />
+          <Property Name="HDTime" Type="datetime" />
+          <Property Name="HDBMEndTime" Type="datetime" />
+          <Property Name="IsSend" Type="varchar" MaxLength="50" />
+          <Property Name="IsComPlete" Type="varchar" MaxLength="10" />
+          <Property Name="IsCancel" Type="varchar" MaxLength="10" />
+          <Property Name="CancelDate" Type="varchar" MaxLength="200" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="Files" Type="varchar" MaxLength="50" />
+          <Property Name="Remark" Type="varchar" MaxLength="500" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="intProcessStanceid" Type="int" />
+          <Property Name="HDContent" Type="varchar(max)" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="HDEndTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SZHL_QYHD_ITEM">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="BMCount" Type="int" />
+          <Property Name="BMLxDH" Type="varchar" MaxLength="500" />
+          <Property Name="BMLxr" Type="varchar" MaxLength="500" />
+          <Property Name="HDID" Type="int" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="Files" Type="varchar" MaxLength="50" />
+          <Property Name="Remark" Type="varchar" MaxLength="500" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComId" Type="int" />
+        </EntityType>
+        <EntityType Name="SZHL_QYHD_Option">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OptionText" Type="varchar" MaxLength="500" />
+          <Property Name="HDId" Type="int" Nullable="false" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="CRUser" Type="varchar" MaxLength="200" />
+          <Property Name="CRDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SZHL_QYHD_Result">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OptionUser" Type="varchar" MaxLength="200" />
+          <Property Name="OptionID" Type="int" />
+          <Property Name="BMNum" Type="int" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="HDID" Type="int" />
+          <Property Name="UserPhone" Type="varchar" MaxLength="20" />
+          <Property Name="CRUser" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="SZHL_QYHDN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="int" />
+          <Property Name="FQF" Type="varchar" MaxLength="500" />
+          <Property Name="Title" Type="varchar" MaxLength="500" />
+          <Property Name="JZDate" Type="datetime" />
+          <Property Name="Status" Type="int" />
+          <Property Name="CRDate" Type="datetime" />
+          <Property Name="CRUser" Type="varchar" MaxLength="50" />
+          <Property Name="Files" Type="varchar" MaxLength="200" />
+          <Property Name="ComId" Type="int" />
+          <Property Name="CYR" Type="varchar" MaxLength="5000" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="HD_Content" Type="varchar(max)" />
+          <Property Name="TP_IsNM" Type="varchar" MaxLength="50" />
+          <Property Name="TP_Type" Type="int" />
+          <Property Name="HD_Adress" Type="varchar" MaxLength="500" />
+          <Property Name="TP_IsPublic" Type="int" />
+          <Property Name="IsPublic" Type="int" />
+          <Property Name="HDDate" Type="varchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="SZHL_RWGL">
           <Key>
             <PropertyRef Name="ID" />
@@ -1711,6 +1804,11 @@
           <EntitySet Name="SZHL_KQJL" EntityType="Self.SZHL_KQJL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_LCSP" EntityType="Self.SZHL_LCSP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_NOTE" EntityType="Self.SZHL_NOTE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_QYHD" EntityType="Self.SZHL_QYHD" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_QYHD_ITEM" EntityType="Self.SZHL_QYHD_ITEM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_QYHD_Option" EntityType="Self.SZHL_QYHD_Option" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_QYHD_Result" EntityType="Self.SZHL_QYHD_Result" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SZHL_QYHDN" EntityType="Self.SZHL_QYHDN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_RWGL" EntityType="Self.SZHL_RWGL" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_RWGL_ITEM" EntityType="Self.SZHL_RWGL_ITEM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SZHL_TSGL" EntityType="Self.SZHL_TSGL" Schema="dbo" store:Type="Tables" />
@@ -1820,6 +1918,11 @@
           <EntitySet Name="FT_File" EntityType="QJY_SaaSModel.FT_File" />
           <EntitySet Name="SZHL_TSGL_TS" EntityType="QJY_SaaSModel.SZHL_TSGL_TS" />
           <EntitySet Name="SZHL_TSGL" EntityType="QJY_SaaSModel.SZHL_TSGL" />
+          <EntitySet Name="SZHL_QYHD" EntityType="QJY_SaaSModel.SZHL_QYHD" />
+          <EntitySet Name="SZHL_QYHD_ITEM" EntityType="QJY_SaaSModel.SZHL_QYHD_ITEM" />
+          <EntitySet Name="SZHL_QYHD_Option" EntityType="QJY_SaaSModel.SZHL_QYHD_Option" />
+          <EntitySet Name="SZHL_QYHD_Result" EntityType="QJY_SaaSModel.SZHL_QYHD_Result" />
+          <EntitySet Name="SZHL_QYHDN" EntityType="QJY_SaaSModel.SZHL_QYHDN" />
         </EntityContainer>
         <EntityType Name="FT_File_Downhistory">
           <Key>
@@ -3468,6 +3571,99 @@
           <Property Name="DelDate" Type="DateTime" Precision="3" />
           <Property Name="BackDate" Type="DateTime" Precision="3" />
           <Property Name="BackBZ" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SZHL_QYHD">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="HDTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="HDLeiBie" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="HDPeople" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="HDFQF" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="isPublic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isTX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TXID" Type="Int32" />
+          <Property Name="HDAdress" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="HDTime" Type="DateTime" Precision="3" />
+          <Property Name="HDBMEndTime" Type="DateTime" Precision="3" />
+          <Property Name="IsSend" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsComPlete" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IsCancel" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CancelDate" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intProcessStanceid" Type="Int32" />
+          <Property Name="HDContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="HDEndTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SZHL_QYHD_ITEM">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="BMCount" Type="Int32" />
+          <Property Name="BMLxDH" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="BMLxr" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="HDID" Type="Int32" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Files" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SZHL_QYHD_Option">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OptionText" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="HDId" Type="Int32" Nullable="false" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="CRUser" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SZHL_QYHD_Result">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OptionUser" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="OptionID" Type="Int32" />
+          <Property Name="BMNum" Type="Int32" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="HDID" Type="Int32" />
+          <Property Name="UserPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CRUser" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SZHL_QYHDN">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="FQF" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="JZDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="CRDate" Type="DateTime" Precision="3" />
+          <Property Name="CRUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Files" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ComId" Type="Int32" />
+          <Property Name="CYR" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="HD_Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TP_IsNM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TP_Type" Type="Int32" />
+          <Property Name="HD_Adress" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="TP_IsPublic" Type="Int32" />
+          <Property Name="IsPublic" Type="Int32" />
+          <Property Name="HDDate" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -5200,6 +5396,104 @@
                 <ScalarProperty Name="TSID" ColumnName="TSID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ComId" ColumnName="ComId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_QYHD">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_QYHD">
+              <MappingFragment StoreEntitySet="SZHL_QYHD">
+                <ScalarProperty Name="HDEndTime" ColumnName="HDEndTime" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="HDContent" ColumnName="HDContent" />
+                <ScalarProperty Name="intProcessStanceid" ColumnName="intProcessStanceid" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CancelDate" ColumnName="CancelDate" />
+                <ScalarProperty Name="IsCancel" ColumnName="IsCancel" />
+                <ScalarProperty Name="IsComPlete" ColumnName="IsComPlete" />
+                <ScalarProperty Name="IsSend" ColumnName="IsSend" />
+                <ScalarProperty Name="HDBMEndTime" ColumnName="HDBMEndTime" />
+                <ScalarProperty Name="HDTime" ColumnName="HDTime" />
+                <ScalarProperty Name="HDAdress" ColumnName="HDAdress" />
+                <ScalarProperty Name="TXID" ColumnName="TXID" />
+                <ScalarProperty Name="isTX" ColumnName="isTX" />
+                <ScalarProperty Name="isPublic" ColumnName="isPublic" />
+                <ScalarProperty Name="HDFQF" ColumnName="HDFQF" />
+                <ScalarProperty Name="HDPeople" ColumnName="HDPeople" />
+                <ScalarProperty Name="HDLeiBie" ColumnName="HDLeiBie" />
+                <ScalarProperty Name="HDTitle" ColumnName="HDTitle" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_QYHD_ITEM">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_QYHD_ITEM">
+              <MappingFragment StoreEntitySet="SZHL_QYHD_ITEM">
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="HDID" ColumnName="HDID" />
+                <ScalarProperty Name="BMLxr" ColumnName="BMLxr" />
+                <ScalarProperty Name="BMLxDH" ColumnName="BMLxDH" />
+                <ScalarProperty Name="BMCount" ColumnName="BMCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_QYHD_Option">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_QYHD_Option">
+              <MappingFragment StoreEntitySet="SZHL_QYHD_Option">
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="HDId" ColumnName="HDId" />
+                <ScalarProperty Name="OptionText" ColumnName="OptionText" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_QYHD_Result">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_QYHD_Result">
+              <MappingFragment StoreEntitySet="SZHL_QYHD_Result">
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="UserPhone" ColumnName="UserPhone" />
+                <ScalarProperty Name="HDID" ColumnName="HDID" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="BMNum" ColumnName="BMNum" />
+                <ScalarProperty Name="OptionID" ColumnName="OptionID" />
+                <ScalarProperty Name="OptionUser" ColumnName="OptionUser" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SZHL_QYHDN">
+            <EntityTypeMapping TypeName="QJY_SaaSModel.SZHL_QYHDN">
+              <MappingFragment StoreEntitySet="SZHL_QYHDN">
+                <ScalarProperty Name="HDDate" ColumnName="HDDate" />
+                <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
+                <ScalarProperty Name="TP_IsPublic" ColumnName="TP_IsPublic" />
+                <ScalarProperty Name="HD_Adress" ColumnName="HD_Adress" />
+                <ScalarProperty Name="TP_Type" ColumnName="TP_Type" />
+                <ScalarProperty Name="TP_IsNM" ColumnName="TP_IsNM" />
+                <ScalarProperty Name="HD_Content" ColumnName="HD_Content" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="CYR" ColumnName="CYR" />
+                <ScalarProperty Name="ComId" ColumnName="ComId" />
+                <ScalarProperty Name="Files" ColumnName="Files" />
+                <ScalarProperty Name="CRUser" ColumnName="CRUser" />
+                <ScalarProperty Name="CRDate" ColumnName="CRDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="JZDate" ColumnName="JZDate" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="FQF" ColumnName="FQF" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

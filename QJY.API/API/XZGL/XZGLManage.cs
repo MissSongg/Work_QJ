@@ -180,7 +180,7 @@ namespace QJY.API
             {
                 string str2 = "";
                 DataTable dt = new DataTable();
-                ArrayList al1=new ArrayList();
+                ArrayList al1 = new ArrayList();
                 ArrayList al2 = new ArrayList();
                 HttpPostedFile _upfile = context.Request.Files["upFile"];
                 string headrow = context.Request["headrow"] ?? "0";//头部开始行下标
@@ -213,6 +213,10 @@ namespace QJY.API
 
                         //获取sheet的第一行
                         IRow headerRow = sheet.GetRow(int.Parse(headrow));
+
+                        IRow header0Row = sheet.GetRow(1);
+
+
 
                         //一行最后一个方格的编号 即总的列数
                         int cellCount = headerRow.LastCellNum;
@@ -263,7 +267,7 @@ namespace QJY.API
                                 str2 = str2 + " 在文件中不存在!<br>";
                             }
                             #endregion
-
+                         
                             for (int i = (sheet.FirstRowNum + int.Parse(headrow) + 1); i <= sheet.LastRowNum; i++)
                             {
                                 DataRow dr = dt.NewRow();
@@ -283,22 +287,32 @@ namespace QJY.API
                                     dt.Rows.Add(dr);
                                 }
                             }
-                            dt.Columns.Add("YF", Type.GetType("System.Object"));
-                            dt.Columns.Add("YK", Type.GetType("System.Object"));
+                            int ykindex = 0;
+                            for (int n = 0; n < dt.Columns.Count; n++)
+                            {
+                                if (header0Row.GetCell(n).ToString().Contains("应扣"))
+                                {
+                                    ykindex = n;
+                                    break;
+                                }
+                            }
 
                             for (int n = 0; n < dt.Columns.Count; n++)
                             {
                                 var name = dt.Columns[n].ColumnName;
-                                if (n > 2 && n < 9)
+                                if (n > 2 && n < ykindex)
                                 {
                                     al1.Add(name);
                                 }
-                                if (n > 8 && n < 15)
+                                if (n > ykindex - 1)
                                 {
                                     al2.Add(name);
                                 }
                             }
 
+                            dt.Columns.Add("YF", Type.GetType("System.Object"));
+                            dt.Columns.Add("YK", Type.GetType("System.Object"));
+                         
                             foreach (DataRow dr in dt.Rows)
                             {
                                 JObject obj1 = new JObject();
@@ -314,7 +328,7 @@ namespace QJY.API
                                 dr["YF"] = obj1;
                                 dr["YK"] = obj2;
                             }
-                            foreach (var str in al1) 
+                            foreach (var str in al1)
                             {
                                 dt.Columns.Remove(str.ToString());
                             }
@@ -432,7 +446,7 @@ namespace QJY.API
             {
                 msg.ErrorMsg = "发送失败";
                 return;
-            } 
+            }
 
             string taitou = context.Request["taitou"] ?? "";
             string luokuan = context.Request["luokuan"] ?? "";
@@ -488,7 +502,7 @@ namespace QJY.API
                     bl = true;
                 }
 
- 
+
                 new SZHL_XZ_GZDB().Insert(gzd);
 
                 if (ffwx == "1" && tel != "" && bl)
@@ -510,7 +524,7 @@ namespace QJY.API
                 if (ffdx == "1" && tel != "")
                 {
                     string hj = a["合计"] != null ? a["合计"].ToString().Trim() : "";
-                    CommonHelp.SendSMS(tel, username + "，" + taitou + "，" + "合计：" + hj + "元.点击" + UserInfo.QYinfo.WXUrl.TrimEnd('/')+ "/View_Mobile/UI/UI_GZD_VIEW.html?ID=" + gzd.ID + " 查看详情", UserInfo.QYinfo.ComId);
+                    CommonHelp.SendSMS(tel, username + "，" + taitou + "，" + "合计：" + hj + "元.点击" + UserInfo.QYinfo.WXUrl.TrimEnd('/') + "/View_Mobile/UI/UI_GZD_VIEW.html?ID=" + gzd.ID + " 查看详情", UserInfo.QYinfo.ComId);
                 }
             }
             #endregion
@@ -581,7 +595,7 @@ namespace QJY.API
             int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
             page = page == 0 ? 1 : page;
             int recordCount = 0;
-            
+
             string strContent = context.Request["Content"] ?? "";
             if (strContent != "")
             {
@@ -608,7 +622,7 @@ namespace QJY.API
             int.TryParse(P1, out id);
             SZHL_XZ_GZD xzjl = new SZHL_XZ_GZDB().GetEntity(d => d.ID == id);
             msg.Result = xzjl;
-        } 
+        }
         /// <summary>
         /// 未读工资单数量
         /// </summary>
@@ -619,7 +633,7 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void NOREADGZD(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            var xzjl = new SZHL_XZ_GZDB().GetEntities(d => d.UserName==UserInfo.User.UserName && d.IsRead!=1);
+            var xzjl = new SZHL_XZ_GZDB().GetEntities(d => d.UserName == UserInfo.User.UserName && d.IsRead != 1);
             msg.Result = xzjl.ToList().Count;
         }
         /// <summary>
@@ -726,7 +740,7 @@ namespace QJY.API
             int.TryParse(P1, out id);
             SZHL_XZ_JL xzjl = new SZHL_XZ_JLB().GetEntity(d => d.ID == id);
             msg.Result = xzjl;
-        } 
+        }
         #endregion
 
         #region 薪资基本设置
@@ -777,7 +791,7 @@ namespace QJY.API
             DataTable dt = new JH_Auth_UserB().GetDataPager(tableName, tableColumn, pagecount, page, " b.DeptShort,ISNULL(u.UserOrder, 1000000) asc", strWhere, ref total);
             msg.Result = dt;
             msg.Result1 = total;
-        }  
+        }
         #endregion
 
         #region 添加基础设置
@@ -832,7 +846,7 @@ namespace QJY.API
 
 
             msg.Result = GZBG;
-        } 
+        }
         #endregion
 
         #region 获取基础设置
@@ -850,7 +864,7 @@ namespace QJY.API
             int.TryParse(P1, out Id);
             SZHL_GZGL_JCSZ sg = new SZHL_GZGL_JCSZB().GetEntity(d => d.ID == Id && d.ComId == UserInfo.User.ComId);
             msg.Result = sg;
-        } 
+        }
         #endregion
 
         #endregion
@@ -981,7 +995,7 @@ namespace QJY.API
                 foreach (DataRow dr in dt.Rows)
                 {
                     dr["Name"] = dr["name1"];
-                    if (dr["ID"]==null||dr["ID"].ToString() == "")
+                    if (dr["ID"] == null || dr["ID"].ToString() == "")
                     {
                         dr["ID"] = "0";
                     }
@@ -1047,7 +1061,7 @@ namespace QJY.API
                         l.CRUser = UserInfo.User.UserName;
                         new SZHL_GZGL_WXYJB().Insert(l);
                     }
-                    else 
+                    else
                     {
                         wxyj.Base = l.Base;
                         wxyj.ComBL = l.ComBL;

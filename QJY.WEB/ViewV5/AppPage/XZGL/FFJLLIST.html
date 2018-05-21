@@ -23,7 +23,6 @@
                         序号
                     </th>
                     <th>标题</th>
-                    <th>创建人</th>
                     <th>创建时间</th>
                     <th width="80px"></th>
                 </tr>
@@ -34,7 +33,6 @@
                         {{$index+1}}
                     </td>
                     <td>{{el.title}}</td>
-                    <td>{{ComFunJS.convertuser(el.CRUser)}}</td>
                     <td>{{el.CRDate|date('yyyy-MM-dd HH:mm')}}</td>
                     <td>
                         <span class="tool" style="display: none;">

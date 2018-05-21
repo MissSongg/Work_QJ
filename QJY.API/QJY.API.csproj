@@ -115,6 +115,7 @@
     <Compile Include="API\GZBG\GZBGManage.cs" />
     <Compile Include="API\HYGL\HYGLManage.cs" />
     <Compile Include="API\JYGL\JYGLManage.cs" />
+    <Compile Include="API\QYHD\QYHDManage.cs" />
     <Compile Include="API\YCGL\YCGLManage.cs" />
     <Compile Include="BusinessCode\BLL.cs" />
     <Compile Include="BusinessCode\JH_Auth.cs" />
