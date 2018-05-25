@@ -742,7 +742,7 @@
             if (tempindex.SelItemData.size() == 1) {
                 var type = tempindex.SelItemData[0].FileExtendName ? "file" : "wj";
                 $.post('/API/VIEWAPI.ashx?Action=QYWD_ADDSHARECODE', {
-                    "P1": tempindex.SelItemData[0].ID, "P2": type, url: "http://" + location.host + "/ViewV5/share.html"
+                    "P1": tempindex.SelItemData[0].ID, "P2": type, url: "http://" + location.host + "/ViewV5/AppPage/QYWD/share.html"
                 }, function (result) {
                     if (result.ErrorMsg == "") {
                         tempindex.shareType = result.Result1;
