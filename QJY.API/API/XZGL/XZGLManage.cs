@@ -28,141 +28,7 @@ namespace QJY.API
             XZGLManage model = new XZGLManage();
             methodInfo.FastInvoke(model, new object[] { context, msg, P1, P2, UserInfo });
         }
-        #region excel转换为table
 
-        /// <summary>
-        /// excel转换为table
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="msg"></param>
-        /// <param name="P1"></param>
-        /// <param name="P2"></param>
-        /// <param name="UserInfo"></param>
-        public void EXCELTOTABLE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
-            try
-            {
-                string str2 = "";
-                DataTable dt = new DataTable();
-                HttpPostedFile _upfile = context.Request.Files["upFile"];
-                string headrow = context.Request["headrow"] ?? "0";//头部开始行下标
-                if (_upfile == null)
-                {
-                    msg.ErrorMsg = "请选择要上传的文件 ";
-                }
-                else
-                {
-                    string fileName = _upfile.FileName;/*获取文件名： C:\Documents and Settings\Administrator\桌面\123.jpg*/
-                    string suffix = fileName.Substring(fileName.LastIndexOf(".") + 1).ToLower();/*获取后缀名并转为小写： jpg*/
-                    int bytes = _upfile.ContentLength;//获取文件的字节大小   
-                    if (suffix == "xls" || suffix == "xlsx")
-                    {
-                        IWorkbook workbook = null;
-
-                        Stream stream = _upfile.InputStream;
-
-                        if (suffix == "xlsx") // 2007版本
-                        {
-                            workbook = new XSSFWorkbook(stream);
-                        }
-                        else if (suffix == "xls") // 2003版本
-                        {
-                            workbook = new HSSFWorkbook(stream);
-                        }
-
-                        //获取excel的第一个sheet
-                        ISheet sheet = workbook.GetSheetAt(0);
-
-                        //获取sheet的第一行
-                        IRow headerRow = sheet.GetRow(int.Parse(headrow));
-
-                        //一行最后一个方格的编号 即总的列数
-                        int cellCount = headerRow.LastCellNum;
-                        //最后一列的标号  即总的行数
-                        int rowCount = sheet.LastRowNum;
-                        if (rowCount <= int.Parse(headrow))
-                        {
-                            msg.ErrorMsg = "文件中无数据! ";
-                        }
-                        else
-                        {
-                            CommonHelp ch = new CommonHelp();
-                            string[] yz = { "姓名", "手机" };
-                            //列名
-                            for (int i = 0; i < cellCount; i++)
-                            {
-                                string strlm = headerRow.GetCell(i).ToString().Trim();
-                                if (string.IsNullOrWhiteSpace(strlm)) strlm = "第" + (i + 1) + "列";
-                                dt.Columns.Add(strlm);//添加列名
-                            }
-
-                            #region 必填字段在文件中存不存在验证
-                            foreach (var v in yz)
-                            {
-                                if (!dt.Columns.Contains(v))
-                                {
-                                    if (string.IsNullOrEmpty(str2))
-                                    {
-                                        str2 = "当前导入的必填字段：【" + v + "】";
-                                    }
-                                    else
-                                    {
-                                        str2 = str2 + "、【" + v + "】";
-                                    }
-                                }
-                            }
-
-                            if (!string.IsNullOrEmpty(str2))
-                            {
-                                str2 = str2 + " 在文件中不存在!<br>";
-                            }
-                            #endregion
-
-                            for (int i = (sheet.FirstRowNum + int.Parse(headrow) + 1); i <= sheet.LastRowNum; i++)
-                            {
-                                DataRow dr = dt.NewRow();
-                                bool bl = false;
-                                IRow row = sheet.GetRow(i);
-                                for (int j = row.FirstCellNum; j < cellCount; j++)
-                                {
-                                    string strsj = exportsheet(row.GetCell(j)).Trim();
-                                    if (strsj != "")
-                                    {
-                                        bl = true;
-                                    }
-                                    dr[j] = strsj;
-                                }
-                                if (bl)
-                                {
-                                    dt.Rows.Add(dr);
-                                }
-                            }
-                            msg.Result = dt;
-
-
-                            string sql = "select top 1 * from szhl_xz_jl order by crdate desc";
-                            msg.Result1 = new SZHL_XZ_JLB().GetDTByCommand(sql);
-
-                            msg.ErrorMsg = str2;
-                        }
-
-                        sheet = null;
-                        workbook = null;
-                    }
-                    else
-                    {
-                        msg.ErrorMsg = "请上传excel文件 ";
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                msg.ErrorMsg = "导入失败！";
-            }
-        }
-
-
-        #endregion
 
         #region excel转换为table new
 
@@ -229,7 +95,7 @@ namespace QJY.API
                         else
                         {
                             CommonHelp ch = new CommonHelp();
-                            string[] yz = { "姓名", "部门", "手机" };
+                            string[] yz = { "姓名", "部门", "用户编码" };
                             //列名
                             for (int i = 0; i < cellCount; i++)
                             {
@@ -474,7 +340,7 @@ namespace QJY.API
                 bool bl = false;
                 string username = a["姓名"] != null ? a["姓名"].ToString().Trim() : "";
                 string bmname = a["部门"] != null ? a["部门"].ToString().Trim() : "";
-                string tel = a["手机"] != null ? a["手机"].ToString().Trim() : "";
+                string tel = a["用户编码"] != null ? a["用户编码"].ToString().Trim() : "";
 
                 SZHL_XZ_GZD gzd = new SZHL_XZ_GZD();
                 gzd.ComId = UserInfo.User.ComId;
@@ -490,7 +356,7 @@ namespace QJY.API
                 gzd.UserRealName = username;
                 gzd.BranchName = bmname;
 
-                JH_Auth_User user = new JH_Auth_UserB().GetEntity(d => d.ComId == UserInfo.User.ComId && d.mobphone == tel);
+                JH_Auth_User user = new JH_Auth_UserB().GetEntity(d => d.ComId == UserInfo.User.ComId &&( d.mobphone == tel|| d.UserName == tel || d.JobNum == tel));
                 if (user != null)
                 {
                     gzd.UserName = user.UserName;
@@ -693,7 +559,7 @@ namespace QJY.API
         /// <param name="UserInfo"></param>
         public void GETUSERLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            DataTable dt = new SZHL_XZ_GZDB().GetDTByCommand("select u.UserRealName '姓名',b.DeptName '部门',u.mobphone '手机' from dbo.JH_Auth_User u left join dbo.JH_Auth_Branch b on u.BranchCode=b.DeptCode  where u.ComId='" + UserInfo.QYinfo.ComId + "' and b.DeptRoot!=-1 order by b.DeptName");
+            DataTable dt = new SZHL_XZ_GZDB().GetDTByCommand("select u.UserRealName '姓名',b.DeptName '部门',u.mobphone '用户编码' from dbo.JH_Auth_User u left join dbo.JH_Auth_Branch b on u.BranchCode=b.DeptCode  where u.ComId='" + UserInfo.QYinfo.ComId + "' and b.DeptRoot!=-1 order by b.DeptName");
 
             msg.Result = dt;
         }

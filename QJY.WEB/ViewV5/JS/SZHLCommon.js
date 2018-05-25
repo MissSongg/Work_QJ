@@ -1573,7 +1573,7 @@
             sortable: true,
             showstatusbar: true,
             renderstatusbar: function (statusbar) {
-                statusbar.css("border-top", "1px solid #d4d4d4").css("line-height", "34PX").css("PADDING-LEFT", "10PX").append("共200条记录");
+                statusbar.css("border-top", "1px solid #d4d4d4").css("line-height", "34PX").css("PADDING-LEFT", "10PX").append("共" + tabledata.length+ "条记录");
             }
 
         };

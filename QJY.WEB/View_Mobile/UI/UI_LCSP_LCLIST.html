@@ -11,10 +11,6 @@
     <link rel="stylesheet" href="/View_Mobile/CSS/msui.css">
     
     <style type="text/css">
-        /*.ui-header {background-color: #06c1ae;color: #fff;}
-        .ui-header h1{color:#fff;}
-        .bar .button-link{color:#fff;}*/
-
         .ms-controller, [ms-controller] {
             display: none;
         }
@@ -51,10 +47,11 @@
         </div>
 
     </div>
+    <script src="/View_Mobile/JS/layer/layer.m.js"></script>
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm.min.js' charset='utf-8'></script>
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.5.8/js/sm-extend.min.js' charset='utf-8'></script>
-    <script src="/View_Mobile/JS/avalon.mobile.min.js"></script>
+    <script src="/View_Mobile/JS/avalon1.47.js"></script>
     <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
     <script>
 
@@ -64,7 +61,6 @@
             LCLBData: [],
             issj: '',
             vieww: function (el) {
-                //window.location = "UI_LCSP_LIST.html?ID=" + el.ID + "&r=" + Math.random();
                 window.location = "/View_Mobile/UI/BASE/APP_MOBIL_WF.html?FormCode=LCSP&PDID=" + el.ID + "&r=" + Math.random();
             }
         });

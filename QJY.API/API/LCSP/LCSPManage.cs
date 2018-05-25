@@ -1443,5 +1443,37 @@ namespace QJY.API
         }
         #endregion
 
+
+
+
+        #region 获取企业微信流程数据
+        public void GETWXSHLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            string year =P1;
+            string month = P2;
+
+            string starDate = (year == "" ? DateTime.Now.Year.ToString() : year) + "-";
+            string EndDate = "";
+            if (month == "0" || month == "")
+            {
+                starDate = starDate + "01" + "-01";
+                EndDate = (year == "" ? DateTime.Now.Year.ToString() : year) + "-12" + "-31";
+            }
+            else
+            {
+                starDate = starDate + month + "-01";
+                EndDate = DateTime.Parse(starDate).AddMonths(1).AddDays(-1).ToString("yyyy-MM-dd");
+            }
+            string num = context.Request["num"] ?? "";
+
+            WXHelp wx = new WXHelp(UserInfo.QYinfo);
+            ////string strSDate =((DateTime.Parse(starDate).Ticks-621355968000000000) / 10000000).ToString();
+            ////string strEDate = ((DateTime.Parse(EndDate).Ticks - 621355968000000000) / 10000000).ToString();
+            msg.Result = wx.GetWXSHData(starDate, EndDate, num);
+
+
+        }
+        #endregion
+
     }
 }

@@ -19,7 +19,8 @@
         var corpId = ComFunJS.getQueryString("corpId");
         $(function () {
             if (ComFunJS.getCookie("szhlcode") && ComFunJS.getCookie("username")) {  //缓存的用户名，直接跳到对应的地址
-                $.getJSON("/API/WXAPI.ashx?action=isexist&r=" + Math.random(), { "corpid": corpId }, function (r) {
+                $.get("/API/WXAPI.ashx?action=isexist&r=" + Math.random(), { "corpid": corpId }, function (r) {
+                    r = JSON.parse(r)
                     if (r.ErrorMsg == "") {
                         if (r.Result == "NOCODE") {
                             ComFunJS.delCookie("szhlcode");
@@ -39,8 +40,8 @@
 
         function hqsq() {
             if (code) {   //授权回来，抓取用户名
-                $.getJSON("/API/WXAPI.ashx?action=GetUserCodeByCode&r=" + Math.random(), { "code": code, "corpid": corpId, "funcode": funcode }, function (r) {
-                    //el.loading("hide");
+                $.get("/API/WXAPI.ashx?action=GetUserCodeByCode&r=" + Math.random(), { "code": code, "corpid": corpId, "funcode": funcode }, function (r) {
+                    r = JSON.parse(r)
                     if (r.ErrorMsg == "") {
                         ComFunJS.setCookie("szhlcode", r.Result, 7);
                         ComFunJS.setCookie("username", r.Result1, 7);
@@ -75,8 +76,8 @@
             }
 
             var returnmsg = [];
-            $.getJSON("/API/VIEWAPI.ashx?action=XTGL_WXINIT&r=" + Math.random(), { P1: funcode, P2: ftype }, function (r) {
-                //el.loading("hide");
+            $.get("/API/VIEWAPI.ashx?action=XTGL_WXINIT&r=" + Math.random(), { P1: funcode, P2: ftype }, function (r) {
+                r= JSON.parse(r)
                 if (r.ErrorMsg == "") {
                     var usersarr = r.Result;
                     $(usersarr).each(function (index, ele) {
@@ -98,7 +99,7 @@
                         window.location.replace('/View_Mobile/UI/UI_ERROR.html?r=' + Math.random() + "&msg=很抱歉，您没有权限!!");
                     }
                 }
-                if (r.ErrorMsg == "WXTIMEOUT") {
+                if (r.ErrorMsg == "WXTIMEOUT" || data.ErrorMsg == "NOSESSIONCODE") {
                     //微信端超时处理
                     ComFunJS.delCookie("szhlcode");
                     ComFunJS.delCookie("username");

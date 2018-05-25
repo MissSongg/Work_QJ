@@ -174,13 +174,13 @@
                                             <!--<li ms-on-click="getpldata(el,1)" ms-class-1="active:el.pltype=='1'" ms-if="el.PLList.size()!=0">
                                                 <a>状态({{el.PLList.size()}})</a>
                                             </li>-->
-                                            <li ms-on-click="getpldata(el,2)" ms-class-1="active:el.pltype=='2'" >
+                                            <li ms-on-click="getpldata(el,2)" ms-class-1="active:el.pltype=='2'" style="list-style:none" >
                                                 <a>参加({{getplcount(el,'2')}})</a>
                                             </li>
-                                            <li ms-on-click="getpldata(el,3)" ms-class-1="active:el.pltype=='3'" >
+                                            <li ms-on-click="getpldata(el,3)" ms-class-1="active:el.pltype=='3'" style="list-style:none"  >
                                                 <a>签到({{getplcount(el,'3')}})</a>
                                             </li>
-                                            <li ms-on-click="getpldata(el,4)" ms-class-1="active:el.pltype=='4'" >
+                                            <li ms-on-click="getpldata(el,4)" ms-class-1="active:el.pltype=='4'" style="list-style:none" >
                                                 <a>请假({{getplcount(el,'4')}})</a>
                                             </li>
                                         </ul>
@@ -639,8 +639,7 @@
             }
             model.getdata(model.type);
 
-            //初始化微信配置
-            ComFunJS.initwxConfig();
+
         })
     </script>
 </body>

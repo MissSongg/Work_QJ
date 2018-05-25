@@ -247,7 +247,7 @@
                 </p>
                 <p class="mt10">2、建议您的Excel第一行数据为工资表的列头，列数不限，但列名最好简单有意义，<i class="text-danger">不能为空，不能有合并单元格</i></p>
                 <p class="mt10">3、尽量不要包含特殊字符，上传前建议您删除无用数据行。</p>
-                <p class="mt10">4、上传的Excel文档中务必包含：姓名，手机（必填项），并且要确保这些列的数据的正确无误。</p>
+                <p class="mt10">4、上传的Excel文档中务必包含：姓名，用户编号（必填项），并且要确保这些列的数据的正确无误。</p>
 
                 <p class="tc pt20 btn-sc oh">
                     <button type="button" class="btn btn-success btn-lg" ms-click="djsc()">上传工资条</button>
@@ -299,7 +299,7 @@
                                     </div>
                                 </th>
                                 <th rowspan="2">部门</th>
-                                <th rowspan="2">手机</th>
+                                <th rowspan="2">用户编号</th>
                                 <th ms-attr-colspan="colnum(XGYFData)">
                                     <div class="input-box">
                                         应发
@@ -372,7 +372,7 @@
                                 </td>
                                 <td>
                                     <div class="input-box">
-                                        {{el.手机}}
+                                        {{el.用户编码}}
                                     </div>
                                 </td>
                                 <td ms-repeat="el.YF">
@@ -524,7 +524,7 @@
                                         <td>{{YLBM}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="output-key">手机</td>
+                                        <td class="output-key">用户编码</td>
                                         <td>{{YLTel}}</td>
                                     </tr>
                                     <tr>
@@ -610,9 +610,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="Tel" class="col-xs-4 control-label text-right"><i>*</i>手机</label>
+                            <label for="Tel" class="col-xs-4 control-label text-right"><i>*</i>用户编码</label>
                             <div class="col-xs-6">
-                                <input type="text" class="form-control" id="Tel" ms-duplex="UserData.Tel" placeholder="请输入手机" />
+                                <input type="text" class="form-control" id="Tel" ms-duplex="UserData.Tel" placeholder="请输入用户编码" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -817,7 +817,7 @@
             //tempindex.seluser = item;
             tempindex.YLName = item.姓名;
             tempindex.YLBM = item.部门;
-            tempindex.YLTel = item.手机;
+            tempindex.YLTel = item.用户编码;
             tempindex.YLHJ = item.合计;
             tempindex.YFData = item.YF;
             tempindex.YKData = item.YK;
@@ -1044,13 +1044,13 @@
             //    return;
             //}
             if (!tempindex.UserData.Tel) {
-                ComFunJS.winwarning("请输入手机");
+                ComFunJS.winwarning("请输入用户编码");
                 return;
             }
             var user = {};
             user.姓名 = tempindex.UserData.Name;
             user.部门 = tempindex.UserData.BM;
-            user.手机 = tempindex.UserData.Tel;
+            user.用户编码 = tempindex.UserData.Tel;
             user.YF = {};
             $.each(tempindex.XGYFData.$model, function (i, n) {
                 user.YF[i] = "";

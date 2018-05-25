@@ -8,13 +8,16 @@ using Senparc.Weixin.QY.Entities;
 using Senparc.Weixin.QY.CommonAPIs;
 using Senparc.Weixin.QY.AdvancedAPIs;
 using Senparc.Weixin.QY.AdvancedAPIs.App;
-
+using Newtonsoft.Json;
 using Senparc.Weixin.QY.AdvancedAPIs.OAuth2;
 using Senparc.Weixin.HttpUtility;
 using System.IO;
 using QJY.Data;
 using Senparc.Weixin.QY.AdvancedAPIs.MailList;
 using Senparc.Weixin.QY.AdvancedAPIs.Chat;
+using System.Net;
+using System.Text;
+using Senparc.Weixin.Work.AdvancedAPIs.OaDataOpen;
 
 namespace QJY.API
 {
@@ -74,6 +77,10 @@ namespace QJY.API
             string access_token = GetToken();
             var url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/ticket/get?access_token={0}&type=contact",
                access_token);
+
+          
+           
+
 
             JsonGroupTicket js = Get.GetJson<JsonGroupTicket>(url);
             return js;
@@ -692,6 +699,26 @@ namespace QJY.API
                     break;
             }
             return bb;
+        }
+
+
+
+
+        /// <summary>
+        /// 获取微信审批数据
+        /// </summary>
+        /// <param name="strSDate"></param>
+        /// <param name="strEDate"></param>
+        /// <returns></returns>
+        public GetApprovalDataJsonResult GetWXSHData(string strSDate, string strEDate, string strLastNum = "")
+        {
+            AccessTokenResult Token = CommonApi.GetToken(Qyinfo.corpId.Trim(), "7YhtvT7_ScJPDAEqtmTwKPuYhw4xxgbvTJYXSsb9Ah4");
+            string strReturn = "";
+            string access_token = Token.access_token;
+
+            GetApprovalDataJsonResult obj = OaDataOpenApi.GetApprovalData(access_token, DateTime.Parse(strSDate), DateTime.Parse(strEDate), 0);
+          
+            return obj;
         }
     }
 
