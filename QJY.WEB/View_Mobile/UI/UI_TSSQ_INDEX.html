@@ -8,25 +8,34 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="/View_Mobile/CSS/msui.css">
-    
+
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1476090774_8365302.css">
     <link href="/View_Mobile/CSS/szhlextend.css?ver=20160904" rel="stylesheet" />
     <!--<link rel="stylesheet" type="text/css" href="/View_Mobile/CSS/animate.css">-->
     <link rel="stylesheet" type="text/css" href="/View_Mobile/CSS/mob.css">
-    
+
     <style type="text/css">
         .ms-controller, [ms-controller] {
             display: none;
         }
+
         .title {
             margin: 0 -.5rem;
         }
+
         .maxht {
-            max-height:120px;
+            max-height: 120px;
         }
+
         .lj-text p {
             margin: 0;
             padding: 0;
+        }
+
+        .file {
+            border-radius: 4px;
+            width: 55px !important;
+            height: 60px;
         }
     </style>
 
@@ -34,7 +43,7 @@
 <body ms-controller="SQList">
     <div class="page-group">
         <div class="page page-current" id="pageindex1">
-            <div class="" >
+            <div class="">
                 <!-- 头部滑动选择 -->
                 <div class="h-listing-holder">
                     <ul class="h-listing" id="h-listing">
@@ -69,10 +78,22 @@
                                             </div>
                                             <div class="toggle-text" ms-if="!el.URL" ms-click="showdetil(el)">{{el.isfold?'全文':'收起'}}</div>
                                             <div class="pictur" ms-if="!el.URL">
-                                                <span ms-repeat-file="el.FileList">
-                                                    <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}" style="height:auto" />
-                                                    <!--<span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}</span>-->
-                                                </span>
+
+                                                <!--<span ms-repeat-file="el.FileList">
+                                                    <img ms-if="ComFunJS.isPic(file.FileExtendName)" ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}" style="height:auto" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'" />
+                                                    <img ms-if="!ComFunJS.isPic(file.FileExtendName)" class="file" ms-on-click="viewfile(file)" ms-attr-src="/ViewV5/images/qywd/{{file.FileExtendName}}.png" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'" />
+                                                                                                    <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}</span>
+
+                                                </span>-->
+                                                <ul class="filelist" style="margin-left:0;padding-left:0">
+                                                    <li ms-repeat-file="el.FileList">
+                                                        <img ms-if="ComFunJS.isPic(file.FileExtendName)" ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'">
+                                                        <img ms-if="!ComFunJS.isPic(file.FileExtendName)" class="file" ms-on-click="viewfile(file)" ms-attr-src="/ViewV5/images/qywd/{{file.FileExtendName}}.png" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'" />
+
+                                                        <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}.{{file.FileExtendName}}</span>
+                                                    </li>
+                                                </ul>
+
                                             </div>
                                             <div class="lj" ms-click="viewxxurl(el)" ms-if="el.URL">
                                                 <img ms-visible="el.FileList.size()>0" ms-src="{{ComFunJS.getfile(el.FileList[0].ID)}}" onerror="javascript: this.src = '/View_Mobile/Images/lg.png'">
@@ -155,7 +176,7 @@
     <!--没有数据时显示的内容-->
     <div class="none-img-messg" style="display:none">
         <img src="/View_Mobile/Images/tssq.png">
-        <p>此话题下暂没有数据<br/>点击“+”按钮，增加话题</p>
+        <p>此话题下暂没有数据<br />点击“+”按钮，增加话题</p>
     </div>
     <script src="/View_Mobile/JS/layer/layer.m.js"></script>
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
@@ -165,7 +186,7 @@
     <script src="/View_Mobile/JS/ComFunJS.js?jsver=20160425"></script>
     <!-- 头部滑动js -->
     <script type="text/javascript" src="/View_Mobile/JS/touch-tab.js"></script>
-    
+
     <script>
         var model = avalon.define({
             $id: "SQList",
@@ -229,7 +250,7 @@
                             r.Result[i].isfold = true;
                         }
                         model.ctData.pushArray(r.Result);
-                        
+
                         setTimeout("touchSwiper().init();", 300)
                         //判断是否加载完毕
                         if (r.Result.length < model.pagecount) {
@@ -268,7 +289,7 @@
 
                 }, false);
             },
-            hf: function (el,pl) {
+            hf: function (el, pl) {
                 ComFunJS.showCommentNew(function (result) {
 
                     $.getJSON('/API/VIEWAPI.ashx?Action=TSSQ_ADDCOMENT&r=' + Math.random(), { "P1": result.comment, "TLID": pl.ID, "MsgLYID": el.ID }, function (resultData) {
@@ -281,7 +302,7 @@
 
                 }, false);
             },
-            zan: function (el,obj) {
+            zan: function (el, obj) {
                 $(this).toggleClass("active animated pulse");
                 $.getJSON('/API/VIEWAPI.ashx?Action=TSSQ_ZANHTBYID', { "P1": el.ID }, function (result) {
                     if (result.ErrorMsg == "") {
@@ -327,7 +348,7 @@
                 if (type == "add" && $(".talk-text").length > 0) {
                     $(".talk-text").each(function (inx, ele) {
                         if ($(ele).height() > 120) {
-                            if ($(ele).parent().find(".toggle-text").text()=="全文") {
+                            if ($(ele).parent().find(".toggle-text").text() == "全文") {
                                 $(ele).addClass("maxht");
                                 $(ele).parent().find(".toggle-text").show();
                             }
@@ -343,7 +364,7 @@
         })
 
         avalon.ready(function () {
-          
+
 
             // 注册'infinite'事件处理函数
             $(document).on('infinite', '.infinite-scroll-bottom', function () {
@@ -355,7 +376,7 @@
             //$(".zan").click(function () {
             //    $(this).toggleClass("active animated pulse");
             //})
-            
+
             model.getLB();
             model.getdata('');
         })

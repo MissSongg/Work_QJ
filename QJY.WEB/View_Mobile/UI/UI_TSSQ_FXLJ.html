@@ -42,7 +42,9 @@
                             <div class="card-content-inner" style="padding-top: 0; padding-top: 0.4rem; padding-bottom: 0;" ms-if="el.FileId">
                                 <ul class="filelist">
                                     <li ms-repeat-file="el.FileList">
-                                        <img ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'" />
+                                        <img ms-if="ComFunJS.isPic(file.FileExtendName)" ms-class="mall_pcp:ComFunJS.isPic(file.FileExtendName)" class="" ms-on-click="viewfile(file)" ms-src="{{ComFunJS.getfile(file.ID)}}" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'" />
+                                        <img ms-if="!ComFunJS.isPic(file.FileExtendName)" class="file" ms-on-click="viewfile(file)" ms-attr-src="/ViewV5/images/qywd/{{file.FileExtendName}}.png" onerror="javascript: this.src = '/ViewV5/images/qywd/file.png'" />
+
                                         <span class="fileinfo" ms-if="!ComFunJS.isPic(file.FileExtendName)">{{file.Name}}</span>
                                     </li>
                                 </ul>
