@@ -1,4 +1,5 @@
-﻿<link rel="stylesheet" href="//at.alicdn.com/t/font_1468998609_1288347.css">
+﻿
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1476090774_8365302.css">
 <style>
     .szhlloading {
         -webkit-animation: rotateplane 1.2s infinite ease-in-out;
@@ -47,16 +48,26 @@
         margin: 0 !important;
     }
 </style>
-<div style="background: #fbf9fe" ms-controller="MWQQD">
+<div style="background:#fbf9fe" ms-controller="MWQQD">
     <div ms-if="isHasDataQX=='Y'">
-        <div id="map" style="height: 200px; width: 100%;"></div>
+        <!--  通过 iframe 嵌入前端定位组件，此处没有隐藏定位组件，使用了定位组件的在定位中视觉特效  -->
+        <iframe id="geoPage" width="100%" height="50px" frameborder=0 scrolling="no"
+                src="https://apis.map.qq.com/tools/geolocation?key=APHBZ-SWPCX-6VY4H-ZB35Y-NV6HK-BKBA5&referer=myapp&effect=zoom"></iframe>
+
+        <!-- 接收到位置信息后 通过 iframe 嵌入位置标注组件 -->
+        <!--<div id="map" style="height:200px;width:100%;"></div>-->
+        <iframe id="map" style="height:200px;width:100%;" frameborder=0 scrolling="no" src=""></iframe> 
         <div class="weui_cells weui_cells_form">
 
-
+            <!--<div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label label">当前位置</label></div>
+            <div class="weui_cell_bd weui_cell_primary" style="text-align:center">
+                {{modelData.Position}}河南省大学科技园
+            </div>
+        </div>-->
             <div class="weui_cells_form">
                 <div class="weui_cell">
-                    <div class="weui_cell_hd" style="display: none;">
-                        <label class="weui_label label">签到备注</label></div>
+                    <div class="weui_cell_hd" style="display:none;"><label class="weui_label label">签到备注</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         <textarea ms-duplex="modelData.QDContent" rows="3" placeholder="请输入签到备注" class="weui_textarea szhl szhl_require"></textarea>
                     </div>
@@ -65,13 +76,12 @@
             <div class="weui_cells weui_cells_form">
                 <div class="weui_cell">
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input type="text" ms-duplex="modelData.Files" class="wximgupload" style="display: none;" />
+                        <input type="text" ms-duplex="modelData.Files" class="wximgupload" style="display:none;" />
                     </div>
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd">
-                    <label class="weui_label label">汇报人</label></div>
+                <div class="weui_cell_hd"><label class="weui_label label">汇报人</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input type="text" id="conCSR" placeholder="请选择汇报人" ms-duplex="modelData.HBUser" class="weui_input szhl szhl_getPeoples" />
                 </div>
@@ -82,8 +92,7 @@
         <!--<div class="weui_cells_title">基本信息</div>-->
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
-                <div class="weui_cell_hd">
-                    <label class="weui_label label">当前位置</label></div>
+                <div class="weui_cell_hd"><label class="weui_label label">当前位置</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.Position}}
                 </div>
@@ -103,8 +112,7 @@
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd">
-                    <label class="weui_label label">汇报人</label></div>
+                <div class="weui_cell_hd"><label class="weui_label label">汇报人</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{ComFunJS.convusers(modelData.HBUser)}}
                 </div>
@@ -112,110 +120,61 @@
         </div>
     </div>
 </div>
-
-
 <script>
     $(document).on("click", ".amap-geo", function () {
         if ($("#bz")) {
             $("#bz").text("正在定位中...");
         }
     });
+    var loc;
+    var isMapInit = false;
+    var address = '';
+    //监听定位组件的message事件
+    window.addEventListener('message', function (event) {
+        loc = event.data; // 接收位置信息
+        //console.log('location', loc);
+        //alert(loc.module);
+        if (loc && loc.module == 'geolocation') { //定位成功,防止其他应用也会向该页面post信息，需判断module是否为'geolocation'
+            var markUrl = 'https://apis.map.qq.com/tools/poimarker' +
+            '?marker=coord:' + loc.lat + ',' + loc.lng +
+            ';title:我的位置;addr:' + address +
+            '&key=APHBZ-SWPCX-6VY4H-ZB35Y-NV6HK-BKBA5&referer=myapp';
+            //给位置展示组件赋值
 
-    var map = new AMap.Map('map', function () {
-        view: new AMap.View2D({
-            //center: new AMap.LngLat(116.397428, 39.90923),
-            //zoom: 10
-        })
-    });
-    map.plugin(["AMap.ToolBar"], function () {
-        toolBar = new AMap.ToolBar();
-        map.addControl(toolBar);
-    });
-    var geolocation;
-    var geocoder;
-    map.plugin(["AMap.Geocoder"], function () {
-        geocoder = new AMap.Geocoder({
-            radius: 1000,
-            extensions: "all"
-        });
-    });
-    map.plugin('AMap.Geolocation', function () {
-        geolocation = new AMap.Geolocation({
-            enableHighAccuracy: true,//是否使用高精度定位，默认:true
-            timeout: 10000,          //超过10秒后停止定位，默认：无穷大
-            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-            zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-            //showButton: false,
-            //buttonPosition: 'LB'
-        });
-        map.addControl(geolocation);
-        geolocation.getCurrentPosition();
-        AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-        AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
-    });
+            document.getElementById('map').src = markUrl;
+            address = loc.province + loc.city + loc.district + loc.addr;
+            tempmodel.modelData.Position = address;
+            tempmodel.Position = address;
+            //"nation": "中国",
+            //"province": "广州省",   
+            //"city":"深圳市",
+            //"district":"南山区",
+            //"addr":"深圳大学杜鹃山(白石路北250米)",
 
-    function onComplete(data) {
-        tempmodel.modelData.Longitude = data.position.getLng();
-        tempmodel.modelData.Latitude = data.position.getLat();
-        var position = [data.position.getLng(), data.position.getLat()];
-        //var marker = new AMap.Marker({
-        //    map: map,
-        //    position: position
-        //});
-        geocoder.getAddress(position, function (status, result) {
-            if (status === 'complete' && result.info === 'OK') {
-                geocoder_CallBack(result);
-            }
-        });
-        //$(".load").toggleClass("szhlloading");
-    }
-    function geocoder_CallBack(data) {
-        var address = data.regeocode.formattedAddress; //返回地址描述
-        tempmodel.modelData.Position = address;
-        tempmodel.Position = address;
-        addmarker();
-    }
-    function onError(data) {
-        var str = "定位失败!";
-        switch (data.info) {
-            case 'PERMISSION_DENIED':
-                str += '浏览器阻止了定位操作';
-                break;
-            case 'POSITION_UNAVAILBLE':
-                str += '无法获得当前位置';
-                break;
-            case 'TIMEOUT':
-                str += '定位超时';
-                break;
-            default:
-                str += '未知错误';
-                break;
+        } else { //定位组件在定位失败后，也会触发message, event.data为null
+            alert('定位失败');
         }
-        tempmodel.Position = str;
-        //$(".load").toggleClass("szhlloading");
-    }
-    //查询结果的marker和infowindow
-    function addmarker() {
-        var lngX = tempmodel.modelData.Longitude;
-        var latY = tempmodel.modelData.Latitude;
-        //var markerOption = {
-        //    map: map,
-        //    position: new AMap.LngLat(lngX, latY),
-        //    topWhenClick: true
-        //};
-        //var mar = new AMap.Marker(markerOption);
 
-        var infoWindow = new AMap.InfoWindow({
-            content: "<h3 id='bz' style=\"font-size: .8rem;color:#00a6ac;\">  " + tempmodel.Position + "</h3>",//+ TipContents(d.type, d.address, d.tel),
-            size: new AMap.Size(300, 0),
-            autoMove: true
-        });
+        /* 另一个使用方式
+        if (!isMapInit && !loc) { //首次定位成功，创建地图
+            isMapInit = true;
+            createMap(event.data);
+        } else if (event.data) { //地图已经创建，再收到新的位置信息后更新地图中心点
+            updateMapCenter(event.data);
+        }
+        */
+    }, false);
+    //为防止定位组件在message事件监听前已经触发定位成功事件，在此处显示请求一次位置信息
+    document.getElementById("geoPage").contentWindow.postMessage('getLocation', '*');
 
-        infoWindow.open(map, new AMap.LngLat(lngX, latY));
-    }
-
-   
-
+    //设置6s超时，防止定位组件长时间获取位置信息未响应
+    setTimeout(function () {
+        if (!loc) {
+            //主动与前端定位组件通信（可选），获取粗糙的IP定位结果
+            document.getElementById("geoPage")
+                .contentWindow.postMessage('getLocation.robust', '*');
+        }
+    }, 6000); //6s为推荐值，业务调用方可根据自己的需求设置改时间，不建议太短
     var tempmodel = avalon.define({
         $id: "MWQQD",
         name: "外勤签到",
@@ -229,7 +188,8 @@
         Position: "正在定位中...",
         modelData: { "Position": "", "Longitude": "", "Latitude": "", "QDContent": "", "Files": "", "HBUser": "" },
         inittemp: function (strId) {
-
+            //circle.getCurrentPosition(locationResult); 
+            //map.addOverlay(circle);
 
             if (strId) {
 
@@ -261,18 +221,8 @@
             } else {
 
                 tempmodel.modelData.RBDate = ComFunJS.getnowdate("yyyy-mm-dd");
-                if (localStorage.getItem(pmodel.FormCode)) {//判断有没有未保存的表单
-                    var tempdata = localStorage.getItem(pmodel.FormCode);//缓存表单数据
-                    ComFunJS.winconfirm("系统检测到您未保存的数据,是否加载?", function () {
-                        tempmodel.modelData = $.parseJSON(tempdata);
-                        ComFunJS.initForm();
-                    }, function () {
-                        localStorage.removeItem(pmodel.FormCode);
-                        ComFunJS.initForm();
-                    })
-                } else {
+              
                     ComFunJS.initForm();
-                }
 
                 ComFunJS.uploadimgnew();
 
@@ -304,8 +254,10 @@
 
             })
 
-            $.post("/API/VIEWAPI.ashx?ACTION=WQQD_ADDWQQD&r=" + Math.random(), { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
-                return callback.call(this, $.parseJSON(result));
+            $.getJSON("/API/VIEWAPI.ashx?ACTION=WQQD_ADDWQQD&r=" + Math.random(), { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
+
+                return callback.call(this, result);
+
             });
         },
         Complate: function () {
@@ -319,7 +271,7 @@
             //map.addOverlay(circle);
             geolocation.getCurrentPosition();
         }
-    });//# sourceURL=MGZBG.js;
+    });//@ sourceURL=MGZBG.js;
     tempmodel.modelData.$watch("QDContent", function (a, b) {
         if (!pmodel.DataID) {
             localStorage.setItem(pmodel.FormCode, JSON.stringify(tempmodel.modelData.$model));
