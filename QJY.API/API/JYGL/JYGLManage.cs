@@ -174,6 +174,22 @@ namespace QJY.API
             jygl.BackBZ = (jygl.BackBZ + "," + P1).TrimStart(',');
             new SZHL_TSGLB().Update(jygl);
 
+
+            //发送归还提醒
+            SZHL_TXSX TX = new SZHL_TXSX();
+            TX.Date = DateTime.Now.ToString();
+            TX.APIName = "JYGL";
+            TX.ComId = UserInfo.User.ComId;
+            TX.FunName = "TSGLMSG";
+            TX.TXMode = "JYGL";
+            TX.CRUserRealName = UserInfo.User.UserRealName;
+            TX.MsgID = JYId.ToString();
+            TX.TXContent = "您好：" + UserInfo.User.UserRealName + ",您借阅的图书(" + jygl.TSName + ")已归还";
+            TX.TXUser = jygl.JYR;
+            TX.CRUser = UserInfo.User.UserName;
+            TXSX.TXSXAPI.AddALERT(TX); //时间为发送时间
+
+
         }
 
         public void SENDTXMSG(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
@@ -552,6 +568,22 @@ namespace QJY.API
         #endregion
 
 
+        /// <summary>
+        /// 取消图书借阅
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void DELJY(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int Id = int.Parse(P1);
+            new SZHL_TSGLB().Delete(d => d.ID == Id && d.ComId == UserInfo.User.ComId);
+
+        }
+
+
 
 
         #region 借阅消息的接口
@@ -585,6 +617,10 @@ namespace QJY.API
             wx.SendTH(al, TX.TXMode, "A", TX.TXUser);
         }
         #endregion
+
+
+
+
         #endregion
     }
 }

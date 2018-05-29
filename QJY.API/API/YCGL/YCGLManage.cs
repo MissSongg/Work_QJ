@@ -572,7 +572,20 @@ namespace QJY.API
         }
         #endregion
 
-        
+        /// <summary>
+        /// 取消用车预约
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void DELYC(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int Id = int.Parse(P1);
+            new SZHL_YCGLB().Delete(d => d.ID == Id && d.ComId == UserInfo.User.ComId);
+
+        }
 
         #endregion
     }

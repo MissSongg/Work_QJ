@@ -5,6 +5,10 @@
 
         var tempindex = avalon.define({
             $id: "CCXJVIEW",
+            CancelWF: function (strId) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=YCGL_DELYC', { P1: strId }, function (resultData) {
+                })
+            },
             InitWigetData: function (strId) {
                 model.title = "用车管理";
                 model.ShowColumns.pushArray(

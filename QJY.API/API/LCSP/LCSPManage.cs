@@ -120,12 +120,12 @@ namespace QJY.API
                                 strWhere += " and 1=0 ";
                             }
                         }
-                                              break;
+                        break;
 
                     case "4": //抄送我的
                         {
                             strWhere += " AND dbo.fn_PDStatus(lc.intProcessStanceid) ='已审批'  And   exists (select I.ID from Yan_WF_PI I where I.PDID=pd.ID  AND  ',' + I.ChaoSongUser  + ',' like '%," + userName + ",%' )";
-                            
+
                         }
                         break;
                 }
@@ -256,8 +256,9 @@ namespace QJY.API
         {
             try
             {
+                int ID = int.Parse(P1);
 
-                if (new SZHL_LCSPB().Delete(d => d.ID.ToString() == P1))
+                if (new SZHL_LCSPB().Delete(d => d.ID == ID && d.ComId == UserInfo.User.ComId))
                 {
                     msg.ErrorMsg = "";
                 }
@@ -1306,8 +1307,6 @@ namespace QJY.API
 
 
             //删除流程相关数据
-
-            new SZHL_LCSPB().Delete(d => d.ID == DataID);
             new Yan_WF_PIB().Delete(d => d.ID == PIID);
             new Yan_WF_TIB().Delete(d => d.PIID == PIID);
 
@@ -1449,7 +1448,7 @@ namespace QJY.API
         #region 获取企业微信流程数据
         public void GETWXSHLIST(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            string year =P1;
+            string year = P1;
             string month = P2;
 
             string starDate = (year == "" ? DateTime.Now.Year.ToString() : year) + "-";

@@ -240,10 +240,9 @@
                         if (result.ErrorMsg == "") {//流程数据
                             model.ISCANCEL = "N";
                             top.ComFunJS.winconfirm("操作成功,该表单已撤回到草稿箱,是否要重新发起该表单", function () {
-
                                 location.href = "/ViewV5/AppPage/APP_ADD_WF.html?FormCode=" + model.FormCode + "&PDID=" + model.PIMODEL.PDID + "&lctype=" + model.lctype;
                                 if (tempindex && $.isFunction(tempindex.CancelWF)) {
-                                    tempindex.CancelWF();
+                                    tempindex.CancelWF(model.strId);
                                 }
 
                             }, function () {

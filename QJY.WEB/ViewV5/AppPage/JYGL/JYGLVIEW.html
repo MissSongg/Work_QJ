@@ -5,10 +5,14 @@
 
         var tempindex = avalon.define({
             $id: "JYGLVIEW",
-            CancelWF: function () {
+            CancelWF: function (dataid) {
                 $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_MODIFYTSSTATUS', { P1: model.modelData.TSID, P2: "0" }, function (resultData) {
 
                 })
+                $.getJSON('/API/VIEWAPI.ashx?Action=JYGL_DELJY', { P1: dataid }, function (resultData) {
+
+                })
+
             },//重新更新图书状态
             InitWigetData: function (strId) {
                 model.title = "借阅管理";

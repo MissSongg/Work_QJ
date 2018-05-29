@@ -6,6 +6,10 @@
         var tempindex = avalon.define({
             $id: "LCSPVIEW",
             viewData: [],
+            CancelWF: function (strId) {
+                $.getJSON('/API/VIEWAPI.ashx?Action=LCSP_DELLCSPBYID', { P1: strId }, function (resultData) {
+                })
+            },
             InitWigetData: function (strId) {
                 model.title = "自定义流程";
                 model.ShowColumns.pushArray(
