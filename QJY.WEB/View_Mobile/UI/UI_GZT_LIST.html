@@ -55,68 +55,42 @@
             </div>
             <div class="content infinite-scroll infinite-scroll-bottom touchcontent" data-distance="50" style="margin-top: 2.3rem;" id="touchcontent">
                 <div class="list-container">
-                    <div class="card facebook-card animated fadeInUp no-head" ms-repeat-el="ctData">
-                        <!--<div class="card-header no-border" ms-on-click="showdetil(el)">
-            <div class="facebook-avatar">
-                <img ms-src="/ToolS/DownFile.aspx?type=TX&user={{el.UserName}}" style="border-radius: 3px;width:32px;height:32px">
-                <div class="cadename" ms-if="!el.isfold">{{el.UserRealName}}</div>
-            </div>
-            <div class="facebook-date" ms-if="el.isfold">{{el.UserRealName}}</div>
-            <div class="facebook-date">{{el.CRDate|date("yyyy-MM-dd")}}</div>
-            <div class="facebook-date" ms-if="!el.isfold" style="min-height:1.5rem"><span style="overflow: hidden; word-wrap: break-word; word-break: break-all; ">{{covtitle(el.title)}}</span></div>
-        </div>-->
-                        <div class="card-header no-border" ms-on-click="showdetil(el)">
-                            <!--<div class="facebook-avatar">
-                <img ms-src="/ToolS/DownFile.aspx?type=TX&user={{el.CRUser}}" width="40" class="border-r">
-            </div>-->
+                    <div class="card facebook-card animated fadeInUp no-head" ms-repeat-el="ctData" ms-on-click="showdetil(el)">
+
+                        <div class="card-header no-border" >
                             <div class="facebook-date head-ft16">{{covtitle(el.title)}}<span class="ml10 c999 ft14" ms-if="!el.isfold">{{$.timeago(el.CRDate)}}</span></div>
                             <div class="facebook-date head-ft16" ms-if="el.isfold"><span class="c999 ft14">{{el.CRDate|date("MM月dd日")}}</span></div>
                             <div class="facebook-date" ms-if="!el.isfold">
-                                <span>薪资：{{JSON.parse(el.salaryData).合计}}元</span>
+                                <span>薪资：{{JSON.parse(el.salaryData).实发合计}}元</span>
                             </div>
                             <div style="clear:both"></div>
                         </div>
-                        <!--<div class="card-content" ms-visible="el.isfold">
-            <div class="card-content-inner list-cont-inner">
-                <b style="color:gray">{{el.title}}</b>
-            </div>
-            <div class="card-content-inner list-cont-inner">
-                <b style="color:gray">{{el.rise}}</b>
-            </div>
-            <div ms-repeat="JSON.parse(el.salaryData)" class="card-content-inner list-cont-inner">
-                <span style="color:gray"> {{$key}}:</span> {{$val}}
-            </div>
-            <div class="card-content-inner list-cont-inner">
-                {{el.Inscribe}}
-            </div>
-        </div>-->
                         <div class="card-content" ms-visible="el.isfold">
-                            <!--<div class="card-item">
-                                <span>{{el.title}}</span>
-                            </div>-->
+                        
                             <div class="card-item">
                                 <span>{{el.rise}}</span>
                             </div>
 
                             <div class="card-item">
-                                <span>应发</span>
+                                <span>应发合计:{{JSON.parse(el.salaryData).应发合计}}</span>
                             </div>
                             <div class="card-item" ms-repeat="JSON.parse(el.salaryData).YF">
                                 <span style="color:gray">{{$key}}:</span> {{$val}}
                             </div>
                             <div class="card-item">
-                                <span>应扣</span>
+                                <span>应扣合计:{{JSON.parse(el.salaryData).应扣合计}}</span>
                             </div>
                             <div class="card-item" ms-repeat="JSON.parse(el.salaryData).YK">
                                 <span style="color:gray">{{$key}}:</span> {{$val}}
                             </div>
                             <div class="card-item">
-                                <span>合计:</span> {{JSON.parse(el.salaryData).合计}}
+                                <span>合计:</span> {{JSON.parse(el.salaryData).实发合计}}
                             </div>
                             <div class="card-item">
                                 <span>{{el.Inscribe}}</span>
                             </div>
                         </div>
+                        <div class="card-footer"  ms-if="!el.isfold">点击查看明细</div>
                     </div>
                     <div class="card facebook-card animated" ms-if="loadtip">
                         <div class="card-header no-border">
@@ -133,6 +107,9 @@
             <!--<span class="animated fadeIn" ms-if="DataID!='-1'" ms-click="changefold()" id="plus_list" style="z-index:99998;opacity:.9"><img ms-attr-src="'../images/'+(isfold?'rwglss':'rwglzk')+'.png'"></span>-->
             <div class="right-panel">
                 <ul>
+                    <li>
+                        <a class="mod-li-icon"  href="UI_GZT_TJ.html" external ><img src="../images/mes-today-icon.png"></a>
+                    </li>
                     <li ms-if="DataID=='-1'">
                         <a class="mod-li-icon" ms-click="show()"><img src="../images/plus-serch.png"></a>
                     </li>

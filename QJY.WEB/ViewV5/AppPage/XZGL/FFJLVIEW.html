@@ -52,12 +52,16 @@
                                     应发
                                 </div>
                             </th>
+                            <th rowspan="2" class="tc">应发合计</th>
+
                             <th ms-attr-colspan="colnum(lmData.YK)" class="tc">
                                 <div class="input-box">
                                     应扣
                                 </div>
                             </th>
-                            <th rowspan="2" class="tc">合计</th>
+                            <th rowspan="2" class="tc">应扣合计</th>
+
+                            <th rowspan="2" class="tc">实发合计</th>
                         </tr>
                         <tr>
                             <th ms-repeat="lmData.YF" class="tc">
@@ -94,6 +98,11 @@
                                     {{$val}}
                                 </div>
                             </td>
+                            <td>
+                                <div class="input-box">
+                                    {{el.应发合计}}
+                                </div>
+                            </td>
                             <td ms-repeat="el.YK">
                                 <div class="input-box" ms-attr-name="$key">
                                     {{$val}}
@@ -101,7 +110,12 @@
                             </td>
                             <td>
                                 <div class="input-box">
-                                    {{el.合计}}
+                                    {{el.应扣合计}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-box">
+                                    {{el.实发合计}}
                                 </div>
                             </td>
                         </tr>
@@ -109,8 +123,11 @@
                     <tfoot>
                         <tr>
                             <th class="tc" colspan="3">合计：</th>
-                            <th class="tc" ms-attr-colspan="colnum(lmData.YF)">{{yfhj}}(元)</th>
-                            <th class="tc" ms-attr-colspan="colnum(lmData.YK)">{{ykhj}}(元)</th>
+                            <th class="tc" ms-attr-colspan="colnum(lmData.YF)"></th>
+                            <th class="tc">{{yfhj}}(元)</th>
+                            <th class="tc" ms-attr-colspan="colnum(lmData.YK)"></th>
+                            <th class="tc">{{ykhj}}(元)</th>
+
                             <th class="tc" >{{zhj}}</th>
                         </tr>
                     </tfoot>

@@ -133,7 +133,7 @@ namespace QJY.API
                                 str2 = str2 + " 在文件中不存在!<br>";
                             }
                             #endregion
-                         
+
                             for (int i = (sheet.FirstRowNum + int.Parse(headrow) + 1); i <= sheet.LastRowNum; i++)
                             {
                                 DataRow dr = dt.NewRow();
@@ -166,19 +166,21 @@ namespace QJY.API
                             for (int n = 0; n < dt.Columns.Count; n++)
                             {
                                 var name = dt.Columns[n].ColumnName;
-                                if (n > 2 && n < ykindex)
+                                if (n > 2 && n < ykindex - 1)
                                 {
                                     al1.Add(name);
                                 }
-                                if (n > ykindex - 1)
+                                //得跳过应发合计列
+                                if (n > ykindex - 1 && n < dt.Columns.Count - 2)
                                 {
                                     al2.Add(name);
                                 }
+                                //需要跳过应扣合计和实发合计
                             }
 
                             dt.Columns.Add("YF", Type.GetType("System.Object"));
                             dt.Columns.Add("YK", Type.GetType("System.Object"));
-                         
+
                             foreach (DataRow dr in dt.Rows)
                             {
                                 JObject obj1 = new JObject();
@@ -342,12 +344,16 @@ namespace QJY.API
                 string bmname = a["部门"] != null ? a["部门"].ToString().Trim() : "";
                 string tel = a["用户编码"] != null ? a["用户编码"].ToString().Trim() : "";
 
+
+
+
                 SZHL_XZ_GZD gzd = new SZHL_XZ_GZD();
                 gzd.ComId = UserInfo.User.ComId;
                 gzd.CRUser = UserInfo.User.UserName;
                 gzd.CRDate = DateTime.Now;
                 gzd.YearMonth = ym;
                 gzd.Telephone = tel;
+                gzd.BranchCode = xzjj.ID;//没地方存，只能存这个字段了
                 gzd.salaryData = a.ToString();
                 gzd.title = P2;
                 gzd.rise = taitou;
@@ -356,16 +362,12 @@ namespace QJY.API
                 gzd.UserRealName = username;
                 gzd.BranchName = bmname;
 
-                JH_Auth_User user = new JH_Auth_UserB().GetEntity(d => d.ComId == UserInfo.User.ComId &&( d.mobphone == tel|| d.UserName == tel || d.JobNum == tel));
+                JH_Auth_User user = new JH_Auth_UserB().GetEntity(d => d.ComId == UserInfo.User.ComId && (d.mobphone == tel || d.UserName == tel || d.JobNum == tel));
                 if (user != null)
                 {
                     gzd.UserName = user.UserName;
-                    var bm = new JH_Auth_BranchB().GetEntity(d => d.ComId == UserInfo.User.ComId && d.DeptCode == user.BranchCode);
-                    if (bm != null && bm.DeptName == bmname)
-                    {
-                        gzd.BranchCode = bm.DeptCode;
-                    }
                     bl = true;
+                    new SZHL_XZ_GZDB().Delete(d => d.UserName == gzd.UserName && d.YearMonth == ym);//先删除该年月的发薪记录
                 }
 
 
@@ -379,6 +381,7 @@ namespace QJY.API
                     CSTX.ComId = UserInfo.User.ComId;
                     CSTX.FunName = "SENDXZMSG";
                     CSTX.CRUserRealName = UserInfo.User.UserRealName;
+
                     CSTX.MsgID = gzd.ID.ToString();
                     CSTX.TXContent = taitou;
                     CSTX.ISCS = "N";
@@ -397,6 +400,66 @@ namespace QJY.API
 
             //msg.Result = shibaiuser.TrimEnd(',');
         }
+
+
+        /// <summary>
+        /// 删除工资单
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void DELFFJL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            if (P1 != "")//PIID
+            {
+                new SZHL_XZ_JLB().Delete(d => d.ID.ToString() == P1);
+                new SZHL_XZ_GZDB().Delete(d => d.BranchCode.ToString() == P1);
+            }
+        }
+
+
+
+        /// <summary>
+        /// 按照年月统计
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void TJGZD(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+
+            int strSYear = int.Parse(P1.Trim().Substring(0, 4));
+            int strEYear = int.Parse(P2.Trim().Substring(0, 4));
+            int strSMONTH = int.Parse(P1.Trim().Substring(5));
+            int strEMONTH = int.Parse(P2.Trim().Substring(5));
+            if (strEYear > strSYear)
+            {
+                msg.ErrorMsg = "开始年份不能大于结束年份";
+            }
+
+            List<string> ListNY = new List<string>();
+            DateTime dtS = Convert.ToDateTime(strSYear.ToString() + "-" + strSMONTH.ToString() + "-01");
+            DateTime dtE = Convert.ToDateTime(strEYear.ToString() + "-" + strEMONTH.ToString() + "-01");
+            int diff = (dtE.Month - dtS.Month) + 1;
+            if (diff > 0)
+            {
+                for (int i = 0; i < diff; i++)
+                {
+                    ListNY.Add(dtS.AddMonths(i).ToString("Y"));
+                }
+            }
+
+            msg.Result = new SZHL_XZ_GZDB().GetEntities(D => D.ComId == UserInfo.User.ComId && ListNY.Contains(D.YearMonth) && D.UserName == UserInfo.User.UserName);
+        }
+
+
+
+
+
         /// <summary>
         /// 发送微信信息
         /// </summary>
@@ -412,6 +475,7 @@ namespace QJY.API
             ar0.Title = TX.TXContent;
             ar0.Description = "";
             ar0.Url = TX.MsgID;
+           
             List<Article> al = new List<Article>();
             al.Add(ar0);
             if (!string.IsNullOrEmpty(TX.TXUser))

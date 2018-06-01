@@ -243,7 +243,7 @@
             <div class="col-xs-4">
                 <p class="text-info">提示：</p>
                 <p class="pt20">
-                    1、支持上传任意格式的Excel工资表来以微信或短信方式发送工资条<a class="text-danger" href="/ViewV5/Base/批量发薪通知模板.xlsx">（下载工资表模板）</a>
+                    1、支持上传任意格式的Excel工资表来以微信或短信方式发送工资条<a class="text-danger" href="/ViewV5/AppPage/XZGL/批量发薪通知模板.xlsx">（下载工资表模板）</a>
                 </p>
                 <p class="mt10">2、建议您的Excel第一行数据为工资表的列头，列数不限，但列名最好简单有意义，<i class="text-danger">不能为空，不能有合并单元格</i></p>
                 <p class="mt10">3、尽量不要包含特殊字符，上传前建议您删除无用数据行。</p>
@@ -310,6 +310,8 @@
 
                                     </div>
                                 </th>
+                                <th rowspan="2">应发合计</th>
+
                                 <th ms-attr-colspan="colnum(XGYKData)">
                                     <div class="input-box">
                                         应扣
@@ -320,7 +322,9 @@
 
                                     </div>
                                 </th>
-                                <th rowspan="2">合计</th>
+                                <th rowspan="2">应扣合计</th>
+
+                                <th rowspan="2">实发合计</th>
                             </tr>
                             <tr>
                                 <th ms-repeat="XGYFData">
@@ -380,6 +384,11 @@
                                         <input type="text" ms-duplex="$val" ms-change="xg(el)" />
                                     </div>
                                 </td>
+                                <td>
+                                    <div class="input-box">
+                                        {{el.应发合计}}
+                                    </div>
+                                </td>
                                 <td ms-repeat="el.YK">
                                     <div class="input-box">
                                         <input type="text" ms-duplex="$val" ms-change="xg(el)" />
@@ -387,7 +396,12 @@
                                 </td>
                                 <td>
                                     <div class="input-box">
-                                        {{el.合计}}
+                                        {{el.应扣合计}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-box">
+                                        {{el.实发合计}}
                                     </div>
                                 </td>
                             </tr>
@@ -395,8 +409,11 @@
                         <tfoot>
                             <tr>
                                 <th colspan="3">合计：</th>
-                                <th id="yfhj" ms-attr-colspan="colnum(XGYFData)">{{yfhj}}(元)</th>
-                                <th id="ykhj" ms-attr-colspan="colnum(XGYKData)">{{ykhj}}(元)</th>
+                                <th id="yfhj" ms-attr-colspan="colnum(XGYFData)"></th>
+                                <th>{{yfhj}}(元)</th>
+                                <th id="ykhj" ms-attr-colspan="colnum(XGYKData)"></th>
+                                <th>{{ykhj}}(元)</th>
+
                                 <th id="zhj">{{zhj}}</th>
                             </tr>
 
@@ -444,7 +461,7 @@
                 <div class="form-group">
                     <label class="self-label control-label">抬头：</label>
                     <div class="self-con">
-                        <input placeholder="如:您好，以下是您的xxxx年xx月份工资条" type="text" class="form-control" ms-duplex="taitou">
+                        <input placeholder="如:您好,以下是您的xxxx年xx月份工资条" type="text" class="form-control" ms-duplex="taitou">
                     </div>
                 </div>
                 <div class="form-group">
@@ -455,14 +472,14 @@
                 </div>
 
                 <div class="form-group" ms-visible="UserInfo.QYinfo.IsUseWX=='Y'">
-                    <div class="icheckbox_square-blue  mr5" id="weixin">
+                    <div class="icheckbox_square-blue checked  mr5" id="weixin">
                         <input type="checkbox" id="weixinbox">
                         <span class="iconfont icon-check ft12"></span>
                     </div>
                     <label for="weixinbox">发送微信</label>
                 </div>
                 <div class="form-group">
-                    <div class="icheckbox_square-blue checked mr5" id="duanxin">
+                    <div class="icheckbox_square-blue  mr5" id="duanxin">
                         <input type="checkbox" id="duanxinbox">
                         <span class="iconfont icon-check ft12"></span>
                     </div>
@@ -528,11 +545,11 @@
                                         <td>{{YLTel}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="output-key">合计</td>
+                                        <td class="output-key">实发合计</td>
                                         <td>{{YLHJ}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="output-key" colspan="2">应发：{{ylhj(YFData)}}</td>
+                                        <td class="output-key" colspan="2">应发合计：{{YFHJ}}</td>
                                     </tr>
                                     <tr ms-repeat="YFData">
                                         <td class="output-key">
@@ -543,7 +560,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="output-key" colspan="2">应扣：{{ylhj(YKData)}}</td>
+                                        <td class="output-key" colspan="2">应扣合计：{{YKHJ}}</td>
                                     </tr>
                                     <tr ms-repeat="YKData">
                                         <td class="output-key">
@@ -676,7 +693,7 @@
         xiugaititle: function () {
             $('#xztitle').val(tempindex.curyMonth + tempindex.selxztype);
 
-            tempindex.taitou = "您好!,以下是您" + tempindex.curyMonth + tempindex.selxztype;
+            tempindex.taitou = "您好!以下是您" + tempindex.curyMonth + tempindex.selxztype;
         },
         clog: function () {
             console.log(JSON.stringify(tempindex.ctData))
@@ -803,6 +820,8 @@
         YLBM: "",
         YLTel: "",
         YLHJ: "",
+        YFHJ: "",
+        YKHJ: "",
         YFData: {},
         YKData: {},
         selusergz: function (item, uli) {
@@ -818,7 +837,9 @@
             tempindex.YLName = item.姓名;
             tempindex.YLBM = item.部门;
             tempindex.YLTel = item.用户编码;
-            tempindex.YLHJ = item.合计;
+            tempindex.YLHJ = item.实发合计;
+            tempindex.YFHJ = item.应发合计;
+            tempindex.YKHJ = item.应扣合计;
             tempindex.YFData = item.YF;
             tempindex.YKData = item.YK;
             $('#selusername').html(item.姓名)
@@ -852,7 +873,10 @@
             var n = 0;
             $(tempindex.ctData).each(function (i, itm) {
                 m = m + tempindex.ylhj(itm.YF) * 1;
+                itm.应发合计 = tempindex.ylhj(itm.YF);
                 n = n + tempindex.ylhj(itm.YK) * 1;
+                itm.应扣合计 = tempindex.ylhj(itm.YK);
+                itm.实发合计 = (itm.应发合计 * 1 - itm.应扣合计 * 1).toFixed(2);
             })
             tempindex.yfhj = m.toFixed(2);
             tempindex.ykhj = n.toFixed(2);
@@ -917,7 +941,6 @@
                         itm.YK = yk;
                     }
                 })
-                //tempindex.lmData = tempindex.ctData[0].$model;
                 tempindex.XGYFData = tempindex.ctData[0].YF;
                 tempindex.XGYKData = tempindex.ctData[0].YK;
             }
@@ -992,25 +1015,14 @@
             else {
                 ComFunJS.winwarning("无最近发放的工资信息");
             }
-            //$.getJSON('/API/VIEWAPI.ashx?Action=XZGL_GETSYFFJL', {}, function (resultData) {
-            //    if (resultData.ErrorMsg == "") {
-            //        if (resultData.Result.length > 0) {
-            //            tempindex.ctData = JSON.parse(resultData.Result[0].salaryData);
-            //            //tempindex.lmData = tempindex.ctData[0];
-            //            tempindex.XGYFData = tempindex.ctData[0].YF;
-            //            tempindex.XGYKData = tempindex.ctData[0].YK;
-            //            tempindex.listnext(1);
-            //            tempindex.hj();
-            //        }
-            //        else {
-            //            ComFunJS.winwarning("无上月工资信息");
-            //        }
-            //    }
-            //})
         },
         UserList: function () {
             $.getJSON('/API/VIEWAPI.ashx?Action=XZGL_GETUSERLIST', {}, function (resultData) {
                 if (resultData.ErrorMsg == "") {
+                    if (resultData.Result.length==0) {
+                        ComFunJS.winwarning("找不到员工!!!");
+                        return;
+                    }
                     $(resultData.Result).each(function (inx, itm) {
                         itm.YF = { "基本工资": "", "绩效工资": "", "加班费": "", "交通补贴": "", "岗位津贴": "", "其它应发": "" };
                         itm.YK = { "社保": "", "公积金": "", "病事假": "", "考勤违纪": "", "个税": "", "其它应扣": "" };
@@ -1066,5 +1078,5 @@
             $('#AddRow').modal('hide');
         }
     })
-    //#  //# sourceURL=XZFF.js;
+    //# sourceURL=XZFF.js;
 </script>

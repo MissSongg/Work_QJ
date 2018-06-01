@@ -28,16 +28,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ms-repeat-el="ListData" ms-on-mouseover="mouseover" ms-on-mouseout="mouseout" ms-click="VIEWFFJL(el.ID)">
+                <tr ms-repeat-el="ListData" ms-on-mouseover="mouseover" ms-on-mouseout="mouseout">
                     <td class="tc">
                         {{$index+1}}
                     </td>
                     <td>{{el.title}}</td>
                     <td>{{el.CRDate|date('yyyy-MM-dd HH:mm')}}</td>
                     <td>
-                        <span class="tool" style="display: none;">
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="modal" title="查看" data-target="#gzdlook" ms-click="selusergz(el)">
+                        <span class="tool" >
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="modal" title="查看" data-target="#gzdlook"  ms-click="VIEWFFJL(el.ID)">
                                 <i class="iconfont icon-look"></i>
+                            </a>
+                            <a class="cz-btn ft18 sc-color tip" title="撤销工资单"  ms-click="del(el)">
+                                <i class="iconfont icon-shanchu"></i>
                             </a>
                         </span>
                     </td>
@@ -90,6 +93,18 @@
             //类型数据
             tempindex.GetLIST();
             ComFunJS.initForm();
+        },
+        del: function (el) {
+            top.ComFunJS.winconfirm("您确认要删除此工资发放记录吗？", function () {
+                $.getJSON('/API/VIEWAPI.ashx?Action=XZGL_DELFFJL', { P1: el.ID }, function (resultData) {
+                    if (resultData.ErrorMsg == "") {
+                        top.ComFunJS.winsuccess("删除成功");
+                        model.ListData.remove(el);
+                    }
+                })
+            }, function () {
+            })
+         
         },
         VIEWFFJL: function (id) {
             ComFunJS.winviewform("/ViewV5/AppPage/XZGL/FFJLVIEW.html?ID=" + id + "&r=" + Math.random(), "发放信息", '1000');

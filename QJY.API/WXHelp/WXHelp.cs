@@ -106,14 +106,14 @@ namespace QJY.API
                     th.MODEL.ForEach(d => d.Url = Qyinfo.WXUrl.TrimEnd('/') + "/View_Mobile/UI/UI_COMMON.html?funcode=" + ModelCode + "_" + type + (d.Url == "" ? "" : "_" + d.Url) + "&corpid=" + Qyinfo.corpId.Trim());
                     th.MODEL.ForEach(d => d.PicUrl = (string.IsNullOrEmpty(d.PicUrl) ? "" : Qyinfo.FileServerUrl.Trim() + "image/" + new FT_FileB().ExsSclarSql("select FileMD5 from FT_File where ID='" + d.PicUrl + "'").ToString()));
 
-                    if (app.AppType == "1")
-                    {
+                    //if (app.AppType == "1")
+                    //{
                         MassApi.SendNews(GetToken(app.AppID.ToString()), th.UserS.Replace(',', '|'), "", "", app.AppID, th.MODEL);
-                    }
-                    else
-                    {
-                        MassApi.SendText(GetToken(app.AppID.ToString()), th.UserS.Replace(',', '|'), "", "", app.AppID, th.MODEL[0].Title);
-                    }
+                    //}
+                    //else
+                    //{
+                    //    MassApi.SendText(GetToken(app.AppID.ToString()), th.UserS.Replace(',', '|'), "", "", app.AppID, th.MODEL[0].Title);
+                    //}
                 }
             }
             catch (Exception ex)

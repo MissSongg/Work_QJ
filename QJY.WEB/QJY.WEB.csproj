@@ -429,6 +429,7 @@
     <Content Include="View_Mobile\Images\book2.png" />
     <Content Include="View_Mobile\Images\phone-plus3.png" />
     <Content Include="View_Mobile\JS\avalon1.47.js" />
+    <Content Include="View_Mobile\UI\UI_GZT_TJ.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MJYGL.html" />
     <Content Include="View_Mobile\UI\UI_CAR_INFO.html" />
     <Content Include="View_Mobile\UI\UI_CAR_LIST.html" />
@@ -1732,7 +1733,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ViewV5\Base\import_user.xlsx" />
-    <Content Include="ViewV5\Base\批量发薪通知模板.xlsx" />
     <Content Include="ViewV5\CSS\bootstrap3.3.5\css\bootstrap-theme.css.map" />
     <Content Include="ViewV5\CSS\bootstrap3.3.5\css\bootstrap.css.map" />
     <Content Include="ViewV5\CSS\bootstrap3.3.5\fonts\glyphicons-halflings-regular.eot" />
@@ -1774,6 +1774,7 @@
     <Content Include="ViewV5\CSS\icfont_qj\iconfont.eot" />
     <Content Include="ViewV5\CSS\icfont_qj\iconfont.ttf" />
     <Content Include="ViewV5\CSS\icfont_qj\iconfont.woff" />
+    <Content Include="ViewV5\AppPage\XZGL\批量发薪通知模板.xlsx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
