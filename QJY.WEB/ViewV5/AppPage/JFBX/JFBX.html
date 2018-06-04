@@ -34,7 +34,7 @@
                         <div class="input-group ">
                             <input type="text" class="form-control szhl_select">
 
-                            <span class="input-group-addon">请选择</span>
+                            <span class="input-group-addon" style="width:40px;height:34px;" ms-if="modelData.XMID" ms-click="ClearXM()"> <i class="iconfont icon-shanchu ft14 " style="color:white"></i></span>
                         </div>
                     </div>
 
@@ -255,6 +255,10 @@
                     }
                 });
             }
+        },
+         ClearXM: function () {
+            $(".szhl_select").val("");
+            tempmodel.modelData.XMID ="";
         }
     });
 

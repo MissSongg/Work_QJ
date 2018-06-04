@@ -122,6 +122,21 @@ namespace QJY.API
             new SZHL_DBGLB().Insert(sd);
 
         }
+
+
+        /// <summary>
+        /// 删除数据库备份
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="msg"></param>
+        /// <param name="P1"></param>
+        /// <param name="P2"></param>
+        /// <param name="UserInfo"></param>
+        public void DELDBBACKUP(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            new SZHL_DBGLB().Delete(d => d.ID.ToString() == P1);
+
+        }
         #endregion
 
         #region 数据库下载
@@ -272,6 +287,6 @@ namespace QJY.API
         }
         #endregion
 
-        
+
     }
 }

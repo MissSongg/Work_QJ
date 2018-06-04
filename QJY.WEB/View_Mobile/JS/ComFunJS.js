@@ -277,7 +277,10 @@ var ComFunJS = {
         }
     },//错误提示
     closeAll: function () {
-        setTimeout("layer.closeAll()", 1500);
+        if (typeof (layer) != "undefined") {
+
+            setTimeout("layer.closeAll()", 1500);
+        }
     },//关闭所有弹框
     showComment: function (height, callback) {
         var height = height | "200";

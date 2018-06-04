@@ -23,6 +23,7 @@
                     <th class="tc">序号
                     </th>
                     <th ms-repeat-im="ShowColumns" ms-visible="im.IsSel">{{im.ColText}}</th>
+                    <th style="width:250PX">  </th>
                 </tr>
             </thead>
             <tbody>
@@ -34,6 +35,9 @@
                         <a class=" tip" data-toggle="tooltip" title="下载此备份" style="color:darkcyan" ms-if="search.seartype==1" ms-click="XZDB(el.ID)">下载
                         </a>
                         <a class=" tip" data-toggle="tooltip" title="还原到此版本" style="color:darkcyan;margin-left:15px" ms-if="search.seartype==1" ms-click="DBHYBYID(el.Path)">还原
+                        </a>
+                        <a class=" tip" data-toggle="tooltip" title="删除记录" style="color:darkcyan;margin-left:15px"  ms-click="DELBYID(el.ID)">
+                            删除记录
                         </a>
                     </td>
                 </tr>
@@ -178,6 +182,16 @@
         },
         XZDB: function (id) {
             $(this).attr("href", '/API/VIEWAPI.ashx?Action=DBGL_DBDOWNLOAD&P1=' + id);
+        },
+        DELBYID: function (ID) {
+            top.ComFunJS.winconfirm("确认要删除记录吗", function () {
+                $.post('/API/VIEWAPI.ashx?Action=DBGL_DELDBBACKUP', { P1: ID }, function (result) {
+                    if (result.ErrorMsg == "") {
+                        top.ComFunJS.winsuccess("删除成功");
+                        tempindex.GetLIST();
+                    }
+                })
+            }, function () { })
         }
     })
     //# sourceURLDBGLLIST
