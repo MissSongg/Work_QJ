@@ -265,6 +265,10 @@
             ykhj: "0",
             zhj: "0",
             tj: function () {
+                if (!$("#StartTime").val() || !$("#EndTime").val()) {
+                    ComFunJS.winwarning("请完善起止日期");
+                    return;
+                }
                 tempmodel.yfhj = 0;
                 tempmodel.ykhj = 0;
                 tempmodel.zhj = 0;
@@ -309,6 +313,8 @@
 
         })
         avalon.ready(function () {
+            var myDate = new Date();
+          
 
             $("#StartTime").picker({
                 toolbarTemplate: '<header class="bar bar-nav">\
@@ -327,7 +333,8 @@
                       displayValues: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
 
                   }
-                ]
+                ],
+                value: [myDate.getFullYear(), myDate.getMonth()]
             });
 
             $("#EndTime").picker({
@@ -347,11 +354,14 @@
                       displayValues: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
 
                   }
-                ]
+                ],
+                value: [myDate.getFullYear(), myDate.getMonth()]
+
             });
 
 
-
+            $("#StartTime").val(myDate.getFullYear() + " " + myDate.getMonth());
+            $("#EndTime").val(myDate.getFullYear() + " " + myDate.getMonth());
 
 
         })
