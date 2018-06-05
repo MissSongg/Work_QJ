@@ -3,7 +3,7 @@ using System.Collections;
 using System.Web;
 using System.Web.Caching;
 
-namespace QJY.API
+namespace QJY.Common
 {
     /// <summary>
     /// HttpRuntime Cache读取设置缓存信息封装

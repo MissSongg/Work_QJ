@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Net;
 using System.Configuration;
 using Newtonsoft.Json;
@@ -13,8 +12,9 @@ using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Net.Sockets;
+using QJY.Data;
 
-namespace QJY.API
+namespace QJY.Common
 {
     public class FileHelp
     {
@@ -27,11 +27,11 @@ namespace QJY.API
         /// <param name="strFileData"></param>
         /// <param name="UserInfo"></param>
         /// <returns></returns>
-        public string CompressZip(string strFileData, JH_Auth_UserB.UserInfo UserInfo)
+        public string CompressZip(string strFileData, JH_Auth_QY QYinfo)
         {
             Dictionary<String, String> DATA = new Dictionary<String, String>();
             DATA.Add("data", strFileData);
-            HttpWebResponse ResponseData = CommonHelp.CreatePostHttpResponse(UserInfo.QYinfo.FileServerUrl.TrimEnd('/') + "/" + UserInfo.QYinfo.QYCode + "/document/zipfolder", DATA, 0, "", null);
+            HttpWebResponse ResponseData = CommonHelp.CreatePostHttpResponse(QYinfo.FileServerUrl.TrimEnd('/') + "/" +QYinfo.QYCode + "/document/zipfolder", DATA, 0, "", null);
             return CommonHelp.GetResponseString(ResponseData);
         }
 

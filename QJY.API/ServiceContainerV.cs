@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Practices.Unity;
 using QJY.Data;
+using QJY.Common;
 
 namespace QJY.API
 {
@@ -16,11 +17,8 @@ namespace QJY.API
 
 
 
-
-
             //免注册接口类
             container.RegisterType<IWsService, Commanage>("Commanage".ToUpper());//
-
 
             #region 基础模块接口
 
@@ -28,14 +26,10 @@ namespace QJY.API
             container.RegisterType<IWsService, AuthManage>("XTGL".ToUpper());//
             container.RegisterType<IWsService, INITManage>("INIT".ToUpper());//系统配置相关API
 
-
-
             #endregion
 
             #region 信息发布
             container.RegisterType<IWsService, XXFBManage>("XXFB");
-
-
 
             #endregion
 

@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=14.1.0.0, Culture=neutral, PublicKeyToken=00725b1ceb58d0a9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Aspose.Words.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
@@ -124,16 +120,6 @@
     <Compile Include="API\YCGL\YCGLManage.cs" />
     <Compile Include="BusinessCode\BLL.cs" />
     <Compile Include="BusinessCode\JH_Auth.cs" />
-    <Compile Include="CommonCode\CatheHelp.cs" />
-    <Compile Include="CommonCode\CommonHelp.cs" />
-    <Compile Include="CommonCode\EncrpytHelper.cs" />
-    <Compile Include="CommonCode\ExtensionMethods.cs" />
-    <Compile Include="CommonCode\FileHelp.cs" />
-    <Compile Include="CommonCode\ImageCLass.cs" />
-    <Compile Include="CommonCode\ManagementClass.cs" />
-    <Compile Include="CommonCode\Msg_Result.cs" />
-    <Compile Include="CommonCode\PinYing.cs" />
-    <Compile Include="CommonCode\SystemHelp.cs" />
     <Compile Include="IWsService.cs" />
     <Compile Include="API\JFBX\JFBXManage.cs" />
     <Compile Include="API\JSAPI\JSAPI.cs" />
@@ -151,13 +137,17 @@
     <Compile Include="API\XXFB\XXFBManage.cs" />
     <Compile Include="API\XZGL\XZGLManage.cs" />
     <Compile Include="API\ZHBG\Commanage.cs" />
-    <Compile Include="API\ZHGL\ZHGLManage.cs" />
+    <Compile Include="Msg_Result.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceContainerV.cs" />
     <Compile Include="WXHelp\GetAppInfoResultNew.cs" />
     <Compile Include="WXHelp\WXHelp.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\QJY.Common\QJY.Common.csproj">
+      <Project>{ebf94d84-906a-4e6a-9f3d-8a8b2e2cbc89}</Project>
+      <Name>QJY.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\QJY.Data\QJY.Data.csproj">
       <Project>{041aff14-efea-47d8-b28a-b3bbf4bbcee9}</Project>
       <Name>QJY.Data</Name>

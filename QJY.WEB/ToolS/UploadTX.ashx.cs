@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
 using System.Web;
 using Newtonsoft.Json;
 using System.Web.SessionState;
 using QJY.Data;
 using QJY.API;
-using System.Net;
+using QJY.Common;
 
 namespace QJY.WEB
 {

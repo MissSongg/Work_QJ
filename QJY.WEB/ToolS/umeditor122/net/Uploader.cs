@@ -8,6 +8,7 @@ using System.Text;
 using QJY.Data;
 using QJY.API;
 using System.Diagnostics;
+using QJY.Common;
 
 /// <summary>
 /// UEditor编辑器通用上传类

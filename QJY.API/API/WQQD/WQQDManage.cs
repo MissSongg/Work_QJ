@@ -10,6 +10,7 @@ using QJY.Data;
 using QJY.API;
 using Newtonsoft.Json;
 using Senparc.Weixin.QY.Entities;
+using QJY.Common;
 
 namespace QJY.API
 {
@@ -184,7 +185,8 @@ namespace QJY.API
             }
             if (P2 != "") // 处理微信上传的图片
             {
-                string fids = CommonHelp.ProcessWxIMG(P2, "RLZY", UserInfo);
+                string fids = new FT_FileB().ProcessWxIMG(P2, "RLZY", UserInfo);
+
                 if (!string.IsNullOrEmpty(wqqd.Files))
                 {
                     wqqd.Files += "," + fids;

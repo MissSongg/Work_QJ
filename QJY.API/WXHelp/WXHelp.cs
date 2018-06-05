@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Senparc.Weixin.Entities;
-using Senparc.Weixin.QY;
 using Senparc.Weixin.QY.Entities;
 using Senparc.Weixin.QY.CommonAPIs;
 using Senparc.Weixin.QY.AdvancedAPIs;
-using Senparc.Weixin.QY.AdvancedAPIs.App;
-using Newtonsoft.Json;
 using Senparc.Weixin.QY.AdvancedAPIs.OAuth2;
 using Senparc.Weixin.HttpUtility;
 using System.IO;
 using QJY.Data;
 using Senparc.Weixin.QY.AdvancedAPIs.MailList;
-using Senparc.Weixin.QY.AdvancedAPIs.Chat;
-using System.Net;
-using System.Text;
 using Senparc.Weixin.Work.AdvancedAPIs.OaDataOpen;
+using QJY.Common;
+
 
 namespace QJY.API
 {

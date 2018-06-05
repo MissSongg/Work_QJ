@@ -15,6 +15,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System.Text.RegularExpressions;
+using QJY.Common;
 
 namespace QJY.API
 {
@@ -1282,10 +1283,9 @@ namespace QJY.API
                         }
                         else
                         {
-                            List<CommonHelp.IMPORTYZ> yz = new List<CommonHelp.IMPORTYZ>();
-                            CommonHelp ch = new CommonHelp();
-                            yz = ch.GetTable(P1, UserInfo.QYinfo.ComId);//获取验证字段
-
+                         
+                            List<JH_Auth_ExtendDataB.IMPORTYZ> yz = new List<JH_Auth_ExtendDataB.IMPORTYZ>();
+                            yz = new JH_Auth_ExtendDataB().GetTable(P1, UserInfo.QYinfo.ComId);//获取字段
                             string str1 = string.Empty;//验证字段是否包含列名
                             //列名
                             for (int i = 0; i < cellCount; i++)
@@ -1530,9 +1530,8 @@ namespace QJY.API
         {
             try
             {
-                List<CommonHelp.IMPORTYZ> yz = new List<CommonHelp.IMPORTYZ>();
-                CommonHelp ch = new CommonHelp();
-                yz = ch.GetTable(P1, UserInfo.QYinfo.ComId);//获取字段
+                List<JH_Auth_ExtendDataB.IMPORTYZ> yz = new List<JH_Auth_ExtendDataB.IMPORTYZ>();
+                yz = new JH_Auth_ExtendDataB().GetTable(P1, UserInfo.QYinfo.ComId);//获取字段
                 if (yz.Count > 0)
                 {
                     HSSFWorkbook workbook = new HSSFWorkbook();
@@ -1580,7 +1579,7 @@ namespace QJY.API
                     cellfont.Boldweight = (short)FontBoldWeight.Normal;
                     cellStyle.SetFont(cellfont);
 
-                    string strDataJson = ch.GetExcelData(P1);
+                    string strDataJson = new JH_Auth_ExtendDataB().GetExcelData(P1);
                     if (strDataJson != "")
                     {
                         string[] strs = strDataJson.Split(',');

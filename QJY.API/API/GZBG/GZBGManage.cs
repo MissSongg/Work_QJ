@@ -9,6 +9,8 @@ using System.Data;
 using QJY.Data;
 using Newtonsoft.Json;
 using Senparc.Weixin.QY.Entities;
+using QJY.Common;
+
 
 namespace QJY.API
 {
@@ -254,7 +256,8 @@ namespace QJY.API
             if (P2 != "") // 处理微信上传的图片
             {
 
-                string fids = CommonHelp.ProcessWxIMG(P2, "GZBG", UserInfo);
+                string fids = new FT_FileB().ProcessWxIMG(P2, "GZBG", UserInfo);
+
                 if (!string.IsNullOrEmpty(GZBG.Files))
                 {
                     GZBG.Files += "," + fids;

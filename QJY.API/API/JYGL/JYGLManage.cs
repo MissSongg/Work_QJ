@@ -9,6 +9,7 @@ using QJY.Data;
 using Newtonsoft.Json;
 using System.Data;
 using Senparc.Weixin.QY.Entities;
+using QJY.Common;
 
 namespace QJY.API
 {

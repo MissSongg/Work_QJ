@@ -8,6 +8,7 @@ using FastReflectionLib;
 using System.Data;
 using QJY.Data;
 using Newtonsoft.Json;
+using QJY.Common;
 
 namespace QJY.API
 {
@@ -210,7 +211,8 @@ namespace QJY.API
             if (wximg != "") // 处理微信上传的图片
             {
 
-                string fids = CommonHelp.ProcessWxIMG(wximg, "JFBX", UserInfo);
+                string fids = new FT_FileB().ProcessWxIMG(wximg, "JFBX", UserInfo);
+
                 if (!string.IsNullOrEmpty(jfbxModel.Files))
                 {
                     jfbxModel.Files += "," + fids;

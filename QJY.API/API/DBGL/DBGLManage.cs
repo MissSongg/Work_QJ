@@ -15,6 +15,7 @@ using System.Data.SqlClient;
 using System.Collections;
 using System.Diagnostics;
 using System.Threading;
+using QJY.Common;
 
 namespace QJY.API
 {

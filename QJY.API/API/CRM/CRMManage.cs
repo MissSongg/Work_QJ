@@ -9,6 +9,7 @@ using QJY.Data;
 using Newtonsoft.Json;
 using Senparc.Weixin.QY.Entities;
 using Newtonsoft.Json.Linq;
+using QJY.Common;
 
 namespace QJY.API
 {
@@ -551,7 +552,8 @@ where ht.ComId='" + UserInfo.User.ComId + "' and KHID='" + P1 + "' order by CRDa
             }
             if (P2 != "") // 处理微信上传的图片
             {
-                string fids = CommonHelp.ProcessWxIMG(P2, "CRM", UserInfo);
+                string fids = new FT_FileB().ProcessWxIMG(P2, "CRM", UserInfo);
+
                 if (!string.IsNullOrEmpty(khgl.Files))
                 {
                     khgl.Files += "," + fids;
@@ -1345,7 +1347,7 @@ where ht.ComId='" + UserInfo.User.ComId + "' and KHID='" + P1 + "' order by CRDa
             }
             if (P2 != "") // 处理微信上传的图片
             {
-                string fids = CommonHelp.ProcessWxIMG(P2, "CRM", UserInfo);
+                string fids = new FT_FileB().ProcessWxIMG(P2, "CRM", UserInfo);
                 if (!string.IsNullOrEmpty(khlxr.Files))
                 {
                     khlxr.Files += "," + fids;
@@ -1851,7 +1853,7 @@ where ht.ComId='" + UserInfo.User.ComId + "' and KHID='" + P1 + "' order by CRDa
 
             if (P2 != "") // 处理微信上传的图片
             {
-                string fids = CommonHelp.ProcessWxIMG(P2, "CRM", UserInfo);
+                string fids = new FT_FileB().ProcessWxIMG(P2, "CRM", UserInfo);
                 if (!string.IsNullOrEmpty(gjjl.Files))
                 {
                     gjjl.Files += "," + fids;
@@ -2045,7 +2047,7 @@ where ht.ComId='" + UserInfo.User.ComId + "' and KHID='" + P1 + "' order by CRDa
             SZHL_CRM_CPGL cp = JsonConvert.DeserializeObject<SZHL_CRM_CPGL>(P1);
             if (P2 != "") // 处理微信上传的图片
             {
-                string fids = CommonHelp.ProcessWxIMG(P2, "CRM", UserInfo);
+                string fids = new FT_FileB().ProcessWxIMG(P2, "CRM", UserInfo);
                 if (!string.IsNullOrEmpty(cp.Files))
                 {
                     cp.Files += "," + fids;
@@ -2478,7 +2480,7 @@ LEFT JOIN SZHL_CRM_CPGL cp on PID=cp.ID ",
             SZHL_CRM_HTGL ht = JsonConvert.DeserializeObject<SZHL_CRM_HTGL>(P1);
             if (P2 != "") // 处理微信上传的图片
             {
-                string fids = CommonHelp.ProcessWxIMG(P2, "CRM", UserInfo);
+                string fids = new FT_FileB().ProcessWxIMG(P2, "CRM", UserInfo);
                 if (!string.IsNullOrEmpty(ht.Files))
                 {
                     ht.Files += "," + fids;

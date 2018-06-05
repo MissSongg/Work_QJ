@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using Senparc.Weixin.QY.AdvancedAPIs.App;
 using System.Diagnostics;
 using System.Threading;
+using QJY.Common;
 
 namespace QJY.API
 {
@@ -568,7 +569,7 @@ namespace QJY.API
                                 if (isFS.ToLower() == "true")
                                 {
                                     string content = string.Format("尊敬的" + userNew.UserName + "用户您好：你已被添加到" + UserInfo.QYinfo.QYName + ",账号：" + userNew.mobphone + "，密码" + P2 + ",登录请访问" + UserInfo.QYinfo.WXUrl);
-                                    CommonHelp.SendSMS(userNew.mobphone, content, userNew.ComId.Value);
+                                   new SZHL_DXGLB().SendSMS(userNew.mobphone, content, userNew.ComId.Value);
                                 }
                                 j++;
                             }
@@ -1262,41 +1263,7 @@ namespace QJY.API
             }
         }
 
-        #region 服务器状况
-        /// <summary>
-        /// 服务器状况
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="msg"></param>
-        /// <param name="P1"></param>
-        /// <param name="P2"></param>
-        /// <param name="UserInfo"></param>
-        public void SERVERSTATUS(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
-            PerformanceCounter cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-            float flCPU = 0;
-            while (flCPU == 0)
-            {
-                flCPU = cpuCounter.NextValue();
-                Thread.Sleep(500);
-            }
-            msg.Result = flCPU.ToString();// + "%";
-
-            PerformanceCounter ramCounter = new PerformanceCounter("Memory", "Available MBytes");
-            msg.Result1 = Math.Round((ramCounter.NextValue() / 1024), 1); // + "GB";//可用内存
-
-            //物理内存
-            SystemHelp help = new SystemHelp();
-            long PhysicalMemory = help.PhysicalMemory / 1024 / 1024 / 1024;
-            msg.Result2 = Math.Round((decimal)PhysicalMemory, 1);  //GB
-
-            //已用
-            msg.Result3 = Math.Round((((help.PhysicalMemory / 1024 / 1024) - ramCounter.NextValue()) / 1024), 1);
-        }
-
-
-
-        #endregion
+        
 
         #endregion
     }

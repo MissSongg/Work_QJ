@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Data;
 using QJY.Data;
 using Microsoft.Practices.Unity;
 using QJY.API;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using QJY.Common;
 
 namespace TXSX
 {
@@ -185,7 +183,7 @@ namespace TXSX
                                     object u = new SZHL_TXSXB().ExsSclarSql("select mobphone from JH_Auth_User where UserName='" + m + "' and comid='" + model.ComId + "'");
                                     if (u != null)
                                     {
-                                        CommonHelp.SendSMS(u.ToString(), model.CRUserRealName + "给您添加了提醒\n" + model.TXContent, model.ComId.Value);
+                                        new SZHL_DXGLB().SendSMS(u.ToString(), model.CRUserRealName + "给您添加了提醒\n" + model.TXContent, model.ComId.Value);
                                     }
                                 }
 

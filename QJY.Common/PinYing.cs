@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace QJY.API.CommonCode
+namespace QJY.Common
 {
     public class PinYinConverter
     {

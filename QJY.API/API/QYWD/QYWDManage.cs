@@ -12,7 +12,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Converters;
 using System.Net;
 using System.IO;
-using System.Configuration;
+using QJY.Common;
 
 namespace QJY.API
 {
@@ -698,7 +698,7 @@ namespace QJY.API
             IsoDateTimeConverter timeConverter = new IsoDateTimeConverter();
             timeConverter.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             string Result = JsonConvert.SerializeObject(Mode, Formatting.Indented, timeConverter).Replace("null", "\"\"");
-            string strData = new FileHelp().CompressZip(Result, UserInfo);
+            string strData = new FileHelp().CompressZip(Result, UserInfo.QYinfo);
             msg.Result = strData;
         }
 
