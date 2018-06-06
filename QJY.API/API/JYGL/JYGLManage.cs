@@ -59,7 +59,15 @@ namespace QJY.API
             int pagecount = 8;
             int.TryParse(context.Request["p"] ?? "1", out page);
             int.TryParse(context.Request["pagecount"] ?? "8", out pagecount);//页数
-            DataTable dt = new SZHL_TSGL_TSB().GetDataPager("SZHL_TSGL_TS   left join  JH_Auth_ZiDian zd on SZHL_TSGL_TS.tsType=zd.ID and zd.Class=24 ", "SZHL_TSGL_TS.*,zd.TypeName", pagecount, page, "SZHL_TSGL_TS.CRDate desc", strWhere, ref recordCount);
+            DataTable dt = new SZHL_TSGL_TSB().GetDataPager("SZHL_TSGL_TS   left join  JH_Auth_ZiDian zd on SZHL_TSGL_TS.tsType=zd.ID and zd.Class=24 ", "SZHL_TSGL_TS.*,zd.TypeName,'' dghsj", pagecount, page, "SZHL_TSGL_TS.CRDate desc", strWhere, ref recordCount);
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (dt.Rows[i]["jystatus"].ToString() != "0")
+                {
+                    dt.Rows[i]["dghsj"] = new SZHL_TSGLB().getTSGHDATA(dt.Rows[i]["ID"].ToString());
+                }
+            }
             msg.Result = dt;
             msg.Result1 = recordCount;
         }
@@ -377,6 +385,9 @@ namespace QJY.API
                     p.SL,
                     p.TSName,
                     p.TSTypeName,
+                    p.jystatus,
+                    p.Files,
+                    dghsj = p.jystatus == "0" ? "" : new SZHL_TSGLB().getTSGHDATA(p.ID.ToString()),
                     Qty = 0
                 });
                 dr["Item"] = list;
@@ -512,7 +523,7 @@ namespace QJY.API
                 msg.ErrorMsg = "超出借书数量限制,数量限制为" + ZD.Remark1 + "本";
                 return;
             }
-            double hours = (jygl.EndTime.Value - jygl.StartTime.Value).TotalDays;
+            double hours = (jygl.EndTime.Value.AddDays(1) - jygl.StartTime.Value).TotalDays;
             if (hours > double.Parse(ZD.Remark2))
             {
                 msg.ErrorMsg = "超出借书时间限制,时间限制为" + ZD.Remark2 + "天";

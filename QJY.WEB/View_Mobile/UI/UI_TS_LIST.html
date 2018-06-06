@@ -72,14 +72,14 @@
                         <li class="sort_list" ms-repeat-ts="AllTS" ms-visible="(searstr&&(ts.TSName.indexOf(searstr)!=-1||ts.auther.indexOf(searstr)!=-1))||!searstr" ms-click="chekts(ts)">
                             <div class="item-content">
                                 <div class="item-media">
-                                    <img src="/View_Mobile/Images/book2.png" style="width:44px;height:44px;" class="border3">
+                                    <img  ms-src="{{ComFunJS.getfile(ts.Files)}}"  onerror="javascript: this.src = '/View_Mobile/Images/book2.png'" style="width:44px;height:44px;" class="border3">
                                 </div>
                                 <div class="item-inner">
                                     <div class="item-title-row">
                                         <div class="item-title num_name">{{ts.TSName}}</div>
                                     </div>
-                                    <div class="item-subtitle c999">{{ts.auther}}</div>
-                                    <div class="operation-tx">
+                                    <div class="item-subtitle c999">{{el.jystatus=='0'?'':'[借阅中]'}}作者:{{ts.auther}}</div>
+                                    <div class="operation-tx" ms-if="ts.jystatus=='0'">
                                         <a external><i class="iconfont icon-add3 " ms-class-1="sel:ts.issel" ms-click="toljy(ts)"></i></a>
                                     </div>
                                 </div>
@@ -103,15 +103,16 @@
                                     <li ms-repeat-el="item.Item">
                                         <div class="item-content">
                                             <div class="item-media" ms-click="chekuser(item)">
-                                                <img style="width:44px;height:44px;" class="border3" src="/View_Mobile/Images/book2.png">
+                                                <img style="width:44px;height:44px;" class="border3"  ms-src="{{ComFunJS.getfile(el.Files)}}"  onerror="javascript: this.src = '/View_Mobile/Images/book2.png'">
                                             </div>
                                             <div class="item-inner">
                                                 <div class="item-title-row">
                                                     <div class="item-title">{{el.TSName}}1</div>
                                                 </div>
                                                 <div class="item-subtitle c999" ms-if="el.auther">作者:{{el.auther}}</div>
-                                                <div class="operation-tx">
-                                                    <a external><i class="iconfont icon-add3 " ms-class-1="sel:el.issel" ms-click="toljy(el)"></i></a>
+                                                <div class="operation-tx" >
+                                                    <a   ms-if="el.jystatus=='0'"><i class="iconfont icon-add3 " ms-class-1="sel:el.issel" ms-click="toljy(el)"></i></a>
+                                                    <a  ms-if="el.jystatus=='1'" style="font-size: 12px;">{{el.jystatus=='0'?'':'[借阅中]'}}<br/>{{el.dghsj}}</a>
                                                 </div>
                                             </div>
                                         </div>

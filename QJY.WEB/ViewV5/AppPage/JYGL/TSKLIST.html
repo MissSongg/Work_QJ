@@ -50,6 +50,8 @@
                     <th>图书名称</th>
                     <th>作者</th>
                     <th>借阅状态</th>
+                    <th>待归还时间</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -66,6 +68,8 @@
                     <td class="lk" ms-click="ViewForm('JYGL_TSGL',el.ID,'',$event)">{{el.TSName}}</td>
                     <td>{{el.auther}}</td>
                     <td>{{el.jystatus=='0'?"可借阅":"借阅中"}}</td>
+                    <td>{{el.dghsj=='0'?"----":el.dghsj}}</td>
+
                 </tr>
 
             </tbody>

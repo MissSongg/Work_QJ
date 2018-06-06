@@ -265,7 +265,7 @@ namespace QJY.API
         }
 
 
-        public  string ProcessWxIMG(string mediaIds, string strCode, JH_Auth_UserB.UserInfo UserInfo, string strType = ".jpg")
+        public string ProcessWxIMG(string mediaIds, string strCode, JH_Auth_UserB.UserInfo UserInfo, string strType = ".jpg")
         {
             try
             {
@@ -567,6 +567,23 @@ namespace QJY.API
                 }
             }
             return ListTS.Count();
+        }
+
+        /// <summary>
+        /// 获取图书归还时间
+        /// </summary>
+        /// <param name="tsid"></param>
+        /// <returns></returns>
+        public string getTSGHDATA(string tsid)
+        {
+            if (new SZHL_TSGLB().GetEntities(" ','+TSID+','  like '%," + tsid + ",%'").Count() > 0)
+            {
+                return new SZHL_TSGLB().GetEntities(" ','+TSID+','  like '%," + tsid + ",%'").OrderByDescending(d => d.ID).FirstOrDefault().EndTime.Value.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                return "";
+            }
         }
     }
     public class SZHL_TSGL_TSB : BaseEFDao<SZHL_TSGL_TS>

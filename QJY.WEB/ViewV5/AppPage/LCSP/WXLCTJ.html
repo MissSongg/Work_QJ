@@ -47,8 +47,8 @@
                         </div>
 
                     </div>
-                    <div ms-repeat-item="files" style="text-align:center">
-                        <a  ms-attr-href="item.fileurl" style="color:blue">{{item.filename}}</a>
+                    <div style="text-align:center">
+                        <img ms-repeat-item="files" ms-attr-src="item.fileurl" style="width:100PX;height:120PX;    MARGIN-RIGHT: 10PX;" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -67,7 +67,7 @@
             curMonth: "0",
             itemdata: [],
             jldata: [],
-            files:[],
+            files: [],
             covdata: function (timestamp) {
                 var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
                 Y = date.getFullYear() + '-';
@@ -78,6 +78,22 @@
                 s = date.getSeconds();
                 return Y + M + D + h + m + s;
 
+            },
+            formatDateTime: function (timeStamp) {
+                var date = new Date();
+                date.setTime(timeStamp);
+                var y = date.getFullYear();
+                var m = date.getMonth() + 1;
+                m = m < 10 ? ('0' + m) : m;
+                var d = date.getDate();
+                d = d < 10 ? ('0' + d) : d;
+                //var h = date.getHours();
+                //h = h < 10 ? ('0' + h) : h;
+                //var minute = date.getMinutes();
+                //var second = date.getSeconds();
+                //minute = minute < 10 ? ('0' + minute) : minute;
+                //second = second < 10 ? ('0' + second) : second;
+                return y + '-' + m + '-' + d;
             },
             showitem: function (rowindex) {
                 tempindex.itemdata.clear();
@@ -96,7 +112,11 @@
 
                             } else {
                                 if (sxdata[sx].value.constructor != Array) {
-                                    tempindex.itemdata.push({ title: sxdata[sx].title, datavalue: sxdata[sx].value })
+                                    var devalue = sxdata[sx].value;
+                                    if (sxdata[sx].title == "开始时间" || sxdata[sx].title == "结束时间") {
+                                        devalue = tempindex.formatDateTime(sxdata[sx].value)
+                                    }
+                                    tempindex.itemdata.push({ title: sxdata[sx].title, datavalue: devalue })
                                 }
                             }
                         }
