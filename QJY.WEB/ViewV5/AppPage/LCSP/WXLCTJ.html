@@ -47,6 +47,9 @@
                         </div>
 
                     </div>
+                    <div ms-repeat-item="files" style="text-align:center">
+                        <a  ms-attr-href="item.fileurl" style="color:blue">{{item.filename}}</a>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -64,6 +67,7 @@
             curMonth: "0",
             itemdata: [],
             jldata: [],
+            files:[],
             covdata: function (timestamp) {
                 var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
                 Y = date.getFullYear() + '-';
@@ -85,12 +89,15 @@
                         for (var sx in sxdata) {
                             if (sxdata[sx].type == "file") {
                                 tempindex.itemdata.push({ title: "文件数量", datavalue: sxdata[sx].value.length })
+                                tempindex.files = sxdata[sx].value;
 
                             } else if (sxdata[sx].type == "date") {
                                 tempindex.itemdata.push({ title: sxdata[sx].title, datavalue: tempindex.covdata(sxdata[sx].value) })
 
                             } else {
-                                tempindex.itemdata.push({ title: sxdata[sx].title, datavalue: sxdata[sx].value })
+                                if (sxdata[sx].value.constructor != Array) {
+                                    tempindex.itemdata.push({ title: sxdata[sx].title, datavalue: sxdata[sx].value })
+                                }
                             }
                         }
                         break;

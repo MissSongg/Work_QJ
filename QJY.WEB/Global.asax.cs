@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Web;
-using System.Web.Security;
-using System.Web.SessionState;
-using QJY.API;
 using System.Text;
+using QJY.Common;
 
 namespace QJY.WEB
 {

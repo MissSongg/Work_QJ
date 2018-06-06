@@ -7,6 +7,9 @@ using System.Web;
 using Newtonsoft.Json;
 using System.Web.UI.WebControls;
 using System.Text;
+using QJY.Common;
+using System.IO;
+
 namespace QJY.API
 {
     #region 文档管理模块
@@ -260,6 +263,55 @@ namespace QJY.API
             new JH_Auth_QYB().Update(qymodel);
             return qymodel.QyExpendSpace.Value;
         }
+
+
+        public  string ProcessWxIMG(string mediaIds, string strCode, JH_Auth_UserB.UserInfo UserInfo, string strType = ".jpg")
+        {
+            try
+            {
+                WXHelp wx = new WXHelp(UserInfo.QYinfo);
+                string ids = "";
+                foreach (var mediaId in mediaIds.Split(','))
+                {
+                    string fileToUpload = wx.GetMediaFile(mediaId, strType);
+
+                    string md5 = CommonHelp.PostFile(UserInfo.QYinfo, fileToUpload);
+                    System.IO.FileInfo f = new FileInfo(fileToUpload);
+                    FT_File newfile = new FT_File();
+                    newfile.ComId = UserInfo.User.ComId;
+                    newfile.Name = f.Name;
+                    newfile.FileMD5 = md5.Replace("\"", "").Split(',')[0];
+                    newfile.zyid = md5.Split(',').Length == 2 ? md5.Split(',')[1] : md5.Split(',')[0];
+                    newfile.FileSize = f.Length.ToString();
+                    newfile.FileVersin = 0;
+                    newfile.CRDate = DateTime.Now;
+                    newfile.CRUser = UserInfo.User.UserName;
+                    newfile.UPDDate = DateTime.Now;
+                    newfile.UPUser = UserInfo.User.UserName;
+                    newfile.FolderID = 3;
+                    newfile.FileExtendName = f.Extension.Substring(1);
+                    newfile.ISYL = "Y";
+                    new FT_FileB().Insert(newfile);
+
+                    if (ids == "")
+                    {
+                        ids = newfile.ID.ToString();
+                    }
+                    else
+                    {
+                        ids += "," + newfile.ID.ToString();
+                    }
+                }
+
+                return ids;
+            }
+            catch (Exception ex)
+            {
+                CommonHelp.WriteLOG(ex.ToString());
+                return "";
+            }
+        }
+
     }
 
 
@@ -383,6 +435,55 @@ namespace QJY.API
     }
     public class SZHL_DXGLB : BaseEFDao<SZHL_DXGL>
     {
+
+        public string SendSMS(string telephone, string content, int ComId = 0)
+        {
+            string err = "";
+            try
+            {
+                string dxqz = "企捷科技";
+                decimal amcountmoney = 0;
+                var qy = new JH_Auth_QYB().GetEntity(d => d.ComId == ComId);
+                if (qy != null)
+                {
+                    dxqz = qy.DXQZ;
+                    amcountmoney = qy.AccountMoney.HasValue ? qy.AccountMoney.Value : 0;
+                }
+
+                string[] tels = telephone.Trim().Replace(" ", "").Replace("\n", "").Replace("\r", "").Replace('，', ',').Split(',');
+
+                //判断金额是否够
+                decimal DXCost = decimal.Parse(CommonHelp.GetConfig("DXCost"));
+                decimal amount = tels.Length * DXCost;
+                if (ComId != 0 && amcountmoney < amount) //短信余额不足
+                {
+                    err = "短信余额不足";
+                }
+                else
+                {
+                    string re = "";
+                    foreach (string tel in tels)
+                    {
+                        re = CommonHelp.SendDX(tel, content + "【" + dxqz + "】", "");
+                    }
+
+                    err = "发送成功";
+
+                    //扣款
+                    if (ComId != 0 && qy != null)
+                    {
+                        qy.AccountMoney = qy.AccountMoney - amount;
+                        new JH_Auth_QYB().Update(qy);
+
+
+                    }
+
+                }
+            }
+            catch { }
+            return err;
+        }
+
     }
     public class SZHL_TXLB : BaseEFDao<SZHL_TXL>
     {

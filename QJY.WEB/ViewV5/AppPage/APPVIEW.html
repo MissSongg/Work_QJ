@@ -34,7 +34,7 @@
                         <button class="btn btn-info" ms-if="ISCANCEL=='Y'||model.PIMODEL.IsCanceled == 'Y'" ms-click="CancelWF()">撤回到草稿箱</button>
 
                         <a class="btn btn-success" ms-if="isBack=='Y'" href="javascript:history.go(-1)">返回</a>
-                        <a class="btn btn-info" ms-attr-href="/ViewV5/AppPage/{{FormCode}}/HtmlToWord.aspx?ID={{strId}}" target="_blank" ms-if="isExport">导出</a>
+                        <a class="btn btn-info" ms-attr-href="/Tools/HtmlToWord.aspx?ID={{strId}}" target="_blank" ms-if="isExport">导出</a>
                         <button class="btn btn-primary" id="btnCB" ms-if="model.TASKDATA.size()>0&&model.PIMODEL.isComplete!='Y'&&model.PIMODEL.IsCanceled != 'Y'" ms-click="SenLCCB(model.PIMODEL.ID)"><i class="iconfont icon-cb mr5 ft14"></i>发送催办提醒</button>
 
                     </div>

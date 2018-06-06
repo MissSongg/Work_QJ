@@ -1,5 +1,4 @@
-﻿using QJY.API;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,6 +7,7 @@ using FastReflectionLib;
 using QJY.Data;
 using Newtonsoft.Json;
 using System.Data;
+using QJY.Common;
 
 namespace QJY.API
 {
@@ -497,7 +497,9 @@ namespace QJY.API
             {
                 if (P2 != "") // 处理微信上传的图片
                 {
-                    string fids = CommonHelp.ProcessWxIMG(P2, "YCGL", UserInfo);
+
+                    string fids = new FT_FileB().ProcessWxIMG(P2, "YCGL", UserInfo);
+
                     if (!string.IsNullOrEmpty(ycgl.Files))
                     {
                         ycgl.Files += "," + fids;

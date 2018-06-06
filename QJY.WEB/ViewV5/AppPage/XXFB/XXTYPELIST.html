@@ -47,7 +47,7 @@
                     <td>{{el.IsSee}}</td>
                     <td>
                         <span class="tool btn-click">
-                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="EditForm('XXFB_XXTYPE',el.ID,'',$event)">
+                            <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-click="EditLB('XXFB_XXTYPE',el.ID,'',$event)">
                                 <i class="iconfont icon-bianji"></i>
                             </a>
                             <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-click="DELXXType(el,$event)">
@@ -97,6 +97,12 @@
         InitWigetData: function () {
             //类型数据
             tempindex.GetLIST();
+        },
+        EditLB: function (code, ID, PIID, event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD.html?FormCode=" + code + "&ID=" + ID, "修改", "1000");
         },
         GetLIST: function () {
             model.page.pageindex = 1;

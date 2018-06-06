@@ -502,6 +502,7 @@
     <Content Include="WZWeb\mob\success.html" />
     <None Include="Properties\PublishProfiles\QJSignle.pubxml" />
     <None Include="Properties\PublishProfiles\QJ_APP.pubxml" />
+    <None Include="Properties\PublishProfiles\QJ_QSFY.pubxml" />
     <None Include="Properties\PublishProfiles\QJ_UserS.pubxml" />
     <None Include="Properties\PublishProfiles\QJ_WHLY.pubxml" />
     <None Include="Properties\Settings.settings">
@@ -1789,6 +1790,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\QJY.Common\QJY.Common.csproj">
+      <Project>{ebf94d84-906a-4e6a-9f3d-8a8b2e2cbc89}</Project>
+      <Name>QJY.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\QJY.Data\QJY.Data.csproj">
       <Project>{041aff14-efea-47d8-b28a-b3bbf4bbcee9}</Project>
       <Name>QJY.Data</Name>

@@ -1,5 +1,4 @@
-﻿using QJY.API;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,12 +10,13 @@ using Newtonsoft.Json;
 using Senparc.Weixin.QY.Entities;
 using Newtonsoft.Json.Linq;
 using NPOI.SS.UserModel;
-using System.Text;
 using System.IO;
 using NPOI.XSSF.UserModel;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.Formula.Eval;
 using System.Collections;
+using QJY.Common;
+
 
 namespace QJY.API
 {
@@ -393,7 +393,7 @@ namespace QJY.API
                 if (ffdx == "1" && tel != "")
                 {
                     string hj = a["合计"] != null ? a["合计"].ToString().Trim() : "";
-                    CommonHelp.SendSMS(tel, username + "，" + taitou + "，" + "合计：" + hj + "元.点击" + UserInfo.QYinfo.WXUrl.TrimEnd('/') + "/View_Mobile/UI/UI_GZD_VIEW.html?ID=" + gzd.ID + " 查看详情", UserInfo.QYinfo.ComId);
+                     new SZHL_DXGLB().SendSMS(tel, username + "，" + taitou + "，" + "合计：" + hj + "元.点击" + UserInfo.QYinfo.WXUrl.TrimEnd('/') + "/View_Mobile/UI/UI_GZD_VIEW.html?ID=" + gzd.ID + " 查看详情", UserInfo.QYinfo.ComId);
                 }
             }
             #endregion

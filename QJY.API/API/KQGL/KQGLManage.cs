@@ -4,14 +4,10 @@ using System.Linq;
 using System.Reflection;
 using FastReflectionLib;
 using System.Web;
-using QJY.API;
 using QJY.Data;
 using Newtonsoft.Json;
 using System.Data;
-using Senparc.Weixin.QY.Entities;
-using System.Net;
-using Newtonsoft.Json.Linq;
-using Senparc.Weixin.QY.CommonAPIs;
+using QJY.Common;
 
 
 namespace QJY.API

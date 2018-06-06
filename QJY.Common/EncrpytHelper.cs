@@ -4,7 +4,7 @@ using System.Text;
 using System.Web.Security;
 using System.Security.Cryptography;
 
-namespace QJY.API
+namespace QJY.Common
 {
     /// <summary>
     /// 密码加密助手类

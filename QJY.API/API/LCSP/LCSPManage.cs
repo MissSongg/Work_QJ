@@ -4,12 +4,11 @@ using System.Linq;
 using System.Reflection;
 using FastReflectionLib;
 using System.Web;
-using QJY.API;
 using QJY.Data;
 using Newtonsoft.Json;
 using System.Data;
 using Senparc.Weixin.QY.Entities;
-using Newtonsoft.Json.Converters;
+using QJY.Common;
 
 namespace QJY.API
 {
@@ -165,7 +164,8 @@ namespace QJY.API
             SZHL_LCSP lcsp = JsonConvert.DeserializeObject<SZHL_LCSP>(P1);
             if (P2 != "") // 处理微信上传的图片
             {
-                string fids = CommonHelp.ProcessWxIMG(P2, "LCSP", UserInfo);
+                string fids = new FT_FileB().ProcessWxIMG(P2, "LCSP", UserInfo);
+
                 if (!string.IsNullOrEmpty(lcsp.Files))
                 {
                     lcsp.Files += "," + fids;

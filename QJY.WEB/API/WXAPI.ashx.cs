@@ -2,20 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Microsoft.Practices.Unity;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using System.Web.SessionState;
 using System.IO;
 using System.Xml;
-using Senparc.Weixin;
-using Senparc.Weixin.Entities;
-using Senparc.Weixin.QY.AdvancedAPIs;
 using QJY.API;
 using QJY.Data;
-using System.Net;
-using System.Text;
-using System.Configuration;
+using QJY.Common;
+
 namespace QJY.WEB
 {
     /// <summary>
@@ -187,23 +182,23 @@ namespace QJY.WEB
                                                     string strMedType = ".jpg";
                                                     JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB.UserInfo();
                                                     UserInfo = new JH_Auth_UserB().GetUserInfo(jaq.ComId, wxmsgModel.FromUserName);
-                                                    string fileID = CommonHelp.ProcessWxIMGUrl(wxmsgModel.PicUrl, UserInfo, strMedType);
+                                                  //  string fileID = CommonHelp.ProcessWxIMGUrl(wxmsgModel.PicUrl, UserInfo, strMedType);
 
-                                                    wxmsgModel.FileId = fileID;
-                                                    new JH_Auth_WXMSGB().Insert(wxmsgModel);
+                                                    //wxmsgModel.FileId = fileID;
+                                                    //new JH_Auth_WXMSGB().Insert(wxmsgModel);
 
-                                                    if (strCode == "TSSQ")
-                                                    {
-                                                        SZHL_TXSX tx1 = new SZHL_TXSX();
-                                                        tx1.ComId = jaq.ComId;
-                                                        tx1.APIName = "TSSQ";
-                                                        tx1.MsgID = wxmsgModel.ID.ToString();
-                                                        tx1.FunName = "SENDWXMSG";
-                                                        tx1.Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                                                        tx1.CRUser = wxmsgModel.CRUser;
-                                                        tx1.CRDate = DateTime.Now;
-                                                        TXSX.TXSXAPI.AddALERT(tx1); //时间为发送时间
-                                                    }
+                                                    //if (strCode == "TSSQ")
+                                                    //{
+                                                    //    SZHL_TXSX tx1 = new SZHL_TXSX();
+                                                    //    tx1.ComId = jaq.ComId;
+                                                    //    tx1.APIName = "TSSQ";
+                                                    //    tx1.MsgID = wxmsgModel.ID.ToString();
+                                                    //    tx1.FunName = "SENDWXMSG";
+                                                    //    tx1.Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                                                    //    tx1.CRUser = wxmsgModel.CRUser;
+                                                    //    tx1.CRDate = DateTime.Now;
+                                                    //    TXSX.TXSXAPI.AddALERT(tx1); //时间为发送时间
+                                                    //}
                                                 }
                                             }
                                             else
@@ -227,9 +222,9 @@ namespace QJY.WEB
                                                     {
                                                         JH_Auth_UserB.UserInfo UserInfo = new JH_Auth_UserB.UserInfo();
                                                         UserInfo = new JH_Auth_UserB().GetUserInfo(jaq.ComId, wxmsgModel.FromUserName);
-                                                        string fileID = CommonHelp.ProcessWxIMG(wxmsgModel.MediaId, strCode, UserInfo, strMedType);
-                                                        wxmsgModel.FileId = fileID;
-                                                        new JH_Auth_WXMSGB().Insert(wxmsgModel);
+                                                      //  string fileID = CommonHelp.ProcessWxIMG(wxmsgModel.MediaId, strCode, UserInfo, strMedType);
+                                                      //  wxmsgModel.FileId = fileID;
+                                                       // new JH_Auth_WXMSGB().Insert(wxmsgModel);
                                                     }
 
                                                 }

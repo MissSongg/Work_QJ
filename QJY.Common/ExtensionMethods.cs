@@ -4,9 +4,8 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Web.Script.Serialization;
 
-namespace QJY.API
+namespace QJY.Common
 {
     public static class MyExtensions
     {
@@ -214,14 +213,7 @@ namespace QJY.API
             return jsonString.ToString();
         }
 
-        public static string ToJson(this Object dataSource)
-        {
-            var st = new StringBuilder();
-            var jss = new JavaScriptSerializer();
-            jss.Serialize(dataSource, st);
 
-            return st.ToString();
-        }
 
         public static int ToInt32(this Object obj)
         {

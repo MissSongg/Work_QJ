@@ -2,25 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Web;
 using FastReflectionLib;
-using QJY.API;
 using Newtonsoft.Json;
 using QJY.Data;
 using System.Data;
 using Newtonsoft.Json.Linq;
-using Senparc.Weixin.QY.Entities;
 using System.Net;
-using System.Configuration;
 using System.IO;
-using Senparc.Weixin.QY.CommonAPIs;
-using Senparc.Weixin.QY.AdvancedAPIs;
-using Senparc.Weixin.QY.AdvancedAPIs.OAuth2;
-using System.Xml;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Converters;
-using System.Web.SessionState;
+
+using QJY.Common;
+
 
 namespace QJY.API
 {
@@ -37,65 +30,7 @@ namespace QJY.API
         #region 官网登录和注册
 
 
-        /// <summary>
-        /// 注册
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="msg"></param>
-        /// <param name="P1"></param>
-        /// <param name="P2"></param>
-        /// <param name="UserInfo"></param>
-        public void REGISTERNEW(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
-        {
-            JObject tt = (JObject)JsonConvert.DeserializeObject(P1);
-            string qyName = tt["QYName"].ToString();
-            var qy = new JH_Auth_QYB().GetEntity(p => p.QYName == qyName);
-            if (qy != null)
-            {
-                msg.ErrorMsg = "企业名称已存在!";
-            }
-            if (tt["xm"].ToString() == "")
-            {
-                msg.ErrorMsg = "姓名不能为空!";
-            }
-            string mobile = tt["mobphone"].ToString();
-            var qy2 = new JH_Auth_QYB().GetEntities(p => p.Mobile == mobile);
-            if (qy2.Count() > 0)
-            {
-                msg.ErrorMsg = "此手机已注册企业，请更换手机号继续注册";
-            }
-            if (string.IsNullOrEmpty(msg.ErrorMsg))
-            {
-                string QyScape = CommonHelp.GetConfig("initSpace").ToString(); //公司初始控件 
-                string password = CommonHelp.GetMD5(tt["UserPass"].ToString());
-
-                #region 判断获取不重复的qycode随机code，如果表中存在重复code，while继续获取，否则直接执行下一步
-                bool flag = true;
-                string qyCode = "";
-                while (flag == true)
-                {
-                    //生成code随机数
-                    Random ran = new Random((int)DateTime.Now.Ticks);
-                    qyCode = ran.Next().ToString();
-                    if (new JH_Auth_QYB().GetEntities(p => p.QYCode == qyCode).Count() == 0)
-                    {
-                        flag = false;
-                        continue;
-                    }
-                }
-                #endregion
-
-                string fileUrl = new FileHelp().GetFileServerUrl(qyCode);
-                string userName = mobile;
-
-                new JH_Auth_UserB().ExsSclarSql("exec RegistCompany '" + tt["QYName"].ToString() + "','" + tt["mobphone"].ToString() + "','" + userName + "','" + password + "','" + qyCode + "','" + fileUrl + "','" + tt["xm"].ToString() + "'," + QyScape);
-
-                new FileHelp().AddQycode(qyCode, tt["QYName"].ToString());
-                string content = "您的[" + tt["QYName"].ToString() + "]公司账号已经注册成功：\r\n登录网站： \r\n管理员账号：" + tt["mobphone"].ToString() + "\r\n管理员密码：" + tt["UserPass"].ToString() + "\r\n";
-                CommonHelp.SendSMS(tt["mobphone"].ToString(), content, 0);
-                string user = context.Request["ID"] ?? "";
-            }
-        }
+      
 
         public void CHECKREGISTERPHONE(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {

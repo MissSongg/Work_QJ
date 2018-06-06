@@ -9,6 +9,7 @@ using System.Data;
 using QJY.Data;
 using Newtonsoft.Json;
 using Senparc.Weixin.QY.Entities;
+using QJY.Common;
 
 namespace QJY.API
 {
@@ -140,9 +141,9 @@ namespace QJY.API
             SZHL_TXSX TX = JsonConvert.DeserializeObject<SZHL_TXSX>(P1);
             if (!string.IsNullOrEmpty(TX.TXUser))
             {
-               // UserInfo = new JH_Auth_UserB().GetUserInfo(TX.ComId.Value,TX.CRUser);
+                // UserInfo = new JH_Auth_UserB().GetUserInfo(TX.ComId.Value,TX.CRUser);
                 //发送微信消息
-                CommonHelp.SendSMS(TX.TXUser, TX.TXContent, TX.ComId.Value);
+                new SZHL_DXGLB().SendSMS(TX.TXUser, TX.TXContent, TX.ComId.Value);
 
             }
 
@@ -162,5 +163,6 @@ namespace QJY.API
             }
 
         }
+
     }
 }

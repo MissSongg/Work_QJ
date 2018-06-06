@@ -10,6 +10,7 @@ using System.Web.UI.WebControls;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Linq.Expressions;
+using QJY.Common;
 
 namespace QJY.API
 {
@@ -1592,6 +1593,113 @@ namespace QJY.API
                 }
             }
             return ids;
+        }
+
+
+
+        /// <summary>
+        /// 获取导入excel的字段
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public List<IMPORTYZ> GetTable(string code, int comid)
+        {
+            string json = string.Empty;
+            switch (code)
+            {
+                case "KHGL":
+
+                    json = "[{\"Name\":\"客户名称\",\"Length\":\"50\",\"IsNull\":\"1\",\"IsRepeat\":\"SZHL_CRM_KHGL|KHName\"},{\"Name\":\"客户类型\",\"Length\":\"50\",\"IsNull\":\"0\"},"
+                            + "{\"Name\":\"电话\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"邮箱\",\"Length\":\"50\",\"IsNull\":\"0\"},"
+                            + "{\"Name\":\"传真\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"网址\",\"Length\":\"50\",\"IsNull\":\"0\"},"
+
+                            + "{\"Name\":\"地址\",\"Length\":\"500\",\"IsNull\":\"0\"},"
+                            + "{\"Name\":\"邮编\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"跟进状态\",\"Length\":\"50\",\"IsNull\":\"0\"},"
+                            + "{\"Name\":\"客户来源\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"所属行业\",\"Length\":\"50\",\"IsNull\":\"0\"},"
+                            + "{\"Name\":\"人员规模\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"负责人\",\"Length\":\"50\",\"IsNull\":\"0\"},"
+                            + "{\"Name\":\"备注\",\"Length\":\"0\",\"IsNull\":\"0\"}]";
+                    break;
+                case "KHLXR":
+
+                    json = "[{\"Name\":\"姓名\",\"Length\":\"50\",\"IsNull\":\"1\"},{\"Name\":\"对应客户\",\"Length\":\"50\",\"IsNull\":\"0\",\"IsExist\":\"SZHL_CRM_KHGL|KHName\"},"
+                        + "{\"Name\":\"手机\",\"Length\":\"11\",\"IsNull\":\"1\"},{\"Name\":\"邮箱\",\"Length\":\"50\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"传真\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"网址\",\"Length\":\"50\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"电话\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"分机\",\"Length\":\"50\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"QQ\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"微信\",\"Length\":\"100\",\"IsNull\":\"0\"},"
+                        //+ "{\"Name\":\"学历\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"公司\",\"Length\":\"100\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"部门\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"职位\",\"Length\":\"100\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"地址\",\"Length\":\"200\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"邮编\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"性别\",\"Length\":\"10\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"生日\",\"Length\":\"10\",\"IsNull\":\"0\"},{\"Name\":\"备注\",\"Length\":\"0\",\"IsNull\":\"0\"}]";
+                    break;
+                case "HTGL":
+                    json = "[{\"Name\":\"合同标题\",\"Length\":\"2500\",\"IsNull\":\"1\"},{\"Name\":\"合同类型\",\"Length\":\"50\",\"IsNull\":\"1\"},"
+                        + "{\"Name\":\"合同总金额\",\"Length\":\"100\",\"IsNull\":\"1\"},{\"Name\":\"签约日期\",\"Length\":\"10\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"对应客户\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"开始时间\",\"Length\":\"10\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"结束时间\",\"Length\":\"10\",\"IsNull\":\"0\"},{\"Name\":\"合同状态\",\"Length\":\"50\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"关联产品\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"付款方式\",\"Length\":\"100\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"付款说明\",\"Length\":\"1500\",\"IsNull\":\"0\"},{\"Name\":\"有效期\",\"Length\":\"100\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"我方签约人\",\"Length\":\"50\",\"IsNull\":\"0\"},{\"Name\":\"客户方签约人\",\"Length\":\"50\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"合同编号\",\"Length\":\"100\",\"IsNull\":\"0\"},{\"Name\":\"负责人\",\"Length\":\"50\",\"IsNull\":\"0\"},"
+                        + "{\"Name\":\"备注\",\"Length\":\"0\",\"IsNull\":\"0\"}]";
+                    break;
+            }
+
+            if (comid != 0)
+            {
+                json = json.Substring(0, json.Length - 1);
+
+                DataTable dtExtColumn = new JH_Auth_ExtendModeB().GetExtColumnAll(comid, code);
+                foreach (DataRow drExt in dtExtColumn.Rows)
+                {
+                    json = json + ",{\"Name\":\"" + drExt["TableFiledName"].ToString() + "\",\"Length\":\"0\",\"IsNull\":\"0\"}";
+                }
+
+                json = json + "]";
+            }
+
+            List<IMPORTYZ> cls = JsonConvert.DeserializeObject<List<IMPORTYZ>>(json);
+            return cls;
+
+        }
+
+
+
+        public class IMPORTYZ
+        {
+            public string Name { get; set; }
+            public int Length { get; set; }
+            public int IsNull { get; set; }
+            public string IsRepeat { get; set; }
+            public string IsExist { get; set; }
+        }
+
+
+        /// <summary>
+        /// 获取模板中的默认数据
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public string GetExcelData(string str)
+        {
+            string json = string.Empty;
+            switch (str)
+            {
+                case "KHGL":
+                    json = "贸易公司, 普通客户,010-65881997,123@qq.com, 010-65881998, http://www.baidu.com/,"
+                        + "东三环中路101号,100000,初访,广告,服务,小于10人,13312345678,主营外贸销售，代理国外一线品牌";
+                    break;
+                case "KHLXR":
+                    json = "张三,贸易公司,13667894321,123@qq.com,010-65881997 ,http://www.baidu.com/,010-65881997,61601 ,1123213213,fassfd21421,"
+                        + "客户部,经理,东三环中路101号,100000,男,1983-09-13,负责XX项目的实施";
+                    break;
+                case "HTGL":
+                    json = "XX项目,项目合同,12300,2015-07-08,贸易公司,2015-07-08,2015-12-08,未开始,企业号项目, 银行转账,"
+                        + "服务,6个月,张经理,王经理,AC2001243251002,13312345678,合同备注";
+                    break;
+            }
+
+            return json;
         }
     }
 
