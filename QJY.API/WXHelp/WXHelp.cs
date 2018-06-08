@@ -74,8 +74,8 @@ namespace QJY.API
             var url = string.Format("https://qyapi.weixin.qq.com/cgi-bin/ticket/get?access_token={0}&type=contact",
                access_token);
 
-          
-           
+
+
 
 
             JsonGroupTicket js = Get.GetJson<JsonGroupTicket>(url);
@@ -100,11 +100,11 @@ namespace QJY.API
                 if (Qyinfo.IsUseWX == "Y")
                 {
                     th.MODEL.ForEach(d => d.Url = Qyinfo.WXUrl.TrimEnd('/') + "/View_Mobile/UI/UI_COMMON.html?funcode=" + ModelCode + "_" + type + (d.Url == "" ? "" : "_" + d.Url) + "&corpid=" + Qyinfo.corpId.Trim());
-                    th.MODEL.ForEach(d => d.PicUrl = (string.IsNullOrEmpty(d.PicUrl) ? "" : Qyinfo.FileServerUrl.Trim() + "image/" + new FT_FileB().ExsSclarSql("select FileMD5 from FT_File where ID='" + d.PicUrl + "'").ToString()));
+                    th.MODEL.ForEach(d => d.PicUrl = (string.IsNullOrEmpty(d.PicUrl) ? "" : Qyinfo.FileServerUrl.Trim() + Qyinfo.QYCode + "/document/image/" + new FT_FileB().ExsSclarSql("select zyid from FT_File where ID='" + d.PicUrl + "'").ToString()));
 
                     //if (app.AppType == "1")
                     //{
-                        MassApi.SendNews(GetToken(app.AppID.ToString()), th.UserS.Replace(',', '|'), "", "", app.AppID, th.MODEL);
+                    MassApi.SendNews(GetToken(app.AppID.ToString()), th.UserS.Replace(',', '|'), "", "", app.AppID, th.MODEL);
                     //}
                     //else
                     //{
@@ -708,12 +708,12 @@ namespace QJY.API
         /// <returns></returns>
         public GetApprovalDataJsonResult GetWXSHData(string strSDate, string strEDate, string strLastNum = "")
         {
-            AccessTokenResult Token = CommonApi.GetToken(Qyinfo.corpId.Trim(),CommonHelp.GetConfig("WXLCDATA"));
+            AccessTokenResult Token = CommonApi.GetToken(Qyinfo.corpId.Trim(), CommonHelp.GetConfig("WXLCDATA"));
             string strReturn = "";
             string access_token = Token.access_token;
 
             GetApprovalDataJsonResult obj = OaDataOpenApi.GetApprovalData(access_token, DateTime.Parse(strSDate), DateTime.Parse(strEDate), 0);
-          
+
             return obj;
         }
     }

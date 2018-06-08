@@ -502,6 +502,7 @@
     <Content Include="WZWeb\mob\success.html" />
     <None Include="Properties\PublishProfiles\QJSignle.pubxml" />
     <None Include="Properties\PublishProfiles\QJ_APP.pubxml" />
+    <None Include="Properties\PublishProfiles\QJ_LingZong.pubxml" />
     <None Include="Properties\PublishProfiles\QJ_QSFY.pubxml" />
     <None Include="Properties\PublishProfiles\QJ_UserS.pubxml" />
     <None Include="Properties\PublishProfiles\QJ_WHLY.pubxml" />
