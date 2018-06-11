@@ -429,6 +429,7 @@
     <Content Include="View_Mobile\Images\book2.png" />
     <Content Include="View_Mobile\Images\phone-plus3.png" />
     <Content Include="View_Mobile\JS\avalon1.47.js" />
+    <Content Include="View_Mobile\UI\TEMP\MODEL\MXXFB.html" />
     <Content Include="View_Mobile\UI\UI_GZT_TJ.html" />
     <Content Include="View_Mobile\UI\TEMP\MODEL\MJYGL.html" />
     <Content Include="View_Mobile\UI\UI_CAR_INFO.html" />

@@ -975,6 +975,78 @@ namespace QJY.API
             }
             msg.Result = dt;
         }
+
+
+
+
+        public void GETXXFBBYUSER(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            string strSql = string.Format("select * from SZHL_XXFBType xxfb where (','+xxfb.TypeManager+',' LIKE '%,{0},%')  and ComId={1} and PTypeID='0' and isDel=0 and  IsCheck='false' ", UserInfo.User.UserName, UserInfo.User.ComId);//and Type={1} 
+            msg.Result = new SZHL_XXFBTypeB().GetDTByCommand(strSql);
+        }
+        public void ADDXXFBM(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            SZHL_XXFB xxmodel = JsonConvert.DeserializeObject<SZHL_XXFB>(P1);
+            string JsUser = xxmodel.JSUser;
+
+            List<SZHL_XXFB_ITEM> xxfbList = new List<SZHL_XXFB_ITEM>(); //企业信息发布多图文信息列表
+            xxmodel.CRDate = DateTime.Now;
+            xxmodel.CRUser = UserInfo.User.UserName;
+            xxmodel.CRUserName = UserInfo.User.UserRealName;
+            xxmodel.ComId = UserInfo.User.ComId;
+            if (xxmodel.FBTime == null || xxmodel.FBTime < DateTime.Now)
+            {
+                xxmodel.FBTime = DateTime.Now;
+            }
+       
+            xxmodel.Remark = P2;
+            xxmodel.XXTitle = xxfbList[0].XXTitle;
+            //判断神皖是否需要审核
+            // xxmodel.SHStatus = xxmodel.IsSH.ToLower() == "true" ? 0 : 1; //是否需要审核 
+            //Saas判断是否需要审核
+            xxmodel.SHStatus = 2; //是否需要审核 
+                                                                         //添加企业信息
+            new SZHL_XXFBB().Insert(xxmodel);
+            //循环多图文信息列表添加表，并判断是否发送消息
+            foreach (SZHL_XXFB_ITEM xxfb in xxfbList)
+            {
+                if (!string.IsNullOrEmpty(xxfb.XXTitle) || !string.IsNullOrEmpty(xxfb.XXContent))
+                {
+                    xxfb.XXFBId = xxmodel.ID;
+                    xxfb.ComId = UserInfo.User.ComId;
+                    xxfb.FBTime = xxmodel.FBTime;
+                    new SZHL_XXFB_ITEMB().Insert(xxfb);
+
+                }
+            }
+            //判断发布信息操作的微信消息 0为草稿 1为发布
+            if (xxmodel.IsSend == "1")
+            {
+                SZHL_TXSX tx = new SZHL_TXSX();
+                tx.ComId = UserInfo.User.ComId;
+                tx.APIName = "XXFB";
+                tx.TXMode = "XXFB";
+                tx.MsgID = xxmodel.ID.ToString();
+                tx.CRUser = UserInfo.User.UserName;
+                if (xxmodel.SHStatus == 2)  //无须审核
+                {
+                    tx.FunName = "SENDWXMSG";
+                    tx.Date = xxmodel.FBTime.Value.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    TXSX.TXSXAPI.AddALERT(tx); //时间为发送时间
+                }
+                else //需要审核
+                {
+                    tx.FunName = "SENDWXMSG_CHECK";
+                    tx.Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    TXSX.TXSXAPI.AddALERT(tx);
+
+                }
+            }
+        }
+
+        
+
     }
 
 }
