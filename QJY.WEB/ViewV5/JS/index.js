@@ -280,6 +280,18 @@
     AddViewNOWF: function (code,name) {
         ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD.html?PathCode=" + code, name, "1000");
     },
+    EditViewNOWF: function (code, ID, pid, event) {
+        if (event) {
+            event.stopPropagation();
+        }
+        event = event ? event : window.event
+        var obj = event.srcElement ? event.srcElement : event.target;
+        if ($(obj).hasClass("icon-check") || $(obj).attr("type") == "checkbox") {
+            return;
+        } else {
+            ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD.html?FormCode=" + code + "&ID=" + ID, "查看");
+        }
+    },
     ViewForm: function (code, ID, PIID, event) {
         event = event ? event : window.event
         var obj = event.srcElement ? event.srcElement : event.target;
