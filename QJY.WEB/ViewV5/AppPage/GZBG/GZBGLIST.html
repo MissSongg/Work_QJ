@@ -73,7 +73,7 @@
                 <p ms-if="el.FileList||el.PLList"><span class="mr10" ms-if="el.PLList.size()>0"><i class="iconfont icon-pinglun  ft14 ml5"></i>({{el.PLList.size()}})</span><span class="mr10" ms-if="el.FileList&&el.FileList.size()>0"><i class="iconfont icon-fj mr5 ft14"></i>({{el.FileList.size()}})</span></p>
             </div>            
             <div class="btn-add">
-                <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-if="el.CRUser==userName" ms-click="EditForm('GZBG',el.ID,'',$event)">
+                <a class="cz-btn ft18 bj-color tip" data-toggle="tooltip" title="编辑" ms-if="el.CRUser==userName" ms-click="EditViewNOWF('GZBG',el.ID,'',$event)">
                     <i class="iconfont icon-bianji"></i>
                 </a>
                 <a class="cz-btn ft18 sc-color tip" data-toggle="tooltip" title="删除" ms-if="el.CRUser==userName" ms-click="DELGZBG(el,$event)">

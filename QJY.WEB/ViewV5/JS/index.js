@@ -277,8 +277,18 @@
 
         }
     },//添加表格
-    AddViewNOWF: function (code,name) {
-        ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD.html?PathCode=" + code, name, "1000");
+    AddViewNOWF: function (code, name, ID, pcode, event) {
+        if (event) {
+            event.stopPropagation();
+        }
+        if (!ID) {
+            ID = "";
+        }
+        if (pcode == "CRM") {
+            code = pcode + "_" + code;
+        }
+        ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD.html?FormCode=" + code + "&ID=" + ID, Name, "1000");
+
     },
     EditViewNOWF: function (code, ID, pid, event) {
         if (event) {

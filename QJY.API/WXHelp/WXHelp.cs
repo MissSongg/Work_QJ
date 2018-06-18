@@ -118,7 +118,24 @@ namespace QJY.API
             }
         }
 
+        public void SendTPMSG(string ModelCode, List<Article> MODEL, string strUserS = "@all")
+        {
+            try
+            {
+                var app = new JH_Auth_ModelB().GetEntity(p => p.ModelCode == ModelCode);
 
+                if (strUserS == "")
+                {
+                    return;
+                }
+                if (Qyinfo.IsUseWX == "Y")
+                {
+
+                    MassApi.SendNews(GetToken(app.AppID.ToString()), strUserS, "", "", app.AppID, MODEL);
+                }
+            }
+            catch { }
+        }
 
         /// <summary>
         /// 文字消息

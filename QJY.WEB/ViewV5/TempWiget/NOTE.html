@@ -95,7 +95,7 @@
             })
         },
         ViewNote: function (item) {
-            top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=QYWD_QYSC&ID=" + item.ID + "&MsgType=text", "记事本", "800", "530");
+            top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD.html?FormCode=QYWD_QYSC&ID=" + item.ID + "&MsgType=text", "记事本", "800", "530");
         },
         DelNote: function (item) {
             top.ComFunJS.winconfirm("确认要删除吗", function () {
@@ -108,7 +108,7 @@
             }, function () { })
         },
         AddNote: function (item) {
-            top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=QYWD_QYSC&MsgType=text", "添加记事", "800", "530", function () {
+            top.ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD.html?FormCode=QYWD_QYSC&MsgType=text", "添加记事", "800", "530", function () {
                 tempindex.InitWigetData();
                 tempindex.fnselecttag(tempindex.seltag);
             });

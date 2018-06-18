@@ -5,7 +5,10 @@ using QJY.Data;
 using Microsoft.Practices.Unity;
 using QJY.API;
 using Newtonsoft.Json;
+using System.Linq;
 using QJY.Common;
+using Senparc.Weixin.QY.Entities;
+using Senparc.Weixin.QY.AdvancedAPIs;
 
 namespace TXSX
 {
@@ -40,11 +43,11 @@ namespace TXSX
         private static object islock = new object();
         public static void AUTOALERT()
         {
-           
+
 
             lock (islock)
             {
-
+               
                 var txLst = new SZHL_TXSXB().GetEntities(p => p.Status == "0");
 
                 foreach (var model in txLst)
@@ -216,23 +219,12 @@ namespace TXSX
                                 try
                                 {
                                     Msg_Result Model = new Msg_Result() { Action = model.FunName, ErrorMsg = "" };
-
                                     var container = ServiceContainerV.Current().Resolve<IWsService>(model.APIName.ToUpper());
                                     container.ProcessRequest(HttpContext.Current, ref Model, JsonConvert.SerializeObject(model), "", null);
-                                    if (Model.ErrorMsg == "")
-                                    {
-                                        canclose = true;
-                                    }
-                                    else
-                                    {
-                                        canclose = true;
-                                        upcount = true;
-                                    }
                                 }
-                                catch(Exception ex)
+                                catch (Exception ex)
                                 {
                                     canclose = true;
-
                                     new JH_Auth_LogB().Insert(new JH_Auth_Log()
                                     {
                                         LogType = "TXSX",
@@ -242,7 +234,6 @@ namespace TXSX
                                 }
                             }
                         }
-
                         if (canclose)
                         {
                             new SZHL_TXSXB().ExsSql("update SZHL_TXSX set Status='1' where ID=" + model.ID);
@@ -253,6 +244,42 @@ namespace TXSX
                         string ss = ex.Message;
                     }
                 }
+            }
+        }
+
+
+        /// <summary>
+        /// 生日提醒
+        /// </summary>
+        public static void AUTOALERTSR()
+        {
+            try
+            {
+
+                List<JH_Auth_QY> QyModel = new JH_Auth_QYB().GetEntities(d => d.ComId != 0).ToList();
+                WXHelp wx = new WXHelp(QyModel[0]);
+
+                var qdata = new JH_Auth_UserB().GetEntities(d => d.Birthday != null);
+                foreach (var item in qdata)
+                {
+                    if (item.Birthday.Value.ToString("yyyy-MM-dd") == DateTime.Now.ToString("yyyy-MM-dd"))
+                    {
+                        Article ar0 = new Article();
+                        ar0.Title = "生日提醒";
+                        ar0.Description = "";
+                        ar0.Url = "http://www.baidu.com";
+                        ar0.PicUrl = "";
+                        List<Article> al = new List<Article>();
+                        al.Add(ar0);
+                        wx.SendTPMSG("XXFB", al, item.UserName);
+                    }
+
+
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 

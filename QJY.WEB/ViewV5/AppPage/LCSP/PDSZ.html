@@ -68,7 +68,7 @@
 
 <div id="dvContent" ms-controller="PDSZ">
     <div class="btn-add">
-        <button type="button" class="btn btn-info btn-lg" ms-click="AddView('LCSP_PROCESS')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加工作流表单模板</button>
+        <button type="button" class="btn btn-info btn-lg" ms-click="AddViewNOWF('LCSP/PROCESS')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加工作流表单模板</button>
     </div>
     <div class="tab-filter-type">
         <!-- 搜索 -->
@@ -101,12 +101,12 @@
                     <td>{{item.RelatedTable}}</td>
                     <td>{{item.ProcessName}}</td>
                     <td>
-                        <a href="javascript:void(0);" ms-click="EditForm('LCSP_PROCESS',item.ID,'',$event)" ms-if="item.lcstatus==1">编辑</a>
+                        <a href="javascript:void(0);" ms-click="EditViewNOWF('LCSP_PROCESS',item.ID,'',$event)" ms-if="item.lcstatus==1">编辑</a>
                         <a href="javascript:void(0);" style="color: red; margin-left: 10px;" ms-click="DelProcess(item)" ms-if="item.lcstatus==1">删除</a>
                         <a href="javascript:void(0);" style="color: #FF7F24; margin-left: 10px" ms-click="SetColumnStatus(this,item)" ms-if="item.lcstatus==1">{{item.IsSuspended=="Y"?"禁用":"启用"}} </a>
                         <a href="javascript:void(0);" style="color: green; margin-left: 10px" ms-click="setLCSZ(item.ID)">设置流程</a>
                         <a href="javascript:void(0);" style="color: green; margin-left: 10px" ms-if="item.lcstatus==1" ms-click="setLCTEMP(item.ID)">设置模板</a>
-                        <a href="javascript:void(0);" style="color: green; margin-left: 10px" ms-if="item.lcstatus==1" ms-click="EditForm('LCSP_PROCESS',item.ID,'',$event)">设置可见范围</a>
+                        <a href="javascript:void(0);" style="color: green; margin-left: 10px" ms-if="item.lcstatus==1" ms-click="EditViewNOWF('LCSP_PROCESS',item.ID,'',$event)">设置可见范围</a>
                     </td>
                 </tr>
             </tbody>

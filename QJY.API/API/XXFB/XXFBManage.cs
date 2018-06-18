@@ -308,7 +308,7 @@ namespace QJY.API
                         }
                         row["TypeName"] = parentTypeName + (parentTypeName != "" ? "-" : "") + row["TypeName"];
                     }
-               
+
                 }
                 msg.Result = dt;
             }
@@ -710,12 +710,12 @@ namespace QJY.API
                 }
                 else
                     if (model.SHStatus == -1)//退回发送PC消息及微信消息
-                    {
-                        string strMsg = UserInfo.User.UserRealName + "退回了您发布的企业信息";
-                        new JH_Auth_User_CenterB().SendMsg(UserInfo, "XXFB", strMsg, model.ID.ToString(), model.CRUser);
-                        WXHelp wx = new WXHelp(UserInfo.QYinfo);
-                        wx.SendWXRText(strMsg, "XXFB", model.CRUser);
-                    }
+                {
+                    string strMsg = UserInfo.User.UserRealName + "退回了您发布的企业信息";
+                    new JH_Auth_User_CenterB().SendMsg(UserInfo, "XXFB", strMsg, model.ID.ToString(), model.CRUser);
+                    WXHelp wx = new WXHelp(UserInfo.QYinfo);
+                    wx.SendWXRText(strMsg, "XXFB", model.CRUser);
+                }
             }
         }
         public void SUREXXFB(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
@@ -897,6 +897,35 @@ namespace QJY.API
 
         }
 
+
+
+        public void SENDWXMSG_SRTX(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            var tx = JsonConvert.DeserializeObject<SZHL_TXSX>(P1);
+            UserInfo = new JH_Auth_UserB().GetUserInfo(tx.ComId.Value, tx.CRUser);
+            WXHelp wx = new WXHelp(UserInfo.QYinfo);
+
+            var qdata = new JH_Auth_UserB().GetEntities(d => d.Birthday != null);
+            foreach (var item in qdata)
+            {
+                if (item.Birthday.Value.ToString("MM-dd") == DateTime.Now.ToString("MM-dd"))
+                {
+                    Article ar0 = new Article();
+                    ar0.Title = "生日提醒";
+                    ar0.Description = "";
+                    ar0.Url = UserInfo.QYinfo.WXUrl + "/View_Mobile/UI/RLZY/sr.html?user=" + item.UserRealName;
+                    ar0.PicUrl = UserInfo.QYinfo.WXUrl + "/View_Mobile/UI/RLZY/images/sr.jpg";
+                    List<Article> al = new List<Article>();
+                    al.Add(ar0);
+                    wx.SendTPMSG("XXFB", al, item.UserName);
+                }
+
+
+            }
+
+        }
+
+
         //删除素材
         public void DELMATTER(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
@@ -998,14 +1027,14 @@ namespace QJY.API
             {
                 xxmodel.FBTime = DateTime.Now;
             }
-       
+
             xxmodel.Remark = P2;
             xxmodel.XXTitle = xxfbList[0].XXTitle;
             //判断神皖是否需要审核
             // xxmodel.SHStatus = xxmodel.IsSH.ToLower() == "true" ? 0 : 1; //是否需要审核 
             //Saas判断是否需要审核
             xxmodel.SHStatus = 2; //是否需要审核 
-                                                                         //添加企业信息
+                                  //添加企业信息
             new SZHL_XXFBB().Insert(xxmodel);
             //循环多图文信息列表添加表，并判断是否发送消息
             foreach (SZHL_XXFB_ITEM xxfb in xxfbList)
@@ -1045,7 +1074,7 @@ namespace QJY.API
             }
         }
 
-        
+
 
     }
 

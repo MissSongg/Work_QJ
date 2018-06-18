@@ -97,7 +97,7 @@
             })
         },
         ViewNote: function (item) {
-            ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=QYWD_QYSC&ID=" + item.ID + "&MsgType=link", "快捷网址", "800", "530");
+            ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD.html?FormCode=QYWD_QYSC&ID=" + item.ID + "&MsgType=link", "快捷网址", "800", "530");
         },
         DelNote: function (item) {
             ComFunJS.winconfirm("确认要删除吗", function () {
@@ -110,7 +110,7 @@
             }, function () { })
         },
         AddNote: function (item) {
-            ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD_WF.html?FormCode=QYWD_QYSC&MsgType=link", "添加快捷网站", "800", "530", function () {
+            ComFunJS.winviewform("/ViewV5/AppPage/APP_ADD.html?FormCode=QYWD_QYSC&MsgType=link", "添加快捷网站", "800", "530", function () {
                 tempindex.InitWigetData();
             });
         }

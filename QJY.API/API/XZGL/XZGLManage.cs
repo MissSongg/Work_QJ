@@ -362,7 +362,7 @@ namespace QJY.API
                 gzd.UserRealName = username;
                 gzd.BranchName = bmname;
 
-                JH_Auth_User user = new JH_Auth_UserB().GetEntity(d => d.ComId == UserInfo.User.ComId && (d.mobphone == tel || d.UserName == tel || d.JobNum == tel));
+                JH_Auth_User user = new JH_Auth_UserB().GetEntity(d => d.ComId == UserInfo.User.ComId && (d.mobphone == tel || d.UserName == tel || d.JobNum == tel || d.UserRealName == username));
                 if (user != null)
                 {
                     gzd.UserName = user.UserName;

@@ -502,6 +502,14 @@ namespace QJY.API
                         userNew.RoomCode = row[7].ToString();
                         userNew.Sex = row[1].ToString();
                         userNew.telphone = row[9].ToString();
+
+                        string s = "2050-01-01 18:38:50";
+                        DateTime result;
+                        if (DateTime.TryParse(row[10].ToString(), out result))
+                        {
+                            userNew.Birthday = result;
+                        }
+                        
                         userNew.UserGW = row[6].ToString();
                         userNew.UserName = row[2].ToString();
                         userNew.UserRealName = row[0].ToString();
