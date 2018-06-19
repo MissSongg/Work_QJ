@@ -757,9 +757,9 @@
 
                     <div style="padding-right: 10px">
                         <img ms-on-click="fdtp(this)" class="mall_pcp" style="height: 40px; width: 40px" ms-if="ComFunJS.xstp(el.FileExtendName)" ms-attr-src="{{ComFunJS.getfile(el.ID)}}" />
-                        <img ms-on-tap="viewwxx(el)" style="height: 40px; width: 40px" ms-if="!ComFunJS.xstp(el.FileExtendName)" ms-attr-src="../Images/qywd/{{el.FileExtendName}}.png" onerror="javascript: this.src = '/View_Mobile/Images/qywd/file.png'" />
+                        <img ms-on-click="viewwxx(el)" style="height: 40px; width: 40px" ms-if="!ComFunJS.xstp(el.FileExtendName)" ms-attr-src="../Images/qywd/{{el.FileExtendName}}.png" onerror="javascript: this.src = '/View_Mobile/Images/qywd/file.png'" />
                     </div>
-                    <div class="ui-list-info" ms-on-tap="viewwxx(el)" style="padding: 0;">
+                    <div class="ui-list-info" ms-on-click="viewwxx(el)" style="padding: 0;">
                         <h4 class="ui-nowrap">{{el.Name}}.{{el.FileExtendName}}</h4>
                         <p class="ui-nowrap">{{Math.round(el.FileSize/1024)}}kb</p>
                     </div>

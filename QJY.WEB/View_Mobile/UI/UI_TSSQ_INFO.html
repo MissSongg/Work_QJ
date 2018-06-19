@@ -80,7 +80,7 @@
                                 <img style="height:40px;width:40px" ms-if="!ComFunJS.xstp(el.FileExtendName)" ms-attr-src="/View_Mobile/Images/qywd/{{el.FileExtendName}}.png" onerror="javascript: this.src = '/View_Mobile/Images/qywd/file.png'" />
                             </div>
                             <div class="item-inner" style="height:40px">
-                                <div class="item-title" style="-webkit-box-flex: 1;" ms-on-tap="viewfile(el)">{{el.Name}}.{{el.FileExtendName}}<br />{{Math.round(el.FileSize/1024)}}kb</div>
+                                <div class="item-title" style="-webkit-box-flex: 1;" ms-on-click="viewfile(el)">{{el.Name}}.{{el.FileExtendName}}<br />{{Math.round(el.FileSize/1024)}}kb</div>
                                 <div class="item-after" style="">
                                     <a ms-attr-href="{{ComFunJS.getfile(el.ID)}}" class="external">
                                         <img style="height:20px;width:20px;float:right;" src="../Images/down.png" />

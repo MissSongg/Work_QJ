@@ -65,7 +65,7 @@
         <div class="content infinite-scroll infinite-scroll-bottom" data-distance="50">
             <div class="list-block" style="margin:0">
                 <ul>
-                    <li class="item-content item-link" ms-repeat-el="ctData" ms-on-tap="vieww(el)">
+                    <li class="item-content item-link" ms-repeat-el="ctData" ms-on-click="vieww(el)">
                         <!--<div class="item-media" style="height:60px"><i class="icon icon-f7"></i></div>-->
                         <div class="item-inner" style="height:60px">
                             <div class="item-title">{{el.name}}</div>
@@ -82,7 +82,7 @@
                         <span style="font-size: .5rem;color: gray;">{{el.FBTime|date("yy年MM月dd HH:mm")}}</span>
                     </div>
                     <div ms-repeat-item="el.Item">
-                        <div valign="bottom" class="card-header color-white no-border no-padding" ms-on-tap="viewwxx(item)" ms-if="$index==0">
+                        <div valign="bottom" class="card-header color-white no-border no-padding" ms-on-click="viewwxx(item)" ms-if="$index==0">
                             <img class="card-cover" ms-attr-src="{{ComFunJS.getfile(item.ImageIds?item.ImageIds.split(',')[0]:'')}}" alt="" style="max-height:500px;">
                             <span class="ititle" ms-if="el.Item.size()!=1">{{el.XXTitle}}</span>
                         </div>
@@ -94,7 +94,7 @@
                     <div class="card-content">
                         <div class="list-block media-list">
                             <ul>
-                                <li class="item-content hav" ms-repeat-item="el.Item" ms-on-tap="viewwxx(item)" ms-visible="$index!=0" style="border-top: 1px dotted #ccc;padding-left:0">
+                                <li class="item-content hav" ms-repeat-item="el.Item" ms-on-click="viewwxx(item)" ms-visible="$index!=0" style="border-top: 1px dotted #ccc;padding-left:0">
                                     <div class="item-media">
                                         <img ms-attr-src="{{ComFunJS.getfile(item.ImageIds?item.ImageIds.split(',')[0]:'')}}" width="44" height="44">
                                     </div>
@@ -112,9 +112,9 @@
                     <div class="card-footer" ms-if="el.SHStatus==0||el.SHStatus==1">
                         <span ms-if="el.SHStatus!=0&&el.SHStatus!=2">{{el.SHStatus==1?'同意':'退回'}}</span>
                         <a class="link" style="color:black" ms-if="el.SHStatus==0">未审核</a>
-                        <a class="button button-fill button-success" ms-if="el.SHStatus==0" ms-on-tap="UpStatus(el,'1')">同意</a>
-                        <a class="button button-fill button-danger" ms-if="el.SHStatus==0" ms-on-tap="UpStatus(el,'-1')">退回</a>
-                        <a class="button button-fill button-success" ms-if="el.SHStatus==1" ms-on-tap="UpStatus(el,'2')">发布</a>
+                        <a class="button button-fill button-success" ms-if="el.SHStatus==0" ms-on-click="UpStatus(el,'1')">同意</a>
+                        <a class="button button-fill button-danger" ms-if="el.SHStatus==0" ms-on-click="UpStatus(el,'-1')">退回</a>
+                        <a class="button button-fill button-success" ms-if="el.SHStatus==1" ms-on-click="UpStatus(el,'2')">发布</a>
                     </div>
                 </div>
             </div>

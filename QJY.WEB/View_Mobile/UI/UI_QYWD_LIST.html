@@ -68,7 +68,7 @@
                     <p style=" color: #bbb;">无文件</p>
                 </div>
                 <ul>
-                    <li class="item-content " ms-repeat-el="wjjData" ms-on-tap="vieww(el)" style="height: 60px;">
+                    <li class="item-content " ms-repeat-el="wjjData" ms-on-click="vieww(el)" style="height: 60px;">
                         <div class="item-media" style="height:40px;padding:0;"><img style="height:40px;width:40px" src="/View_Mobile/Images/qywd/file1.png" /></div>
                         <div class="item-inner" style="height: 40px; padding: 0;">
                             <div class="item-title">{{el.Name}}</div>
@@ -82,7 +82,7 @@
                             <img style="height:40px;width:40px" ms-if="!ComFunJS.xstp(el.FileExtendName)" ms-attr-src="/View_Mobile/Images/qywd/{{el.FileExtendName}}.png" onerror="javascript: this.src = '/View_Mobile/Images/qywd/file.png'" />
                         </div>
                         <div class="item-inner" style="height:40px">
-                            <div class="item-title" ms-on-tap="viewwxx(el)">{{el.Name}}.{{el.FileExtendName}}</div>
+                            <div class="item-title" ms-on-click="viewwxx(el)">{{el.Name}}.{{el.FileExtendName}}</div>
                             <div class="item-after" style="">
                                 <a ms-attr-href="{{ComFunJS.getfile(el.ID)}}" class="external">
                                     <img style="height:20px;width:20px;float:right;" src="../Images/down.png" />
