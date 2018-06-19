@@ -277,7 +277,7 @@
 
         }
     },//添加表格
-    AddViewNOWF: function (code, name, ID, pcode, event) {
+    AddViewNOWF: function (code, Name, ID, pcode, event) {
         if (event) {
             event.stopPropagation();
         }

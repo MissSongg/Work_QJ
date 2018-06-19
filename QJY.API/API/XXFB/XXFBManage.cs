@@ -901,27 +901,38 @@ namespace QJY.API
 
         public void SENDWXMSG_SRTX(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            var tx = JsonConvert.DeserializeObject<SZHL_TXSX>(P1);
-            UserInfo = new JH_Auth_UserB().GetUserInfo(tx.ComId.Value, tx.CRUser);
-            WXHelp wx = new WXHelp(UserInfo.QYinfo);
-
-            var qdata = new JH_Auth_UserB().GetEntities(d => d.Birthday != null);
-            foreach (var item in qdata)
+            try
             {
-                if (item.Birthday.Value.ToString("MM-dd") == DateTime.Now.ToString("MM-dd"))
+                CommonHelp.WriteLOG("调用生日提醒接口"+ P1);
+                var tx = JsonConvert.DeserializeObject<SZHL_TXSX>(P1);
+                UserInfo = new JH_Auth_UserB().GetUserInfo(tx.ComId.Value, tx.CRUser);
+                WXHelp wx = new WXHelp(UserInfo.QYinfo);
+
+                var qdata = new JH_Auth_UserB().GetEntities(d => d.Birthday != null);
+                foreach (var item in qdata)
                 {
-                    Article ar0 = new Article();
-                    ar0.Title = "生日提醒";
-                    ar0.Description = "";
-                    ar0.Url = UserInfo.QYinfo.WXUrl + "/View_Mobile/UI/RLZY/sr.html?user=" + item.UserRealName;
-                    ar0.PicUrl = UserInfo.QYinfo.WXUrl + "/View_Mobile/UI/RLZY/images/sr.jpg";
-                    List<Article> al = new List<Article>();
-                    al.Add(ar0);
-                    wx.SendTPMSG("XXFB", al, item.UserName);
+                    if (item.Birthday.Value.ToString("MM-dd") == DateTime.Now.ToString("MM-dd"))
+                    {
+                        Article ar0 = new Article();
+                        ar0.Title = "生日提醒";
+                        ar0.Description = "";
+                        ar0.Url = UserInfo.QYinfo.WXUrl + "/View_Mobile/UI/RLZY/sr.html?user=" + item.UserRealName;
+                        ar0.PicUrl = UserInfo.QYinfo.WXUrl + "/View_Mobile/UI/RLZY/images/sr.jpg";
+                        List<Article> al = new List<Article>();
+                        al.Add(ar0);
+                        wx.SendTPMSG("XXFB", al, item.UserName);
+                    }
+
+
                 }
-
-
             }
+            catch (Exception ex)
+            {
+
+                CommonHelp.WriteLOG("调用生日提醒接口" + ex.ToString());
+            }
+
+
 
         }
 
