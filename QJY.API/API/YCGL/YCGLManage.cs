@@ -8,6 +8,7 @@ using QJY.Data;
 using Newtonsoft.Json;
 using System.Data;
 using QJY.Common;
+using Senparc.Weixin.QY.Entities;
 
 namespace QJY.API
 {
@@ -213,7 +214,7 @@ namespace QJY.API
                 strWhere += string.Format(" And ( yc.Remark like '%{0}%' or yc.StartAddress like '%{0}%' or yc.EndAddress like '%{0}%')", strContent);
             }
             int DataID = -1;
-            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
+            int.TryParse(context.Request["ID"] ?? "-1", out DataID);//记录Id
             if (DataID != -1)
             {
                 string strIsHasDataQX = new JH_Auth_QY_ModelB().ISHASDATAREADQX("YCGL", DataID, UserInfo);
@@ -588,6 +589,24 @@ namespace QJY.API
             new SZHL_YCGLB().Delete(d => d.ID == Id && d.ComId == UserInfo.User.ComId);
 
         }
+        public void SENDMSG(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            int Id = int.Parse(P1);
+            var model = new SZHL_YCGLB().GetEntity(d => d.ID == Id && d.ComId == UserInfo.User.ComId);
+            string strContent = "发起人：" + new JH_Auth_UserB().GetUserRealName(UserInfo.User.ComId.Value, model.CRUser) + "\r\n驾驶人：" + new JH_Auth_UserB().GetUserRealName(UserInfo.User.ComId.Value, model.JSR) + "\r\n您有新的用车通知,请尽快查看";
+            Article ar0 = new Article();
+            ar0.Title = "用车通知";
+            ar0.Description = strContent;
+            ar0.Url = model.ID.ToString();
+            List<Article> al = new List<Article>();
+            al.Add(ar0);
+            //new JH_Auth_User_CenterB().SendMsg(UserInfo, "HYGL", strContent, model.ID.ToString(), model.JSR, "B", model.intProcessStanceid);
+
+            WXHelp wx = new WXHelp(UserInfo.QYinfo);
+            wx.SendTH(al, "YCGL", "A", model.JSR);
+
+        }
+
 
         #endregion
     }

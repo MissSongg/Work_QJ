@@ -1,67 +1,38 @@
-﻿<div style="background:#fbf9fe" ms-controller="MYCGL">
+﻿<div style="background: #fbf9fe" ms-controller="MYCGL">
     <div ms-if="isHasDataQX=='Y'">
         <!--<div class="weui_cells_title">基本信息</div>-->
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">申请人</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">申请人</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{ComFunJS.convuser(modelData.SYUser)}}
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">开始时间</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">开始时间</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input type="text" id="StartTime" placeholder="请选择开始时间" ms-duplex="modelData.StartTime" class="weui_input szhl szhl_require">
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">结束时间</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">结束时间</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input type="text" id="EndTime" placeholder="请选择结束时间" ms-duplex="modelData.EndTime" class="weui_input szhl szhl_require">
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">用车人数</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">用车人数</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input ms-duplex="modelData.SYRS" type="tel" min="1" placeholder="请输入用车人数" class="weui_input szhl szhl_require szhl_Int" />
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label label">使用车辆</label></div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <select ms-duplex="modelData.CarID" class="weui-select ">
-                        <option value="">请选择</option>
-                        <option ms-repeat-item="ColumnData" ms-attr-value="item.ID" ms-attr-selected="item.ID==modelData.CarID?'selected':''">{{item.CarBrand+'-'+item.CarNum}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">出发地点</label></div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <input ms-duplex="modelData.StartAddress" type="text" placeholder="请输入出发地点" class="weui_input szhl szhl_require" />
-                </div>
-            </div>
-            <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">目的地点</label></div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <input ms-duplex="modelData.EndAddress" type="text" placeholder="请输入目的地点" class="weui_input szhl szhl_require" />
-                </div>
-            </div>
-
-        </div>
-        <div class="weui_cells_title">使用说明</div>
-        <div class="weui_cells weui_cells_form">
-            <div class="weui_cell">
-                <div class="weui_cell_hd" style="display:none;"><label class="weui_label label">使用说明</label></div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <textarea ms-duplex="modelData.Remark" rows="4" placeholder="请输入使用说明" class="weui_textarea"></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="weui_cells_title">其他信息</div>
-        <div class="weui_cells weui_cells_form">
-            <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">行程类别</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">行程类别</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <select ms-duplex="modelData.XCType" class="weui-select ">
                         <option value="">请选择</option>
@@ -71,10 +42,50 @@
                     </select>
                 </div>
             </div>
+
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">驾驶人</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">出发地点</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input ms-duplex="modelData.JSR" type="text" placeholder="请输入驾驶人" class="weui_input" />
+                    <input ms-duplex="modelData.StartAddress" type="text" placeholder="请输入出发地点" class="weui_input szhl szhl_require" />
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">目的地点</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input ms-duplex="modelData.EndAddress" type="text" placeholder="请输入目的地点" class="weui_input szhl szhl_require" />
+                </div>
+            </div>
+
+        </div>
+        <div class="weui_cells_title">使用说明</div>
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_hd" style="display: none;">
+                    <label class="weui_label label">使用说明</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <textarea ms-duplex="modelData.Remark" rows="4" placeholder="请输入使用说明" class="weui_textarea"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="weui_cells_title">其他信息</div>
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_hd">
+                    <label class="weui_label label label">使用车辆</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <select ms-duplex="modelData.CarID" class="weui-select ">
+                        <option value="">请选择</option>
+                        <option ms-repeat-item="ColumnData" ms-attr-value="item.ID" ms-attr-selected="item.ID==modelData.CarID?'selected':''">{{item.CarBrand+'-'+item.CarNum}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">驾驶人</label></div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input id="jsr" ms-duplex="modelData.JSR" type="text" placeholder="请输入驾驶人" class="weui_input szhl szhl_getPeoples single" />
                 </div>
             </div>
         </div>
@@ -82,7 +93,7 @@
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input type="text" ms-duplex="modelData.Files" class="wximgupload" style="display:none;" />
+                    <input type="text" ms-duplex="modelData.Files" class="wximgupload" style="display: none;" />
                 </div>
             </div>
         </div>
@@ -91,44 +102,50 @@
         <!--<div class="weui_cells_title">基本信息</div>-->
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">申请人</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">申请人</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{ComFunJS.convuser(modelData.SYUser)}}
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">开始时间</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">开始时间</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <div ms-if="modelData.StartTime">{{modelData.StartTime|date('yyyy-MM-dd HH:mm')}}</div>
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">结束时间</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">结束时间</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     <div ms-if="modelData.StartTime">{{modelData.EndTime|date('yyyy-MM-dd HH:mm')}}</div>
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">用车人数</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">用车人数</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.SYRS}}
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">使用车辆</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label label">行程类别</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
-                    <div ms-if="carData.ID">{{carData.CarBrand+'-'+carData.CarNum}}</div>
-                    <div ms-if="!modelData.CarID">无</div>
+                    {{modelData.XCType}}
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">出发地点</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">出发地点</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.StartAddress}}
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label">目的地点</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">目的地点</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
                     {{modelData.EndAddress}}
                 </div>
@@ -142,18 +159,22 @@
                 </div>
             </div>
         </div>
-        <div class="weui_cells_title">其他信息</div>
+        <div class="weui_cells_title">用车信息</div>
         <div class="weui_cells weui_cells_form">
+
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label label">行程类别</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label">使用车辆</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
-                    {{modelData.XCType}}
+                    <div ms-if="carData.ID">{{carData.CarBrand+'-'+carData.CarNum}}</div>
+                    <div ms-if="!modelData.CarID">无</div>
                 </div>
             </div>
             <div class="weui_cell">
-                <div class="weui_cell_hd"><label class="weui_label label label">驾驶人</label></div>
+                <div class="weui_cell_hd">
+                    <label class="weui_label label label">驾驶人</label></div>
                 <div class="weui_cell_bd weui_cell_primary">
-                    {{modelData.JSR}}
+                    {{ComFunJS.convuser(modelData.JSR)}}
                 </div>
             </div>
         </div>
@@ -170,241 +191,7 @@
 
 
 
-<!--<div class="list-block" style="margin: 0;" ms-controller="MYCGL">
-    <ul ms-if="isHasDataQX=='Y'">
-        <li>
-            <div class="item-content ">
-                <div class="item-inner">
-                    <div class="item-title label">申请人</div>
-                    <div class="item-input">
-                        <div style=" line-height: 1.4; ">{{ComFunJS.convuser(modelData.SYUser)}}</div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content item-link" >
-                <div class="item-inner">
-                    <div class="item-title label">发车时间</div>
-                    <div class="item-input">
-                        <input type="text" id="StartTime" placeholder="请选择发车时间" ms-duplex="modelData.StartTime" class="szhl szhl_require">
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content item-link">
-                <div class="item-inner">
-                    <div class="item-title label">还车时间</div>
-                    <div class="item-input">
-                        <input type="text" id="EndTime" placeholder="请选择还车时间" ms-duplex="modelData.EndTime" class="szhl szhl_require">
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content item-link">
-                <div class="item-inner">
-                    <div class="item-title label">使用车辆</div>
-                    <div class="item-input">
-                        <select ms-duplex="modelData.CarID">
-                            <option value="">请选择</option>
-                            <option ms-repeat-item="ColumnData" ms-attr-value="item.ID" ms-attr-selected="item.ID==modelData.CarID?'selected':''">{{item.CarBrand+'-'+item.CarNum}}</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">用车人数</div>
-                    <div class="item-input">
-                        <input ms-duplex="modelData.SYRS" type="tel" min="1" placeholder="请输入用车人数" />
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content item-link" >
-                <div class="item-inner">
-                    <div class="item-title label">行程类别</div>
-                    <div class="item-input">
-                        <select ms-duplex="modelData.XCType" >
-                            <option ms-attr-selected="modelData.XCType=='省内'">省内</option>
-                            <option ms-attr-selected="modelData.XCType=='短途'">短途</option>
-                            <option ms-attr-selected="modelData.XCType=='长途'">长途</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">出发地点</div>
-                    <div class="item-input">
-                        <input ms-duplex="modelData.StartAddress" type="text" placeholder="请输入出发地点" class="szhl szhl_require" />
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">目的地点</div>
-                    <div class="item-input">
-                        <input ms-duplex="modelData.EndAddress" type="text" placeholder="请输入目的地点" class="szhl szhl_require" />
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">驾驶员</div>
-                    <div class="item-input">
-                        <input ms-duplex="modelData.JSR" type="text" placeholder="请输入驾驶员" />
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">使用说明</div>
-                    <div class="item-input">
-                        <textarea ms-duplex="modelData.Remark" rows="2" placeholder="请输入使用说明" class="szhl szhl_require"></textarea>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li class="align-top">
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">图片</div>
-                    <div class="item-input">
-                        <input type="text" ms-duplex="modelData.Files" class="wximgupload" style="display:none;" />
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ul>
 
-    <ul ms-if="isHasDataQX=='N'">
-        <li>
-            <div class="item-content ">
-                <div class="item-inner">
-                    <div class="item-title label">申请人</div>
-                    <div class="item-input">
-                        <div style=" line-height: 1.4;">{{ComFunJS.convuser(modelData.SYUser)}}</div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li >
-            <div class="item-content ">
-                <div class="item-inner">
-                    <div class="item-title label">发车时间</div>
-                    <div class="item-input">
-                        <div ms-if="modelData.StartTime">{{modelData.StartTime|date('yyyy-MM-dd HH:mm')}}</div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li >
-            <div class="item-content ">
-                <div class="item-inner">
-                    <div class="item-title label">还车时间</div>
-                    <div class="item-input">
-                        <div ms-if="modelData.StartTime">{{modelData.EndTime|date('yyyy-MM-dd HH:mm')}}</div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li >
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">使用车辆</div>
-                    <div class="item-input">
-                        <div ms-if="modelData.CarID">{{carData.CarBrand+'-'+carData.CarNum}}</div>
-                        <div ms-if="!modelData.CarID">无</div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li ms-if="modelData.SYRS">
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">用车人数</div>
-                    <div class="item-input">
-                        <div>{{modelData.SYRS}}</div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content " >
-                <div class="item-inner">
-                    <div class="item-title label">行程类别</div>
-                    <div class="item-input">
-                        <div>{{modelData.XCType}}</div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">出发地点</div>
-                    <div class="item-input">
-                        <div>{{modelData.StartAddress}}</div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li>
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">目的地点</div>
-                    <div class="item-input">
-                        <div>{{modelData.EndAddress}}</div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li ms-if="modelData.JSR">
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">驾驶员</div>
-                    <div class="item-input">
-                        <div>{{modelData.JSR}}</div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li ms-if="modelData.Remark">
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">使用说明</div>
-                    <div class="item-input">
-                        <div style="overflow: hidden; word-wrap: break-word; word-break: break-all; ">{{modelData.Remark|html}}</div>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li class="align-top" ms-if="modelData.Files">
-            <div class="item-content">
-                <div class="item-inner">
-                    <div class="item-title label">图片</div>
-                    <div class="item-input">
-                        <div class="viewimg">{{modelData.Files}}</div>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ul>
-</div>-->
 <script>
 
     var tempmodel = avalon.define({
@@ -513,9 +300,14 @@
                 }
 
             })
+            tempmodel.modelData.JSR = $("#jsr").val();
 
             $.getJSON("/API/VIEWAPI.ashx?ACTION=YCGL_ADDYCGL&r=" + Math.random(), { P1: JSON.stringify(tempmodel.modelData.$model), P2: tempmodel.wximg }, function (result) {
                 return callback.call(this, result);
+            });
+        },
+        WFComplate: function () {
+            $.post("/API/VIEWAPI.ashx?ACTION=YCGL_SENDMSG", { P1: JSON.stringify(tempmodel.modelData.ID) }, function (result) {
             });
         },
         Complate: function () {

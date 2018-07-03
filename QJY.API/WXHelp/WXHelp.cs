@@ -13,7 +13,7 @@ using QJY.Data;
 using Senparc.Weixin.QY.AdvancedAPIs.MailList;
 using Senparc.Weixin.Work.AdvancedAPIs.OaDataOpen;
 using QJY.Common;
-
+using System.Text;
 
 namespace QJY.API
 {
@@ -338,6 +338,7 @@ namespace QJY.API
 
                     int[] Branch = { new JH_Auth_BranchB().GetEntity(d => d.DeptCode == Model.BranchCode).WXBMCode.Value };
                     Ret = MailListApi.UpdateMember(GetToken(), Model.UserName, Model.UserRealName, Branch, Model.zhiwu, Model.mobphone, Model.mailbox, Model.weixinnum, Model.IsUse == "Y" ? 1 : 0);
+                    string str = UpUserXB(Model.UserName, Model.UserRealName, Model.Sex == "男" ? "1" : "2");
                 }
                 return Ret;
             }
@@ -733,6 +734,35 @@ namespace QJY.API
 
             return obj;
         }
+
+
+
+
+
+        /// <summary>
+        /// 修改用户性别
+        /// </summary>
+        /// <param name="UserName"></param>
+        /// <param name="UserRealName"></param>
+        /// <param name="gender">1为男，2为女</param>
+        /// <returns></returns>
+        public string UpUserXB(string UserName, string UserRealName, string gender = "1")
+        {
+            string responeJsonStr = "{";
+            responeJsonStr += "\"userid\": \"" + UserName + "\",";
+            responeJsonStr += "\"name\": \"" + UserRealName + "\",";
+            responeJsonStr += "\"gender\": \"" + gender + "\"";
+            responeJsonStr += "}";
+            string accessToken = GetToken();
+            string postUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/update?access_token={0}", accessToken);
+            return CommonHelp.PostWebRequest(postUrl, responeJsonStr, Encoding.UTF8);
+        }
+
+
+
+
+
+
     }
 
     public class thModel

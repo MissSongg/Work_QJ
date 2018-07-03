@@ -387,12 +387,18 @@
         })
     },
     managetask: function () { //固定流程的处理
-        $.post("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF", { P1: pmodel.PIID, P2: pmodel.spReason, ID: pmodel.DataID, formcode: pmodel.FormCode, csr: pmodel.CSUser }, function (result) {
+        $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_MANAGEWF", { P1: pmodel.PIID, P2: pmodel.spReason, ID: pmodel.DataID, formcode: pmodel.FormCode, csr: pmodel.CSUser }, function (result) {
             if ($.trim(result.ErrorMsg) == "") {
                 top.ComFunJS.winsuccess("处理成功");
 
                 if (pmodel.isedit == "Y") {//如果可编辑，就保存数据
                     tempmodel.SaveData(function (result) { }, $(".btnSucc")[0]);
+                    if (result.Result=="Y") {
+                        if (tempmodel && $.isFunction(tempmodel.WFComplate)) {
+                            setTimeout("tempmodel.WFComplate();", 1000);
+                        }
+                    }//流程结束
+                
                     pmodel.SaveExtData(pmodel.DataID);
                 }
                 pmodel.refiframe();

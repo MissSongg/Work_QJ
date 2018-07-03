@@ -1,14 +1,14 @@
 ﻿<div class="form-horizontal" ms-controller="YCGL">
     <div style="margin: 0 80px;">
         <div>
-            <ul class="clearfix" style="display: block;padding:0">
+            <ul class="clearfix" style="display: block; padding: 0">
                 <li class="add-item add-width">
                     <label>申请人:</label><label>{{ComFunJS.convertuser(modelData.SYUser)}}</label>
                 </li>
                 <li class="add-item add-width">
                     <label class="add-item-label"><i>*</i>起止时间</label>
                     <div class="add-ic">
-                        <div style="display:block;">
+                        <div style="display: block;">
                             <div class="add-ic fl-left" style="width: 45%;">
                                 <input type="text" class="form-control szhl_form_date_time szhl_require" ms-class-1="null:modelData.ID" ms-duplex="modelData.StartTime">
                             </div>
@@ -26,14 +26,17 @@
                     </div>
                 </li>
                 <li class="add-item add-width fl-right">
-                    <label class="add-item-label">选择车辆</label>
+                    <label class="add-item-label">行程类别</label>
                     <div class="add-ic">
-                        <select name="conType" id="conType" ms-duplex="modelData.CarID" class="form-control">
+                        <select ms-duplex="modelData.XCType" class="form-control">
                             <option value="">请选择</option>
-                            <option ms-repeat-item="CLData" ms-attr-value="item.ID">{{item.CarBrand}}-{{item.CarNum}}</option>
+                            <option ms-attr-selected="modelData.XCType=='省内'">省内</option>
+                            <option ms-attr-selected="modelData.XCType=='短途'">短途</option>
+                            <option ms-attr-selected="modelData.XCType=='长途'">长途</option>
                         </select>
                     </div>
                 </li>
+
                 <li class="add-item add-width fl-left">
                     <label class="add-item-label"><i>*</i>出发地点</label>
                     <div class="add-ic">
@@ -55,23 +58,21 @@
             </ul>
         </div>
         <div>
-            <div class="fg-item"><span>其他信息</span><i id="btnOtherInfo"></i></div>
-            <ul class="clearfix" style="padding:0px;" id="OtherInfo">
+            <div class="fg-item"><span>用车信息</span><i id="btnOtherInfo"></i></div>
+            <ul class="clearfix" style="padding: 0px;" id="OtherInfo">
                 <li class="add-item add-width fl-left">
-                    <label class="add-item-label">行程类别</label>
+                    <label class="add-item-label">选择车辆</label>
                     <div class="add-ic">
-                        <select ms-duplex="modelData.XCType" class="form-control">
+                        <select name="conType" id="conType" ms-duplex="modelData.CarID" class="form-control">
                             <option value="">请选择</option>
-                            <option ms-attr-selected="modelData.XCType=='省内'">省内</option>
-                            <option ms-attr-selected="modelData.XCType=='短途'">短途</option>
-                            <option ms-attr-selected="modelData.XCType=='长途'">长途</option>
+                            <option ms-repeat-item="CLData" ms-attr-value="item.ID">{{item.CarBrand}}-{{item.CarNum}}</option>
                         </select>
                     </div>
                 </li>
                 <li class="add-item add-width fl-right ">
                     <label class="add-item-label">驾驶人</label>
                     <div class="add-ic">
-                        <input id="conNR" ms-duplex="modelData.JSR" maxlength="50" class=" form-control" />
+                        <input ms-duplex="modelData.JSR" maxlength="50" class=" form-control szhl_getPeoples"  signle="Y" />
                     </div>
                 </li>
                 <li class="add-item add-widthall">
@@ -118,10 +119,15 @@
         modelData: { "CarID": "", "SYRS": "1", "XCType": "", "StartTime": "", "EndTime": "", "StartAddress": "", "EndAddress": "", "SPUser": "", "Remark": "", "JSR": "", "SYUser": ComFunJS.getnowuser(), "Files": "" },
         SaveData: function (callback) {
             $.post("/API/VIEWAPI.ashx?ACTION=YCGL_ADDYCGL", { P1: JSON.stringify(tempmodel.modelData.$model) }, function (result) {
-                return callback.call(this,result);
+                return callback.call(this, result);
             });
-        }, GetCLLIST: function () {
-            $.getJSON('/API/VIEWAPI.ashx?Action=YCGL_GETCLIST',{}, function (resultData) {
+        },
+        WFComplate: function () {
+            $.post("/API/VIEWAPI.ashx?ACTION=YCGL_SENDMSG", { P1: JSON.stringify(tempmodel.modelData.ID) }, function (result) {
+            });
+        },
+        GetCLLIST: function () {
+            $.getJSON('/API/VIEWAPI.ashx?Action=YCGL_GETCLIST', {}, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     tempmodel.CLData = resultData.Result;
                     if (tempmodel.clTypeId) {

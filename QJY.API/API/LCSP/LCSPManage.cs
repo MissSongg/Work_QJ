@@ -735,7 +735,7 @@ namespace QJY.API
 
                 if (LCTYPE == "-1" || LCTYPE == "") //没有流程
                 {
-                    WFComplete(strModelCode, DataID.ToString(), "Y");
+                    WFComplete(strModelCode, DataID.ToString(), "Y", UserInfo);
                     return;
                 }
 
@@ -870,6 +870,7 @@ namespace QJY.API
                     if (strIsComplete == "Y")//找不到下家就结束流程,并且给流程发起人发送消息
                     {
                         PIB.ENDWF(PID);
+                        msg.Result = "Y";//已结束
                         content = UserInfo.User.UserRealName + "审批完成了您发起的" + PD.ProcessName + "表单";
                         strTXUser = PI.CRUser;
                         funName = "LCSP_CHECK";
@@ -906,7 +907,7 @@ namespace QJY.API
                     TX.TXMode = modelcode;
                     TXSX.TXSXAPI.AddALERT(TX); //时间为发送时间
 
-                    WFComplete(modelcode, DATAID.ToString(), strIsComplete);
+                    WFComplete(modelcode, DATAID.ToString(), strIsComplete, UserInfo);
 
 
                 }
@@ -930,9 +931,9 @@ namespace QJY.API
         /// <param name="strModelCode"></param>
         /// <param name="strDataID"></param>
         /// <param name="isComplete">是否最后一步Y:最后一步</param>
-        public void WFComplete(string strModelCode, string strDataID, string isComplete)
+        public void WFComplete(string strModelCode, string strDataID, string isComplete, JH_Auth_UserB.UserInfo UserInfo)
         {
-
+          
         }
 
 

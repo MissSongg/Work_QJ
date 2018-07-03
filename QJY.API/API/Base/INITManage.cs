@@ -532,19 +532,19 @@ namespace QJY.API
                             {
                                 msg.ErrorMsg = "用户名必填";
                             }
-                            Regex regexPhone = new Regex("^0?1[3|4|5|8|7][0-9]\\d{8}$");
-                            if (!regexPhone.IsMatch(userNew.UserName))
-                            {
-                                msg.ErrorMsg = "用户名必须为手机号";
-                            }
+                            //Regex regexPhone = new Regex("^0?1[3|4|5|8|7][0-9]\\d{8}$");
+                            //if (!regexPhone.IsMatch(userNew.UserName))
+                            //{
+                            //    msg.ErrorMsg = "用户名必须为手机号";
+                            //}
                             if (string.IsNullOrEmpty(userNew.mobphone))
                             {
                                 msg.ErrorMsg = "手机号必填";
                             }
-                            if (!regexPhone.IsMatch(userNew.mobphone))
-                            {
-                                msg.ErrorMsg = "手机号填写不正确";
-                            }
+                            //if (!regexPhone.IsMatch(userNew.mobphone))
+                            //{
+                            //    msg.ErrorMsg = "手机号填写不正确";
+                            //}
                             Regex regexOrder = new Regex("^[0-9]*$");
                             if (userNew.UserOrder != null && !regexOrder.IsMatch(userNew.UserOrder.ToString()))
                             {

@@ -271,12 +271,12 @@ namespace QJY.API
                 msg.ErrorMsg = "手机号必填";
                 return;
             }
-            Regex regexPhone = new Regex("^0?1[3|4|5|8|7][0-9]\\d{8}$");
-            if (!regexPhone.IsMatch(user.mobphone))
-            {
-                msg.ErrorMsg = "手机号填写不正确";
-                return;
-            }
+            //Regex regexPhone = new Regex("^0?1[3|4|5|8|7][0-9]\\d{8}$");
+            //if (!regexPhone.IsMatch(user.mobphone))
+            //{
+            //    msg.ErrorMsg = "手机号填写不正确";
+            //    return;
+            //}
             Regex regexOrder = new Regex("^[0-9]*$");
             if (user.UserOrder != null && !regexOrder.IsMatch(user.UserOrder.ToString()))
             {
