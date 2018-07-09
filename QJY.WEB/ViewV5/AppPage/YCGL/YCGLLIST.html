@@ -2,6 +2,8 @@
     <!-- 添加按钮 -->
     <div class="btn-add">
         <button type="button" class="btn btn-info btn-lg" ms-click="AddView('YCGL')"><i class="iconfont icon-jiahao ft12 mr5"></i>添加用车</button>
+        <a class="btn btn-info btn-lg" ms-click="dcycgl()"><i class="iconfont icon-dc ft12 mr5"></i>导出</a>
+
     </div>
     <!-- 按条件选择 -->
     <div class="tab-filter-type">
@@ -131,7 +133,14 @@
             })
             tempindex.GetLIST();
         },
-
+        dcycgl: function () {
+            if (model.page.total > 0) {
+                $(this).attr("href", "/API/VIEWAPI.ashx?Action=YCGL_EXPORTYCGL&type=" + model.search.seartype + "&P2=" + model.search.searchcontent + "&pagecount=" + model.page.total + "&P1=" + tempindex.curXJType + "&time=" + tempindex.curXJTime + "&starTime=" + tempindex.starTime + "&endTime=" + tempindex.endTime);
+            }
+            else {
+                top.ComFunJS.winwarning("无数据");
+            }
+        },
         GetLIST: function () {
             model.page.pageindex = 1;
             tempindex.tmpListData.clear();

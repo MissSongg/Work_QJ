@@ -607,7 +607,27 @@ namespace QJY.API
 
         }
 
+        public void EXPORTYCGL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+            GETYCGLLIST(context, msg, P1, P2, UserInfo);
+            DataTable dt = msg.Result;
+            string sqlCol = "SYUser|使用人,XCType|行程类别,CarNum|使用车辆,SYRS|用车人数,JSR|驾驶员,Remark|使用说明,StartTime|开始时间,EndTime|结束时间,StartAddress|出发地点,EndAddress|到达地点";
+            CommonHelp ch = new CommonHelp();
+            DataTable dt2 = dt.DelTableCol(sqlCol);
+            foreach (DataRow dr in dt2.Rows)
+            {
+                try
+                {
+                    dr["SYUser"] = new JH_Auth_UserB().GetUserRealName(UserInfo.QYinfo.ComId, dr["SYUser"].ToString());
+                }
+                catch (Exception)
+                {
 
+                }
+            }
+
+            msg.ErrorMsg = ch.ExportToExcel("用车记录", dt2);
+        }
         #endregion
     }
 }
