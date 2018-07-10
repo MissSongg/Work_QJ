@@ -362,10 +362,12 @@ namespace QJY.API
                 gzd.UserRealName = username;
                 gzd.BranchName = bmname;
 
-                JH_Auth_User user = new JH_Auth_UserB().GetEntity(d => d.ComId == UserInfo.User.ComId && (d.mobphone == tel || d.UserName == tel || d.JobNum == tel || d.UserRealName == username));
-                if (user != null)
+                //List<JH_Auth_User> users = new JH_Auth_UserB().GetEntities(d => d.ComId == UserInfo.User.ComId && (d.mobphone == tel || d.UserName == tel || d.JobNum == tel || d.UserRealName == username)).ToList();
+                List<JH_Auth_User> users = new JH_Auth_UserB().GetEntities(d => d.ComId == UserInfo.User.ComId && d.UserRealName == username).ToList();
+
+                if (users.Count > 0)
                 {
-                    gzd.UserName = user.UserName;
+                    gzd.UserName = users[0].UserName;
                     bl = true;
                     new SZHL_XZ_GZDB().Delete(d => d.UserName == gzd.UserName && d.YearMonth == ym);//先删除该年月的发薪记录
                 }
@@ -385,7 +387,7 @@ namespace QJY.API
                     CSTX.MsgID = gzd.ID.ToString();
                     CSTX.TXContent = taitou;
                     CSTX.ISCS = "N";
-                    CSTX.TXUser = user.UserName;
+                    CSTX.TXUser = users[0].UserName;
                     CSTX.TXMode = "XZFF";
                     CSTX.CRUser = UserInfo.User.UserName;
                     TXSX.TXSXAPI.AddALERT(CSTX); //时间为发送时间
@@ -393,7 +395,7 @@ namespace QJY.API
                 if (ffdx == "1" && tel != "")
                 {
                     string hj = a["合计"] != null ? a["合计"].ToString().Trim() : "";
-                     new SZHL_DXGLB().SendSMS(tel, username + "，" + taitou + "，" + "合计：" + hj + "元.点击" + UserInfo.QYinfo.WXUrl.TrimEnd('/') + "/View_Mobile/UI/UI_GZD_VIEW.html?ID=" + gzd.ID + " 查看详情", UserInfo.QYinfo.ComId);
+                    new SZHL_DXGLB().SendSMS(tel, username + "，" + taitou + "，" + "合计：" + hj + "元.点击" + UserInfo.QYinfo.WXUrl.TrimEnd('/') + "/View_Mobile/UI/UI_GZD_VIEW.html?ID=" + gzd.ID + " 查看详情", UserInfo.QYinfo.ComId);
                 }
             }
             #endregion
@@ -475,7 +477,7 @@ namespace QJY.API
             ar0.Title = TX.TXContent;
             ar0.Description = "";
             ar0.Url = TX.MsgID;
-           
+
             List<Article> al = new List<Article>();
             al.Add(ar0);
             if (!string.IsNullOrEmpty(TX.TXUser))

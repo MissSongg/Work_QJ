@@ -609,8 +609,9 @@ namespace QJY.API
 
         public void EXPORTYCGL(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            GETYCGLLIST(context, msg, P1, P2, UserInfo);
-            DataTable dt = msg.Result;
+            int total = 0;
+            DataTable dt = new SZHL_YCGLB().GetDataPager("SZHL_YCGL yc left join SZHL_YCGL_CAR car on yc.CarID=car.ID", "yc.*,car.CarBrand,car.CarType,car.CarNum ,dbo.fn_PDStatus(yc.intProcessStanceid) AS StateName", 2000, 1, " yc.CRDate desc", "", ref total);
+
             string sqlCol = "SYUser|使用人,XCType|行程类别,CarNum|使用车辆,SYRS|用车人数,JSR|驾驶员,Remark|使用说明,StartTime|开始时间,EndTime|结束时间,StartAddress|出发地点,EndAddress|到达地点";
             CommonHelp ch = new CommonHelp();
             DataTable dt2 = dt.DelTableCol(sqlCol);
@@ -618,7 +619,13 @@ namespace QJY.API
             {
                 try
                 {
-                    dr["SYUser"] = new JH_Auth_UserB().GetUserRealName(UserInfo.QYinfo.ComId, dr["SYUser"].ToString());
+                    dr["使用人"] = new JH_Auth_UserB().GetUserRealName(UserInfo.QYinfo.ComId, dr["使用人"].ToString());
+                    if (!string.IsNullOrEmpty(dr["驾驶员"].ToString()))
+                    {
+                        dr["驾驶员"] = new JH_Auth_UserB().GetUserRealName(UserInfo.QYinfo.ComId, dr["驾驶员"].ToString());
+
+                    }
+
                 }
                 catch (Exception)
                 {
