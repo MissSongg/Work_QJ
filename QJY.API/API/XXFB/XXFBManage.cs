@@ -1021,7 +1021,7 @@ namespace QJY.API
 
         public void GETXXFBBYUSER(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
         {
-            string strSql = string.Format("select * from SZHL_XXFBType xxfb where (','+xxfb.TypeManager+',' LIKE '%,{0},%')  and ComId={1} and PTypeID='0' and isDel=0 and  IsCheck='false' ", UserInfo.User.UserName, UserInfo.User.ComId);//and Type={1} 
+            string strSql = string.Format("select * from SZHL_XXFBType xxfb where (','+xxfb.TypeManager+',' LIKE '%,{0},%')  and ComId={1} and PTypeID!='0' and isDel=0 and  IsCheck='false' ", UserInfo.User.UserName, UserInfo.User.ComId);//and Type={1} 
             msg.Result = new SZHL_XXFBTypeB().GetDTByCommand(strSql);
         }
         public void ADDXXFBM(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
