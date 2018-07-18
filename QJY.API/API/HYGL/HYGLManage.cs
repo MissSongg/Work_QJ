@@ -12,6 +12,7 @@ using Senparc.Weixin.QY.Entities;
 using System.Collections;
 using QJY.Common;
 
+
 namespace QJY.API
 {
     public class HYGLManage : IWsService
@@ -298,7 +299,7 @@ namespace QJY.API
                 strWhere += string.Format(" And ( hy.Title like '%{0}%' )", strContent);
             }
             int DataID = -1;
-            int.TryParse(context.Request.QueryString["ID"] ?? "-1", out DataID);//记录Id
+            int.TryParse(context.Request["ID"] ?? "-1", out DataID);//记录Id
             if (DataID != -1)
             {
                 string strIsHasDataQX = new JH_Auth_QY_ModelB().ISHASDATAREADQX("HYGL", DataID, UserInfo);
@@ -993,6 +994,30 @@ namespace QJY.API
                 TXSX.TXSXAPI.AddALERT(tx1); //时间为发送时间
             }
         }
+
+
+        public void SENDMSG(HttpContext context, Msg_Result msg, string P1, string P2, JH_Auth_UserB.UserInfo UserInfo)
+        {
+
+           
+            int Id = int.Parse(P1);
+            var model = new SZHL_HYGLB().GetEntity(d => d.ID == Id && d.ComId == UserInfo.User.ComId);
+            var rm = new SZHL_HYGL_ROOMB().GetEntity(p => p.ID == model.RoomID && p.ComId == UserInfo.User.ComId);
+
+            Article ar0 = new Article();
+            ar0.Title = "会议通知";
+            ar0.Description = "发起人：" + new JH_Auth_UserB().GetUserRealName(UserInfo.User.ComId.Value, model.CRUser) + "\r\n您有新的会议[" + model.Title + "],会议室[" + rm.Name + "],请尽快查看吧";
+            ar0.Url = model.ID.ToString();
+            List<Article> al = new List<Article>();
+            al.Add(ar0);
+            //new JH_Auth_User_CenterB().SendMsg(UserInfo, "HYGL", strContent, model.ID.ToString(), model.JSR, "B", model.intProcessStanceid);
+
+            WXHelp wx = new WXHelp(UserInfo.QYinfo);
+            wx.SendTH(al, "HYGL", "A", model.CYUser);
+
+        }
+
+
         #endregion
 
         #endregion

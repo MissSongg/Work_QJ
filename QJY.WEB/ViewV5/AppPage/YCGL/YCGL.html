@@ -93,6 +93,10 @@
         CLData: [],
         clTypeId: ComFunJS.getQueryString("clId"),
         iswf: true,//是否属于流程表单
+        CancelWF: function (strId) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=YCGL_DELYC', { P1: strId }, function (resultData) {
+            })
+        },
         inittemp: function (strId) {
             tempmodel.GetCLLIST();
             if (strId && strId != "0") {

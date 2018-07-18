@@ -135,11 +135,16 @@
                 ComFunJS.initForm();
             }
         },//初始化
+        WFComplate: function () {
+            $.post("/API/VIEWAPI.ashx?ACTION=HYGL_SENDMSG", { P1: JSON.stringify(tempmodel.modelData.ID) }, function (result) {
+
+            });
+        },
         modelData: { "Title": "", "Details": "", "StartTime": "", "EndTime": "", "RoomID": "", "TXSJ": "-1", "FQUser": ComFunJS.getnowuser(), "CYUser": "", "JLUser": "", "Files": "", "ZCUser": "", "SXUser": "", "HYFW": "" },
         SaveData: function (callback) {
             $.post("/API/VIEWAPI.ashx?ACTION=HYGL_ADDHYGL", { P1: JSON.stringify(tempmodel.modelData.$model) }, function (result) {
                 return callback.call(this, result);
             });
         }
-    });
+    });        //@ sourceURL=hygl.js;
 </script>

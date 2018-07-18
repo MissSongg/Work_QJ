@@ -15,6 +15,7 @@
     CSQKData: [],//抄送人接收情况数据
     iscansp: false,//是否有处理单据权限
     isedit: "N",//是否是流程中得可编辑状态
+    ISCANCEL:"N",
     isHasDataQX: "N",//是否有修改数据得权限（只有当数据创建人是当前人并且是普通表单时才为Y）
     isPC: true,
     isDraft: false,
@@ -96,6 +97,8 @@
                 }
                 if (result.Result2) {//判断当前用户是否具有审批权限
                     pmodel.iscansp = $.parseJSON(result.Result2).ISCANSP == "Y";
+                    pmodel.ISCANCEL = $.parseJSON(result.Result2).ISCANCEL;
+
                 }
                 if (result.Result3) {
                     pmodel.lctype = result.Result3;//流程类型 
@@ -392,15 +395,14 @@
                 top.ComFunJS.winsuccess("处理成功");
 
                 if (pmodel.isedit == "Y") {//如果可编辑，就保存数据
-                    tempmodel.SaveData(function (result) { }, $(".btnSucc")[0]);
-                    if (result.Result=="Y") {
-                        if (tempmodel && $.isFunction(tempmodel.WFComplate)) {
-                            setTimeout("tempmodel.WFComplate();", 1000);
-                        }
-                    }//流程结束
-                
+                    tempmodel.SaveData(function (result) { }, $(".btnSucc")[0]);                
                     pmodel.SaveExtData(pmodel.DataID);
                 }
+                if (result.Result == "Y") {
+                    if (tempmodel && $.isFunction(tempmodel.WFComplate)) {
+                        tempmodel.WFComplate();
+                    }
+                }//流程结束
                 pmodel.refiframe();
 
             }
@@ -427,6 +429,31 @@
         });
 
 
+    },
+    CancelWF: function () {//撤回表单到草稿箱
+        ComFunJS.winconfirm("确认要撤回此流程吗？", function () {
+            $.getJSON("/API/VIEWAPI.ashx?ACTION=LCSP_CANCELWF", { P1: pmodel.PIID, DataID: pmodel.DataID, ModelCode: pmodel.FormCode, P2: pmodel.PIMODEL.PDID }, function (result) {
+                if (result.ErrorMsg == "") {//流程数据
+                    pmodel.ISCANCEL = "N";
+                    if (pmodel.isPC) {
+                        top.ComFunJS.winconfirm("操作成功,该表单已撤回到草稿箱,是否要重新发起该表单", function () {
+                            location.href = "/ViewV5/AppPage/APP_ADD_WF.html?FormCode=" + pmodel.FormCode + "&PDID=" + pmodel.PIMODEL.PDID + "&lctype=" + pmodel.lctype;
+                            if (tempindex && $.isFunction(tempindex.CancelWF)) {
+                                tempindex.CancelWF(pmodel.strId);
+                            }
+
+                        }, function () {
+                            top.layer.closeAll();
+                        })
+                    } else {
+                        top.ComFunJS.winsuccess("操作成功")
+                        if (tempmodel && $.isFunction(tempmodel.CancelWF)) {
+                            tempmodel.CancelWF(pmodel.strId);
+                        }
+                    }
+                }
+            })
+        }, function () { })
     },
     qx: function () {
         parent.layer.closeAll();
@@ -507,6 +534,7 @@
             pmodel.PathCode = pmodel.FormCode + '/' + pmodel.FormCode;
         }
     }
+
 })
 
 avalon.ready(function () {

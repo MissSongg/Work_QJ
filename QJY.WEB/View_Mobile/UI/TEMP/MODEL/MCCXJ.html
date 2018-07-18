@@ -119,6 +119,11 @@
         iswf: true,//是否属于流程表单
         wximg: "",
         typename: "",
+        CancelWF: function (dataid) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=CCXJ_DELCCXJ', { P1: dataid }, function (resultData) {
+
+            })
+        },
         inittemp: function (strId) {
 
 

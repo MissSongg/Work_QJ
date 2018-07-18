@@ -69,8 +69,8 @@
                 </div>
             </div>
         </div>
-        <div class="weui_cells_title">其他信息</div>
-        <div class="weui_cells weui_cells_form">
+        <div class="weui_cells_title" >车辆信息 <a href="/View_Mobile/UI/UI_CAR_LIST.html?isview=1" class="external"  style="float:right">查看</a> </div>
+        <div class="weui_cells weui_cells_form" ms-if="DataID">
             <div class="weui_cell">
                 <div class="weui_cell_hd">
                     <label class="weui_label label label">使用车辆</label></div>
@@ -159,8 +159,8 @@
                 </div>
             </div>
         </div>
-        <div class="weui_cells_title">用车信息</div>
-        <div class="weui_cells weui_cells_form">
+        <div class="weui_cells_title" >用车信息</div>
+        <div class="weui_cells weui_cells_form" >
 
             <div class="weui_cell">
                 <div class="weui_cell_hd">
@@ -312,7 +312,12 @@
         },
         Complate: function () {
             window.location.href = "/View_Mobile/UI/UI_YCGL_LIST.html?r=" + Math.random();
-        }
+        },
+        CancelWF: function (strId) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=YCGL_DELYC', { P1: strId }, function (resultData) {
+            })
+        },
+
 
     });//# sourceURL=MYCGL.js;
 

@@ -176,10 +176,8 @@
 <body ms-controller="APP_ADD">
     <div class="page page-current" style="background: #fff;" id="pageindex1">
         <!--<header class="bar bar-nav header">
-            <a class="button button-link button-nav pull-left back">
-                <span class="icon icon-left"></span>
-            </a>
-            <h1 class='title'>{{pmtitle}}</h1>
+         
+            <h1 class='title'>{{pmtitle}}{{pmodel.ISCANCEL}}</h1>
         </header>-->
         <div class="content">
             <div ms-include-src="/View_Mobile/UI/TEMP/MODEL/M{{FormCode}}.html?ver={{rdm}}" data-include-rendered='render'></div>
@@ -341,6 +339,13 @@
 
         <table class="table bar bar-tab" style="z-index: 20;">
             <tbody>
+                <tr class="trss" ms-if="DataID&&pmodel.ISCANCEL=='Y'">
+                    <td>
+                        <button class="button button-fill " style="font-size: .9rem; background-color: #ed4c51;width: 100%;height: 2.0rem; top: 0 !important; border-radius: .05rem;" ms-click="CancelWF()">
+                            撤回流程
+                        </button>
+                    </td>
+                </tr>
                 <tr class="trss" ms-if="(!DataID||isHasDataQX=='Y')&&!iscansp">
                     <td ms-if="lctype=='0'">
                         <span>审核人</span>
@@ -412,7 +417,7 @@
     <script src="/View_Mobile/JS/avalon1.47.js"></script>
     <script src="/View_Mobile/JS/ComFunJS.js?jsver=20180520"></script>
     <script src="/View_Mobile/JS/raty/jquery.raty.js?v=1.3"></script>
-    <script src="/ViewV5/JS/WFJS.js?ver=20180726"></script>
+    <script src="/ViewV5/JS/WFJS.js?ver=20180721"></script>
     <script>
         var peomodel = avalon.define({
             $id: "peomodel",

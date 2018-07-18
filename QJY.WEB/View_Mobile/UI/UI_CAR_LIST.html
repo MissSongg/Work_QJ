@@ -38,8 +38,8 @@
                     <li class="item-link" ms-repeat-el="ctData">
                         <label class="label-checkbox item-content">
 
-                            <input type="radio" name="hys" ms-attr-value="el.ID">
-                            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                            <input type="radio" name="hys" ms-attr-value="el.ID" ms-if="isview!='0'">
+                            <div class="item-media" ms-if="isview!='0'"><i class="icon icon-form-checkbox"></i></div>
                             <div class="item-inner" ms-on-click="vieww(el)">
                                 <div class="item-title-row">
                                     <div class="item-title">【{{el.CarBrand}}】{{el.CarTypeName+'-'+el.CarNum}}<br />{{xszysj(el.ZYSJ)|html}}</div>
@@ -54,7 +54,7 @@
             </div>
 
         </div>
-        <nav class="bar bar-tab">
+        <nav class="bar bar-tab" ms-if="isview!='0'">
             <div class="content-block" style="margin:0px;">
                 <div class="row">
                     <div class="col-100"><a href="javascript:void(0);" style="top:0rem;" class="button button-big button-fill button-success external" ms-click="addhy()">申请用车</a></div>
@@ -73,8 +73,11 @@
         var model = avalon.define({
             $id: "HYSList",
             ctData: [],
+            isview:"0",
             vieww: function (el) {
-                window.location = "UI_CAR_INFO.html?id=" + el.ID + "&r=" + Math.random();
+                if (model.isview!="0") {
+                    window.location = "UI_CAR_INFO.html?id=" + el.ID + "&r=" + Math.random();
+                }
             },
             addhy: function () {
                 var rid = $("input[name=hys]:checked").val();
@@ -90,6 +93,7 @@
         })
 
         avalon.ready(function () {
+            model.isview = ComFunJS.getQueryString("isview","1");
             $.getJSON('/API/VIEWAPI.ashx?Action=YCGL_GETKYCLLIST&r=' + Math.random(), {}, function (resultData) {
                 if (resultData.ErrorMsg == "") {
                     model.ctData = resultData.Result;

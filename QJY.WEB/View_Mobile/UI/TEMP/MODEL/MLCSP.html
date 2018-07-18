@@ -87,6 +87,10 @@
             })
         },//初始化
         modelData: { "LeiBie": "", "Content": "", "ShenQingRen": "", "Files": "", "Tempcontent": "" },
+        CancelWF: function (strId) {
+            $.getJSON('/API/VIEWAPI.ashx?Action=LCSP_DELLCSPBYID', { P1: strId }, function (resultData) {
+            })
+        },
         SaveData: function (callback) {
 
             tempmodel.modelData.Files = "";
